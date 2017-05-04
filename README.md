@@ -1,6 +1,8 @@
 # OpenGL
 FireMonkey 上で OpenGL を扱う方法。
 
+![](https://github.com/LUXOPHIA/OpenGL/raw/master/--------/_SCREENSHOT/OpenGL.png)
+
 ----
 * LUX.GPU.OpenGL
     * [GitHub](https://github.com/LUXOPHIA/LUX.GPU.OpenGL)
