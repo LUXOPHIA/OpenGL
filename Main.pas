@@ -18,13 +18,18 @@ type
       GLView4: TGLView;
     Timer1: TTimer;
     procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
   private
     { private 宣言 }
     _Angle :Single;
   public
     { public 宣言 }
+    _BufV :TGLBuffer<TSingle3D>;
+    _BufC :TGLBuffer<TAlphaColorF>;
+    _BufF :TGLBuffer<Cardinal>;
     ///// メソッド
+    procedure MakeModel;
     procedure DrawModel;
   end;
 
@@ -41,7 +46,7 @@ implementation //###############################################################
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TForm1.DrawModel;                                                     { OpenGL 1.1 (1997) }
+procedure TForm1.MakeModel;
 const
      Ps :array [ 0..7 ] of TSingle3D = ( ( X:-1; Y:-1; Z:-1 ),
                                          ( X:+1; Y:-1; Z:-1 ),
@@ -74,10 +79,56 @@ begin
      //  |/      |/
      //  4-------5
 
-     glVertexPointer( 3, GL_FLOAT, 0, @Ps[ 0 ] );
-     glColorPointer ( 4, GL_FLOAT, 0, @Cs[ 0 ] );
+     with _BufV do
+     begin
+          Count := 8;
 
-     glDrawElements( GL_TRIANGLES, 3{Poin} * 12{Face}, GL_UNSIGNED_INT, @Fs[ 0, 0 ] );
+          Bind;
+            glBufferData( GL_ARRAY_BUFFER, SizeOf( Ps ), @Ps[ 0 ], GL_STATIC_DRAW );
+          Unbind;
+     end;
+
+     with _BufC do
+     begin
+          Count := 8;
+
+          Bind;
+            glBufferData( GL_ARRAY_BUFFER, SizeOf( Cs ), @Cs[ 0 ], GL_STATIC_DRAW );
+          Unbind;
+     end;
+
+     with _BufF do
+     begin
+          Count := 36;
+
+          Bind;
+            glBufferData( GL_ELEMENT_ARRAY_BUFFER, SizeOf( Fs ), @Fs[ 0, 0 ], GL_STATIC_DRAW );
+          Unbind;
+     end;
+end;
+
+procedure TForm1.DrawModel;                                                     { OpenGL 1.5 (2003) }
+begin
+     with _BufV do
+     begin
+          Bind;
+            glVertexPointer( 3, GL_FLOAT, 0, 0 );
+          Unbind;
+     end;
+
+     with _BufC do
+     begin
+          Bind;
+            glColorPointer( 4, GL_FLOAT, 0, 0 );
+          Unbind;
+     end;
+
+     with _BufF do
+     begin
+          Bind;
+            glDrawElements( GL_TRIANGLES, 3{Poin} * 12{Face}, GL_UNSIGNED_INT, 0 );
+          Unbind;
+     end;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
@@ -88,6 +139,12 @@ begin
 
      glEnableClientState( GL_VERTEX_ARRAY );
      glEnableClientState( GL_COLOR_ARRAY  );
+
+     _BufV := TGLBuffer<TSingle3D>   .Create( GL_ARRAY_BUFFER         );
+     _BufC := TGLBuffer<TAlphaColorF>.Create( GL_ARRAY_BUFFER         );
+     _BufF := TGLBuffer<Cardinal>    .Create( GL_ELEMENT_ARRAY_BUFFER );
+
+     MakeModel;
 
      GLView1.OnPaint := procedure
      begin
@@ -140,6 +197,11 @@ begin
             glRotatef( _Angle, 0, 1, 0 );
             DrawModel;
      end;
+end;
+
+procedure TForm1.FormDestroy(Sender: TObject);
+begin
+
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
