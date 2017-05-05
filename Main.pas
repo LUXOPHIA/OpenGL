@@ -41,7 +41,7 @@ implementation //###############################################################
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TForm1.DrawModel;                                                     { OpenGL 1.0 (1992) }
+procedure TForm1.DrawModel;                                                     { OpenGL 1.1 (1997) }
 const
      Ps :array [ 0..7 ] of TSingle3D = ( ( X:-1; Y:-1; Z:-1 ),
                                          ( X:+1; Y:-1; Z:-1 ),
@@ -59,14 +59,12 @@ const
                                             ( R:1; G:0; B:1; A:1 ),
                                             ( R:0; G:1; B:1; A:1 ),
                                             ( R:1; G:1; B:1; A:1 ) );
-     Fs :array [ 1..6, 1..4 ] of Integer = ( ( 0, 2, 3, 1 ),
-                                             ( 0, 4, 6, 2 ),
-                                             ( 0, 1, 5, 4 ),
-                                             ( 7, 3, 2, 6 ),
-                                             ( 7, 5, 1, 3 ),
-                                             ( 7, 6, 4, 5 ) );
-var
-   N, K, I :Integer;
+     Fs :array [ 0..11, 0..2 ] of Cardinal = ( ( 0, 4, 6 ), ( 6, 2, 0 ),
+                                               ( 0, 1, 5 ), ( 5, 4, 0 ),
+                                               ( 0, 2, 3 ), ( 3, 1, 0 ),
+                                               ( 7, 5, 1 ), ( 1, 3, 7 ),
+                                               ( 7, 3, 2 ), ( 2, 6, 7 ),
+                                               ( 7, 6, 4 ), ( 4, 5, 7 ) );
 begin
      //    2-------3
      //   /|      /|
@@ -76,21 +74,10 @@ begin
      //  |/      |/
      //  4-------5
 
-     glBegin( GL_QUADS );
+     glVertexPointer( 3, GL_FLOAT, 0, @Ps[ 0 ] );
+     glColorPointer ( 4, GL_FLOAT, 0, @Cs[ 0 ] );
 
-       for N := 1 to 6 do
-       begin
-            for K := 1 to 4 do
-            begin
-                 I := Fs[ N, K ];
-
-                 with Cs[ I ] do glColor3f( R, G, B );
-
-                 with Ps[ I ] do glVertex3f( X, Y, Z );
-            end;
-       end;
-
-     glEnd;
+     glDrawElements( GL_TRIANGLES, 3{Poin} * 12{Face}, GL_UNSIGNED_INT, @Fs[ 0, 0 ] );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
@@ -98,6 +85,9 @@ end;
 procedure TForm1.FormCreate(Sender: TObject);
 begin
      _Angle := 0;
+
+     glEnableClientState( GL_VERTEX_ARRAY );
+     glEnableClientState( GL_COLOR_ARRAY  );
 
      GLView1.OnPaint := procedure
      begin
