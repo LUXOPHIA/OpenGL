@@ -112,21 +112,21 @@ begin
      with _BufV do
      begin
           Bind;
-            glVertexPointer( 3, GL_FLOAT, 0, 0 );
+            glVertexPointer( 3, GL_FLOAT, 0, nil );
           Unbind;
      end;
 
      with _BufC do
      begin
           Bind;
-            glColorPointer( 4, GL_FLOAT, 0, 0 );
+            glColorPointer( 4, GL_FLOAT, 0, nil );
           Unbind;
      end;
 
      with _BufF do
      begin
           Bind;
-            glDrawElements( GL_TRIANGLES, 3{Poin} * 12{Face}, GL_UNSIGNED_INT, 0 );
+            glDrawElements( GL_TRIANGLES, 3{Poin} * 12{Face}, GL_UNSIGNED_INT, nil );
           Unbind;
      end;
 end;
@@ -201,7 +201,9 @@ end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
-
+     _BufV.DisposeOf;
+     _BufC.DisposeOf;
+     _BufF.DisposeOf;
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
