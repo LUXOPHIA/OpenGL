@@ -28,6 +28,9 @@ type
     _BufV :TGLBuffer<TSingle3D>;
     _BufC :TGLBuffer<TAlphaColorF>;
     _BufF :TGLBuffer<Cardinal>;
+    _ShaV :TGLShaderV;
+    _ShaF :TGLShaderF;
+    _Prog :TGLProgram;
     ///// メソッド
     procedure MakeModel;
     procedure DrawModel;
@@ -105,10 +108,47 @@ begin
             glBufferData( GL_ELEMENT_ARRAY_BUFFER, SizeOf( Fs ), @Fs[ 0, 0 ], GL_STATIC_DRAW );
           Unbind;
      end;
+
+     with TStringList.Create do
+     begin
+          Add( '#version 120' );
+          Add( 'void main()' );
+          Add( '{' );
+          Add( '  gl_Position   = gl_ModelViewProjectionMatrix * gl_Vertex;' );
+          Add( '  gl_FrontColor = gl_Color;' );
+          Add( '}' );
+
+          _ShaV.SetSource( Text );
+
+          DisposeOf;
+     end;
+
+     with TStringList.Create do
+     begin
+          Add( '#version 120' );
+          Add( 'void main()' );
+          Add( '{' );
+          Add( '  gl_FragColor = gl_Color;' );
+          Add( '}' );
+
+          _ShaF.SetSource( Text );
+
+          DisposeOf;
+     end;
+
+     with _Prog do
+     begin
+          Attach( _ShaV );
+          Attach( _ShaF );
+
+          Link;
+     end;
 end;
 
-procedure TForm1.DrawModel;                                                     { OpenGL 1.5 (2003) }
+procedure TForm1.DrawModel;                                                     { OpenGL 2.1 - GLSL 1.2 }
 begin
+     _Prog.Use;
+
      with _BufV do
      begin
           Bind;
@@ -143,6 +183,10 @@ begin
      _BufV := TGLBuffer<TSingle3D>   .Create( GL_ARRAY_BUFFER         );
      _BufC := TGLBuffer<TAlphaColorF>.Create( GL_ARRAY_BUFFER         );
      _BufF := TGLBuffer<Cardinal>    .Create( GL_ELEMENT_ARRAY_BUFFER );
+
+     _ShaV := TGLShaderV.Create;
+     _ShaF := TGLShaderF.Create;
+     _Prog := TGLProgram.Create;
 
      MakeModel;
 
@@ -201,6 +245,10 @@ end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
+     _ShaV.DisposeOf;
+     _ShaF.DisposeOf;
+     _Prog.DisposeOf;
+
      _BufV.DisposeOf;
      _BufC.DisposeOf;
      _BufF.DisposeOf;
