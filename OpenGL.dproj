@@ -341,8 +341,8 @@
         </DCCReference>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\FMX\LUX.GPU.OpenGL.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Shader.pas"/>
-        <None Include="_DATA\ShaderV.glsl"/>
         <None Include="_DATA\ShaderF.glsl"/>
+        <None Include="_DATA\ShaderV.glsl"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -409,13 +409,13 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="_DATA\ShaderV.glsl" Configuration="Debug" Class="ProjectFile">
+                <DeployFile LocalName="_DATA\ShaderF.glsl" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win64">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="_DATA\ShaderF.glsl" Configuration="Debug" Class="ProjectFile">
+                <DeployFile LocalName="_DATA\ShaderV.glsl" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win64">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
