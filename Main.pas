@@ -5,18 +5,36 @@ interface //####################################################################
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
-  FMX.Controls.Presentation, FMX.StdCtrls,
+  FMX.Objects, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo, FMX.TabControl,
   Winapi.OpenGL, Winapi.OpenGLext,
-  LUX, LUX.D3, LUX.GPU.OpenGL, LUX.GPU.OpenGL.GLView;
+  LUX, LUX.D3, LUX.GPU.OpenGL.Shader, LUX.GPU.OpenGL.GLView;
 
 type
   TForm1 = class(TForm)
-    Panel1: TPanel;
-      GLView1: TGLView;
-      GLView2: TGLView; 
-      GLView3: TGLView;
-      GLView4: TGLView;
-    Timer1: TTimer;
+    TabControl1: TTabControl;
+      TabItemV: TTabItem;
+        Rectangle1: TRectangle;
+          GLView1: TGLView;
+          GLView2: TGLView;
+        GLView3: TGLView;
+        GLView4: TGLView;
+        Timer1: TTimer;
+      TabItemP: TTabItem;
+        MemoP: TMemo;
+      TabItemS: TTabItem;
+        TabControlS: TTabControl;
+          TabItemSV: TTabItem;
+            TabControlSV: TTabControl;
+              TabItemSVS: TTabItem;
+                MemoSVS: TMemo;
+              TabItemSVE: TTabItem;
+                MemoSVE: TMemo;
+          TabItemSF: TTabItem;
+            TabControlSF: TTabControl;
+              TabItemSFS: TTabItem;
+                MemoSFS: TMemo;
+              TabItemSFE: TTabItem;
+                MemoSFE: TMemo;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
@@ -82,6 +100,9 @@ begin
      //  |/      |/
      //  4-------5
 
+
+     ///// バッファ
+
      with _BufV do
      begin
           Count := 8;
@@ -109,32 +130,37 @@ begin
           Unbind;
      end;
 
-     with TStringList.Create do
+     ///// シェーダ
+
+     with _ShaV do
      begin
-          Add( '#version 120' );
-          Add( 'void main()' );
-          Add( '{' );
-          Add( '  gl_Position   = gl_ModelViewProjectionMatrix * gl_Vertex;' );
-          Add( '  gl_FrontColor = gl_Color;' );
-          Add( '}' );
+          LoadFromFile( '..\..\_DATA\ShaderV.glsl' );
 
-          _ShaV.SetSource( Text );
+          MemoSVS.Lines.Text := Source;
+          MemoSVE.Lines.Text := Error;
 
-          DisposeOf;
+          if not Success then
+          begin
+               TabControlS .TabIndex := 0;
+               TabControlSV.TabIndex := 1;
+          end;
      end;
 
-     with TStringList.Create do
+     with _ShaF do
      begin
-          Add( '#version 120' );
-          Add( 'void main()' );
-          Add( '{' );
-          Add( '  gl_FragColor = gl_Color;' );
-          Add( '}' );
+          LoadFromFile( '..\..\_DATA\ShaderF.glsl' );
 
-          _ShaF.SetSource( Text );
+          MemoSFS.Lines.Text := Source;
+          MemoSFE.Lines.Text := Error;
 
-          DisposeOf;
+          if not Success then
+          begin
+               TabControlS .TabIndex := 1;
+               TabControlSF.TabIndex := 1;
+          end;
      end;
+
+     ///// プログラム
 
      with _Prog do
      begin
@@ -142,6 +168,10 @@ begin
           Attach( _ShaF );
 
           Link;
+
+          MemoP.Lines.Text := Error;
+
+          if not Success then TabControl1.TabIndex := 1;
      end;
 end;
 
@@ -169,6 +199,8 @@ begin
             glDrawElements( GL_TRIANGLES, 3{Poin} * 12{Face}, GL_UNSIGNED_INT, nil );
           Unbind;
      end;
+
+     _Prog.Unuse;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&

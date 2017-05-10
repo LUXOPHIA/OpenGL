@@ -2,8 +2,8 @@ object Form1: TForm1
   Left = 0
   Top = 0
   Caption = 'OpenGL'
-  ClientHeight = 530
-  ClientWidth = 730
+  ClientHeight = 576
+  ClientWidth = 750
   Position = ScreenCenter
   FormFactor.Width = 320
   FormFactor.Height = 480
@@ -11,62 +11,355 @@ object Form1: TForm1
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   DesignerMasterStyle = 0
-  inline GLView3: TGLView
-    Align = Left
-    Margins.Left = 10.000000000000000000
-    Margins.Top = 5.000000000000000000
-    Margins.Right = 5.000000000000000000
-    Margins.Bottom = 10.000000000000000000
-    Position.X = 10.000000000000000000
-    Position.Y = 220.000000000000000000
-    Size.Width = 300.000000000000000000
-    Size.Height = 300.000000000000000000
-    Size.PlatformDefault = False
-  end
-  inline GLView4: TGLView
+  object TabControl1: TTabControl
     Align = Client
-    Margins.Left = 5.000000000000000000
-    Margins.Top = 5.000000000000000000
+    Margins.Left = 10.000000000000000000
+    Margins.Top = 10.000000000000000000
     Margins.Right = 10.000000000000000000
     Margins.Bottom = 10.000000000000000000
-    Size.Width = 400.000000000000000000
-    Size.Height = 300.000000000000000000
-    Size.PlatformDefault = False
-  end
-  object Panel1: TPanel
-    Align = Top
     Size.Width = 730.000000000000000000
-    Size.Height = 215.000000000000000000
+    Size.Height = 556.000000000000000000
     Size.PlatformDefault = False
-    StyleLookup = 'pushpanel'
-    TabOrder = 2
-    inline GLView1: TGLView
-      Align = Left
-      Margins.Left = 10.000000000000000000
-      Margins.Top = 10.000000000000000000
-      Margins.Right = 5.000000000000000000
-      Margins.Bottom = 5.000000000000000000
-      Position.X = 10.000000000000000000
-      Position.Y = 10.000000000000000000
-      Size.Width = 300.000000000000000000
-      Size.Height = 200.000000000000000000
+    TabIndex = 0
+    TabOrder = 3
+    TabPosition = PlatformDefault
+    Sizes = (
+      730s
+      530s
+      730s
+      530s
+      730s
+      530s)
+    object TabItemV: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = True
+      Size.Width = 46.000000000000000000
+      Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'View'
+      ExplicitSize.cx = 46.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+      inline GLView3: TGLView
+        Align = Left
+        Margins.Left = 10.000000000000000000
+        Margins.Top = 5.000000000000000000
+        Margins.Right = 5.000000000000000000
+        Margins.Bottom = 10.000000000000000000
+        Position.X = 10.000000000000000000
+        Position.Y = 225.000000000000000000
+        Size.Width = 300.000000000000000000
+        Size.Height = 295.000000000000000000
+        Size.PlatformDefault = False
+      end
+      inline GLView4: TGLView
+        Align = Client
+        Margins.Left = 5.000000000000000000
+        Margins.Top = 5.000000000000000000
+        Margins.Right = 10.000000000000000000
+        Margins.Bottom = 10.000000000000000000
+        Size.Width = 400.000000000000000000
+        Size.Height = 295.000000000000000000
+        Size.PlatformDefault = False
+      end
+      object Timer1: TTimer
+        Interval = 10
+        OnTimer = Timer1Timer
+        Left = 55
+        Top = 135
+      end
+      object Rectangle1: TRectangle
+        Align = Top
+        Fill.Kind = None
+        Margins.Left = 5.000000000000000000
+        Margins.Top = 5.000000000000000000
+        Margins.Right = 5.000000000000000000
+        Position.X = 5.000000000000000000
+        Position.Y = 5.000000000000000000
+        Size.Width = 720.000000000000000000
+        Size.Height = 215.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Kind = None
+        inline GLView1: TGLView
+          Align = Left
+          Margins.Left = 5.000000000000000000
+          Margins.Top = 5.000000000000000000
+          Margins.Right = 5.000000000000000000
+          Margins.Bottom = 5.000000000000000000
+          Position.X = 5.000000000000000000
+          Position.Y = 5.000000000000000000
+          Size.Width = 300.000000000000000000
+          Size.Height = 205.000000000000000000
+          Size.PlatformDefault = False
+        end
+        inline GLView2: TGLView
+          Align = Client
+          Margins.Left = 5.000000000000000000
+          Margins.Top = 5.000000000000000000
+          Margins.Right = 5.000000000000000000
+          Margins.Bottom = 5.000000000000000000
+          Size.Width = 400.000000000000000000
+          Size.Height = 205.000000000000000000
+          Size.PlatformDefault = False
+        end
+      end
     end
-    inline GLView2: TGLView
-      Align = Client
-      Margins.Left = 5.000000000000000000
-      Margins.Top = 10.000000000000000000
-      Margins.Right = 10.000000000000000000
-      Margins.Bottom = 5.000000000000000000
-      Size.Width = 400.000000000000000000
-      Size.Height = 200.000000000000000000
+    object TabItemP: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = False
+      Size.Width = 66.000000000000000000
+      Size.Height = 26.000000000000000000
       Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Program'
+      ExplicitSize.cx = 66.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+      object MemoP: TMemo
+        Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+        DataDetectorTypes = []
+        ReadOnly = True
+        StyledSettings = [Size, Style, FontColor]
+        TextSettings.Font.Family = 'MS Gothic'
+        Align = Client
+        Margins.Left = 10.000000000000000000
+        Margins.Top = 10.000000000000000000
+        Margins.Right = 10.000000000000000000
+        Margins.Bottom = 10.000000000000000000
+        Size.Width = 710.000000000000000000
+        Size.Height = 510.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        Viewport.Width = 706.000000000000000000
+        Viewport.Height = 506.000000000000000000
+      end
     end
-  end
-  object Timer1: TTimer
-    Interval = 10
-    OnTimer = Timer1Timer
-    Left = 25
-    Top = 25
+    object TabItemS: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = False
+      Size.Width = 57.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Shader'
+      ExplicitSize.cx = 57.000000000000000000
+      ExplicitSize.cy = 26.000000000000000000
+      object TabControlS: TTabControl
+        Align = Client
+        Margins.Left = 10.000000000000000000
+        Margins.Top = 10.000000000000000000
+        Margins.Right = 10.000000000000000000
+        Margins.Bottom = 10.000000000000000000
+        Size.Width = 710.000000000000000000
+        Size.Height = 510.000000000000000000
+        Size.PlatformDefault = False
+        TabIndex = 0
+        TabOrder = 0
+        TabPosition = PlatformDefault
+        Sizes = (
+          710s
+          484s
+          710s
+          484s)
+        object TabItemSV: TTabItem
+          CustomIcon = <
+            item
+            end>
+          IsSelected = True
+          Size.Width = 54.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = ''
+          TabOrder = 0
+          Text = 'Vertex'
+          ExplicitSize.cx = 54.000000000000000000
+          ExplicitSize.cy = 26.000000000000000000
+          object TabControlSV: TTabControl
+            Align = Client
+            Margins.Left = 10.000000000000000000
+            Margins.Top = 10.000000000000000000
+            Margins.Right = 10.000000000000000000
+            Margins.Bottom = 10.000000000000000000
+            Size.Width = 690.000000000000000000
+            Size.Height = 464.000000000000000000
+            Size.PlatformDefault = False
+            TabIndex = 0
+            TabOrder = 0
+            TabPosition = PlatformDefault
+            Sizes = (
+              690s
+              438s
+              690s
+              438s)
+            object TabItemSVS: TTabItem
+              CustomIcon = <
+                item
+                end>
+              IsSelected = True
+              Size.Width = 57.000000000000000000
+              Size.Height = 26.000000000000000000
+              Size.PlatformDefault = False
+              StyleLookup = ''
+              TabOrder = 0
+              Text = 'Source'
+              ExplicitSize.cx = 54.000000000000000000
+              ExplicitSize.cy = 26.000000000000000000
+              object MemoSVS: TMemo
+                Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+                DataDetectorTypes = []
+                StyledSettings = [Size, Style, FontColor]
+                TextSettings.Font.Family = 'MS Gothic'
+                Align = Client
+                Margins.Left = 10.000000000000000000
+                Margins.Top = 10.000000000000000000
+                Margins.Right = 10.000000000000000000
+                Margins.Bottom = 10.000000000000000000
+                Size.Width = 670.000000000000000000
+                Size.Height = 418.000000000000000000
+                Size.PlatformDefault = False
+                TabOrder = 0
+                Viewport.Width = 666.000000000000000000
+                Viewport.Height = 414.000000000000000000
+              end
+            end
+            object TabItemSVE: TTabItem
+              CustomIcon = <
+                item
+                end>
+              IsSelected = False
+              Size.Width = 46.000000000000000000
+              Size.Height = 26.000000000000000000
+              Size.PlatformDefault = False
+              StyleLookup = ''
+              TabOrder = 0
+              Text = 'Error'
+              ExplicitSize.cx = 71.000000000000000000
+              ExplicitSize.cy = 26.000000000000000000
+              object MemoSVE: TMemo
+                Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+                DataDetectorTypes = []
+                ReadOnly = True
+                StyledSettings = [Size, Style, FontColor]
+                TextSettings.Font.Family = 'MS Gothic'
+                Align = Client
+                Margins.Left = 10.000000000000000000
+                Margins.Top = 10.000000000000000000
+                Margins.Right = 10.000000000000000000
+                Margins.Bottom = 10.000000000000000000
+                Size.Width = 670.000000000000000000
+                Size.Height = 418.000000000000000000
+                Size.PlatformDefault = False
+                TabOrder = 0
+                Viewport.Width = 666.000000000000000000
+                Viewport.Height = 414.000000000000000000
+              end
+            end
+          end
+        end
+        object TabItemSF: TTabItem
+          CustomIcon = <
+            item
+            end>
+          IsSelected = False
+          Size.Width = 71.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = ''
+          TabOrder = 0
+          Text = 'Fragment'
+          ExplicitSize.cx = 71.000000000000000000
+          ExplicitSize.cy = 26.000000000000000000
+          object TabControlSF: TTabControl
+            Align = Client
+            Margins.Left = 10.000000000000000000
+            Margins.Top = 10.000000000000000000
+            Margins.Right = 10.000000000000000000
+            Margins.Bottom = 10.000000000000000000
+            Size.Width = 690.000000000000000000
+            Size.Height = 464.000000000000000000
+            Size.PlatformDefault = False
+            TabIndex = 0
+            TabOrder = 0
+            TabPosition = PlatformDefault
+            Sizes = (
+              690s
+              438s
+              690s
+              438s)
+            object TabItemSFS: TTabItem
+              CustomIcon = <
+                item
+                end>
+              IsSelected = True
+              Size.Width = 57.000000000000000000
+              Size.Height = 26.000000000000000000
+              Size.PlatformDefault = False
+              StyleLookup = ''
+              TabOrder = 0
+              Text = 'Source'
+              ExplicitSize.cx = 54.000000000000000000
+              ExplicitSize.cy = 26.000000000000000000
+              object MemoSFS: TMemo
+                Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+                DataDetectorTypes = []
+                StyledSettings = [Size, Style, FontColor]
+                TextSettings.Font.Family = 'MS Gothic'
+                Align = Client
+                Margins.Left = 10.000000000000000000
+                Margins.Top = 10.000000000000000000
+                Margins.Right = 10.000000000000000000
+                Margins.Bottom = 10.000000000000000000
+                Size.Width = 670.000000000000000000
+                Size.Height = 418.000000000000000000
+                Size.PlatformDefault = False
+                TabOrder = 0
+                Viewport.Width = 666.000000000000000000
+                Viewport.Height = 414.000000000000000000
+              end
+            end
+            object TabItemSFE: TTabItem
+              CustomIcon = <
+                item
+                end>
+              IsSelected = False
+              Size.Width = 46.000000000000000000
+              Size.Height = 26.000000000000000000
+              Size.PlatformDefault = False
+              StyleLookup = ''
+              TabOrder = 0
+              Text = 'Error'
+              ExplicitSize.cx = 71.000000000000000000
+              ExplicitSize.cy = 26.000000000000000000
+              object MemoSFE: TMemo
+                Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+                DataDetectorTypes = []
+                ReadOnly = True
+                StyledSettings = [Size, Style, FontColor]
+                TextSettings.Font.Family = 'MS Gothic'
+                Align = Client
+                Margins.Left = 10.000000000000000000
+                Margins.Top = 10.000000000000000000
+                Margins.Right = 10.000000000000000000
+                Margins.Bottom = 10.000000000000000000
+                Size.Width = 670.000000000000000000
+                Size.Height = 418.000000000000000000
+                Size.PlatformDefault = False
+                TabOrder = 0
+                Viewport.Width = 666.000000000000000000
+                Viewport.Height = 414.000000000000000000
+              end
+            end
+          end
+        end
+      end
+    end
   end
 end
