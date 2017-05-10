@@ -135,8 +135,8 @@ object Form1: TForm1
         Size.Height = 510.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 0
-        Viewport.Width = 706.000000000000000000
-        Viewport.Height = 506.000000000000000000
+        Viewport.Width = 710.000000000000000000
+        Viewport.Height = 510.000000000000000000
       end
     end
     object TabItemS: TTabItem
@@ -226,8 +226,8 @@ object Form1: TForm1
                 Size.Height = 418.000000000000000000
                 Size.PlatformDefault = False
                 TabOrder = 0
-                Viewport.Width = 666.000000000000000000
-                Viewport.Height = 414.000000000000000000
+                Viewport.Width = 670.000000000000000000
+                Viewport.Height = 418.000000000000000000
               end
             end
             object TabItemSVE: TTabItem
@@ -258,8 +258,8 @@ object Form1: TForm1
                 Size.Height = 418.000000000000000000
                 Size.PlatformDefault = False
                 TabOrder = 0
-                Viewport.Width = 666.000000000000000000
-                Viewport.Height = 414.000000000000000000
+                Viewport.Width = 670.000000000000000000
+                Viewport.Height = 418.000000000000000000
               end
             end
           end
@@ -321,8 +321,8 @@ object Form1: TForm1
                 Size.Height = 418.000000000000000000
                 Size.PlatformDefault = False
                 TabOrder = 0
-                Viewport.Width = 666.000000000000000000
-                Viewport.Height = 414.000000000000000000
+                Viewport.Width = 670.000000000000000000
+                Viewport.Height = 418.000000000000000000
               end
             end
             object TabItemSFE: TTabItem
@@ -353,8 +353,8 @@ object Form1: TForm1
                 Size.Height = 418.000000000000000000
                 Size.PlatformDefault = False
                 TabOrder = 0
-                Viewport.Width = 666.000000000000000000
-                Viewport.Height = 414.000000000000000000
+                Viewport.Width = 670.000000000000000000
+                Viewport.Height = 418.000000000000000000
               end
             end
           end
