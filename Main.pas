@@ -7,15 +7,15 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.Controls.Presentation, FMX.StdCtrls,
   Winapi.OpenGL, Winapi.OpenGLext,
-  LUX, LUX.D3, LUX.GPU.OpenGL, LUX.GPU.OpenGL.GLView;
+  LUX, LUX.D3, LUX.GPU.OpenGL.Shader, LUX.GPU.OpenGL.GLView;
 
 type
   TForm1 = class(TForm)
     Panel1: TPanel;
       GLView1: TGLView;
       GLView2: TGLView; 
-      GLView3: TGLView;
-      GLView4: TGLView;
+    GLView3: TGLView;
+    GLView4: TGLView;
     Timer1: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
