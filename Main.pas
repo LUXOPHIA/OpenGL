@@ -134,30 +134,22 @@ begin
 
      with _ShaV do
      begin
-          LoadFromFile( '..\..\_DATA\ShaderV.glsl' );
+          Source.LoadFromFile( '..\..\_DATA\ShaderV.glsl' );
 
-          MemoSVS.Lines.Text := Source;
-          MemoSVE.Lines.Text := Error;
+          MemoSVS.Lines.Assign( Source );
+          MemoSVE.Lines.Assign( Error  );
 
-          if not Success then
-          begin
-               TabControlS .TabIndex := 0;
-               TabControlSV.TabIndex := 1;
-          end;
+          if not Success then TabControlSV.TabIndex := 1;
      end;
 
      with _ShaF do
      begin
-          LoadFromFile( '..\..\_DATA\ShaderF.glsl' );
+          Source.LoadFromFile( '..\..\_DATA\ShaderF.glsl' );
 
-          MemoSFS.Lines.Text := Source;
-          MemoSFE.Lines.Text := Error;
+          MemoSFS.Lines.Assign( Source );
+          MemoSFE.Lines.Assign( Error  );
 
-          if not Success then
-          begin
-               TabControlS .TabIndex := 1;
-               TabControlSF.TabIndex := 1;
-          end;
+          if not Success then TabControlSF.TabIndex := 1;
      end;
 
      ///// プログラム
@@ -169,7 +161,7 @@ begin
 
           Link;
 
-          MemoP.Lines.Text := Error;
+          MemoP.Lines.Assign( Error );
 
           if not Success then TabControl1.TabIndex := 1;
      end;
