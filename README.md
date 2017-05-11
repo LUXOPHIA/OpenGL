@@ -1,5 +1,5 @@
 # OpenGL 1.0
-[FireMonkey](https://www.wikiwand.com/en/FireMonkey) フレームワークのコンポーネントとして [OpenGL](https://www.wikiwand.com/ja/OpenGL) のビューを埋め込む方法。
+[FireMonkey](https://www.wikiwand.com/en/FireMonkey) のコンポーネントとして [OpenGL](https://www.wikiwand.com/ja/OpenGL) のビューを埋め込む方法。
 
 ![](https://github.com/LUXOPHIA/OpenGL/raw/OpenGL-1.0/--------/_SCREENSHOT/OpenGL.png)
 
