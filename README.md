@@ -14,6 +14,7 @@ begin
      _BufV := TGLBufferV<TSingle3D>   .Create;
      _BufC := TGLBufferV<TAlphaColorF>.Create;
      _BufF := TGLBufferI<TCardinal3D> .Create;
+     MakeModel;
      ～
 end;
 ```
