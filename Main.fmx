@@ -50,9 +50,9 @@ object Form1: TForm1
         Margins.Right = 5.000000000000000000
         Margins.Bottom = 10.000000000000000000
         Position.X = 10.000000000000000000
-        Position.Y = 225.000000000000000000
+        Position.Y = 220.000000000000000000
         Size.Width = 300.000000000000000000
-        Size.Height = 295.000000000000000000
+        Size.Height = 300.000000000000000000
         Size.PlatformDefault = False
       end
       inline GLView4: TGLView
@@ -62,7 +62,7 @@ object Form1: TForm1
         Margins.Right = 10.000000000000000000
         Margins.Bottom = 10.000000000000000000
         Size.Width = 400.000000000000000000
-        Size.Height = 295.000000000000000000
+        Size.Height = 300.000000000000000000
         Size.PlatformDefault = False
       end
       object Timer1: TTimer
@@ -80,7 +80,7 @@ object Form1: TForm1
         Position.X = 5.000000000000000000
         Position.Y = 5.000000000000000000
         Size.Width = 720.000000000000000000
-        Size.Height = 215.000000000000000000
+        Size.Height = 210.000000000000000000
         Size.PlatformDefault = False
         Stroke.Kind = None
         inline GLView1: TGLView
@@ -92,7 +92,7 @@ object Form1: TForm1
           Position.X = 5.000000000000000000
           Position.Y = 5.000000000000000000
           Size.Width = 300.000000000000000000
-          Size.Height = 205.000000000000000000
+          Size.Height = 200.000000000000000000
           Size.PlatformDefault = False
         end
         inline GLView2: TGLView
@@ -102,7 +102,7 @@ object Form1: TForm1
           Margins.Right = 5.000000000000000000
           Margins.Bottom = 5.000000000000000000
           Size.Width = 400.000000000000000000
-          Size.Height = 205.000000000000000000
+          Size.Height = 200.000000000000000000
           Size.PlatformDefault = False
         end
       end
