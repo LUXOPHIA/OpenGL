@@ -174,7 +174,7 @@ begin
      end;
 end;
 
-procedure TForm1.DrawModel;                                                     { OpenGL 3.0 - GLSL 1.3 }
+procedure TForm1.DrawModel;
 begin
      with _Arra do
      begin
