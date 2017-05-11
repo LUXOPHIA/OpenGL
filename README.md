@@ -205,7 +205,7 @@ begin
 end;
 ```
 
-描画する際には、glDrawElements を呼ぶ直前で、プログラムオブジェクトを利用可能にする。
+描画する際には、glDrawElements ルーチンを呼ぶ直前で、プログラムオブジェクトを利用可能にする。
 
 ```pascal
 procedure TForm1.DrawModel;
