@@ -1,6 +1,17 @@
+## 歴史に学ぶ OpenGL
+
+OpenGL のバージョンを辿りながら実装していくことで、新しい API が追加された意図を理解しながら、プログラム全体の構造を把握していきます。
+
+* [OpenGL 1.0](https://github.com/LUXOPHIA/OpenGL/tree/OpenGL-1.0)
+* [OpenGL 1.1](https://github.com/LUXOPHIA/OpenGL/tree/OpenGL-1.1)
+* [OpenGL 1.5](https://github.com/LUXOPHIA/OpenGL/tree/OpenGL-1.5)
+* [OpenGL 2.1](https://github.com/LUXOPHIA/OpenGL/tree/OpenGL-2.1)
+* [OpenGL 3.0](https://github.com/LUXOPHIA/OpenGL/tree/OpenGL-3.0)
+
+----
+
 # OpenGL
 [FireMonkey](https://www.wikiwand.com/en/FireMonkey) フレームワークのコンポーネントとして [OpenGL](https://www.wikiwand.com/ja/OpenGL) のビューを埋め込む方法。
-
 
 ![](https://github.com/LUXOPHIA/OpenGL/raw/master/--------/_SCREENSHOT/OpenGL-View.png)
 
