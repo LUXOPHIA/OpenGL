@@ -110,7 +110,7 @@ end;
 
 ```
 
-描画する際は、[OpenGL 1.1](https://github.com/LUXOPHIA/OpenGL/blob/OpenGL-1.1) と同様に `glEnableClientState` ルーチンによって頂点配列機能を有効化した上で、`gl～Pointer` ルーチンを呼ぶ直前に VBO をバインドする。もちろんこの場合、`gl～Pointer` ルーチンに配列を渡す必要はないので、最後の引数は nil となる。
+描画する際は、[OpenGL 1.1](https://github.com/LUXOPHIA/OpenGL/blob/OpenGL-1.1) と同様に `glEnableClientState` ルーチンによって頂点配列機能を有効化した上で、`gl～Pointer` や `glDrawElements` ルーチンを呼ぶ直前に VBO をバインドする。もちろんこの場合、ルーチンに実データを渡す必要はないので、最後の引数は `nil` となる。
 
 ```pascal
 procedure TForm1.DrawModel;
