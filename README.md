@@ -5,12 +5,15 @@
 ![](https://github.com/LUXOPHIA/OpenGL/raw/master/--------/_SCREENSHOT/OpenGL-View.png)
 
 シェーダのソースコードは TMemo コンポーネントで書けます。
+
 ![](https://github.com/LUXOPHIA/OpenGL/raw/master/--------/_SCREENSHOT/OpenGL-Shader-Source.png)
 
 シェーダのコンパイルメッセージも TMemo コンポーネントで表示できます。
+
 ![](https://github.com/LUXOPHIA/OpenGL/raw/master/--------/_SCREENSHOT/OpenGL-Shader-Error.png)
 
 glLinkProgram ルーチンによるリンクメッセージも TMemo コンポーネントで表示できます。
+
 ![](https://github.com/LUXOPHIA/OpenGL/raw/master/--------/_SCREENSHOT/OpenGL-Program.png)
 
 ----
