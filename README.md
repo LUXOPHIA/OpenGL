@@ -64,8 +64,7 @@ begin
 end;
 ```
 
-VBO を作成するには [`glGenBuffers`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glBindBuffer.xml) ルーチンを用いる。
-削除する場合は [`glDeleteBuffers`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glDeleteBuffers.xml) ルーチンを用いる。
+VBO を作成する際には [`glGenBuffers`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glBindBuffer.xml) ルーチンを、削除する際には [`glDeleteBuffers`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glDeleteBuffers.xml) ルーチンを用いる。
 
 ```pascal
 constructor TGLBuffer<_TYPE_>.Create( const Kind_:GLenum; const Usage_:GLenum = GL_STATIC_DRAW );
@@ -83,6 +82,7 @@ end;
 ```
 
 GPU 側へ配列を転送するには、一時 VBO を**バインド**した上で、[`glBufferData`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glBufferData.xml) ルーチンを用いる。
+その際、バッファの種類`_Kind` と アクセス頻度`_Usage` を指定する。
 
 ```pascal
 procedure TGLBuffer<_TYPE_>.Import( const Array_:array of _TYPE_ );
