@@ -35,6 +35,8 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
+    procedure MemoSFSChange(Sender: TObject);
+    procedure MemoSVSChange(Sender: TObject);
   private
     { private 宣言 }
     _Angle :Single;
@@ -275,6 +277,34 @@ begin
      GLView2.Repaint;
      GLView3.Repaint;
      GLView4.Repaint;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure TForm1.MemoSVSChange(Sender: TObject);
+begin
+     with _ShaV do
+     begin
+          Source.Assign( MemoSVS.Lines );
+
+          MemoSVE.Lines.Assign( Error );
+
+          if Success then _Prog.Link
+                     else TabControl1.TabIndex := 1;
+     end;
+end;
+
+procedure TForm1.MemoSFSChange(Sender: TObject);
+begin
+     with _ShaF do
+     begin
+          Source.Assign( MemoSFS.Lines );
+
+          MemoSFE.Lines.Assign( Error );
+
+          if Success then _Prog.Link
+                     else TabControl1.TabIndex := 1;
+     end;
 end;
 
 end. //######################################################################### ■
