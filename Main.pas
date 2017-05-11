@@ -191,14 +191,14 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 const
-     MIND :Single = 0.1;
-     MAXD :Single = 1000;
+     C0 :Single = 0.1;
+     C1 :Single = 1000;
 begin
      _Angle := 0;
 
      _BufV := TGLBufferV<TSingle3D>   .Create;
      _BufC := TGLBufferV<TAlphaColorF>.Create;
-     _BufF := TGLBufferI<TCardinal3D>.Create;
+     _BufF := TGLBufferI<TCardinal3D> .Create;
 
      _ShaV := TGLShaderV.Create;
      _ShaF := TGLShaderF.Create;
@@ -212,7 +212,7 @@ begin
      begin
           glMatrixMode( GL_PROJECTION );
             glLoadIdentity;
-            glOrtho( -3, +3, -2, +2, MIND, MAXD );
+            glOrtho( -3, +3, -2, +2, C0, C1 );
           glMatrixMode( GL_MODELVIEW );
             glLoadIdentity;
             glTranslatef( 0, 0, -5 );
@@ -225,7 +225,7 @@ begin
      begin
           glMatrixMode( GL_PROJECTION );
             glLoadIdentity;
-            glOrtho( -4, +4, -2, +2, MIND, MAXD );
+            glOrtho( -4, +4, -2, +2, C0, C1 );
           glMatrixMode( GL_MODELVIEW );
             glLoadIdentity;
             glTranslatef( 0, 0, -5 );
@@ -238,7 +238,7 @@ begin
      begin
           glMatrixMode( GL_PROJECTION );
             glLoadIdentity;
-            glOrtho( -3, +3, -3, +3, MIND, MAXD );
+            glOrtho( -3, +3, -3, +3, C0, C1 );
           glMatrixMode( GL_MODELVIEW );
             glLoadIdentity;
             glTranslatef( 0, 0, -5 );
@@ -250,8 +250,8 @@ begin
      begin
           glMatrixMode( GL_PROJECTION );
             glLoadIdentity;
-            glFrustum( -4/8*MIND, +4/8*MIND,
-                       -3/8*MIND, +3/8*MIND, MIND, MAXD );
+            glFrustum( -4/8*C0, +4/8*C0,
+                       -3/8*C0, +3/8*C0, C0, C1 );
           glMatrixMode( GL_MODELVIEW );
             glLoadIdentity;
             glTranslatef( 0, 0, -8 );
