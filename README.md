@@ -1,12 +1,16 @@
 # OpenGL
-[FireMonkey](https://www.wikiwand.com/en/FireMonkey) フレームワークのコンポーネントとして OpenGL のビューを埋め込む方法。
+[FireMonkey](https://www.wikiwand.com/en/FireMonkey) フレームワークのコンポーネントとして [OpenGL](https://www.wikiwand.com/ja/OpenGL) のビューを埋め込む方法。
+
 
 ![](https://github.com/LUXOPHIA/OpenGL/raw/master/--------/_SCREENSHOT/OpenGL-View.png)
 
+シェーダのソースコードは TMemo コンポーネントで書けます。
 ![](https://github.com/LUXOPHIA/OpenGL/raw/master/--------/_SCREENSHOT/OpenGL-Shader-Source.png)
 
+シェーダのコンパイルメッセージも TMemo コンポーネントで表示できます。
 ![](https://github.com/LUXOPHIA/OpenGL/raw/master/--------/_SCREENSHOT/OpenGL-Shader-Error.png)
 
+glLinkProgram ルーチンによるリンクメッセージも TMemo コンポーネントで表示できます。
 ![](https://github.com/LUXOPHIA/OpenGL/raw/master/--------/_SCREENSHOT/OpenGL-Program.png)
 
 ----
