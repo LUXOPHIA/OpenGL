@@ -45,7 +45,7 @@ type
     { public 宣言 }
     _BufV :TGLBufferV<TSingle3D>;
     _BufC :TGLBufferV<TAlphaColorF>;
-    _BufF :TGLBufferI<Cardinal>;
+    _BufF :TGLBufferI<TCardinal3D>;
     _ShaV :TGLShaderV;
     _ShaF :TGLShaderF;
     _Prog :TGLProgram;
@@ -70,7 +70,7 @@ implementation //###############################################################
 
 procedure TForm1.MakeModel;
 const
-     Ps :array [ 0..7 ] of TSingle3D = ( ( X:-1; Y:-1; Z:-1 ),
+     Ps :array [ 1..8 ] of TSingle3D = ( ( X:-1; Y:-1; Z:-1 ),
                                          ( X:+1; Y:-1; Z:-1 ),
                                          ( X:-1; Y:+1; Z:-1 ),
                                          ( X:+1; Y:+1; Z:-1 ),
@@ -78,7 +78,7 @@ const
                                          ( X:+1; Y:-1; Z:+1 ),
                                          ( X:-1; Y:+1; Z:+1 ),
                                          ( X:+1; Y:+1; Z:+1 ) );
-     Cs :array [ 0..7 ] of TAlphaColorF = ( ( R:0; G:0; B:0; A:1 ),
+     Cs :array [ 1..8 ] of TAlphaColorF = ( ( R:0; G:0; B:0; A:1 ),
                                             ( R:1; G:0; B:0; A:1 ),
                                             ( R:0; G:1; B:0; A:1 ),
                                             ( R:1; G:1; B:0; A:1 ),
@@ -86,12 +86,12 @@ const
                                             ( R:1; G:0; B:1; A:1 ),
                                             ( R:0; G:1; B:1; A:1 ),
                                             ( R:1; G:1; B:1; A:1 ) );
-     Fs :array [ 0..11, 0..2 ] of Cardinal = ( ( 0, 4, 6 ), ( 6, 2, 0 ),
-                                               ( 0, 1, 5 ), ( 5, 4, 0 ),
-                                               ( 0, 2, 3 ), ( 3, 1, 0 ),
-                                               ( 7, 5, 1 ), ( 1, 3, 7 ),
-                                               ( 7, 3, 2 ), ( 2, 6, 7 ),
-                                               ( 7, 6, 4 ), ( 4, 5, 7 ) );
+     Fs :array [ 1..12 ] of TCardinal3D = ( ( _1:0; _2:4; _3:6 ), ( _1:6; _2:2; _3:0 ),
+                                            ( _1:0; _2:1; _3:5 ), ( _1:5; _2:4; _3:0 ),
+                                            ( _1:0; _2:2; _3:3 ), ( _1:3; _2:1; _3:0 ),
+                                            ( _1:7; _2:5; _3:1 ), ( _1:1; _2:3; _3:7 ),
+                                            ( _1:7; _2:3; _3:2 ), ( _1:2; _2:6; _3:7 ),
+                                            ( _1:7; _2:6; _3:4 ), ( _1:4; _2:5; _3:7 ) );
 begin
      //    2-------3
      //   /|      /|
@@ -104,32 +104,9 @@ begin
 
      ///// バッファ
 
-     with _BufV do
-     begin
-          Count := 8;
-
-          Bind;
-            glBufferData( GL_ARRAY_BUFFER, SizeOf( Ps ), @Ps[ 0 ], GL_STATIC_DRAW );
-          Unbind;
-     end;
-
-     with _BufC do
-     begin
-          Count := 8;
-
-          Bind;
-            glBufferData( GL_ARRAY_BUFFER, SizeOf( Cs ), @Cs[ 0 ], GL_STATIC_DRAW );
-          Unbind;
-     end;
-
-     with _BufF do
-     begin
-          Count := 36;
-
-          Bind;
-            glBufferData( GL_ELEMENT_ARRAY_BUFFER, SizeOf( Fs ), @Fs[ 0, 0 ], GL_STATIC_DRAW );
-          Unbind;
-     end;
+     _BufV.Import( Ps );
+     _BufC.Import( Cs );
+     _BufF.Import( Fs );
 
      ///// シェーダ
 
@@ -221,7 +198,7 @@ begin
 
      _BufV := TGLBufferV<TSingle3D>   .Create;
      _BufC := TGLBufferV<TAlphaColorF>.Create;
-     _BufF := TGLBufferI<Cardinal>    .Create;
+     _BufF := TGLBufferI<TCardinal3D>.Create;
 
      _ShaV := TGLShaderV.Create;
      _ShaF := TGLShaderF.Create;
