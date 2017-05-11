@@ -96,12 +96,12 @@ begin
           begin
                BeginUpdate;
 
-               Add( '#version 120' );
-               Add( 'void main()' );
-               Add( '{' );
-               Add( '  gl_Position   = gl_ModelViewProjectionMatrix * gl_Vertex;' );
-               Add( '  gl_FrontColor = gl_Color;' );
-               Add( '}' );
+                 Add( '#version 120' );
+                 Add( 'void main()' );
+                 Add( '{' );
+                 Add( '  gl_Position   = gl_ModelViewProjectionMatrix * gl_Vertex;' );
+                 Add( '  gl_FrontColor = gl_Color;' );
+                 Add( '}' );
 
                EndUpdate;
           end;
@@ -115,11 +115,11 @@ begin
           begin
                BeginUpdate;
 
-               Add( '#version 120' );
-               Add( 'void main()' );
-               Add( '{' );
-               Add( '  gl_FragColor = gl_Color;' );
-               Add( '}' );
+                 Add( '#version 120' );
+                 Add( 'void main()' );
+                 Add( '{' );
+                 Add( '  gl_FragColor = gl_Color;' );
+                 Add( '}' );
 
                EndUpdate;
           end;
