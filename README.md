@@ -3,8 +3,8 @@
 
 ![](https://github.com/LUXOPHIA/OpenGL/raw/OpenGL-1.5/--------/_SCREENSHOT/OpenGL.png)
 
-描画する度に膨大な頂点情報を転送していたのでは、GPU の性能如何ではなく、CPU とのメモリ帯域がネックになってしまう。
-そこで、[Vertex Buffer Object(VBO)](https://www.wikiwand.com/en/Vertex_Buffer_Object) という機能を用い、GPU のメモリ側に配列を確保し、頂点情報を予め転送しておくことができるようになった。
+描画する度に膨大な頂点情報を転送していたのでは、GPU の性能如何ではなく、CPU との通信帯域がネックになってしまう。
+そこで [Vertex Buffer Object(VBO)](https://www.wikiwand.com/en/Vertex_Buffer_Object) という機能を用い、GPU のメモリ側に配列を確保して、各種頂点情報を**予め**転送しておくことができるようになった。
 
 ```pascal
 procedure TForm1.FormCreate(Sender: TObject);
@@ -65,7 +65,7 @@ begin
 end;
 ```
 
-VBO を作成する際には [`glGenBuffers`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glBindBuffer.xml) ルーチンを、削除する際には [`glDeleteBuffers`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glDeleteBuffers.xml) ルーチンを用いる。
+VBO を 生成 / 廃棄 する際には、[`glGenBuffers`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glBindBuffer.xml) / [`glDeleteBuffers`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glDeleteBuffers.xml) ルーチンを用いる。
 
 ```pascal
 constructor TGLBuffer<_TYPE_>.Create( const Kind_:GLenum; const Usage_:GLenum = GL_STATIC_DRAW );
