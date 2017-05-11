@@ -25,8 +25,8 @@ uses
   LUX.GPU.OpenGL.Geometry in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Geometry.pas',
   LUX.GPU.OpenGL.Material in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Material.pas',
   LUX.GPU.OpenGL.GLView in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\FMX\LUX.GPU.OpenGL.GLView.pas' {GLView: TFrame},
-  LUX.GPU.OpenGL in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\FMX\LUX.GPU.OpenGL.pas',
-  LUX.GPU.OpenGL.Shader in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Shader.pas';
+  LUX.GPU.OpenGL.ENV in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\FMX\LUX.GPU.OpenGL.ENV.pas',
+  LUX.GPU.OpenGL.Buffer in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Buffer.pas';
 
 {$R *.res}
 
