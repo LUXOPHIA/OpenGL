@@ -3,7 +3,7 @@
 
 ![](https://github.com/LUXOPHIA/OpenGL/raw/OpenGL-3.0/--------/_SCREENSHOT/OpenGL.png)
 
-Vertex Array Object(VAO) を用いることにより、バッファブジェクトやプログラムオブジェクトを描画の度に一々バインドする必要がなくなる。
+[Vertex Array Object(VAO)](https://www.khronos.org/opengl/wiki/Vertex_Specification#Vertex_Array_Object) という機能を用いることにより、バッファブジェクトやプログラムオブジェクトを描画の度に一々バインドする必要がなくなった。
 
 ```pascal
 procedure TForm1.DrawModel;
