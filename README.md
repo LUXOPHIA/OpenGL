@@ -4,10 +4,9 @@
 ![](https://github.com/LUXOPHIA/OpenGL/raw/OpenGL-2.1/--------/_SCREENSHOT/OpenGL.png)
 
 従来固定されていたシェーダのパイプラインを、[GLSL](https://www.wikiwand.com/ja/GLSL) という言語でプログラミングできるようになった。
-構造としては、種類毎に作成された複数のシェーダオブジェクトを、**プログラム**という管理オブジェクトに統合することで、描画時のシェーダ実行が可能となる。
+構造としては、種類毎に作成された複数のシェーダオブジェクトを、**プログラム**という管理オブジェクトに統合することで、描画時の実行が可能となる。
 
-シェーダオブジェクトには、ソースコードを読み込ませてコンパイルさせる。エラーメッセージなども出力されるので、デバッグも容易である。
-
+シェーダオブジェクトには、ソースコードを読み込ませてコンパイルさせる。エラーメッセージなども出力されるので、デバッグ作業も可能となる。
 
 ```pascal
 procedure TForm1.FormCreate(Sender: TObject);
@@ -113,7 +112,7 @@ begin
 end;
 ```
 
-シェーダオブジェクトの作成と削除には、[`glCreateShader`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glCreateShader.xml) と [`glDeleteShader`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glDeleteShader.xml) ルーチンを用いる。
+シェーダオブジェクトの 生成 / 削除 には、[`glCreateShader`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glCreateShader.xml) / [`glDeleteShader`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glDeleteShader.xml) ルーチンを用いる。
 
 ```pascal
 constructor TGLShader.Create( const Kind_:GLenum );
@@ -130,7 +129,7 @@ begin
 end;
 ```
 
-プログラムオブジェクトの作成と削除には、[`glCreateProgram`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glCreateProgram.xml) と [`glDeleteProgram`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glDeleteProgram.xml) ルーチンを用いる。
+プログラムオブジェクトの 生成 / 廃棄 には、[`glCreateProgram`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glCreateProgram.xml) / [`glDeleteProgram`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glDeleteProgram.xml) ルーチンを用いる。
 
 ```pascal
 constructor TGLProgram.Create;
@@ -146,7 +145,7 @@ begin
 end;
 ```
 
-シェーダオブジェクトへのソースコードの読込みには [`glShaderSource`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glShaderSource.xml) ルーチンを用い、コンパイルには [`glCompileShader`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glCompileShader.xml) ルーチンを用いる。
+シェーダオブジェクトへのソースコードの読込みには、[`glShaderSource`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glShaderSource.xml) ルーチンを用い、コンパイルには [`glCompileShader`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glCompileShader.xml) ルーチンを用いる。
 
 ```pascal
 procedure TGLShader.Compile( const Source_:String );
@@ -182,7 +181,7 @@ begin
 end;
 ```
 
-プログラムオブジェクトへのシェーダオブジェクトの追加/削除は、[`glAttachShader`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glAttachShader.xml) / [`glDetachShader`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glDetachShader.xml) ルーチンを用いる。
+プログラムオブジェクトへのシェーダオブジェクトの 追加 / 削除 は、[`glAttachShader`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glAttachShader.xml) / [`glDetachShader`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glDetachShader.xml) ルーチンを用いる。
 
 ```pascal
 procedure TGLProgram.Attach( const Shader_:TGLShader );
