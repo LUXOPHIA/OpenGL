@@ -7,15 +7,15 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.Controls.Presentation, FMX.StdCtrls,
   Winapi.OpenGL, Winapi.OpenGLext,
-  LUX, LUX.D3, LUX.GPU.OpenGL, LUX.GPU.OpenGL.GLView;
+  LUX, LUX.D3, LUX.GPU.OpenGL.GLView;
 
 type
   TForm1 = class(TForm)
     Panel1: TPanel;
       GLView1: TGLView;
       GLView2: TGLView; 
-      GLView3: TGLView;
-      GLView4: TGLView;
+    GLView3: TGLView;
+    GLView4: TGLView;
     Timer1: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
@@ -41,9 +41,9 @@ implementation //###############################################################
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TForm1.DrawModel;                                                     { OpenGL 1.0 (1992) }
+procedure TForm1.DrawModel;
 const
-     Ps :array [ 0..7 ] of TSingle3D = ( ( X:-1; Y:-1; Z:-1 ),
+     Ps :array [ 1..8 ] of TSingle3D = ( ( X:-1; Y:-1; Z:-1 ),
                                          ( X:+1; Y:-1; Z:-1 ),
                                          ( X:-1; Y:+1; Z:-1 ),
                                          ( X:+1; Y:+1; Z:-1 ),
@@ -51,7 +51,7 @@ const
                                          ( X:+1; Y:-1; Z:+1 ),
                                          ( X:-1; Y:+1; Z:+1 ),
                                          ( X:+1; Y:+1; Z:+1 ) );
-     Cs :array [ 0..7 ] of TAlphaColorF = ( ( R:0; G:0; B:0; A:1 ),
+     Cs :array [ 1..8 ] of TAlphaColorF = ( ( R:0; G:0; B:0; A:1 ),
                                             ( R:1; G:0; B:0; A:1 ),
                                             ( R:0; G:1; B:0; A:1 ),
                                             ( R:1; G:1; B:0; A:1 ),
@@ -59,22 +59,22 @@ const
                                             ( R:1; G:0; B:1; A:1 ),
                                             ( R:0; G:1; B:1; A:1 ),
                                             ( R:1; G:1; B:1; A:1 ) );
-     Fs :array [ 1..6, 1..4 ] of Integer = ( ( 0, 2, 3, 1 ),
-                                             ( 0, 4, 6, 2 ),
-                                             ( 0, 1, 5, 4 ),
-                                             ( 7, 3, 2, 6 ),
-                                             ( 7, 5, 1, 3 ),
-                                             ( 7, 6, 4, 5 ) );
+     Fs :array [ 1..6, 1..4 ] of Integer = ( ( 1, 3, 4, 2 ),
+                                             ( 1, 5, 7, 3 ),
+                                             ( 1, 2, 6, 5 ),
+                                             ( 8, 4, 3, 7 ),
+                                             ( 8, 6, 2, 4 ),
+                                             ( 8, 7, 5, 6 ) );
 var
    N, K, I :Integer;
 begin
-     //    2-------3
+     //    3-------4
      //   /|      /|
-     //  6-------7 |
+     //  7-------8 |
      //  | |     | |
-     //  | 0-----|-1
+     //  | 1-----|-2
      //  |/      |/
-     //  4-------5
+     //  5-------6
 
      glBegin( GL_QUADS );
 
@@ -96,6 +96,9 @@ end;
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
 procedure TForm1.FormCreate(Sender: TObject);
+const
+     C0 :Single = 0.1;
+     C1 :Single = 1000;
 begin
      _Angle := 0;
 
@@ -103,7 +106,7 @@ begin
      begin
           glMatrixMode( GL_PROJECTION );
             glLoadIdentity;
-            glOrtho( -3, +3, -2, +2, 0.1, 100 );
+            glOrtho( -3, +3, -2, +2, C0, C1 );
           glMatrixMode( GL_MODELVIEW );
             glLoadIdentity;
             glTranslatef( 0, 0, -5 );
@@ -116,7 +119,7 @@ begin
      begin
           glMatrixMode( GL_PROJECTION );
             glLoadIdentity;
-            glOrtho( -4, +4, -2, +2, 0.1, 100 );
+            glOrtho( -4, +4, -2, +2, C0, C1 );
           glMatrixMode( GL_MODELVIEW );
             glLoadIdentity;
             glTranslatef( 0, 0, -5 );
@@ -129,7 +132,7 @@ begin
      begin
           glMatrixMode( GL_PROJECTION );
             glLoadIdentity;
-            glOrtho( -3, +3, -3, +3, 0.1, 100 );
+            glOrtho( -3, +3, -3, +3, C0, C1 );
           glMatrixMode( GL_MODELVIEW );
             glLoadIdentity;
             glTranslatef( 0, 0, -5 );
@@ -141,10 +144,11 @@ begin
      begin
           glMatrixMode( GL_PROJECTION );
             glLoadIdentity;
-            glOrtho( -4, +4, -3, +3, 0.1, 100 );
+            glFrustum( -4/8*C0, +4/8*C0,
+                       -3/8*C0, +3/8*C0, C0, C1 );
           glMatrixMode( GL_MODELVIEW );
             glLoadIdentity;
-            glTranslatef( 0, 0, -5 );
+            glTranslatef( 0, 0, -8 );
             glRotatef( +30, 1, 0, 0 );
             glRotatef( -30, 0, 1, 0 );
             glRotatef( _Angle, 0, 1, 0 );
