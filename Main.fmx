@@ -68,8 +68,8 @@ object Form1: TForm1
       object Timer1: TTimer
         Interval = 10
         OnTimer = Timer1Timer
-        Left = 55
-        Top = 135
+        Left = 45
+        Top = 95
       end
       object Rectangle1: TRectangle
         Align = Top
