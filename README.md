@@ -1,7 +1,13 @@
 # OpenGL
-FireMonkey 上で OpenGL を扱う方法。
+[FireMonkey](https://www.wikiwand.com/en/FireMonkey) フレームワークのコンポーネントとして OpenGL のビューを埋め込む方法。
 
-![](https://github.com/LUXOPHIA/OpenGL/raw/master/--------/_SCREENSHOT/OpenGL.png)
+![](https://github.com/LUXOPHIA/OpenGL/raw/master/--------/_SCREENSHOT/OpenGL-View.png)
+
+![](https://github.com/LUXOPHIA/OpenGL/raw/master/--------/_SCREENSHOT/OpenGL-Shader-Source.png)
+
+![](https://github.com/LUXOPHIA/OpenGL/raw/master/--------/_SCREENSHOT/OpenGL-Shader-Error.png)
+
+![](https://github.com/LUXOPHIA/OpenGL/raw/master/--------/_SCREENSHOT/OpenGL-Program.png)
 
 ----
 * LUX.GPU.OpenGL
