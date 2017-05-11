@@ -7,7 +7,8 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.Objects, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo, FMX.TabControl,
   Winapi.OpenGL, Winapi.OpenGLext,
-  LUX, LUX.D3, LUX.GPU.OpenGL, LUX.GPU.OpenGL.Buffer, LUX.GPU.OpenGL.Shader, LUX.GPU.OpenGL.GLView;
+  LUX, LUX.D3, LUX.GPU.OpenGL, LUX.GPU.OpenGL.Buffer, LUX.GPU.OpenGL.Shader, LUX.GPU.OpenGL.GLView,
+  FMX.StdCtrls;
 
 type
   TForm1 = class(TForm)
@@ -19,22 +20,18 @@ type
         GLView3: TGLView;
         GLView4: TGLView;
         Timer1: TTimer;
-      TabItemP: TTabItem;
-        MemoP: TMemo;
       TabItemS: TTabItem;
         TabControlS: TTabControl;
           TabItemSV: TTabItem;
-            TabControlSV: TTabControl;
-              TabItemSVS: TTabItem;
-                MemoSVS: TMemo;
-              TabItemSVE: TTabItem;
-                MemoSVE: TMemo;
+            MemoSVS: TMemo;
+            SplitterSV: TSplitter;
+            MemoSVE: TMemo;
           TabItemSF: TTabItem;
-            TabControlSF: TTabControl;
-              TabItemSFS: TTabItem;
-                MemoSFS: TMemo;
-              TabItemSFE: TTabItem;
-                MemoSFE: TMemo;
+            MemoSFS: TMemo;
+            SplitterSF: TSplitter;
+            MemoSFE: TMemo;
+      TabItemP: TTabItem;
+        MemoP: TMemo;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
@@ -115,8 +112,6 @@ begin
 
           MemoSVS.Lines.Assign( Source );
           MemoSVE.Lines.Assign( Error  );
-
-          if not Success then TabControlSV.TabIndex := 1;
      end;
 
      with _ShaF do
@@ -125,8 +120,6 @@ begin
 
           MemoSFS.Lines.Assign( Source );
           MemoSFE.Lines.Assign( Error  );
-
-          if not Success then TabControlSF.TabIndex := 1;
      end;
 
      ///// プログラム
@@ -139,8 +132,6 @@ begin
           Link;
 
           MemoP.Lines.Assign( Error );
-
-          if not Success then TabControl1.TabIndex := 1;
      end;
 
      ///// アレイ
