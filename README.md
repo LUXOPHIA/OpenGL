@@ -1,6 +1,6 @@
 ## 歴史に学ぶ OpenGL
 
-OpenGL のバージョンを辿りながら実装していくことで、新しい API が追加された意図を理解しながら、プログラム全体の構造を把握していきます。
+OpenGL のバージョンを辿りながら実装していくことで、新しい API が追加された意図を理解しながら、パイプラインの構造を把握していきます。
 
 * [OpenGL 1.0](https://github.com/LUXOPHIA/OpenGL/tree/OpenGL-1.0)
 * [OpenGL 1.1](https://github.com/LUXOPHIA/OpenGL/tree/OpenGL-1.1)
