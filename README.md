@@ -11,15 +11,15 @@ OpenGL のバージョンを辿りながら実装していくことで、新し�
 ----
 
 # OpenGL
-[FireMonkey](https://www.wikiwand.com/en/FireMonkey) フレームワークのコンポーネントとして [OpenGL](https://www.wikiwand.com/ja/OpenGL) のビューを埋め込む方法。
+[FireMonkey](https://www.wikiwand.com/en/FireMonkey) フレームワークのコンポーネントとして [OpenGL](https://www.wikiwand.com/ja/OpenGL) の描画領域を埋め込む方法。
 
 ![](https://github.com/LUXOPHIA/OpenGL/raw/master/--------/_SCREENSHOT/OpenGL-View.png)
 
-シェーダのソースコードやエラーメッセージは TMemo コンポーネントで表示されます。
+シェーダのソースコードやエラーメッセージは TMemo コンポーネントで表示できます。
 
 ![](https://github.com/LUXOPHIA/OpenGL/raw/master/--------/_SCREENSHOT/OpenGL-Shader-Vertex.png)
 
-`glLinkProgram` ルーチンによるリンクメッセージも、TMemo コンポーネントで表示できます。
+`glLinkProgram` ルーチンによるリンク時のエラーメッセージも、TMemo コンポーネントで表示できます。
 
 ![](https://github.com/LUXOPHIA/OpenGL/raw/master/--------/_SCREENSHOT/OpenGL-Program.png)
 
