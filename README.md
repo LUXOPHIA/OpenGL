@@ -1,9 +1,9 @@
 # OpenGL 1.0
-[FireMonkey](https://www.wikiwand.com/en/FireMonkey) のコンポーネントとして [OpenGL](https://www.wikiwand.com/ja/OpenGL) のビューを埋め込む方法。
+[FMX：FireMonkey](https://www.wikiwand.com/en/FireMonkey) のコンポーネントとして [OpenGL](https://www.wikiwand.com/ja/OpenGL) の描画領域を埋め込む方法。
 
 ![](https://github.com/LUXOPHIA/OpenGL/raw/OpenGL-1.0/--------/_SCREENSHOT/OpenGL.png)
 
-[glBegin](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glBegin.xml) ～ [glEnd](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glEnd.xml) ルーチンで囲んだブロック内で、[glVertex](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glVertex.xml), [glColor](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glColor.xml), [glNormal](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glNormal.xml), [glTexCoord](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glTexCoord.xml) といったルーチンを呼びながら、頂点情報を一つ一つ追加していく。
+[glBegin](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glBegin.xml) ～ [glEnd](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glEnd.xml) ルーチンで囲んだブロック内で、データを GPU へ転送するための [glVertex](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glVertex.xml), [glColor](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glColor.xml), [glNormal](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glNormal.xml), [glTexCoord](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glTexCoord.xml) といったルーチンを呼びながら、頂点情報を一つ一つ追加していく。
 
 ```pascal
 procedure TForm1.DrawModel;
