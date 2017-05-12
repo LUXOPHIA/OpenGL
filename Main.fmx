@@ -174,7 +174,7 @@ object Form1: TForm1
             DataDetectorTypes = []
             StyledSettings = [Size, Style, FontColor]
             TextSettings.Font.Family = 'MS Gothic'
-            OnChange = MemoSVSChange
+            OnChangeTracking = MemoSVSChangeTracking
             Align = Client
             Margins.Left = 10.000000000000000000
             Margins.Top = 10.000000000000000000
@@ -234,7 +234,7 @@ object Form1: TForm1
             DataDetectorTypes = []
             StyledSettings = [Size, Style, FontColor]
             TextSettings.Font.Family = 'MS Gothic'
-            OnChange = MemoSFSChange
+            OnChangeTracking = MemoSFSChangeTracking
             Align = Client
             Margins.Left = 10.000000000000000000
             Margins.Top = 10.000000000000000000

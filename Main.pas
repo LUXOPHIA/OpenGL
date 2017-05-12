@@ -5,10 +5,9 @@ interface //####################################################################
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
-  FMX.Objects, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo, FMX.TabControl,
+  FMX.StdCtrls, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo, FMX.Objects, FMX.TabControl,
   Winapi.OpenGL, Winapi.OpenGLext,
-  LUX, LUX.D3, LUX.GPU.OpenGL, LUX.GPU.OpenGL.Buffer, LUX.GPU.OpenGL.Shader, LUX.GPU.OpenGL.GLView,
-  FMX.StdCtrls;
+  LUX, LUX.D3, LUX.GPU.OpenGL, LUX.GPU.OpenGL.Buffer, LUX.GPU.OpenGL.Shader, LUX.GPU.OpenGL.GLView;
 
 type
   TForm1 = class(TForm)
@@ -35,11 +34,13 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
-    procedure MemoSFSChange(Sender: TObject);
-    procedure MemoSVSChange(Sender: TObject);
+    procedure MemoSVSChangeTracking(Sender: TObject);
+    procedure MemoSFSChangeTracking(Sender: TObject);
   private
     { private 宣言 }
-    _Angle :Single;
+    _RotA :Single;
+    ///// メソッド
+    procedure EditShader( const Proc_:TThreadProcedure );
   public
     { public 宣言 }
     _BufV :TGLBufferV<TSingle3D>;
@@ -62,6 +63,25 @@ implementation //###############################################################
 {$R *.fmx}
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+procedure TForm1.EditShader( const Proc_:TThreadProcedure );
+begin
+     TabItemV.Enabled := False;
+
+     TIdleTask.Run( procedure
+     begin
+          Proc_;
+
+          with _Prog do
+          begin
+               Link;
+
+               MemoP.Lines.Assign( Error );
+
+               TabItemV.Enabled := Success;
+          end;
+     end );
+end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
@@ -186,7 +206,7 @@ const
      C0 :Single = 0.1;
      C1 :Single = 1000;
 begin
-     _Angle := 0;
+     _RotA := 0;
 
      _BufV := TGLBufferV<TSingle3D>   .Create;
      _BufC := TGLBufferV<TAlphaColorF>.Create;
@@ -209,7 +229,7 @@ begin
             glLoadIdentity;
             glTranslatef( 0, 0, -5 );
             glRotatef( +90, 1, 0, 0 );
-            glRotatef( _Angle, 0, 1, 0 );
+            glRotatef( _RotA, 0, 1, 0 );
             DrawModel;
      end;
 
@@ -222,7 +242,7 @@ begin
             glLoadIdentity;
             glTranslatef( 0, 0, -5 );
             glRotatef( -90, 0, 1, 0 );
-            glRotatef( _Angle, 0, 1, 0 );
+            glRotatef( _RotA, 0, 1, 0 );
             DrawModel;
      end;
 
@@ -234,7 +254,7 @@ begin
           glMatrixMode( GL_MODELVIEW );
             glLoadIdentity;
             glTranslatef( 0, 0, -5 );
-            glRotatef( _Angle, 0, 1, 0 );
+            glRotatef( _RotA, 0, 1, 0 );
             DrawModel;
      end;
 
@@ -249,7 +269,7 @@ begin
             glTranslatef( 0, 0, -8 );
             glRotatef( +30, 1, 0, 0 );
             glRotatef( -30, 0, 1, 0 );
-            glRotatef( _Angle, 0, 1, 0 );
+            glRotatef( _RotA, 0, 1, 0 );
             DrawModel;
      end;
 end;
@@ -271,7 +291,7 @@ end;
 
 procedure TForm1.Timer1Timer(Sender: TObject);
 begin
-     _Angle := _Angle + 1;
+     _RotA := _RotA + 1;
 
      GLView1.Repaint;
      GLView2.Repaint;
@@ -281,30 +301,30 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure TForm1.MemoSVSChange(Sender: TObject);
+procedure TForm1.MemoSVSChangeTracking(Sender: TObject);
 begin
-     with _ShaV do
+     EditShader( procedure
      begin
-          Source.Assign( MemoSVS.Lines );
+          with _ShaV do
+          begin
+               Source.Assign( MemoSVS.Lines );
 
-          MemoSVE.Lines.Assign( Error );
-
-          if Success then _Prog.Link
-                     else TabControl1.TabIndex := 1;
-     end;
+               MemoSVE.Lines.Assign( Error );
+          end;
+     end );
 end;
 
-procedure TForm1.MemoSFSChange(Sender: TObject);
+procedure TForm1.MemoSFSChangeTracking(Sender: TObject);
 begin
-     with _ShaF do
+     EditShader( procedure
      begin
-          Source.Assign( MemoSFS.Lines );
+          with _ShaF do
+          begin
+               Source.Assign( MemoSFS.Lines );
 
-          MemoSFE.Lines.Assign( Error );
-
-          if Success then _Prog.Link
-                     else TabControl1.TabIndex := 1;
-     end;
+               MemoSFE.Lines.Assign( Error );
+          end;
+     end );
 end;
 
 end. //######################################################################### ■
