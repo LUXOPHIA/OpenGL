@@ -27,6 +27,7 @@ type
     function GetRootWND :HWND;
     ///// メソッド
     procedure DoAbsoluteChanged; override;
+    procedure ParentChanged; override;
     procedure Paint; override;
     procedure Resize; override;
     procedure AncestorVisibleChanged( const Visible_: Boolean ); override;
@@ -103,6 +104,13 @@ begin
      FitWindow;
 end;
 
+procedure TGLView.ParentChanged;
+begin
+     inherited;
+
+     _Form.Visible := Self.ParentedVisible;
+end;
+
 procedure TGLView.Paint;
 begin
      BeginRender;
@@ -144,9 +152,9 @@ begin
           OnMouseUp    := _OnMouseUp   ;
           OnMouseWheel := _OnMouseWheel;
 
-          Show;
+          HandleNeeded;
 
-          _WND := WindowHandleToPlatform( _Form.Handle ).Wnd;
+          _WND := WindowHandleToPlatform( Handle ).Wnd;
      end;
 
      Winapi.Windows.SetParent( _WND, GetRootWND );
