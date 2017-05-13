@@ -181,21 +181,24 @@ begin
 
             _BufF.Bind;
 
-            _Prog.Use;
-
           Unbind;
      end;
 end;
 
 procedure TForm1.DrawModel;
 begin
-     with _Arra do
+     with _Prog do
      begin
-          Bind;
+          Use;
 
-            glDrawElements( GL_TRIANGLES, 3{Poin} * 12{Face}, GL_UNSIGNED_INT, nil );
+          with _Arra do
+          begin
+               Bind;
+                 glDrawElements( GL_TRIANGLES, 3{Poin} * 12{Face}, GL_UNSIGNED_INT, nil );
+               Unbind;
+          end;
 
-          Unbind;
+          Unuse;
      end;
 end;
 
