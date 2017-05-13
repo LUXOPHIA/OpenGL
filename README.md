@@ -3,9 +3,9 @@
 
 ![](https://github.com/LUXOPHIA/OpenGL/raw/OpenGL-3.0/--------/_SCREENSHOT/OpenGL.png)
 
-[Vertex Array Object(VAO)](https://www.khronos.org/opengl/wiki/Vertex_Specification#Vertex_Array_Object) という機能を用いることにより、バッファブジェクトやプログラムオブジェクトを描画の度に一々バインドする必要がなくなった。
+[Vertex Array Object(VAO)](https://www.khronos.org/opengl/wiki/Vertex_Specification#Vertex_Array_Object) という機能を用いることにより、バッファブジェクトを描画の度に一々バインドする必要がなくなった。
 
-VAO をバインドした上で、バッファオブジェクトなどの各種バインドを実行すると、その状態を記録することができる。ブログラムオブジェクトの glUseProgram もその対象である。
+VAO をバインドした上で、バッファオブジェクトの各種バインドを実行すると、その状態を記録することができる。
 
 ```pascal
 procedure TForm1.FormCreate(Sender: TObject);
@@ -40,7 +40,6 @@ begin
                  Unbind;
             end;
             _BufF.Bind;
-            _Prog.Use;
           Unbind;
      end;
 end;
@@ -48,11 +47,16 @@ end;
 ```pascal
 procedure TForm1.DrawModel;
 begin
-     with _Arra do
+     with _Prog do
      begin
-          Bind;
-            glDrawElements( GL_TRIANGLES, 3{Poin} * 12{Face}, GL_UNSIGNED_INT, nil );
-          Unbind;
+          Use;
+          with _Arra do
+          begin
+               Bind;
+                 glDrawElements( GL_TRIANGLES, 3{Poin} * 12{Face}, GL_UNSIGNED_INT, nil );
+               Unbind;
+          end;
+          Unuse;
      end;
 end;
 ```
