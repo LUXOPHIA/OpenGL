@@ -2,9 +2,9 @@
 
 interface //#################################################################### ■
 
-uses System.Classes,
+uses System.SysUtils, System.Classes,
      Winapi.OpenGL, Winapi.OpenGLext,
-     LUX;
+     LUX, LUX.GPU.OpenGL;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -21,6 +21,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Source  :TStringList;
        _Success :Boolean;
        _Error   :TStringList;
+       ///// イベント
+       _OnCompiled :TProc;
        ///// アクセス
        procedure SetSource( Sender_:TObject );
        ///// メソッド
@@ -30,6 +32,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
        constructor Create( const Kind_:GLenum );
        destructor Destroy; override;
+       ///// イベント
+       property OnCompiled :TProc read _OnCompiled write _OnCompiled;
        ///// プロパティ
        property ID      :GLuint      read _ID     ;
        property Source  :TStringList read _Source ;
@@ -67,32 +71,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        destructor Destroy; override;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLProgram
-
-     TGLProgram = class
-     private
-     protected
-       _ID      :GLuint;
-       _Success :Boolean;
-       _Error   :TStringList;
-       ///// メソッド
-       function GetState :Boolean;
-       function GetError :String;
-     public
-       constructor Create;
-       destructor Destroy; override;
-       ///// プロパティ
-       property ID      :GLuint      read _ID     ;
-       property Success :Boolean     read _Success;
-       property Error   :TStringList read _Error  ;
-       ///// メソッド
-       procedure Attach( const Shader_:TGLShader );
-       procedure Detach( const Shader_:TGLShader );
-       procedure Link;
-       procedure Use;
-       class procedure Unuse;
-     end;
-
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
 
 //var //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【変数】
@@ -120,6 +98,8 @@ begin
      _Success := GetState;
 
      _Error.Text := GetError;
+
+     _OnCompiled;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
@@ -170,9 +150,11 @@ begin
      _Source := TStringList.Create;
      _Error  := TStringList.Create;
 
+     _Source.OnChange := SetSource;
+
      _ID := glCreateShader( Kind_ );
 
-     _Source.OnChange := SetSource;
+     _OnCompiled := procedure begin end;
 end;
 
 destructor TGLShader.Destroy;
@@ -243,93 +225,6 @@ destructor TGLShaderF.Destroy;
 begin
 
      inherited;
-end;
-
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLProgram
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
-
-/////////////////////////////////////////////////////////////////////// メソッド
-
-function TGLProgram.GetState :Boolean;
-var
-   S :GLint;
-begin
-     glGetProgramiv( _ID, GL_LINK_STATUS, @S );
-
-     Result := ( S = GL_TRUE );
-end;
-
-function TGLProgram.GetError :String;
-var
-   N :GLint;
-   Cs :TArray<GLchar>;
-   CsN :GLsizei;
-begin
-     glGetProgramiv( _ID, GL_INFO_LOG_LENGTH, @N );
-
-     SetLength( Cs, N );
-
-     glGetProgramInfoLog( _ID, N, @CsN, PGLchar( Cs ) );
-
-     SetString( Result, PGLchar( Cs ), CsN );
-end;
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
-
-constructor TGLProgram.Create;
-begin
-     inherited;
-
-     _Error := TStringList.Create;
-
-     _ID := glCreateProgram;
-end;
-
-destructor TGLProgram.Destroy;
-begin
-     glDeleteProgram( _ID );
-
-     _Error.DisposeOf;
-
-     inherited;
-end;
-
-/////////////////////////////////////////////////////////////////////// メソッド
-
-procedure TGLProgram.Attach( const Shader_:TGLShader );
-begin
-     glAttachShader( _ID, Shader_.ID );
-end;
-
-procedure TGLProgram.Detach( const Shader_:TGLShader );
-begin
-     glDetachShader( _ID, Shader_.ID );
-end;
-
-//------------------------------------------------------------------------------
-
-procedure TGLProgram.Link;
-begin
-     glLinkProgram( _ID );
-
-     _Success := GetState;
-
-     _Error.Text := GetError;
-end;
-
-//------------------------------------------------------------------------------
-
-procedure TGLProgram.Use;
-begin
-     glUseProgram( _ID );
-end;
-
-class procedure TGLProgram.Unuse;
-begin
-     glUseProgram( 0 );
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
