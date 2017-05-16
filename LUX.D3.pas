@@ -9,6 +9,114 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TByte3D
+
+     TByte3D = record
+     private
+     public
+     case Byte of
+      0:( _ :array [ 1..3 ] of Byte; );
+      1:(  X :Byte;
+           Y :Byte;
+           Z :Byte;                  );
+      2:( _1 :Byte;
+          _2 :Byte;
+          _3 :Byte;                  );
+      3:(  A :Byte;
+           B :Byte;
+           C :Byte;                  );
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TShortint3D
+
+     TShortint3D = record
+     private
+     public
+     case Byte of
+      0:( _ :array [ 1..3 ] of Shortint; );
+      1:(  X :Shortint;
+           Y :Shortint;
+           Z :Shortint;                  );
+      2:( _1 :Shortint;
+          _2 :Shortint;
+          _3 :Shortint;                  );
+      3:(  A :Shortint;
+           B :Shortint;
+           C :Shortint;                  );
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TWord3D
+
+     TWord3D = record
+     private
+     public
+     case Byte of
+      0:( _ :array [ 1..3 ] of Word; );
+      1:(  X :Word;
+           Y :Word;
+           Z :Word;                  );
+      2:( _1 :Word;
+          _2 :Word;
+          _3 :Word;                  );
+      3:(  A :Word;
+           B :Word;
+           C :Word;                  );
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSmallint3D
+
+     TSmallint3D = record
+     private
+     public
+     case Byte of
+      0:( _ :array [ 1..3 ] of Smallint; );
+      1:(  X :Smallint;
+           Y :Smallint;
+           Z :Smallint;                  );
+      2:( _1 :Smallint;
+          _2 :Smallint;
+          _3 :Smallint;                  );
+      3:(  A :Smallint;
+           B :Smallint;
+           C :Smallint;                  );
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TCardinal3D
+
+     TCardinal3D = record
+     private
+     public
+     case Byte of
+      0:( _ :array [ 1..3 ] of Cardinal; );
+      1:(  X :Cardinal;
+           Y :Cardinal;
+           Z :Cardinal;                  );
+      2:( _1 :Cardinal;
+          _2 :Cardinal;
+          _3 :Cardinal;                  );
+      3:(  A :Cardinal;
+           B :Cardinal;
+           C :Cardinal;                  );
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TInteger3D
+
+     TInteger3D = record
+     private
+     public
+     case Byte of
+      0:( _ :array [ 1..3 ] of Integer; );
+      1:(  X :Integer;
+           Y :Integer;
+           Z :Integer;                  );
+      2:( _1 :Integer;
+          _2 :Integer;
+          _3 :Integer;                  );
+      3:(  A :Integer;
+           B :Integer;
+           C :Integer;                  );
+     end;
+
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSingle3D
 
      TSingle3D = record
@@ -57,7 +165,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class function RandBS1 :TSingle3D; static;
        class function RandBS2 :TSingle3D; static;
        class function RandBS4 :TSingle3D; static;
-     case Integer of
+     case Byte of
       0:( _ :array [ 1..3 ] of Single; );
       1:(  X :Single;
            Y :Single;
@@ -65,6 +173,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
       2:( _1 :Single;
           _2 :Single;
           _3 :Single;                  );
+      3:(  A :Single;
+           B :Single;
+           C :Single;                  );
      end;
 
      TSinglePos3D = TSingle3D;
@@ -118,7 +229,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class function RandBS1 :TDouble3D; static;
        class function RandBS2 :TDouble3D; static;
        class function RandBS4 :TDouble3D; static;
-     case Integer of
+     case Byte of
       0:( _ :array [ 1..3 ] of Double; );
       1:(  X :Double;
            Y :Double;
@@ -126,6 +237,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
       2:( _1 :Double;
           _2 :Double;
           _3 :Double;                  );
+      3:(  A :Double;
+           B :Double;
+           C :Double;                  );
      end;
 
      TDoublePos3D = TDouble3D;
@@ -168,7 +282,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// 型変換
        class operator Implicit( const V_:TSingle3D ) :TdSingle3D;
        class operator Implicit( const V_:TdSingle3D ) :TSingle3D; inline;
-     case Integer of
+     case Byte of
       0:( _ :array [ 1..3 ] of TdSingle; );
       1:(  X :TdSingle;
            Y :TdSingle;
@@ -176,6 +290,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
       2:( _1 :TdSingle;
           _2 :TdSingle;
           _3 :TdSingle;                  );
+      3:(  A :TdSingle;
+           B :TdSingle;
+           C :TdSingle;                  );
      end;
 
      TdSinglePos3D = TdSingle3D;
@@ -218,7 +335,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// 型変換
        class operator Implicit( const V_:TDouble3D ) :TdDouble3D;
        class operator Implicit( const V_:TdDouble3D ) :TDouble3D; inline;
-     case Integer of
+     case Byte of
       0:( _ :array [ 1..3 ] of TdDouble; );
       1:(  X :TdDouble;
            Y :TdDouble;
@@ -226,6 +343,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
       2:( _1 :TdDouble;
           _2 :TdDouble;
           _3 :TdDouble;                  );
+      3:(  A :TdDouble;
+           B :TdDouble;
+           C :TdDouble;                  );
      end;
 
      TdDoublePos3D = TdDouble3D;
@@ -434,6 +554,42 @@ implementation //###############################################################
 uses System.SysUtils, System.Math;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TByte3D
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TShortint3D
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TWord3D
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSmallint3D
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TCardinal3D
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TInteger3D
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSingle3D
 
