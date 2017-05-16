@@ -9,16 +9,25 @@ layout(std140) uniform TCamera
 }
 _Camera;
 
-layout(std140) uniform TShape
+layout(std140) uniform TGeomet
 {
   layout(row_major) mat4 Move;
 }
-_Shape;
+_Geomet;
 
 ////////////////////////////////////////////////////////////////////////////////【入出力】
 
-in vec4 _VertPos;
-in vec4 _VertCol;
+in vec4 _Vertex_Pos;
+in vec4 _Vertex_Col;
+
+/*
+in struct TVertex
+{
+  vec4 Pos;
+  vec4 Col;
+}
+_Vertex;
+*/
 
 //------------------------------------------------------------------------------
 
@@ -32,10 +41,12 @@ _Result;
 
 void main()
 {
-  gl_Position = _Camera.Proj *inverse( _Camera.Move )
-              * _Shape.Move
-              * _VertPos;
-  _Result.Col = _VertCol;
+  gl_Position = _Camera.Proj
+     * inverse( _Camera.Move )
+              * _Geomet.Move
+              * _Vertex_Pos;
+
+  _Result.Col = _Vertex_Col;
 }
 
 //##############################################################################

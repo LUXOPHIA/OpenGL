@@ -9,11 +9,11 @@ layout(std140) uniform TCamera
 }
 _Camera;
 
-layout(std140) uniform TShape
+layout(std140) uniform TGeomet
 {
   layout(row_major) mat4 Move;
 }
-_Shape;
+_Geomet;
 
 ////////////////////////////////////////////////////////////////////////////////【入出力】
 
