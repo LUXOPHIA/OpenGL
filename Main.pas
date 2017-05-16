@@ -7,7 +7,8 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.StdCtrls, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo, FMX.Objects, FMX.TabControl,
   Winapi.OpenGL, Winapi.OpenGLext,
-  LUX, LUX.D3, LUX.GPU.OpenGL, LUX.GPU.OpenGL.Buffer, LUX.GPU.OpenGL.Shader, LUX.GPU.OpenGL.GLView;
+  LUX, LUX.D3, LUX.M4, LUX.GPU.OpenGL, LUX.GPU.OpenGL.GLView,
+  LUX.GPU.OpenGL.Buffer, LUX.GPU.OpenGL.Shader, LUX.GPU.OpenGL.Progra;
 
 type
   TForm1 = class(TForm)
@@ -38,20 +39,32 @@ type
     procedure MemoSFSChangeTracking(Sender: TObject);
   private
     { private 宣言 }
-    _RotA :Single;
+    _Angle :Single;
     ///// メソッド
     procedure EditShader( const Proc_:TThreadProcedure );
+  public type
+    TCamera = record
+      private
+      public
+        Pro :TSingleM4;
+        Cam :TSingleM4;
+      end;
   public
     { public 宣言 }
-    _BufV :TGLBufferV<TSingle3D>;
-    _BufC :TGLBufferV<TAlphaColorF>;
-    _BufF :TGLBufferI<TCardinal3D>;
-    _ShaV :TGLShaderV;
-    _ShaF :TGLShaderF;
-    _Prog :TGLProgram;
-    _Arra :TGLArray;
+    _CamUs :TGLBufferU<TCamera>;
+    _GeoUs :TGLBufferU<TSingleM4>;
+    _GeoP  :TGLBufferVS<TSingle3D>;
+    _GeoC  :TGLBufferVS<TAlphaColorF>;
+    _GeoF  :TGLBufferI<TCardinal3D>;
+    _GeoB  :TGLBinder;
+    _ShadV :TGLShaderV;
+    _ShadF :TGLShaderF;
+    _Prog  :TGLProgra;
     ///// メソッド
-    procedure MakeModel;
+    procedure InitCamera;
+    procedure InitGeometry;
+    procedure InitShader;
+    procedure InitProgram;
     procedure DrawModel;
   end;
 
@@ -61,6 +74,8 @@ var
 implementation //############################################################### ■
 
 {$R *.fmx}
+
+uses System.Math;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -76,9 +91,9 @@ begin
           begin
                Link;
 
-               MemoP.Lines.Assign( Error );
-
                TabItemV.Enabled := Success;
+
+               if not Success then TabControl1.TabIndex := 1;
           end;
      end );
 end;
@@ -87,30 +102,83 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TForm1.MakeModel;
+procedure TForm1.InitCamera;
 const
-     Ps :array [ 0..8-1 ] of TSingle3D = ( ( X:-1; Y:-1; Z:-1 ),
-                                           ( X:+1; Y:-1; Z:-1 ),
-                                           ( X:-1; Y:+1; Z:-1 ),
-                                           ( X:+1; Y:+1; Z:-1 ),
-                                           ( X:-1; Y:-1; Z:+1 ),
-                                           ( X:+1; Y:-1; Z:+1 ),
-                                           ( X:-1; Y:+1; Z:+1 ),
-                                           ( X:+1; Y:+1; Z:+1 ) );
-     Cs :array [ 0..8-1 ] of TAlphaColorF = ( ( R:0; G:0; B:0; A:1 ),
-                                              ( R:1; G:0; B:0; A:1 ),
-                                              ( R:0; G:1; B:0; A:1 ),
-                                              ( R:1; G:1; B:0; A:1 ),
-                                              ( R:0; G:0; B:1; A:1 ),
-                                              ( R:1; G:0; B:1; A:1 ),
-                                              ( R:0; G:1; B:1; A:1 ),
-                                              ( R:1; G:1; B:1; A:1 ) );
-     Fs :array [ 0..12-1 ] of TCardinal3D = ( ( _1:0; _2:4; _3:6 ), ( _1:6; _2:2; _3:0 ),
-                                              ( _1:0; _2:1; _3:5 ), ( _1:5; _2:4; _3:0 ),
-                                              ( _1:0; _2:2; _3:3 ), ( _1:3; _2:1; _3:0 ),
-                                              ( _1:7; _2:5; _3:1 ), ( _1:1; _2:3; _3:7 ),
-                                              ( _1:7; _2:3; _3:2 ), ( _1:2; _2:6; _3:7 ),
-                                              ( _1:7; _2:6; _3:4 ), ( _1:4; _2:5; _3:7 ) );
+     _N :Single = 0.1;
+     _F :Single = 1000;
+var
+   C :TCamera;
+begin
+     with _CamUs do
+     begin
+          Name  := 'TCamera';
+          BindI := 0;
+          Count := 4;
+
+          with C do
+          begin
+               Pro := TSingleM4.ProjOrth( -3, +3, -2, +2, _N, _F );
+               Cam := TSingleM4.Translate( 0, +5, 0 )
+                    * TSingleM4.RotateX( DegToRad( -90 ) );
+          end;
+          Items[ 0 ] := C;
+
+          with C do
+          begin
+               Pro := TSingleM4.ProjOrth( -4, +4, -2, +2, _N, _F );
+               Cam := TSingleM4.Translate( 0, 0, +5 );
+          end;
+          Items[ 1 ] := C;
+
+          with C do
+          begin
+               Pro := TSingleM4.ProjOrth( -3, +3, -3, +3, _N, _F );
+               Cam := TSingleM4.Translate( -5, 0, 0 )
+                    * TSingleM4.RotateY( DegToRad( -90 ) );
+          end;
+          Items[ 2 ] := C;
+
+          with C do
+          begin
+               Pro := TSingleM4.ProjPers( -4/8*_N, +4/8*_N,
+                                          -3/8*_N, +3/8*_N, _N, _F );
+               Cam := TSingleM4.RotateY( DegToRad( +30 ) )
+                    * TSingleM4.RotateX( DegToRad( -30 ) )
+                    * TSingleM4.Translate( 0, 0, +8 );
+          end;
+          Items[ 3 ] := C;
+     end;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure TForm1.InitGeometry;
+const
+     Ps :array [ 0..8-1 ] of TSingle3D = (
+          ( X:-1; Y:-1; Z:-1 ),
+          ( X:+1; Y:-1; Z:-1 ),
+          ( X:-1; Y:+1; Z:-1 ),
+          ( X:+1; Y:+1; Z:-1 ),
+          ( X:-1; Y:-1; Z:+1 ),
+          ( X:+1; Y:-1; Z:+1 ),
+          ( X:-1; Y:+1; Z:+1 ),
+          ( X:+1; Y:+1; Z:+1 ) );
+     Cs :array [ 0..8-1 ] of TAlphaColorF = (
+          ( R:0; G:0; B:0; A:1 ),
+          ( R:1; G:0; B:0; A:1 ),
+          ( R:0; G:1; B:0; A:1 ),
+          ( R:1; G:1; B:0; A:1 ),
+          ( R:0; G:0; B:1; A:1 ),
+          ( R:1; G:0; B:1; A:1 ),
+          ( R:0; G:1; B:1; A:1 ),
+          ( R:1; G:1; B:1; A:1 ) );
+     Fs :array [ 0..12-1 ] of TCardinal3D = (
+          ( A:0; B:4; C:6 ), ( A:6; B:2; C:0 ),
+          ( A:0; B:1; C:5 ), ( A:5; B:4; C:0 ),
+          ( A:0; B:2; C:3 ), ( A:3; B:1; C:0 ),
+          ( A:7; B:5; C:1 ), ( A:1; B:3; C:7 ),
+          ( A:7; B:3; C:2 ), ( A:2; B:6; C:7 ),
+          ( A:7; B:6; C:4 ), ( A:4; B:5; C:7 ) );
 begin
      //    2-------3
      //   /|      /|
@@ -120,181 +188,225 @@ begin
      //  |/      |/
      //  4-------5
 
-     ///// バッファ
-
-     _BufV.Import( Ps );
-     _BufC.Import( Cs );
-     _BufF.Import( Fs );
-
-     ///// シェーダ
-
-     with _ShaV do
+     with _GeoP do
      begin
-          Source.LoadFromFile( '..\..\_DATA\ShaderV.glsl' );
+          Name  := '_VertPos';
 
-          MemoSVS.Lines.Assign( Source );
-          MemoSVE.Lines.Assign( Error  );
+          Import( Ps );
      end;
 
-     with _ShaF do
+     with _GeoC do
      begin
-          Source.LoadFromFile( '..\..\_DATA\ShaderF.glsl' );
+          Name  := '_VertCol';
 
-          MemoSFS.Lines.Assign( Source );
-          MemoSFE.Lines.Assign( Error  );
+          Import( Cs );
      end;
 
-     ///// プログラム
-
-     with _Prog do
+     with _GeoF do
      begin
-          Attach( _ShaV );
-          Attach( _ShaF );
-
-          Link;
-
-          MemoP.Lines.Assign( Error );
+          Import( Fs );
      end;
 
-     ///// アレイ
-
-     with _Arra do
+     with _GeoUs do
      begin
-          Bind;
-
-            glEnableClientState( GL_VERTEX_ARRAY );
-            glEnableClientState( GL_COLOR_ARRAY  );
-
-            with _BufV do
-            begin
-                 Bind;
-                   glVertexPointer( 3, GL_FLOAT, 0, nil );
-                 Unbind;
-            end;
-
-            with _BufC do
-            begin
-                 Bind;
-                   glColorPointer( 4, GL_FLOAT, 0, nil );
-                 Unbind;
-            end;
-
-            _BufF.Bind;
-
-          Unbind;
+          Name  := 'TShape';
+          BindI := 1;
+          Count := 1;
      end;
 end;
 
-procedure TForm1.DrawModel;
+//------------------------------------------------------------------------------
+
+procedure TForm1.InitShader;
+begin
+     with _ShadV do
+     begin
+          OnCompiled := procedure
+          begin
+               MemoSVE.Lines.Assign( Error );
+
+               _Prog.Link;
+          end;
+     end;
+
+     with _ShadF do
+     begin
+          OnCompiled := procedure
+          begin
+               MemoSFE.Lines.Assign( Error );
+
+               _Prog.Link;
+          end;
+     end;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure TForm1.InitProgram;
 begin
      with _Prog do
      begin
-          Use;
+          Frags.Add( 0, '_FragColor' );
 
-          with _Arra do
+          Attach( _ShadV );
+          Attach( _ShadF );
+
+          OnLinked := procedure
           begin
-               Bind;
-                 glDrawElements( GL_TRIANGLES, 3{Poin} * 12{Face}, GL_UNSIGNED_INT, nil );
-               Unbind;
-          end;
+               MemoP.Lines.Assign( Error );
 
-          Unuse;
+               Attach( _CamUs );
+               Attach( _GeoUs );
+
+               Attach( _GeoP );
+               Attach( _GeoC );
+
+               with _GeoB do
+               begin
+                    Use;
+
+                      _GeoP.Use;
+                      _GeoC.Use;
+
+                      _GeoF.Bind;
+
+                    Unuse;
+               end;
+          end;
      end;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure TForm1.DrawModel;
+begin
+     _GeoUs.Items[ 0 ] := TSingleM4.RotateY( DegToRad( _Angle ) );
+
+     _Prog.Use;
+
+       _GeoUs.Use;
+
+         _GeoB.Use;
+
+           _GeoF.Draw;
+
+         _GeoB.Unuse;
+
+       _GeoUs.Unuse;
+
+     _Prog.Unuse;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
 procedure TForm1.FormCreate(Sender: TObject);
-const
-     C0 :Single = 0.1;
-     C1 :Single = 1000;
 begin
-     _RotA := 0;
+     _Angle := 0;
 
-     _BufV := TGLBufferV<TSingle3D>   .Create;
-     _BufC := TGLBufferV<TAlphaColorF>.Create;
-     _BufF := TGLBufferI<TCardinal3D> .Create;
+     //////////
 
-     _ShaV := TGLShaderV.Create;
-     _ShaF := TGLShaderF.Create;
-     _Prog := TGLProgram.Create;
+     _CamUs := TGLBufferU<TCamera>      .Create( GL_STATIC_DRAW  );
 
-     _Arra := TGLArray.Create;
+     _GeoUs := TGLBufferU<TSingleM4>    .Create( GL_DYNAMIC_DRAW );
 
-     MakeModel;
+     _GeoP  := TGLBufferVS<TSingle3D>   .Create( GL_STATIC_DRAW  );
+     _GeoC  := TGLBufferVS<TAlphaColorF>.Create( GL_STATIC_DRAW  );
+     _GeoF  := TGLBufferI<TCardinal3D>  .Create( GL_STATIC_DRAW  );
+     _GeoB  := TGLBinder                .Create;
+
+     _ShadV := TGLShaderV               .Create;
+     _ShadF := TGLShaderF               .Create;
+
+     _Prog  := TGLProgra               .Create;
+
+     //////////
+
+     InitCamera;
+     InitGeometry;
+     InitShader;
+     InitProgram;
+
+     //////////
+
+     with _ShadV do
+     begin
+          Source.LoadFromFile( '..\..\_DATA\ShaderV.glsl' );
+
+          MemoSVS.Lines.Assign( Source );
+     end;
+
+     with _ShadF do
+     begin
+          Source.LoadFromFile( '..\..\_DATA\ShaderF.glsl' );
+
+          MemoSFS.Lines.Assign( Source );
+     end;
+
+     //////////
 
      GLView1.OnPaint := procedure
      begin
-          glMatrixMode( GL_PROJECTION );
-            glLoadIdentity;
-            glOrtho( -3, +3, -2, +2, C0, C1 );
-          glMatrixMode( GL_MODELVIEW );
-            glLoadIdentity;
-            glTranslatef( 0, 0, -5 );
-            glRotatef( +90, 1, 0, 0 );
-            glRotatef( _RotA, 0, 1, 0 );
-            DrawModel;
+          with _CamUs do
+          begin
+               Use( 0 );
+                 DrawModel;
+               Unuse;
+          end;
      end;
 
      GLView2.OnPaint := procedure
      begin
-          glMatrixMode( GL_PROJECTION );
-            glLoadIdentity;
-            glOrtho( -4, +4, -2, +2, C0, C1 );
-          glMatrixMode( GL_MODELVIEW );
-            glLoadIdentity;
-            glTranslatef( 0, 0, -5 );
-            glRotatef( -90, 0, 1, 0 );
-            glRotatef( _RotA, 0, 1, 0 );
-            DrawModel;
+          with _CamUs do
+          begin
+               Use( 1 );
+                 DrawModel;
+               Unuse;
+          end;
      end;
 
      GLView3.OnPaint := procedure
      begin
-          glMatrixMode( GL_PROJECTION );
-            glLoadIdentity;
-            glOrtho( -3, +3, -3, +3, C0, C1 );
-          glMatrixMode( GL_MODELVIEW );
-            glLoadIdentity;
-            glTranslatef( 0, 0, -5 );
-            glRotatef( _RotA, 0, 1, 0 );
-            DrawModel;
+          with _CamUs do
+          begin
+               Use( 2 );
+                 DrawModel;
+               Unuse;
+          end;
      end;
 
      GLView4.OnPaint := procedure
      begin
-          glMatrixMode( GL_PROJECTION );
-            glLoadIdentity;
-            glFrustum( -4/8*C0, +4/8*C0,
-                       -3/8*C0, +3/8*C0, C0, C1 );
-          glMatrixMode( GL_MODELVIEW );
-            glLoadIdentity;
-            glTranslatef( 0, 0, -8 );
-            glRotatef( +30, 1, 0, 0 );
-            glRotatef( -30, 0, 1, 0 );
-            glRotatef( _RotA, 0, 1, 0 );
-            DrawModel;
+          with _CamUs do
+          begin
+               Use( 3 );
+                 DrawModel;
+               Unuse;
+          end;
      end;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
-     _Arra.DisposeOf;
+     _Prog .DisposeOf;
 
-     _ShaV.DisposeOf;
-     _ShaF.DisposeOf;
-     _Prog.DisposeOf;
+     _ShadV.DisposeOf;
+     _ShadF.DisposeOf;
 
-     _BufV.DisposeOf;
-     _BufC.DisposeOf;
-     _BufF.DisposeOf;
+     _GeoP .DisposeOf;
+     _GeoC .DisposeOf;
+     _GeoF .DisposeOf;
+     _GeoB .DisposeOf;
+
+     _GeoUs.DisposeOf;
+
+     _CamUs.DisposeOf;
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
 
 procedure TForm1.Timer1Timer(Sender: TObject);
 begin
-     _RotA := _RotA + 1;
+     _Angle := _Angle + 1;
 
      GLView1.Repaint;
      GLView2.Repaint;
@@ -308,12 +420,7 @@ procedure TForm1.MemoSVSChangeTracking(Sender: TObject);
 begin
      EditShader( procedure
      begin
-          with _ShaV do
-          begin
-               Source.Assign( MemoSVS.Lines );
-
-               MemoSVE.Lines.Assign( Error );
-          end;
+          _ShadV.Source.Assign( MemoSVS.Lines );
      end );
 end;
 
@@ -321,12 +428,7 @@ procedure TForm1.MemoSFSChangeTracking(Sender: TObject);
 begin
      EditShader( procedure
      begin
-          with _ShaF do
-          begin
-               Source.Assign( MemoSFS.Lines );
-
-               MemoSFE.Lines.Assign( Error );
-          end;
+          _ShadF.Source.Assign( MemoSFS.Lines );
      end );
 end;
 
