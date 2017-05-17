@@ -51,21 +51,22 @@ type
     end;
   public
     { public 宣言 }
-    _CamUs :TGLBufferU<TCamera>;
-    _GeoUs :TGLBufferU<TSingleM4>;
-    _GeoP  :TGLBufferVS<TSingle3D>;
-    _GeoC  :TGLBufferVS<TAlphaColorF>;
-    _GeoF  :TGLBufferI<TCardinal3D>;
-    _GeoB  :TGLBinder;
-    _ShaV  :TGLShaderV;
-    _ShaF  :TGLShaderF;
-    _Prog  :TGLProgra;
+    _CameraUs :TGLBufferU<TCamera>;
+    _GeometUs :TGLBufferU<TSingleM4>;
+    _GeometP  :TGLBufferVS<TSingle3D>;
+    _GeometC  :TGLBufferVS<TAlphaColorF>;
+    _GeometF  :TGLBufferI<TCardinal3D>;
+    _GeometB  :TGLBinder;
+    _ShaderV  :TGLShaderV;
+    _ShaderF  :TGLShaderF;
+    _Progra   :TGLProgra;
     ///// メソッド
     procedure InitCamera;
     procedure InitGeomet;
     procedure InitShader;
     procedure InitProgra;
     procedure DrawModel;
+    procedure InitRender;
   end;
 
 var
@@ -87,7 +88,7 @@ begin
      begin
           Proc_;
 
-          with _Prog do
+          with _Progra do
           begin
                TabItemV.Enabled := Success;
 
@@ -107,7 +108,7 @@ const
 var
    C :TCamera;
 begin
-     with _CamUs do
+     with _CameraUs do
      begin
           Name  := 'TCamera';
           BindI := 0;
@@ -193,26 +194,26 @@ begin
      //  |/      |/
      //  4-------5
 
-     with _GeoP do
+     with _GeometP do
      begin
           Name  := '_Vertex_Pos';
 
           Import( Ps );
      end;
 
-     with _GeoC do
+     with _GeometC do
      begin
           Name  := '_Vertex_Col';
 
           Import( Cs );
      end;
 
-     with _GeoF do
+     with _GeometF do
      begin
           Import( Fs );
      end;
 
-     with _GeoUs do
+     with _GeometUs do
      begin
           Name  := 'TGeomet';
           BindI := 1;
@@ -224,23 +225,23 @@ end;
 
 procedure TForm1.InitShader;
 begin
-     with _ShaV do
+     with _ShaderV do
      begin
           OnCompiled := procedure
           begin
                MemoSVE.Lines.Assign( Error );
 
-               _Prog.Link;
+               _Progra.Link;
           end;
      end;
 
-     with _ShaF do
+     with _ShaderF do
      begin
           OnCompiled := procedure
           begin
                MemoSFE.Lines.Assign( Error );
 
-               _Prog.Link;
+               _Progra.Link;
           end;
      end;
 end;
@@ -249,31 +250,31 @@ end;
 
 procedure TForm1.InitProgra;
 begin
-     with _Prog do
+     with _Progra do
      begin
           Frags.Add( 0, '_FragColor' );
 
-          Attach( _ShaV );
-          Attach( _ShaF );
+          Attach( _ShaderV );
+          Attach( _ShaderF );
 
           OnLinked := procedure
           begin
                MemoP.Lines.Assign( Error );
 
-               Attach( _CamUs );
-               Attach( _GeoUs );
+               Attach( _CameraUs );
+               Attach( _GeometUs );
 
-               Attach( _GeoP );
-               Attach( _GeoC );
+               Attach( _GeometP );
+               Attach( _GeometC );
 
-               with _GeoB do
+               with _GeometB do
                begin
                     Use;
 
-                      _GeoP.Use;
-                      _GeoC.Use;
+                      _GeometP.Use;
+                      _GeometC.Use;
 
-                      _GeoF.Bind;
+                      _GeometF.Bind;
 
                     Unuse;
                end;
@@ -285,73 +286,28 @@ end;
 
 procedure TForm1.DrawModel;
 begin
-     _GeoUs.Items[ 0 ] := TSingleM4.RotateY( DegToRad( _Angle ) );
+     _Progra.Use;
 
-     _Prog.Use;
+       _GeometUs.Use;
 
-       _GeoUs.Use;
+         _GeometB.Use;
 
-         _GeoB.Use;
+           _GeometF.Draw;
 
-           _GeoF.Draw;
+         _GeometB.Unuse;
 
-         _GeoB.Unuse;
+       _GeometUs.Unuse;
 
-       _GeoUs.Unuse;
-
-     _Prog.Unuse;
+     _Progra.Unuse;
 end;
 
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+//------------------------------------------------------------------------------
 
-procedure TForm1.FormCreate(Sender: TObject);
+procedure TForm1.InitRender;
 begin
-     _Angle := 0;
-
-     //////////
-
-     _CamUs := TGLBufferU<TCamera>      .Create( GL_STATIC_DRAW );
-
-     _GeoUs := TGLBufferU<TSingleM4>    .Create( GL_DYNAMIC_DRAW );
-
-     _GeoP  := TGLBufferVS<TSingle3D>   .Create( GL_STATIC_DRAW );
-     _GeoC  := TGLBufferVS<TAlphaColorF>.Create( GL_STATIC_DRAW );
-     _GeoF  := TGLBufferI<TCardinal3D>  .Create( GL_STATIC_DRAW );
-     _GeoB  := TGLBinder                .Create;
-
-     _ShaV  := TGLShaderV               .Create;
-     _ShaF  := TGLShaderF               .Create;
-
-     _Prog  := TGLProgra                .Create;
-
-     //////////
-
-     InitCamera;
-     InitGeomet;
-     InitShader;
-     InitProgra;
-
-     //////////
-
-     with _ShaV do
-     begin
-          Source.LoadFromFile( '..\..\_DATA\ShaderV.glsl' );
-
-          MemoSVS.Lines.Assign( Source );
-     end;
-
-     with _ShaF do
-     begin
-          Source.LoadFromFile( '..\..\_DATA\ShaderF.glsl' );
-
-          MemoSFS.Lines.Assign( Source );
-     end;
-
-     //////////
-
      GLView1.OnPaint := procedure
      begin
-          with _CamUs do
+          with _CameraUs do
           begin
                Use( 0 );
                  DrawModel;
@@ -361,7 +317,7 @@ begin
 
      GLView2.OnPaint := procedure
      begin
-          with _CamUs do
+          with _CameraUs do
           begin
                Use( 1 );
                  DrawModel;
@@ -371,7 +327,7 @@ begin
 
      GLView3.OnPaint := procedure
      begin
-          with _CamUs do
+          with _CameraUs do
           begin
                Use( 2 );
                  DrawModel;
@@ -381,7 +337,7 @@ begin
 
      GLView4.OnPaint := procedure
      begin
-          with _CamUs do
+          with _CameraUs do
           begin
                Use( 3 );
                  DrawModel;
@@ -390,21 +346,68 @@ begin
      end;
 end;
 
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+     _CameraUs := TGLBufferU<TCamera>      .Create( GL_STATIC_DRAW );
+
+     _GeometUs := TGLBufferU<TSingleM4>    .Create( GL_DYNAMIC_DRAW );
+
+     _GeometP  := TGLBufferVS<TSingle3D>   .Create( GL_STATIC_DRAW );
+     _GeometC  := TGLBufferVS<TAlphaColorF>.Create( GL_STATIC_DRAW );
+     _GeometF  := TGLBufferI<TCardinal3D>  .Create( GL_STATIC_DRAW );
+     _GeometB  := TGLBinder                .Create;
+
+     _ShaderV  := TGLShaderV               .Create;
+     _ShaderF  := TGLShaderF               .Create;
+
+     _Progra   := TGLProgra                .Create;
+
+     //////////
+
+     InitCamera;
+     InitGeomet;
+     InitShader;
+     InitProgra;
+     InitRender;
+
+     //////////
+
+     with _ShaderV do
+     begin
+          Source.LoadFromFile( '..\..\_DATA\ShaderV.glsl' );
+
+          MemoSVS.Lines.Assign( Source );
+     end;
+
+     with _ShaderF do
+     begin
+          Source.LoadFromFile( '..\..\_DATA\ShaderF.glsl' );
+
+          MemoSFS.Lines.Assign( Source );
+     end;
+
+     //////////
+
+     _Angle := 0;
+end;
+
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
-     _Prog .DisposeOf;
+     _Progra  .DisposeOf;
 
-     _ShaV.DisposeOf;
-     _ShaF.DisposeOf;
+     _ShaderV .DisposeOf;
+     _ShaderF .DisposeOf;
 
-     _GeoP .DisposeOf;
-     _GeoC .DisposeOf;
-     _GeoF .DisposeOf;
-     _GeoB .DisposeOf;
+     _GeometP .DisposeOf;
+     _GeometC .DisposeOf;
+     _GeometF .DisposeOf;
+     _GeometB .DisposeOf;
 
-     _GeoUs.DisposeOf;
+     _GeometUs.DisposeOf;
 
-     _CamUs.DisposeOf;
+     _CameraUs.DisposeOf;
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -412,6 +415,8 @@ end;
 procedure TForm1.Timer1Timer(Sender: TObject);
 begin
      _Angle := _Angle + 1;
+
+     _GeometUs.Items[ 0 ] := TSingleM4.RotateY( DegToRad( _Angle ) );
 
      GLView1.Repaint;
      GLView2.Repaint;
@@ -425,7 +430,7 @@ procedure TForm1.MemoSVSChangeTracking(Sender: TObject);
 begin
      EditShader( procedure
      begin
-          _ShaV.Source.Assign( MemoSVS.Lines );
+          _ShaderV.Source.Assign( MemoSVS.Lines );
      end );
 end;
 
@@ -433,7 +438,7 @@ procedure TForm1.MemoSFSChangeTracking(Sender: TObject);
 begin
      EditShader( procedure
      begin
-          _ShaF.Source.Assign( MemoSFS.Lines );
+          _ShaderF.Source.Assign( MemoSFS.Lines );
      end );
 end;
 
