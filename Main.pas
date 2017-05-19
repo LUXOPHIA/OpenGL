@@ -7,7 +7,14 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.Controls.Presentation, FMX.StdCtrls,
   Winapi.OpenGL, Winapi.OpenGLext,
-  LUX, LUX.D3, LUX.GPU.OpenGL, LUX.GPU.OpenGL.Buffer, LUX.GPU.OpenGL.Shader, LUX.GPU.OpenGL.GLView;
+  LUX, LUX.D3,
+  LUX.GPU.OpenGL,
+  LUX.GPU.OpenGL.GLView,
+  LUX.GPU.OpenGL.Buffer,
+  LUX.GPU.OpenGL.Buffer.Vert,
+  LUX.GPU.OpenGL.Buffer.Elem,
+  LUX.GPU.OpenGL.Shader,
+  LUX.GPU.OpenGL.Progra;
 
 type
   TForm1 = class(TForm)
@@ -25,16 +32,17 @@ type
     _Angle :Single;
   public
     { public 宣言 }
-    _BufV :TGLBufferV<TSingle3D>;
-    _BufC :TGLBufferV<TAlphaColorF>;
-    _BufF :TGLBufferI<TCardinal3D>;
-    _ShaV :TGLShaderV;
-    _ShaF :TGLShaderF;
-    _Prog :TGLProgram;
-    _Arra :TGLArray;
+    _BufferV :TGLBufferVS<TSingle3D>;
+    _BufferC :TGLBufferVS<TAlphaColorF>;
+    _BufferF :TGLBufferI<TCardinal3D>;
+    _ShaderV :TGLShaderV;
+    _ShaderF :TGLShaderF;
+    _Progra  :TGLProgra;
+    _Varray  :TGLVarray;
     ///// メソッド
-    procedure MakeModel;
+    procedure InitGeomet;
     procedure DrawModel;
+    procedure InitRender;
   end;
 
 var
@@ -50,7 +58,7 @@ implementation //###############################################################
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TForm1.MakeModel;
+procedure TForm1.InitGeomet;
 const
      Ps :array [ 0..8-1 ] of TSingle3D = ( ( X:-1; Y:-1; Z:-1 ),
                                            ( X:+1; Y:-1; Z:-1 ),
@@ -68,12 +76,12 @@ const
                                               ( R:1; G:0; B:1; A:1 ),
                                               ( R:0; G:1; B:1; A:1 ),
                                               ( R:1; G:1; B:1; A:1 ) );
-     Fs :array [ 0..12-1 ] of TCardinal3D = ( ( _1:0; _2:4; _3:6 ), ( _1:6; _2:2; _3:0 ),
-                                              ( _1:0; _2:1; _3:5 ), ( _1:5; _2:4; _3:0 ),
-                                              ( _1:0; _2:2; _3:3 ), ( _1:3; _2:1; _3:0 ),
-                                              ( _1:7; _2:5; _3:1 ), ( _1:1; _2:3; _3:7 ),
-                                              ( _1:7; _2:3; _3:2 ), ( _1:2; _2:6; _3:7 ),
-                                              ( _1:7; _2:6; _3:4 ), ( _1:4; _2:5; _3:7 ) );
+     Fs :array [ 0..12-1 ] of TCardinal3D = ( ( A:0; B:4; C:6 ), ( A:6; B:2; C:0 ),
+                                              ( A:0; B:1; C:5 ), ( A:5; B:4; C:0 ),
+                                              ( A:0; B:2; C:3 ), ( A:3; B:1; C:0 ),
+                                              ( A:7; B:5; C:1 ), ( A:1; B:3; C:7 ),
+                                              ( A:7; B:3; C:2 ), ( A:2; B:6; C:7 ),
+                                              ( A:7; B:6; C:4 ), ( A:4; B:5; C:7 ) );
 begin
      //    2-------3
      //   /|      /|
@@ -85,13 +93,13 @@ begin
 
      ///// バッファ
 
-     _BufV.Import( Ps );
-     _BufC.Import( Cs );
-     _BufF.Import( Fs );
+     _BufferV.Import( Ps );
+     _BufferC.Import( Cs );
+     _BufferF.Import( Fs );
 
      ///// シェーダ
 
-     with _ShaV do
+     with _ShaderV do
      begin
           with Source do
           begin
@@ -107,10 +115,10 @@ begin
                EndUpdate;
           end;
 
-          Assert( Success, Error.Text );
+          Assert( Status, Errors.Text );
      end;
 
-     with _ShaF do
+     with _ShaderF do
      begin
           with Source do
           begin
@@ -125,57 +133,59 @@ begin
                EndUpdate;
           end;
 
-          Assert( Success, Error.Text );
+          Assert( Status, Errors.Text );
      end;
 
      ///// プログラム
 
-     with _Prog do
+     with _Progra do
      begin
-          Attach( _ShaV );
-          Attach( _ShaF );
+          Attach( _ShaderV );
+          Attach( _ShaderF );
 
           Link;
 
-          Assert( Success, Error.Text );
+          Assert( Status, Errors.Text );
      end;
 
      ///// アレイ
 
-     with _Arra do
+     with _Varray do
      begin
           Bind;
 
             glEnableClientState( GL_VERTEX_ARRAY );
             glEnableClientState( GL_COLOR_ARRAY  );
 
-            with _BufV do
+            with _BufferV do
             begin
                  Bind;
                    glVertexPointer( 3, GL_FLOAT, 0, nil );
                  Unbind;
             end;
 
-            with _BufC do
+            with _BufferC do
             begin
                  Bind;
                    glColorPointer( 4, GL_FLOAT, 0, nil );
                  Unbind;
             end;
 
-            _BufF.Bind;
+            _BufferF.Bind;
 
           Unbind;
      end;
 end;
 
+//------------------------------------------------------------------------------
+
 procedure TForm1.DrawModel;
 begin
-     with _Prog do
+     with _Progra do
      begin
           Use;
 
-          with _Arra do
+          with _Varray do
           begin
                Bind;
 
@@ -188,32 +198,18 @@ begin
      end;
 end;
 
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+//------------------------------------------------------------------------------
 
-procedure TForm1.FormCreate(Sender: TObject);
+procedure TForm1.InitRender;
 const
-     C0 :Single = 0.1;
-     C1 :Single = 1000;
+     _N :Single = 0.1;
+     _F :Single = 1000;
 begin
-     _Angle := 0;
-
-     _BufV := TGLBufferV<TSingle3D>   .Create;
-     _BufC := TGLBufferV<TAlphaColorF>.Create;
-     _BufF := TGLBufferI<TCardinal3D> .Create;
-
-     _ShaV := TGLShaderV.Create;
-     _ShaF := TGLShaderF.Create;
-     _Prog := TGLProgram.Create;
-
-     _Arra := TGLArray.Create;
-
-     MakeModel;
-
      GLView1.OnPaint := procedure
      begin
           glMatrixMode( GL_PROJECTION );
             glLoadIdentity;
-            glOrtho( -3, +3, -2, +2, C0, C1 );
+            glOrtho( -3, +3, -2, +2, _N, _F );
           glMatrixMode( GL_MODELVIEW );
             glLoadIdentity;
             glTranslatef( 0, 0, -5 );
@@ -226,7 +222,7 @@ begin
      begin
           glMatrixMode( GL_PROJECTION );
             glLoadIdentity;
-            glOrtho( -4, +4, -2, +2, C0, C1 );
+            glOrtho( -4, +4, -2, +2, _N, _F );
           glMatrixMode( GL_MODELVIEW );
             glLoadIdentity;
             glTranslatef( 0, 0, -5 );
@@ -239,7 +235,7 @@ begin
      begin
           glMatrixMode( GL_PROJECTION );
             glLoadIdentity;
-            glOrtho( -3, +3, -3, +3, C0, C1 );
+            glOrtho( -3, +3, -3, +3, _N, _F );
           glMatrixMode( GL_MODELVIEW );
             glLoadIdentity;
             glTranslatef( 0, 0, -5 );
@@ -251,8 +247,8 @@ begin
      begin
           glMatrixMode( GL_PROJECTION );
             glLoadIdentity;
-            glFrustum( -4/8*C0, +4/8*C0,
-                       -3/8*C0, +3/8*C0, C0, C1 );
+            glFrustum( -4/8*_N, +4/8*_N,
+                       -3/8*_N, +3/8*_N, _N, _F );
           glMatrixMode( GL_MODELVIEW );
             glLoadIdentity;
             glTranslatef( 0, 0, -8 );
@@ -263,17 +259,39 @@ begin
      end;
 end;
 
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+     _BufferV := TGLBufferVS<TSingle3D>   .Create( GL_STATIC_DRAW );
+     _BufferC := TGLBufferVS<TAlphaColorF>.Create( GL_STATIC_DRAW );
+     _BufferF := TGLBufferI<TCardinal3D>  .Create( GL_STATIC_DRAW );
+
+     _ShaderV := TGLShaderV.Create;
+     _ShaderF := TGLShaderF.Create;
+
+     _Progra := TGLProgra.Create;
+
+     _Varray := TGLVarray.Create;
+
+     InitGeomet;
+     InitRender;
+
+     _Angle := 0;
+end;
+
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
-     _Arra.DisposeOf;
+     _Varray.DisposeOf;
 
-     _ShaV.DisposeOf;
-     _ShaF.DisposeOf;
-     _Prog.DisposeOf;
+     _Progra.DisposeOf;
 
-     _BufV.DisposeOf;
-     _BufC.DisposeOf;
-     _BufF.DisposeOf;
+     _ShaderV.DisposeOf;
+     _ShaderF.DisposeOf;
+
+     _BufferV.DisposeOf;
+     _BufferC.DisposeOf;
+     _BufferF.DisposeOf;
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
