@@ -12,13 +12,13 @@ procedure TForm1.FormCreate(Sender: TObject);
 ～
 begin
      ～
-     _Arra := TGLArray.Create;
-     MakeModel;
+     _Arra := TGLVarray.Create;
+     InitGeomet;
      ～
 end;
 ```
 ```pascal
-procedure TForm1.MakeModel;
+procedure TForm1.InitGeomet;
 ～
 begin
      ～
@@ -72,13 +72,13 @@ VAO の生成/廃棄には [`glGenVertexArrays`](https://www.khronos.org/registr
 
 
 ```pascal
-constructor TGLArray.Create;
+constructor TGLVarray.Create;
 begin
      ～
      glGenVertexArrays( 1, @_ID );
 end;
 
-destructor TGLArray.Destroy;
+destructor TGLVarray.Destroy;
 begin
      glDeleteVertexArrays( 1, @_ID );
      ～
@@ -88,12 +88,12 @@ end;
 VAO のバインドには [`glBindVertexArray`](https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glBindVertexArray.xhtml) ルーチンを用いる。
 
 ```pascal
-procedure TGLArray.Bind;
+procedure TGLVarray.Bind;
 begin
      glBindVertexArray( _ID );
 end;
 
-procedure TGLArray.Unbind;
+procedure TGLVarray.Unbind;
 begin
      glBindVertexArray( 0 );
 end;
