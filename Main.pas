@@ -41,6 +41,7 @@ type
       TabItemP: TTabItem;
         MemoP: TMemo;
     procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure MemoSVSChangeTracking(Sender: TObject);
     procedure MemoSFSChangeTracking(Sender: TObject);
@@ -64,7 +65,10 @@ type
     _GeometF  :TGLBufferI<TCardinal3D>;
     _GeometUs :TGLBufferU<TSingleM4>;
     _PlugerV  :TGLPlugerV;
-    _PlugerUs :array [ 0..3 ] of TGLPlugerU;
+    _PlugerU1 :TGLPlugerU;
+    _PlugerU2 :TGLPlugerU;
+    _PlugerU3 :TGLPlugerU;
+    _PlugerU4 :TGLPlugerU;
     _ShaderV  :TGLShaderV;
     _ShaderF  :TGLShaderF;
     _Engine   :TGLEngine;
@@ -73,7 +77,7 @@ type
     procedure InitGeomet;
     procedure InitPluger;
     procedure InitShader;
-    procedure InitProgra;
+    procedure InitEngine;
     procedure DrawModel;
     procedure InitRender;
   end;
@@ -237,8 +241,6 @@ end;
 //------------------------------------------------------------------------------
 
 procedure TForm1.InitPluger;
-var
-   I :Integer;
 begin
      with _PlugerV do
      begin
@@ -246,13 +248,28 @@ begin
           Add( 1{Port}, _GeometC );
      end;
 
-     for I := 0 to 3 do
+     with _PlugerU1 do
      begin
-          with _PlugerUs[ I ] do
-          begin
-               Add( 0{Port}, _CameraUs, I{Offs} );
-               Add( 1{Port}, _GeometUs          );
-          end;
+          Add( 0{Port}, _CameraUs, 0{Offs} );
+          Add( 1{Port}, _GeometUs          );
+     end;
+
+     with _PlugerU2 do
+     begin
+          Add( 0{Port}, _CameraUs, 1{Offs} );
+          Add( 1{Port}, _GeometUs          );
+     end;
+
+     with _PlugerU3 do
+     begin
+          Add( 0{Port}, _CameraUs, 2{Offs} );
+          Add( 1{Port}, _GeometUs          );
+     end;
+
+     with _PlugerU4 do
+     begin
+          Add( 0{Port}, _CameraUs, 3{Offs} );
+          Add( 1{Port}, _GeometUs          );
      end;
 end;
 
@@ -283,7 +300,7 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure TForm1.InitProgra;
+procedure TForm1.InitEngine;
 begin
      with _Engine do
      begin
@@ -344,7 +361,7 @@ procedure TForm1.InitRender;
 begin
      GLView1.OnPaint := procedure
      begin
-          with _PlugerUs[ 0 ] do
+          with _PlugerU1 do
           begin
                Use;
                  DrawModel;
@@ -354,7 +371,7 @@ begin
 
      GLView2.OnPaint := procedure
      begin
-          with _PlugerUs[ 1 ] do
+          with _PlugerU2 do
           begin
                Use;
                  DrawModel;
@@ -364,7 +381,7 @@ begin
 
      GLView3.OnPaint := procedure
      begin
-          with _PlugerUs[ 2 ] do
+          with _PlugerU3 do
           begin
                Use;
                  DrawModel;
@@ -374,7 +391,7 @@ begin
 
      GLView4.OnPaint := procedure
      begin
-          with _PlugerUs[ 3 ] do
+          with _PlugerU4 do
           begin
                Use;
                  DrawModel;
@@ -389,21 +406,24 @@ procedure TForm1.FormCreate(Sender: TObject);
 var
    I :Integer;
 begin
-     _CameraUs := TGLBufferU<TCamera>.Create( GL_STATIC_DRAW );
+     _CameraUs := TGLBufferU<TCamera>      .Create( GL_STATIC_DRAW  );
 
-     _GeometP  := TGLBufferVS<TSingle3D>   .Create( GL_STATIC_DRAW );
-     _GeometC  := TGLBufferVS<TAlphaColorF>.Create( GL_STATIC_DRAW );
-     _GeometF  := TGLBufferI<TCardinal3D>  .Create( GL_STATIC_DRAW );
+     _GeometP  := TGLBufferVS<TSingle3D>   .Create( GL_STATIC_DRAW  );
+     _GeometC  := TGLBufferVS<TAlphaColorF>.Create( GL_STATIC_DRAW  );
+     _GeometF  := TGLBufferI<TCardinal3D>  .Create( GL_STATIC_DRAW  );
      _GeometUs := TGLBufferU<TSingleM4>    .Create( GL_DYNAMIC_DRAW );
 
-     _PlugerV := TGLPlugerV.Create;
+     _PlugerV  := TGLPlugerV               .Create;
 
-     for I := 0 to 3 do _PlugerUs[ I ] := TGLPlugerU.Create;
+     _PlugerU1 := TGLPlugerU               .Create;
+     _PlugerU2 := TGLPlugerU               .Create;
+     _PlugerU3 := TGLPlugerU               .Create;
+     _PlugerU4 := TGLPlugerU               .Create;
 
-     _ShaderV := TGLShaderV.Create;
-     _ShaderF := TGLShaderF.Create;
+     _ShaderV  := TGLShaderV               .Create;
+     _ShaderF  := TGLShaderF               .Create;
 
-     _Engine := TGLEngine.Create;
+     _Engine   := TGLEngine                .Create;
 
      //////////
 
@@ -411,7 +431,7 @@ begin
      InitGeomet;
      InitPluger;
      InitShader;
-     InitProgra;
+     InitEngine;
      InitRender;
 
      //////////
@@ -433,6 +453,28 @@ begin
      //////////
 
      _Angle := 0;
+end;
+
+procedure TForm1.FormDestroy(Sender: TObject);
+begin
+     _Engine  .DisposeOf;
+
+     _ShaderV .DisposeOf;
+     _ShaderF .DisposeOf;
+
+     _PlugerU1.DisposeOf;
+     _PlugerU2.DisposeOf;
+     _PlugerU3.DisposeOf;
+     _PlugerU4.DisposeOf;
+
+     _PlugerV .DisposeOf;
+
+     _GeometP .DisposeOf;
+     _GeometC .DisposeOf;
+     _GeometF .DisposeOf;
+     _GeometUs.DisposeOf;
+
+     _CameraUs.DisposeOf;
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
