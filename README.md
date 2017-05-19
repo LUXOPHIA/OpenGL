@@ -7,7 +7,7 @@
 [`glVertexPointer`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glVertexPointer.xml), 
 [`glColorPointer`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glColorPointer.xml), 
 [`glNormalPointer`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glNormalPointer.xml), 
-[`glTexCoordPointer`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glTexCoordPointer.xml) といったルーチンを呼び出し、頂点情報を配列として一気に転送する。
+[`glTexCoordPointer`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glTexCoordPointer.xml) といった、それぞれのデータ型に特有のルーチンを呼び出し、頂点情報を配列として一気に転送する。
 
 
 ```pascal
@@ -29,12 +29,12 @@ const
                                               ( R:1; G:0; B:1; A:1 ),
                                               ( R:0; G:1; B:1; A:1 ),
                                               ( R:1; G:1; B:1; A:1 ) );
-     Fs :array [ 0..12-1 ] of TCardinal3D = ( ( _1:0; _2:4; _3:6 ), ( _1:6; _2:2; _3:0 ),
-                                              ( _1:0; _2:1; _3:5 ), ( _1:5; _2:4; _3:0 ),
-                                              ( _1:0; _2:2; _3:3 ), ( _1:3; _2:1; _3:0 ),
-                                              ( _1:7; _2:5; _3:1 ), ( _1:1; _2:3; _3:7 ),
-                                              ( _1:7; _2:3; _3:2 ), ( _1:2; _2:6; _3:7 ),
-                                              ( _1:7; _2:6; _3:4 ), ( _1:4; _2:5; _3:7 ) );
+     Fs :array [ 0..12-1 ] of TCardinal3D = ( ( A:0; B:4; C:6 ), ( A:6; B:2; C:0 ),
+                                              ( A:0; B:1; C:5 ), ( A:5; B:4; C:0 ),
+                                              ( A:0; B:2; C:3 ), ( A:3; B:1; C:0 ),
+                                              ( A:7; B:5; C:1 ), ( A:1; B:3; C:7 ),
+                                              ( A:7; B:3; C:2 ), ( A:2; B:6; C:7 ),
+                                              ( A:7; B:6; C:4 ), ( A:4; B:5; C:7 ) );
 begin
      //    2-------3
      //   /|      /|
