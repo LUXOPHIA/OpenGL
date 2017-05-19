@@ -14,31 +14,33 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLShader
 
-     TGLShader = class
+     IGLShader = interface( IGLObject )
+     ['{1E06B97A-6947-4960-8CD7-8FAD5CBCC546}']
+     end;
+
+     TGLShader = class( TGLObject, IGLShader )
      private
      protected
-       _ID      :GLuint;
-       _Source  :TStringList;
-       _Success :Boolean;
-       _Error   :TStringList;
+       _Source :TStringList;
+       _Status :Boolean;
+       _Errors :TStringList;
        ///// イベント
        _OnCompiled :TProc;
        ///// アクセス
        procedure SetSource( Sender_:TObject );
        ///// メソッド
        procedure Compile( const Source_:String );
-       function GetState :Boolean;
-       function GetError :String;
+       function GetStatus :Boolean;
+       function GetErrors :String;
      public
        constructor Create( const Kind_:GLenum );
        destructor Destroy; override;
        ///// イベント
        property OnCompiled :TProc read _OnCompiled write _OnCompiled;
        ///// プロパティ
-       property ID      :GLuint      read _ID     ;
-       property Source  :TStringList read _Source ;
-       property Success :Boolean     read _Success;
-       property Error   :TStringList read _Error  ;
+       property Source :TStringList read _Source;
+       property Status :Boolean     read _Status;
+       property Errors :TStringList read _Errors;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLShaderV
@@ -48,7 +50,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      protected
      public
        constructor Create;
-       destructor Destroy; override;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLShaderG
@@ -58,7 +59,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      protected
      public
        constructor Create;
-       destructor Destroy; override;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLShaderF
@@ -68,7 +68,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      protected
      public
        constructor Create;
-       destructor Destroy; override;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -95,9 +94,8 @@ procedure TGLShader.SetSource( Sender_:TObject );
 begin
      Compile( _Source.Text );
 
-     _Success := GetState;
-
-     _Error.Text := GetError;
+     _Status      := GetStatus;
+     _Errors.Text := GetErrors;
 
      _OnCompiled;
 end;
@@ -117,7 +115,7 @@ begin
      glCompileShader( _ID );
 end;
 
-function TGLShader.GetState :Boolean;
+function TGLShader.GetStatus :Boolean;
 var
    S :GLint;
 begin
@@ -126,7 +124,7 @@ begin
      Result := ( S = GL_TRUE );
 end;
 
-function TGLShader.GetError :String;
+function TGLShader.GetErrors :String;
 var
    N :GLint;
    Cs :TArray<GLchar>;
@@ -148,7 +146,7 @@ begin
      inherited Create;
 
      _Source := TStringList.Create;
-     _Error  := TStringList.Create;
+     _Errors := TStringList.Create;
 
      _Source.OnChange := SetSource;
 
@@ -162,7 +160,7 @@ begin
      glDeleteShader( _ID );
 
      _Source.DisposeOf;
-     _Error .DisposeOf;
+     _Errors.DisposeOf;
 
      inherited;
 end;
@@ -181,12 +179,6 @@ begin
 
 end;
 
-destructor TGLShaderV.Destroy;
-begin
-
-     inherited;
-end;
-
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLShaderG
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
@@ -201,12 +193,6 @@ begin
 
 end;
 
-destructor TGLShaderG.Destroy;
-begin
-
-     inherited;
-end;
-
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLShaderF
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
@@ -219,12 +205,6 @@ constructor TGLShaderF.Create;
 begin
      inherited Create( GL_FRAGMENT_SHADER );
 
-end;
-
-destructor TGLShaderF.Destroy;
-begin
-
-     inherited;
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
