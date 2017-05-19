@@ -8,9 +8,13 @@ uses
   FMX.Controls.Presentation, FMX.StdCtrls,
   Winapi.OpenGL, Winapi.OpenGLext,
   LUX, LUX.D3,
-  LUX.GPU.OpenGL, LUX.GPU.OpenGL.GLView, LUX.GPU.OpenGL.Buffer,
-  LUX.GPU.OpenGL.Buffer.Vert, LUX.GPU.OpenGL.Buffer.Elem,
-  LUX.GPU.OpenGL.Shader, LUX.GPU.OpenGL.Progra;
+  LUX.GPU.OpenGL,
+  LUX.GPU.OpenGL.GLView,
+  LUX.GPU.OpenGL.Buffer,
+  LUX.GPU.OpenGL.Buffer.Vert,
+  LUX.GPU.OpenGL.Buffer.Elem,
+  LUX.GPU.OpenGL.Shader,
+  LUX.GPU.OpenGL.Progra;
 
 type
   TForm1 = class(TForm)
@@ -21,6 +25,7 @@ type
     GLView4: TGLView;
     Timer1: TTimer;
     procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
   private
     { private 宣言 }
@@ -251,14 +256,27 @@ begin
      _BufferC := TGLBufferVS<TAlphaColorF>.Create( GL_STATIC_DRAW );
      _BufferF := TGLBufferI<TCardinal3D>  .Create( GL_STATIC_DRAW );
 
-     _ShaderV := TGLShaderV.Create;
-     _ShaderF := TGLShaderF.Create;
-     _Progra  := TGLProgra .Create;
+     _ShaderV := TGLShaderV               .Create;
+     _ShaderF := TGLShaderF               .Create;
+
+     _Progra  := TGLProgra                .Create;
 
      InitGeomet;
      InitRender;
 
      _Angle := 0;
+end;
+
+procedure TForm1.FormDestroy(Sender: TObject);
+begin
+     _Progra .DisposeOf;
+
+     _ShaderV.DisposeOf;
+     _ShaderF.DisposeOf;
+
+     _BufferV.DisposeOf;
+     _BufferC.DisposeOf;
+     _BufferF.DisposeOf;
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
