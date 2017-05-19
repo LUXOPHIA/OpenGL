@@ -7,8 +7,16 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.StdCtrls, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo, FMX.Objects, FMX.TabControl,
   Winapi.OpenGL, Winapi.OpenGLext,
-  LUX, LUX.D3, LUX.M4, LUX.GPU.OpenGL, LUX.GPU.OpenGL.GLView,
-  LUX.GPU.OpenGL.Buffer, LUX.GPU.OpenGL.Shader, LUX.GPU.OpenGL.Progra;
+  LUX, LUX.D3, LUX.M4,
+  LUX.GPU.OpenGL,
+  LUX.GPU.OpenGL.GLView,
+  LUX.GPU.OpenGL.Buffer,
+  LUX.GPU.OpenGL.Buffer.Unif,
+  LUX.GPU.OpenGL.Buffer.Vert,
+  LUX.GPU.OpenGL.Buffer.Elem,
+  LUX.GPU.OpenGL.Pluger,
+  LUX.GPU.OpenGL.Shader,
+  LUX.GPU.OpenGL.Engine;
 
 type
   TForm1 = class(TForm)
@@ -33,7 +41,6 @@ type
       TabItemP: TTabItem;
         MemoP: TMemo;
     procedure FormCreate(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
     procedure MemoSVSChangeTracking(Sender: TObject);
     procedure MemoSFSChangeTracking(Sender: TObject);
@@ -41,7 +48,7 @@ type
     { private 宣言 }
     _Angle :Single;
     ///// メソッド
-    procedure EditShader( const Proc_:TThreadProcedure );
+    procedure EditShader( const Shader_:TGLShader; const Memo_:TMemo );
   public type
     TCamera = record
     private
@@ -52,17 +59,19 @@ type
   public
     { public 宣言 }
     _CameraUs :TGLBufferU<TCamera>;
-    _GeometUs :TGLBufferU<TSingleM4>;
     _GeometP  :TGLBufferVS<TSingle3D>;
     _GeometC  :TGLBufferVS<TAlphaColorF>;
     _GeometF  :TGLBufferI<TCardinal3D>;
-    _GeometB  :TGLBinder;
+    _GeometUs :TGLBufferU<TSingleM4>;
+    _PlugerV  :TGLPlugerV;
+    _PlugerUs :array [ 0..3 ] of TGLPlugerU;
     _ShaderV  :TGLShaderV;
     _ShaderF  :TGLShaderF;
-    _Progra   :TGLProgra;
+    _Engine   :TGLEngine;
     ///// メソッド
     procedure InitCamera;
     procedure InitGeomet;
+    procedure InitPluger;
     procedure InitShader;
     procedure InitProgra;
     procedure DrawModel;
@@ -80,21 +89,24 @@ uses System.Math;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
-procedure TForm1.EditShader( const Proc_:TThreadProcedure );
+procedure TForm1.EditShader( const Shader_:TGLShader; const Memo_:TMemo );
 begin
-     TabItemV.Enabled := False;
-
-     TIdleTask.Run( procedure
+     if Memo_.IsFocused then
      begin
-          Proc_;
+          TabItemV.Enabled := False;
 
-          with _Progra do
+          TIdleTask.Run( procedure
           begin
-               TabItemV.Enabled := Success;
+               Shader_.Source.Assign( Memo_.Lines );
 
-               if not Success then TabControl1.TabIndex := 1;
-          end;
-     end );
+               with _Engine do
+               begin
+                    TabItemV.Enabled := Status;
+
+                    if not Status then TabControl1.TabIndex := 1;
+               end;
+          end );
+     end;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -110,8 +122,6 @@ var
 begin
      with _CameraUs do
      begin
-          Name  := 'TCamera';
-          BindI := 0;
           Count := 4;
 
           with C do
@@ -161,30 +171,10 @@ end;
 procedure TForm1.InitGeomet;
 const
      Ps :array [ 0..8-1 ] of TSingle3D = (
-          ( X:-1; Y:-1; Z:-1 ),
-          ( X:+1; Y:-1; Z:-1 ),
-          ( X:-1; Y:+1; Z:-1 ),
-          ( X:+1; Y:+1; Z:-1 ),
-          ( X:-1; Y:-1; Z:+1 ),
-          ( X:+1; Y:-1; Z:+1 ),
-          ( X:-1; Y:+1; Z:+1 ),
-          ( X:+1; Y:+1; Z:+1 ) );
-     Cs :array [ 0..8-1 ] of TAlphaColorF = (
-          ( R:0; G:0; B:0; A:1 ),
-          ( R:1; G:0; B:0; A:1 ),
-          ( R:0; G:1; B:0; A:1 ),
-          ( R:1; G:1; B:0; A:1 ),
-          ( R:0; G:0; B:1; A:1 ),
-          ( R:1; G:0; B:1; A:1 ),
-          ( R:0; G:1; B:1; A:1 ),
-          ( R:1; G:1; B:1; A:1 ) );
-     Fs :array [ 0..12-1 ] of TCardinal3D = (
-          ( A:0; B:4; C:6 ), ( A:6; B:2; C:0 ),
-          ( A:0; B:1; C:5 ), ( A:5; B:4; C:0 ),
-          ( A:0; B:2; C:3 ), ( A:3; B:1; C:0 ),
-          ( A:7; B:5; C:1 ), ( A:1; B:3; C:7 ),
-          ( A:7; B:3; C:2 ), ( A:2; B:6; C:7 ),
-          ( A:7; B:6; C:4 ), ( A:4; B:5; C:7 ) );
+          ( X:-1; Y:-1; Z:-1 ), ( X:+1; Y:-1; Z:-1 ),
+          ( X:-1; Y:+1; Z:-1 ), ( X:+1; Y:+1; Z:-1 ),
+          ( X:-1; Y:-1; Z:+1 ), ( X:+1; Y:-1; Z:+1 ),
+          ( X:-1; Y:+1; Z:+1 ), ( X:+1; Y:+1; Z:+1 ) );
 begin
      //    2-------3
      //   /|      /|
@@ -196,28 +186,71 @@ begin
 
      with _GeometP do
      begin
-          Name  := '_Vertex_Pos';
-
           Import( Ps );
      end;
 
      with _GeometC do
      begin
-          Name  := '_Vertex_Col';
+          Count := 8{Poin};
 
-          Import( Cs );
+          Items[ 0 ] := TAlphaColorF.Create( 0, 0, 0 );
+          Items[ 1 ] := TAlphaColorF.Create( 1, 0, 0 );
+          Items[ 2 ] := TAlphaColorF.Create( 0, 1, 0 );
+          Items[ 3 ] := TAlphaColorF.Create( 1, 1, 0 );
+          Items[ 4 ] := TAlphaColorF.Create( 0, 0, 1 );
+          Items[ 5 ] := TAlphaColorF.Create( 1, 0, 1 );
+          Items[ 6 ] := TAlphaColorF.Create( 0, 1, 1 );
+          Items[ 7 ] := TAlphaColorF.Create( 1, 1, 1 );
      end;
 
      with _GeometF do
      begin
-          Import( Fs );
+          Count := 12{Face};
+
+          with Map( GL_WRITE_ONLY ) do
+          begin
+               Items[  0 ] := TCardinal3D.Create( 0, 4, 6 );
+               Items[  1 ] := TCardinal3D.Create( 6, 2, 0 );
+               Items[  2 ] := TCardinal3D.Create( 0, 1, 5 );
+               Items[  3 ] := TCardinal3D.Create( 5, 4, 0 );
+               Items[  4 ] := TCardinal3D.Create( 0, 2, 3 );
+               Items[  5 ] := TCardinal3D.Create( 3, 1, 0 );
+               Items[  6 ] := TCardinal3D.Create( 7, 5, 1 );
+               Items[  7 ] := TCardinal3D.Create( 1, 3, 7 );
+               Items[  8 ] := TCardinal3D.Create( 7, 3, 2 );
+               Items[  9 ] := TCardinal3D.Create( 2, 6, 7 );
+               Items[ 10 ] := TCardinal3D.Create( 7, 6, 4 );
+               Items[ 11 ] := TCardinal3D.Create( 4, 5, 7 );
+          end;
+
+          Unmap;
      end;
 
      with _GeometUs do
      begin
-          Name  := 'TGeomet';
-          BindI := 1;
-          Count := 1;
+          Count := 1{Pose};
+     end;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure TForm1.InitPluger;
+var
+   I :Integer;
+begin
+     with _PlugerV do
+     begin
+          Add( 0{Port}, _GeometP );
+          Add( 1{Port}, _GeometC );
+     end;
+
+     for I := 0 to 3 do
+     begin
+          with _PlugerUs[ I ] do
+          begin
+               Add( 0{Port}, _CameraUs, I{Offs} );
+               Add( 1{Port}, _GeometUs          );
+          end;
      end;
 end;
 
@@ -229,9 +262,9 @@ begin
      begin
           OnCompiled := procedure
           begin
-               MemoSVE.Lines.Assign( Error );
+               MemoSVE.Lines.Assign( Errors );
 
-               _Progra.Link;
+               _Engine.Link;
           end;
      end;
 
@@ -239,9 +272,9 @@ begin
      begin
           OnCompiled := procedure
           begin
-               MemoSFE.Lines.Assign( Error );
+               MemoSFE.Lines.Assign( Errors );
 
-               _Progra.Link;
+               _Engine.Link;
           end;
      end;
 end;
@@ -250,34 +283,34 @@ end;
 
 procedure TForm1.InitProgra;
 begin
-     with _Progra do
+     with _Engine do
      begin
-          Frags.Add( 0, '_FragColor' );
+          with Shaders do
+          begin
+               Add( _ShaderV );
+               Add( _ShaderF );
+          end;
 
-          Attach( _ShaderV );
-          Attach( _ShaderF );
+          with VerPorts do
+          begin
+               Add( 0{Port}, '_Vertex_Pos', 3, GL_FLOAT, 0 );
+               Add( 1{Port}, '_Vertex_Col', 4, GL_FLOAT, 0 );
+          end;
+
+          with UniPorts do
+          begin
+               Add( 0{Port}, 'TCamera' );
+               Add( 1{Port}, 'TGeomet' );
+          end;
+
+          with FraPorts do
+          begin
+               Add( 0{Port}, '_FragColor' );
+          end;
 
           OnLinked := procedure
           begin
-               MemoP.Lines.Assign( Error );
-
-               Attach( _CameraUs );
-               Attach( _GeometUs );
-
-               Attach( _GeometP );
-               Attach( _GeometC );
-
-               with _GeometB do
-               begin
-                    Use;
-
-                      _GeometP.Use;
-                      _GeometC.Use;
-
-                      _GeometF.Bind;
-
-                    Unuse;
-               end;
+               MemoP.Lines.Assign( Errors );
           end;
      end;
 end;
@@ -286,19 +319,21 @@ end;
 
 procedure TForm1.DrawModel;
 begin
-     _Progra.Use;
+     with _Engine do
+     begin
+          Use;
 
-       _GeometUs.Use;
+          with _PlugerV do  // TGLEngine needs to be used before TGLPulgerV.
+          begin
+               Use;
 
-         _GeometB.Use;
+                 _GeometF.Draw;
 
-           _GeometF.Draw;
+               Unuse;
+          end;
 
-         _GeometB.Unuse;
-
-       _GeometUs.Unuse;
-
-     _Progra.Unuse;
+          Unuse;
+     end;
 end;
 
 //------------------------------------------------------------------------------
@@ -307,9 +342,9 @@ procedure TForm1.InitRender;
 begin
      GLView1.OnPaint := procedure
      begin
-          with _CameraUs do
+          with _PlugerUs[ 0 ] do
           begin
-               Use( 0 );
+               Use;
                  DrawModel;
                Unuse;
           end;
@@ -317,9 +352,9 @@ begin
 
      GLView2.OnPaint := procedure
      begin
-          with _CameraUs do
+          with _PlugerUs[ 1 ] do
           begin
-               Use( 1 );
+               Use;
                  DrawModel;
                Unuse;
           end;
@@ -327,9 +362,9 @@ begin
 
      GLView3.OnPaint := procedure
      begin
-          with _CameraUs do
+          with _PlugerUs[ 2 ] do
           begin
-               Use( 2 );
+               Use;
                  DrawModel;
                Unuse;
           end;
@@ -337,9 +372,9 @@ begin
 
      GLView4.OnPaint := procedure
      begin
-          with _CameraUs do
+          with _PlugerUs[ 3 ] do
           begin
-               Use( 3 );
+               Use;
                  DrawModel;
                Unuse;
           end;
@@ -349,25 +384,30 @@ end;
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
 procedure TForm1.FormCreate(Sender: TObject);
+var
+   I :Integer;
 begin
-     _CameraUs := TGLBufferU<TCamera>      .Create( GL_STATIC_DRAW );
-
-     _GeometUs := TGLBufferU<TSingleM4>    .Create( GL_DYNAMIC_DRAW );
+     _CameraUs := TGLBufferU<TCamera>.Create( GL_STATIC_DRAW );
 
      _GeometP  := TGLBufferVS<TSingle3D>   .Create( GL_STATIC_DRAW );
      _GeometC  := TGLBufferVS<TAlphaColorF>.Create( GL_STATIC_DRAW );
      _GeometF  := TGLBufferI<TCardinal3D>  .Create( GL_STATIC_DRAW );
-     _GeometB  := TGLBinder                .Create;
+     _GeometUs := TGLBufferU<TSingleM4>    .Create( GL_DYNAMIC_DRAW );
 
-     _ShaderV  := TGLShaderV               .Create;
-     _ShaderF  := TGLShaderF               .Create;
+     _PlugerV := TGLPlugerV.Create;
 
-     _Progra   := TGLProgra                .Create;
+     for I := 0 to 3 do _PlugerUs[ I ] := TGLPlugerU.Create;
+
+     _ShaderV := TGLShaderV.Create;
+     _ShaderF := TGLShaderF.Create;
+
+     _Engine := TGLEngine.Create;
 
      //////////
 
      InitCamera;
      InitGeomet;
+     InitPluger;
      InitShader;
      InitProgra;
      InitRender;
@@ -393,23 +433,6 @@ begin
      _Angle := 0;
 end;
 
-procedure TForm1.FormDestroy(Sender: TObject);
-begin
-     _Progra  .DisposeOf;
-
-     _ShaderV .DisposeOf;
-     _ShaderF .DisposeOf;
-
-     _GeometP .DisposeOf;
-     _GeometC .DisposeOf;
-     _GeometF .DisposeOf;
-     _GeometB .DisposeOf;
-
-     _GeometUs.DisposeOf;
-
-     _CameraUs.DisposeOf;
-end;
-
 ////////////////////////////////////////////////////////////////////////////////
 
 procedure TForm1.Timer1Timer(Sender: TObject);
@@ -428,18 +451,12 @@ end;
 
 procedure TForm1.MemoSVSChangeTracking(Sender: TObject);
 begin
-     EditShader( procedure
-     begin
-          _ShaderV.Source.Assign( MemoSVS.Lines );
-     end );
+     EditShader( _ShaderV, MemoSVS );
 end;
 
 procedure TForm1.MemoSFSChangeTracking(Sender: TObject);
 begin
-     EditShader( procedure
-     begin
-          _ShaderF.Source.Assign( MemoSFS.Lines );
-     end );
+     EditShader( _ShaderF, MemoSFS );
 end;
 
 end. //######################################################################### ■
