@@ -74,7 +74,7 @@ begin
                  Add( '}' );
                EndUpdate;
           end;
-          Assert( Success, Error.Text );
+          Assert( Status, Errors.Text );
      end;
      with _ShaF do
      begin
@@ -88,7 +88,7 @@ begin
                  Add( '}' );
                EndUpdate;
           end;
-          Assert( Success, Error.Text );
+          Assert( Status, Errors.Text );
      end;
      ///// プログラム
      with _Prog do
@@ -96,7 +96,7 @@ begin
           Attach( _ShaV );
           Attach( _ShaF );
           Link;
-          Assert( Success, Error.Text );
+          Assert( Status, Errors.Text );
      end;
 end;
 ```
@@ -227,14 +227,12 @@ begin
        with _BufF do
        begin
             Bind;
-
               with _Prog do
               begin
                    Use;
                      glDrawElements( GL_TRIANGLES, 3{Poin} * 12{Face}, GL_UNSIGNED_INT, nil );
                    Unuse;
               end;
-
             Unbind;
        end;
      glDisableClientState( GL_VERTEX_ARRAY );
