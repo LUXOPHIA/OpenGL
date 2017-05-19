@@ -68,7 +68,7 @@ end;
 VBO を 生成 / 廃棄 する際には、[`glGenBuffers`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glBindBuffer.xml) / [`glDeleteBuffers`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glDeleteBuffers.xml) ルーチンを用いる。
 
 ```pascal
-constructor TGLBuffer<_TYPE_>.Create( const Kind_:GLenum; const Usage_:GLenum = GL_STATIC_DRAW );
+constructor TGLBuffer<_TYPE_>.Create( const Usage_:GLenum );
 begin
      ～
      glGenBuffers( 1, @_ID );
