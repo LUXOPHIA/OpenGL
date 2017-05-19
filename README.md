@@ -13,18 +13,18 @@ procedure TForm1.FormCreate(Sender: TObject);
 ～
 begin
      ～
-     _BufV := TGLBufferV<TSingle3D>   .Create;
-     _BufC := TGLBufferV<TAlphaColorF>.Create;
-     _BufF := TGLBufferI<TCardinal3D> .Create;
-     _ShaV := TGLShaderV.Create;
-     _ShaF := TGLShaderF.Create;
-     _Prog := TGLProgram.Create;
-     MakeModel;
+     _BufV := TGLBufferVS<TSingle3D>   .Create( GL_STATIC_DRAW  );
+     _BufC := TGLBufferVS<TAlphaColorF>.Create( GL_STATIC_DRAW  );
+     _BufF := TGLBufferI<TCardinal3D>  .Create( GL_STATIC_DRAW  );
+     _ShaV := TGLShaderV               .Create;
+     _ShaF := TGLShaderF               .Create;
+     _Prog := TGLProgra                .Create;
+     InitGeomet;
      ～
 end;
 ```
 ```pascal
-procedure TForm1.MakeModel;
+procedure TForm1.InitGeomet;
 const
      Ps :array [ 0..8-1 ] of TSingle3D = ( ( X:-1; Y:-1; Z:-1 ),
                                            ( X:+1; Y:-1; Z:-1 ),
@@ -42,12 +42,12 @@ const
                                               ( R:1; G:0; B:1; A:1 ),
                                               ( R:0; G:1; B:1; A:1 ),
                                               ( R:1; G:1; B:1; A:1 ) );
-     Fs :array [ 0..12-1 ] of TCardinal3D = ( ( _1:0; _2:4; _3:6 ), ( _1:6; _2:2; _3:0 ),
-                                              ( _1:0; _2:1; _3:5 ), ( _1:5; _2:4; _3:0 ),
-                                              ( _1:0; _2:2; _3:3 ), ( _1:3; _2:1; _3:0 ),
-                                              ( _1:7; _2:5; _3:1 ), ( _1:1; _2:3; _3:7 ),
-                                              ( _1:7; _2:3; _3:2 ), ( _1:2; _2:6; _3:7 ),
-                                              ( _1:7; _2:6; _3:4 ), ( _1:4; _2:5; _3:7 ) );
+     Fs :array [ 0..12-1 ] of TCardinal3D = ( ( A:0; B:4; _3:6 ), ( A:6; B:2; A:0 ),
+                                              ( A:0; B:1; _3:5 ), ( A:5; B:4; A:0 ),
+                                              ( A:0; B:2; _3:3 ), ( A:3; B:1; A:0 ),
+                                              ( A:7; B:5; _3:1 ), ( A:1; B:3; A:7 ),
+                                              ( A:7; B:3; _3:2 ), ( A:2; B:6; A:7 ),
+                                              ( A:7; B:6; _3:4 ), ( A:4; B:5; A:7 ) );
 begin
      //    2-------3
      //   /|      /|
@@ -132,13 +132,13 @@ end;
 プログラムオブジェクトの 生成 / 廃棄 には、[`glCreateProgram`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glCreateProgram.xml) / [`glDeleteProgram`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glDeleteProgram.xml) ルーチンを用いる。
 
 ```pascal
-constructor TGLProgram.Create;
+constructor TGLProgra.Create;
 begin
      ～
      _ID := glCreateProgram;
 end;
 
-destructor TGLProgram.Destroy;
+destructor TGLProgra.Destroy;
 begin
      glDeleteProgram( _ID );
      ～
@@ -160,7 +160,7 @@ end;
 正常にコンパイルできたかどうかは、[`glGetShaderiv`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glGetShader.xml) ルーチンを持ついて調べることができる（`warning`が出た程度では失敗したと見なされない）。
 
 ```pascal
-function TGLShader.GetState :Boolean;
+function TGLShader.GetStatus :Boolean;
 ～
 begin
      glGetShaderiv( _ID, GL_COMPILE_STATUS, @S );
@@ -171,7 +171,7 @@ end;
 エラーメッセージは [`glGetShaderInfoLog`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glGetShaderInfoLog.xml) ルーチンによって取得できる。メッセージの文字（バイト）数は [`glGetShaderiv`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glGetShader.xml) ルーチンによって予め取得できる。
 
 ```pascal
-function TGLShader.GetError :String;
+function TGLShader.GetErrors :String;
 ～
 begin
      glGetShaderiv( _ID, GL_INFO_LOG_LENGTH, @N );
@@ -184,12 +184,12 @@ end;
 プログラムオブジェクトへのシェーダオブジェクトの 追加 / 削除 は、[`glAttachShader`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glAttachShader.xml) / [`glDetachShader`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glDetachShader.xml) ルーチンを用いる。
 
 ```pascal
-procedure TGLProgram.Attach( const Shader_:TGLShader );
+procedure TGLProgra.Attach( const Shader_:TGLShader );
 begin
      glAttachShader( _ID, Shader_.ID );
 end;
 
-procedure TGLProgram.Detach( const Shader_:TGLShader );
+procedure TGLProgra.Detach( const Shader_:TGLShader );
 begin
      glDetachShader( _ID, Shader_.ID );
 end;
@@ -198,7 +198,7 @@ end;
 プログラムオブジェクトへ登録されたシェーダオブジェクトを[リンク](https://www.wikiwand.com/ja/%E5%8B%95%E7%9A%84%E3%83%AA%E3%83%B3%E3%82%AF)させるには、[`glLinkProgram`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glLinkProgram.xml) ルーチンを用いる。
 
 ```pascal
-procedure TGLProgram.Link;
+procedure TGLProgra.Link;
 begin
      glLinkProgram( _ID );
      ～
@@ -245,12 +245,12 @@ end;
 プログラムオブジェクトを利用可能にするには、[`glUseProgram`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glUseProgram.xml) ルーチンを用いる。
 
 ```pascal
-procedure TGLProgram.Use;
+procedure TGLProgra.Use;
 begin
      glUseProgram( _ID );
 end;
 
-class procedure TGLProgram.Unuse;
+class procedure TGLProgra.Unuse;
 begin
      glUseProgram( 0 );
 end;
