@@ -89,6 +89,8 @@ uses System.Math;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
+/////////////////////////////////////////////////////////////////////// メソッド
+
 procedure TForm1.EditShader( const Shader_:TGLShader; const Memo_:TMemo );
 begin
      if Memo_.IsFocused then
