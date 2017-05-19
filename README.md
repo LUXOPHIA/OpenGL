@@ -11,15 +11,15 @@ procedure TForm1.FormCreate(Sender: TObject);
 ～
 begin
      ～
-     _BufV := TGLBufferVS<TSingle3D>   .Create;
-     _BufC := TGLBufferVS<TAlphaColorF>.Create;
-     _BufF := TGLBufferI<TCardinal3D>  .Create;
-     MakeModel;
+     _BufV := TGLBufferVS<TSingle3D>   .Create( GL_STATIC_DRAW  );
+     _BufC := TGLBufferVS<TAlphaColorF>.Create( GL_STATIC_DRAW  );
+     _BufF := TGLBufferI<TCardinal3D>  .Create( GL_STATIC_DRAW  );
+     InitGeomet;
      ～
 end;
 ```
 ```pascal
-procedure TForm1.MakeModel;
+procedure TForm1.InitGeomet;
 const
      Ps :array [ 0..8-1 ] of TSingle3D = ( ( X:-1; Y:-1; Z:-1 ),
                                            ( X:+1; Y:-1; Z:-1 ),
