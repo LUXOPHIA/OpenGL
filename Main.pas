@@ -8,8 +8,11 @@ uses
   FMX.Controls.Presentation, FMX.StdCtrls,
   Winapi.OpenGL, Winapi.OpenGLext,
   LUX, LUX.D3,
-  LUX.GPU.OpenGL, LUX.GPU.OpenGL.GLView,
-  LUX.GPU.OpenGL.Buffer, LUX.GPU.OpenGL.Buffer.Vert, LUX.GPU.OpenGL.Buffer.Elem;
+  LUX.GPU.OpenGL,
+  LUX.GPU.OpenGL.GLView,
+  LUX.GPU.OpenGL.Buffer,
+  LUX.GPU.OpenGL.Buffer.Vert,
+  LUX.GPU.OpenGL.Buffer.Elem;
 
 type
   TForm1 = class(TForm)
@@ -30,8 +33,9 @@ type
     _BufferC :TGLBufferVS<TAlphaColorF>;
     _BufferF :TGLBufferI<TCardinal3D>;
     ///// メソッド
-    procedure MakeModel;
+    procedure InitGeomet;
     procedure DrawModel;
+    procedure InitRender;
   end;
 
 var
@@ -47,7 +51,7 @@ implementation //###############################################################
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TForm1.MakeModel;
+procedure TForm1.InitGeomet;
 const
      Ps :array [ 0..8-1 ] of TSingle3D = ( ( X:-1; Y:-1; Z:-1 ),
                                            ( X:+1; Y:-1; Z:-1 ),
@@ -85,6 +89,8 @@ begin
      _BufferF.Import( Fs );
 end;
 
+//------------------------------------------------------------------------------
+
 procedure TForm1.DrawModel;
 begin
      glEnableClientState( GL_VERTEX_ARRAY );
@@ -115,21 +121,13 @@ begin
      glDisableClientState( GL_COLOR_ARRAY  );
 end;
 
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+//------------------------------------------------------------------------------
 
-procedure TForm1.FormCreate(Sender: TObject);
+procedure TForm1.InitRender;
 const
      _N :Single = 0.1;
      _F :Single = 1000;
 begin
-     _Angle := 0;
-
-     _BufferV := TGLBufferVS<TSingle3D>   .Create( GL_STATIC_DRAW );
-     _BufferC := TGLBufferVS<TAlphaColorF>.Create( GL_STATIC_DRAW );
-     _BufferF := TGLBufferI<TCardinal3D>  .Create( GL_STATIC_DRAW );
-
-     MakeModel;
-
      GLView1.OnPaint := procedure
      begin
           glMatrixMode( GL_PROJECTION );
@@ -182,6 +180,20 @@ begin
             glRotatef( _Angle, 0, 1, 0 );
             DrawModel;
      end;
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+     _BufferV := TGLBufferVS<TSingle3D>   .Create( GL_STATIC_DRAW );
+     _BufferC := TGLBufferVS<TAlphaColorF>.Create( GL_STATIC_DRAW );
+     _BufferF := TGLBufferI<TCardinal3D>  .Create( GL_STATIC_DRAW );
+
+     InitGeomet;
+     InitRender;
+
+     _Angle := 0;
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
