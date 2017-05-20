@@ -403,8 +403,6 @@ end;
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
 procedure TForm1.FormCreate(Sender: TObject);
-var
-   I :Integer;
 begin
      _CameraUs := TGLBufferU<TCamera>      .Create( GL_STATIC_DRAW  );
 
