@@ -19,7 +19,7 @@ _Geomet;
 
 in TSendVF
 {
-  vec4 Col;
+  vec4 Nor;
 }
 _Sender;
 
@@ -31,7 +31,7 @@ out vec4 _FragColor;
 
 void main()
 {
-  _FragColor = _Sender.Col;
+  _FragColor = ( 1 + normalize( _Sender.Nor ) ) / 2;
 }
 
 //##############################################################################

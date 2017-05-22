@@ -18,22 +18,13 @@ _Geomet;
 ////////////////////////////////////////////////////////////////////////////////【入出力】
 
 in vec4 _Vertex_Pos;
-in vec4 _Vertex_Col;
-
-/*
-in struct TVertex
-{
-  vec4 Pos;
-  vec4 Col;
-}
-_Vertex;
-*/
+in vec4 _Vertex_Nor;
 
 //------------------------------------------------------------------------------
 
 out TSendVF
 {
-  vec4 Col;
+  vec4 Nor;
 }
 _Result;
 
@@ -41,12 +32,10 @@ _Result;
 
 void main()
 {
-  gl_Position = _Camera.Proj
-     * inverse( _Camera.Move )
-              * _Geomet.Move
-              * _Vertex_Pos;
+  gl_Position = _Camera.Proj * inverse( _Camera.Move )
+                                      * _Geomet.Move * _Vertex_Pos;
 
-  _Result.Col = _Vertex_Col;
+  _Result.Nor = transpose( inverse( _Geomet.Move ) ) * _Vertex_Nor;
 }
 
 //##############################################################################
