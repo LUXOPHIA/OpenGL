@@ -238,8 +238,8 @@ const
 
                     M := Tensor( T, BraidedTorus );
 
-                    Ps.Items[ I ] := M.AxisP;
-                    Ns.Items[ I ] := M.AxisZ;
+                    Ps[ I ] := M.AxisP;
+                    Ns[ I ] := M.AxisZ;
                end;
           end;
 
@@ -273,8 +273,8 @@ const
                     //  │      │
                     //  10───11
 
-                    Es.Items[ I ] := TCardinal3D.Create( I00, I10, I11 );  Inc( I );
-                    Es.Items[ I ] := TCardinal3D.Create( I11, I01, I00 );  Inc( I );
+                    Es[ I ] := TCardinal3D.Create( I00, I10, I11 );  Inc( I );
+                    Es[ I ] := TCardinal3D.Create( I11, I01, I00 );  Inc( I );
                end;
           end;
 
@@ -534,7 +534,7 @@ procedure TForm1.Timer1Timer(Sender: TObject);
 begin
      _Angle := _Angle + 1;
 
-     _GeometUs.Items[ 0 ] := TSingleM4.RotateY( DegToRad( _Angle ) );
+     _GeometUs[ 0 ] := TSingleM4.RotateY( DegToRad( _Angle ) );
 
      GLView1.Repaint;
      GLView2.Repaint;
