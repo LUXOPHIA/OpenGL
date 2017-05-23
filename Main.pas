@@ -7,7 +7,7 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.StdCtrls, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo, FMX.Objects, FMX.TabControl,
   Winapi.OpenGL, Winapi.OpenGLext,
-  LUX, LUX.D3, LUX.M4,
+  LUX, LUX.D1, LUX.D2, LUX.D3, LUX.M4,
   LUX.GPU.OpenGL,
   LUX.GPU.OpenGL.GLView,
   LUX.GPU.OpenGL.Buffer,
@@ -25,8 +25,9 @@ type
         Rectangle1: TRectangle;
           GLView1: TGLView;
           GLView2: TGLView;
-        GLView3: TGLView;
-        GLView4: TGLView;
+        Rectangle2: TRectangle;
+          GLView3: TGLView;
+          GLView4: TGLView;
         Timer1: TTimer;
       TabItemS: TTabItem;
         TabControlS: TTabControl;
@@ -61,7 +62,7 @@ type
     { public 宣言 }
     _CameraUs :TGLBufferU<TCamera>;
     _GeometP  :TGLBufferVS<TSingle3D>;
-    _GeometC  :TGLBufferVS<TAlphaColorF>;
+    _GeometN  :TGLBufferVS<TSingle3D>;
     _GeometF  :TGLBufferI<TCardinal3D>;
     _GeometUs :TGLBufferU<TSingleM4>;
     _PlugerV  :TGLPlugerV;
@@ -132,7 +133,7 @@ begin
 
           with C do
           begin
-               Proj := TSingleM4.ProjOrth( -3, +3, -2, +2, _N, _F );
+               Proj := TSingleM4.ProjOrth( -3, +3, -3, +3, _N, _F );
 
                Move := TSingleM4.Translate( 0, +5, 0 )
                      * TSingleM4.RotateX( DegToRad( -90 ) );
@@ -142,30 +143,29 @@ begin
 
           with C do
           begin
-               Proj := TSingleM4.ProjOrth( -4, +4, -2, +2, _N, _F );
+               Proj := TSingleM4.ProjOrth( -3, +3, -2, +2, _N, _F );
 
-               Move := TSingleM4.Translate( 0, 0, +5 );
+               Move := TSingleM4.RotateX( DegToRad( -45 ) )
+                     * TSingleM4.Translate( 0, 0, +5 );
           end;
 
           Items[ 1 ] := C;
 
           with C do
           begin
-               Proj := TSingleM4.ProjOrth( -3, +3, -3, +3, _N, _F );
+               Proj := TSingleM4.ProjOrth( -3, +3, -1.5, +1.5, _N, _F );
 
-               Move := TSingleM4.Translate( -5, 0, 0 )
-                     * TSingleM4.RotateY( DegToRad( -90 ) );
+               Move := TSingleM4.Translate( 0, 0, +5 );
           end;
 
           Items[ 2 ] := C;
 
           with C do
           begin
-               Proj := TSingleM4.ProjPers( -4/8*_N, +4/8*_N, -3/8*_N, +3/8*_N, _N, _F );
+               Proj := TSingleM4.ProjPers( -4/4*_N, +4/4*_N, -3/4*_N, +3/4*_N, _N, _F );
 
-               Move := TSingleM4.RotateY( DegToRad( +30 ) )
-                     * TSingleM4.RotateX( DegToRad( -30 ) )
-                     * TSingleM4.Translate( 0, 0, +8 );
+               Move := TSingleM4.RotateX( DegToRad( -45 ) )
+                     * TSingleM4.Translate( 0, -0.3, +3 );
           end;
 
           Items[ 3 ] := C;
@@ -174,63 +174,116 @@ end;
 
 //------------------------------------------------------------------------------
 
+function BraidedTorus( const T_:TdSingle2D ) :TdSingle3D;
+const
+     LoopR :Single = 1.00;  LoopN :Integer = 3; 
+     TwisR :Single = 0.50;  TwisN :Integer = 5;
+     PipeR :Single = 0.25;
+var
+   T :TdSingle2D;
+   cL, cT, cP, TX, PX, R,
+   sL, sT, sP, TY, PY, H :TdSingle;
+begin
+     T := Pi2 * T_;
+
+     CosSin( LoopN * T.U, cL, sL );
+     CosSin( TwisN * T.U, cT, sT );
+     CosSin(         T.V, cP, sP );
+
+     TX := TwisR * cT;  PX := PipeR * cP;
+     TY := TwisR * sT;  PY := PipeR * sP;
+
+     R := LoopR * ( 1 + TX ) + PX  ;
+     H := LoopR * (     TY   + PY );
+
+     with Result do
+     begin
+          X := R * cL;
+          Y := H     ;
+          Z := R * sL;
+     end;
+end;
+
 procedure TForm1.InitGeomet;
 const
-     Ps :array [ 0..8-1 ] of TSingle3D = (
-          ( X:-1; Y:-1; Z:-1 ), ( X:+1; Y:-1; Z:-1 ),
-          ( X:-1; Y:+1; Z:-1 ), ( X:+1; Y:+1; Z:-1 ),
-          ( X:-1; Y:-1; Z:+1 ), ( X:+1; Y:-1; Z:+1 ),
-          ( X:-1; Y:+1; Z:+1 ), ( X:+1; Y:+1; Z:+1 ) );
-begin
-     //    2-------3
-     //   /|      /|
-     //  6-------7 |
-     //  | |     | |
-     //  | 0-----|-1
-     //  |/      |/
-     //  4-------5
-
-     with _GeometP do
+     DivX :Integer = 1100;
+     DivY :Integer =   50;
+//·························
+     function XYtoI( const X_,Y_:Integer ) :Integer;
      begin
-          Import( Ps );
+          Result := ( DivX + 1 ) * Y_ + X_;
      end;
-
-     with _GeometC do
+     //····················
+     procedure MakeVerts;
+     var
+        X, Y, I :Integer;
+        Ps, Ns :TGLBufferData<TSingle3D>;
+        T :TSingle2D;
+        M :TSingleM4;
      begin
-          Count := 8{Poin};
+          _GeometP.Count := ( DivY + 1 ) * ( DivX + 1 );
+          _GeometN.Count := ( DivY + 1 ) * ( DivX + 1 );
 
-          Items[ 0 ] := TAlphaColorF.Create( 0, 0, 0 );
-          Items[ 1 ] := TAlphaColorF.Create( 1, 0, 0 );
-          Items[ 2 ] := TAlphaColorF.Create( 0, 1, 0 );
-          Items[ 3 ] := TAlphaColorF.Create( 1, 1, 0 );
-          Items[ 4 ] := TAlphaColorF.Create( 0, 0, 1 );
-          Items[ 5 ] := TAlphaColorF.Create( 1, 0, 1 );
-          Items[ 6 ] := TAlphaColorF.Create( 0, 1, 1 );
-          Items[ 7 ] := TAlphaColorF.Create( 1, 1, 1 );
-     end;
+          Ps := _GeometP.Map( GL_WRITE_ONLY );
+          Ns := _GeometN.Map( GL_WRITE_ONLY );
 
-     with _GeometF do
-     begin
-          Count := 12{Face};
-
-          with Map( GL_WRITE_ONLY ) do
+          for Y := 0 to DivY do
           begin
-               Items[  0 ] := TCardinal3D.Create( 0, 4, 6 );
-               Items[  1 ] := TCardinal3D.Create( 6, 2, 0 );
-               Items[  2 ] := TCardinal3D.Create( 0, 1, 5 );
-               Items[  3 ] := TCardinal3D.Create( 5, 4, 0 );
-               Items[  4 ] := TCardinal3D.Create( 0, 2, 3 );
-               Items[  5 ] := TCardinal3D.Create( 3, 1, 0 );
-               Items[  6 ] := TCardinal3D.Create( 7, 5, 1 );
-               Items[  7 ] := TCardinal3D.Create( 1, 3, 7 );
-               Items[  8 ] := TCardinal3D.Create( 7, 3, 2 );
-               Items[  9 ] := TCardinal3D.Create( 2, 6, 7 );
-               Items[ 10 ] := TCardinal3D.Create( 7, 6, 4 );
-               Items[ 11 ] := TCardinal3D.Create( 4, 5, 7 );
+               T.V := Y / DivY;
+               for X := 0 to DivX do
+               begin
+                    T.U := X / DivX;
+
+                    I := XYtoI( X, Y );
+
+                    M := Tensor( T, BraidedTorus );
+
+                    Ps.Items[ I ] := M.AxisP;
+                    Ns.Items[ I ] := M.AxisZ;
+               end;
           end;
 
-          Unmap;
+          _GeometP.Unmap;
+          _GeometN.Unmap;
      end;
+     //····················
+     procedure MakeElems;
+     var
+        X0, Y0, X1, Y1, I, I00, I01, I10, I11 :Integer;
+        Es :TGLBufferData<TCardinal3D>;
+     begin
+          _GeometF.Count := 2 * DivY * DivX;
+
+          Es := _GeometF.Map( GL_WRITE_ONLY );
+
+          I := 0;
+          for Y0 := 0 to DivY-1 do
+          begin
+               Y1 := Y0 + 1;
+               for X0 := 0 to DivX-1 do
+               begin
+                    X1 := X0 + 1;
+
+                    I00 := XYtoI( X0, Y0 );  I01 := XYtoI( X1, Y0 );
+                    I10 := XYtoI( X0, Y1 );  I11 := XYtoI( X1, Y1 );
+
+                    //  00───01
+                    //  │      │
+                    //  │      │
+                    //  │      │
+                    //  10───11
+
+                    Es.Items[ I ] := TCardinal3D.Create( I00, I10, I11 );  Inc( I );
+                    Es.Items[ I ] := TCardinal3D.Create( I11, I01, I00 );  Inc( I );
+               end;
+          end;
+
+          _GeometF.Unmap;
+     end;
+//·························
+begin
+     MakeVerts;
+     MakeElems;
 
      with _GeometUs do
      begin
@@ -245,7 +298,7 @@ begin
      with _PlugerV do
      begin
           Add( 0{Port}, _GeometP );
-          Add( 1{Port}, _GeometC );
+          Add( 1{Port}, _GeometN );
      end;
 
      with _PlugerU1 do
@@ -313,7 +366,7 @@ begin
           with VerPorts do
           begin
                Add( 0{Port}, '_Vertex_Pos', 3, GL_FLOAT, 0 );
-               Add( 1{Port}, '_Vertex_Col', 4, GL_FLOAT, 0 );
+               Add( 1{Port}, '_Vertex_Nor', 3, GL_FLOAT, 0 );
           end;
 
           with UniPorts do
@@ -404,24 +457,24 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-     _CameraUs := TGLBufferU<TCamera>      .Create( GL_STATIC_DRAW  );
+     _CameraUs := TGLBufferU<TCamera>    .Create( GL_STATIC_DRAW  );
 
-     _GeometP  := TGLBufferVS<TSingle3D>   .Create( GL_STATIC_DRAW  );
-     _GeometC  := TGLBufferVS<TAlphaColorF>.Create( GL_STATIC_DRAW  );
-     _GeometF  := TGLBufferI<TCardinal3D>  .Create( GL_STATIC_DRAW  );
-     _GeometUs := TGLBufferU<TSingleM4>    .Create( GL_DYNAMIC_DRAW );
+     _GeometP  := TGLBufferVS<TSingle3D> .Create( GL_STATIC_DRAW  );
+     _GeometN  := TGLBufferVS<TSingle3D> .Create( GL_STATIC_DRAW  );
+     _GeometF  := TGLBufferI<TCardinal3D>.Create( GL_STATIC_DRAW  );
+     _GeometUs := TGLBufferU<TSingleM4>  .Create( GL_DYNAMIC_DRAW );
 
-     _PlugerV  := TGLPlugerV               .Create;
+     _PlugerV  := TGLPlugerV             .Create;
 
-     _PlugerU1 := TGLPlugerU               .Create;
-     _PlugerU2 := TGLPlugerU               .Create;
-     _PlugerU3 := TGLPlugerU               .Create;
-     _PlugerU4 := TGLPlugerU               .Create;
+     _PlugerU1 := TGLPlugerU             .Create;
+     _PlugerU2 := TGLPlugerU             .Create;
+     _PlugerU3 := TGLPlugerU             .Create;
+     _PlugerU4 := TGLPlugerU             .Create;
 
-     _ShaderV  := TGLShaderV               .Create;
-     _ShaderF  := TGLShaderF               .Create;
+     _ShaderV  := TGLShaderV             .Create;
+     _ShaderF  := TGLShaderF             .Create;
 
-     _Engine   := TGLEngine                .Create;
+     _Engine   := TGLEngine              .Create;
 
      //////////
 
@@ -468,7 +521,7 @@ begin
      _PlugerV .DisposeOf;
 
      _GeometP .DisposeOf;
-     _GeometC .DisposeOf;
+     _GeometN .DisposeOf;
      _GeometF .DisposeOf;
      _GeometUs.DisposeOf;
 
