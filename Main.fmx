@@ -43,48 +43,26 @@ object Form1: TForm1
       Text = 'View'
       ExplicitSize.cx = 46.000000000000000000
       ExplicitSize.cy = 26.000000000000000000
-      inline GLView3: TGLView
-        Align = Left
-        Margins.Left = 10.000000000000000000
-        Margins.Top = 5.000000000000000000
-        Margins.Right = 5.000000000000000000
-        Margins.Bottom = 10.000000000000000000
-        Position.X = 10.000000000000000000
-        Position.Y = 220.000000000000000000
-        Size.Width = 300.000000000000000000
-        Size.Height = 300.000000000000000000
-        Size.PlatformDefault = False
-      end
-      inline GLView4: TGLView
-        Align = Client
-        Margins.Left = 5.000000000000000000
-        Margins.Top = 5.000000000000000000
-        Margins.Right = 10.000000000000000000
-        Margins.Bottom = 10.000000000000000000
-        Size.Width = 400.000000000000000000
-        Size.Height = 300.000000000000000000
-        Size.PlatformDefault = False
-      end
       object Timer1: TTimer
-        Interval = 10
+        Interval = 1
         OnTimer = Timer1Timer
         Left = 45
         Top = 95
       end
       object Rectangle1: TRectangle
-        Align = Top
+        Align = Left
         Fill.Kind = None
         Margins.Left = 5.000000000000000000
         Margins.Top = 5.000000000000000000
-        Margins.Right = 5.000000000000000000
+        Margins.Bottom = 5.000000000000000000
         Position.X = 5.000000000000000000
         Position.Y = 5.000000000000000000
-        Size.Width = 720.000000000000000000
-        Size.Height = 210.000000000000000000
+        Size.Width = 310.000000000000000000
+        Size.Height = 520.000000000000000000
         Size.PlatformDefault = False
         Stroke.Kind = None
         inline GLView1: TGLView
-          Align = Left
+          Align = Top
           Margins.Left = 5.000000000000000000
           Margins.Top = 5.000000000000000000
           Margins.Right = 5.000000000000000000
@@ -92,7 +70,7 @@ object Form1: TForm1
           Position.X = 5.000000000000000000
           Position.Y = 5.000000000000000000
           Size.Width = 300.000000000000000000
-          Size.Height = 200.000000000000000000
+          Size.Height = 300.000000000000000000
           Size.PlatformDefault = False
         end
         inline GLView2: TGLView
@@ -101,8 +79,41 @@ object Form1: TForm1
           Margins.Top = 5.000000000000000000
           Margins.Right = 5.000000000000000000
           Margins.Bottom = 5.000000000000000000
+          Size.Width = 300.000000000000000000
+          Size.Height = 200.000000000000000000
+          Size.PlatformDefault = False
+        end
+      end
+      object Rectangle2: TRectangle
+        Align = Client
+        Fill.Kind = None
+        Margins.Top = 5.000000000000000000
+        Margins.Right = 5.000000000000000000
+        Margins.Bottom = 5.000000000000000000
+        Size.Width = 410.000000000000000000
+        Size.Height = 520.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Kind = None
+        inline GLView3: TGLView
+          Align = Top
+          Margins.Left = 5.000000000000000000
+          Margins.Top = 5.000000000000000000
+          Margins.Right = 5.000000000000000000
+          Margins.Bottom = 5.000000000000000000
+          Position.X = 5.000000000000000000
+          Position.Y = 5.000000000000000000
           Size.Width = 400.000000000000000000
           Size.Height = 200.000000000000000000
+          Size.PlatformDefault = False
+        end
+        inline GLView4: TGLView
+          Align = Client
+          Margins.Left = 5.000000000000000000
+          Margins.Top = 5.000000000000000000
+          Margins.Right = 5.000000000000000000
+          Margins.Bottom = 5.000000000000000000
+          Size.Width = 400.000000000000000000
+          Size.Height = 300.000000000000000000
           Size.PlatformDefault = False
         end
       end
