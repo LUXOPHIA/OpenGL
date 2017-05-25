@@ -44,7 +44,7 @@ object Form1: TForm1
       ExplicitSize.cx = 46.000000000000000000
       ExplicitSize.cy = 26.000000000000000000
       object Timer1: TTimer
-        Interval = 1
+        Interval = 10
         OnTimer = Timer1Timer
         Left = 45
         Top = 95

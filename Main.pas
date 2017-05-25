@@ -14,6 +14,8 @@ uses
   LUX.GPU.OpenGL.Buffer.Unif,
   LUX.GPU.OpenGL.Buffer.Vert,
   LUX.GPU.OpenGL.Buffer.Elem,
+  LUX.GPU.OpenGL.Imager,
+  LUX.GPU.OpenGL.Imager.FMX,
   LUX.GPU.OpenGL.Pluger,
   LUX.GPU.OpenGL.Shader,
   LUX.GPU.OpenGL.Engine;
@@ -63,19 +65,24 @@ type
     _CameraUs :TGLBufferU<TCamera>;
     _GeometP  :TGLBufferVS<TSingle3D>;
     _GeometN  :TGLBufferVS<TSingle3D>;
-    _GeometF  :TGLBufferI<TCardinal3D>;
+    _GeometT  :TGLBufferVS<TSingle2D>;
+    _GeometE  :TGLBufferE32;
     _GeometUs :TGLBufferU<TSingleM4>;
+    _Sample   :TGLSample;
+    _Imager   :TGLImager2D_RGBA;
     _PlugerV  :TGLPlugerV;
     _PlugerU1 :TGLPlugerU;
     _PlugerU2 :TGLPlugerU;
     _PlugerU3 :TGLPlugerU;
     _PlugerU4 :TGLPlugerU;
+    _PlugerI  :TGLPlugerI;
     _ShaderV  :TGLShaderV;
     _ShaderF  :TGLShaderF;
     _Engine   :TGLEngine;
     ///// メソッド
     procedure InitCamera;
     procedure InitGeomet;
+    procedure InitImager;
     procedure InitPluger;
     procedure InitShader;
     procedure InitEngine;
@@ -216,16 +223,21 @@ const
      //····················
      procedure MakeVerts;
      var
-        X, Y, I :Integer;
+        C, X, Y, I :Integer;
         Ps, Ns :TGLBufferData<TSingle3D>;
+        Ts :TGLBufferData<TSingle2D>;
         T :TSingle2D;
         M :TSingleM4;
      begin
-          _GeometP.Count := ( DivY + 1 ) * ( DivX + 1 );
-          _GeometN.Count := ( DivY + 1 ) * ( DivX + 1 );
+          C := ( DivY + 1 ) * ( DivX + 1 );
+
+          _GeometP.Count := C;
+          _GeometN.Count := C;
+          _GeometT.Count := C;
 
           Ps := _GeometP.Map( GL_WRITE_ONLY );
           Ns := _GeometN.Map( GL_WRITE_ONLY );
+          Ts := _GeometT.Map( GL_WRITE_ONLY );
 
           for Y := 0 to DivY do
           begin
@@ -236,6 +248,8 @@ const
 
                     I := XYtoI( X, Y );
 
+                    Ts[ I ] := T;
+
                     M := Tensor( T, BraidedTorus );
 
                     Ps[ I ] := M.AxisP;
@@ -245,6 +259,7 @@ const
 
           _GeometP.Unmap;
           _GeometN.Unmap;
+          _GeometT.Unmap;
      end;
      //····················
      procedure MakeElems;
@@ -252,9 +267,9 @@ const
         X0, Y0, X1, Y1, I, I00, I01, I10, I11 :Integer;
         Es :TGLBufferData<TCardinal3D>;
      begin
-          _GeometF.Count := 2 * DivY * DivX;
+          _GeometE.Count := 2 * DivY * DivX;
 
-          Es := _GeometF.Map( GL_WRITE_ONLY );
+          Es := _GeometE.Map( GL_WRITE_ONLY );
 
           I := 0;
           for Y0 := 0 to DivY-1 do
@@ -278,7 +293,7 @@ const
                end;
           end;
 
-          _GeometF.Unmap;
+          _GeometE.Unmap;
      end;
 //·························
 begin
@@ -293,36 +308,49 @@ end;
 
 //------------------------------------------------------------------------------
 
+procedure TForm1.InitImager;
+begin
+     _Imager.LoadFromFile( '..\..\_DATA\Texture.png' );
+end;
+
+//------------------------------------------------------------------------------
+
 procedure TForm1.InitPluger;
 begin
      with _PlugerV do
      begin
-          Add( 0{Port}, _GeometP );
-          Add( 1{Port}, _GeometN );
+          Add( 0{BinP}, _GeometP{Buff} );
+          Add( 1{BinP}, _GeometN{Buff} );
+          Add( 2{BinP}, _GeometT{Buff} );
      end;
 
      with _PlugerU1 do
      begin
-          Add( 0{Port}, _CameraUs, 0{Offs} );
-          Add( 1{Port}, _GeometUs          );
+          Add( 0{BinP}, _CameraUs{Buff}, 0{Offs} );
+          Add( 1{BinP}, _GeometUs{Buff}          );
      end;
 
      with _PlugerU2 do
      begin
-          Add( 0{Port}, _CameraUs, 1{Offs} );
-          Add( 1{Port}, _GeometUs          );
+          Add( 0{BinP}, _CameraUs{Buff}, 1{Offs} );
+          Add( 1{BinP}, _GeometUs{Buff}          );
      end;
 
      with _PlugerU3 do
      begin
-          Add( 0{Port}, _CameraUs, 2{Offs} );
-          Add( 1{Port}, _GeometUs          );
+          Add( 0{BinP}, _CameraUs{Buff}, 2{Offs} );
+          Add( 1{BinP}, _GeometUs{Buff}          );
      end;
 
      with _PlugerU4 do
      begin
-          Add( 0{Port}, _CameraUs, 3{Offs} );
-          Add( 1{Port}, _GeometUs          );
+          Add( 0{BinP}, _CameraUs{Buff}, 3{Offs} );
+          Add( 1{BinP}, _GeometUs{Buff}          );
+     end;
+
+     with _PlugerI do
+     begin
+          Add( 0{BinP}, _Sample{Samp}, _Imager{Imag} );
      end;
 end;
 
@@ -359,25 +387,31 @@ begin
      begin
           with Shaders do
           begin
-               Add( _ShaderV );
-               Add( _ShaderF );
+               Add( _ShaderV{Shad} );
+               Add( _ShaderF{Shad} );
           end;
 
-          with VerPorts do
+          with VerBufs do
           begin
-               Add( 0{Port}, '_Vertex_Pos', 3, GL_FLOAT, 0 );
-               Add( 1{Port}, '_Vertex_Nor', 3, GL_FLOAT, 0 );
+               Add( 0{BinP}, '_Vertex_Pos'{Name}, 3{EleN}, GL_FLOAT{EleT} );
+               Add( 1{BinP}, '_Vertex_Nor'{Name}, 3{EleN}, GL_FLOAT{EleT} );
+               Add( 2{BinP}, '_Vertex_Tex'{Name}, 2{EleN}, GL_FLOAT{EleT} );
           end;
 
-          with UniPorts do
+          with UniBufs do
           begin
-               Add( 0{Port}, 'TCamera' );
-               Add( 1{Port}, 'TGeomet' );
+               Add( 0{BinP}, 'TCamera'{Name} );
+               Add( 1{BinP}, 'TGeomet'{Name} );
           end;
 
-          with FraPorts do
+          with Imagers do
           begin
-               Add( 0{Port}, '_FragColor' );
+               Add( 0{BinP}, '_Imager'{Name} );
+          end;
+
+          with Framers do
+          begin
+               Add( 0{BinP}, '_Frag_Col'{Name} );
           end;
 
           OnLinked := procedure
@@ -391,21 +425,19 @@ end;
 
 procedure TForm1.DrawModel;
 begin
-     with _Engine do
-     begin
-          Use;
+     _PlugerI.Use;
 
-          with _PlugerV do  // TGLEngine needs to be used before TGLPulgerV.
-          begin
-               Use;
+       _Engine.Use;
 
-                 _GeometF.Draw;
+         _PlugerV.Use;  // TGLPulgerV.Use method must call after TGLEngine.Use method!
 
-               Unuse;
-          end;
+           _GeometE.Draw;
 
-          Unuse;
-     end;
+         _PlugerV.Unuse;
+
+       _Engine.Unuse;
+
+     _PlugerI.Unuse;
 end;
 
 //------------------------------------------------------------------------------
@@ -457,29 +489,34 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-     _CameraUs := TGLBufferU<TCamera>    .Create( GL_STATIC_DRAW  );
+     _CameraUs := TGLBufferU<TCamera>   .Create( GL_STATIC_DRAW  );
 
-     _GeometP  := TGLBufferVS<TSingle3D> .Create( GL_STATIC_DRAW  );
-     _GeometN  := TGLBufferVS<TSingle3D> .Create( GL_STATIC_DRAW  );
-     _GeometF  := TGLBufferI<TCardinal3D>.Create( GL_STATIC_DRAW  );
-     _GeometUs := TGLBufferU<TSingleM4>  .Create( GL_DYNAMIC_DRAW );
+     _GeometP  := TGLBufferVS<TSingle3D>.Create( GL_STATIC_DRAW  );
+     _GeometN  := TGLBufferVS<TSingle3D>.Create( GL_STATIC_DRAW  );
+     _GeometT  := TGLBufferVS<TSingle2D>.Create( GL_STATIC_DRAW  );
+     _GeometE  := TGLBufferE32          .Create( GL_STATIC_DRAW  );
+     _GeometUs := TGLBufferU<TSingleM4> .Create( GL_DYNAMIC_DRAW );
 
-     _PlugerV  := TGLPlugerV             .Create;
+     _Sample   := TGLSample             .Create;
+     _Imager   := TGLImager2D_RGBA      .Create;
 
-     _PlugerU1 := TGLPlugerU             .Create;
-     _PlugerU2 := TGLPlugerU             .Create;
-     _PlugerU3 := TGLPlugerU             .Create;
-     _PlugerU4 := TGLPlugerU             .Create;
+     _PlugerV  := TGLPlugerV            .Create;
+     _PlugerU1 := TGLPlugerU            .Create;
+     _PlugerU2 := TGLPlugerU            .Create;
+     _PlugerU3 := TGLPlugerU            .Create;
+     _PlugerU4 := TGLPlugerU            .Create;
+     _PlugerI  := TGLPlugerI            .Create;
 
-     _ShaderV  := TGLShaderV             .Create;
-     _ShaderF  := TGLShaderF             .Create;
+     _ShaderV  := TGLShaderV            .Create;
+     _ShaderF  := TGLShaderF            .Create;
 
-     _Engine   := TGLEngine              .Create;
+     _Engine   := TGLEngine             .Create;
 
      //////////
 
      InitCamera;
      InitGeomet;
+     InitImager;
      InitPluger;
      InitShader;
      InitEngine;
@@ -513,16 +550,20 @@ begin
      _ShaderV .DisposeOf;
      _ShaderF .DisposeOf;
 
+     _PlugerV .DisposeOf;
      _PlugerU1.DisposeOf;
      _PlugerU2.DisposeOf;
      _PlugerU3.DisposeOf;
      _PlugerU4.DisposeOf;
+     _PlugerI .DisposeOf;
 
-     _PlugerV .DisposeOf;
+     _Sample  .DisposeOf;
+     _Imager  .DisposeOf;
 
      _GeometP .DisposeOf;
      _GeometN .DisposeOf;
-     _GeometF .DisposeOf;
+     _GeometT .DisposeOf;
+     _GeometE .DisposeOf;
      _GeometUs.DisposeOf;
 
      _CameraUs.DisposeOf;
