@@ -15,23 +15,27 @@ layout(std140) uniform TGeomet
 }
 _Geomet;
 
+uniform sampler2D _Imager;
+
 ////////////////////////////////////////////////////////////////////////////////【入出力】
 
 in TSendVF
 {
+  vec4 Pos;
   vec4 Nor;
+  vec2 Tex;
 }
 _Sender;
 
 //------------------------------------------------------------------------------
 
-out vec4 _FragColor;
+out vec4 _Frag_Col;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 void main()
 {
-  _FragColor = ( 1 + normalize( _Sender.Nor ) ) / 2;
+  _Frag_Col = ( 1 + normalize( _Sender.Nor ) ) / 2 * texture( _Imager, _Sender.Tex );
 }
 
 //##############################################################################
