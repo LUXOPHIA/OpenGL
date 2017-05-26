@@ -14,6 +14,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TByte3D = record
      private
      public
+       constructor Create( const V_:Byte ); overload;
+       constructor Create( const X_,Y_,Z_:Byte ); overload;
      case Byte of
       0:( _ :array [ 1..3 ] of Byte; );
       1:(  X :Byte;
@@ -22,9 +24,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
       2:( _1 :Byte;
           _2 :Byte;
           _3 :Byte;                  );
-      3:(  A :Byte;
-           B :Byte;
-           C :Byte;                  );
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TShortint3D
@@ -32,6 +31,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TShortint3D = record
      private
      public
+       constructor Create( const V_:Shortint ); overload;
+       constructor Create( const X_,Y_,Z_:Shortint ); overload;
      case Byte of
       0:( _ :array [ 1..3 ] of Shortint; );
       1:(  X :Shortint;
@@ -40,9 +41,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
       2:( _1 :Shortint;
           _2 :Shortint;
           _3 :Shortint;                  );
-      3:(  A :Shortint;
-           B :Shortint;
-           C :Shortint;                  );
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TWord3D
@@ -50,6 +48,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TWord3D = record
      private
      public
+       constructor Create( const V_:Word ); overload;
+       constructor Create( const X_,Y_,Z_:Word ); overload;
      case Byte of
       0:( _ :array [ 1..3 ] of Word; );
       1:(  X :Word;
@@ -58,9 +58,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
       2:( _1 :Word;
           _2 :Word;
           _3 :Word;                  );
-      3:(  A :Word;
-           B :Word;
-           C :Word;                  );
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSmallint3D
@@ -68,6 +65,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TSmallint3D = record
      private
      public
+       constructor Create( const V_:Smallint ); overload;
+       constructor Create( const X_,Y_,Z_:Smallint ); overload;
      case Byte of
       0:( _ :array [ 1..3 ] of Smallint; );
       1:(  X :Smallint;
@@ -76,9 +75,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
       2:( _1 :Smallint;
           _2 :Smallint;
           _3 :Smallint;                  );
-      3:(  A :Smallint;
-           B :Smallint;
-           C :Smallint;                  );
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TCardinal3D
@@ -86,6 +82,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TCardinal3D = record
      private
      public
+       constructor Create( const V_:Cardinal ); overload;
+       constructor Create( const X_,Y_,Z_:Cardinal ); overload;
      case Byte of
       0:( _ :array [ 1..3 ] of Cardinal; );
       1:(  X :Cardinal;
@@ -94,9 +92,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
       2:( _1 :Cardinal;
           _2 :Cardinal;
           _3 :Cardinal;                  );
-      3:(  A :Cardinal;
-           B :Cardinal;
-           C :Cardinal;                  );
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TInteger3D
@@ -104,6 +99,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TInteger3D = record
      private
      public
+       constructor Create( const V_:Integer ); overload;
+       constructor Create( const X_,Y_,Z_:Integer ); overload;
      case Byte of
       0:( _ :array [ 1..3 ] of Integer; );
       1:(  X :Integer;
@@ -112,9 +109,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
       2:( _1 :Integer;
           _2 :Integer;
           _3 :Integer;                  );
-      3:(  A :Integer;
-           B :Integer;
-           C :Integer;                  );
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSingle3D
@@ -134,10 +128,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const V_:Single ); overload;
        constructor Create( const X_,Y_,Z_:Single ); overload;
        ///// プロパティ
-       property V[ const I_:Integer ] :Single    read GetV      write SetV     ; default;
-       property Siz2                  :Single    read GetSiz2   write SetSiz2  ;
-       property Size                  :Single    read GetSize   write SetSize  ;
-       property Unitor                :TSingle3D read GetUnitor write SetUnitor;
+       property _s[ const I_:Integer ] :Single    read GetV      write SetV     ; default;
+       property Siz2                   :Single    read GetSiz2   write SetSiz2  ;
+       property Size                   :Single    read GetSize   write SetSize  ;
+       property Unitor                 :TSingle3D read GetUnitor write SetUnitor;
        ///// 演算子
        class operator Negative( const V_:TSingle3D ) :TSingle3D; inline;
        class operator Positive( const V_:TSingle3D ) :TSingle3D; inline;
@@ -173,9 +167,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
       2:( _1 :Single;
           _2 :Single;
           _3 :Single;                  );
-      3:(  A :Single;
-           B :Single;
-           C :Single;                  );
      end;
 
      TSinglePos3D = TSingle3D;
@@ -198,10 +189,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const V_:Double ); overload;
        constructor Create( const X_,Y_,Z_:Double ); overload;
        ///// プロパティ
-       property V[ const I_:Integer ] :Double    read GetV      write SetV     ; default;
-       property Siz2                  :Double    read GetSiz2   write SetSiz2  ;
-       property Size                  :Double    read GetSize   write SetSize  ;
-       property Unitor                :TDouble3D read GetUnitor write SetUnitor;
+       property _s[ const I_:Integer ] :Double    read GetV      write SetV     ; default;
+       property Siz2                   :Double    read GetSiz2   write SetSiz2  ;
+       property Size                   :Double    read GetSize   write SetSize  ;
+       property Unitor                 :TDouble3D read GetUnitor write SetUnitor;
        ///// 演算子
        class operator Negative( const V_:TDouble3D ) :TDouble3D; inline;
        class operator Positive( const V_:TDouble3D ) :TDouble3D; inline;
@@ -237,9 +228,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
       2:( _1 :Double;
           _2 :Double;
           _3 :Double;                  );
-      3:(  A :Double;
-           B :Double;
-           C :Double;                  );
      end;
 
      TDoublePos3D = TDouble3D;
@@ -265,12 +253,12 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
        constructor Create( const X_,Y_,Z_:TdSingle );
        ///// プロパティ
-       property V[ const I_:Integer ] :TdSingle   read GetV      write SetV     ; default;
-       property o                     :TSingle3D  read Geto      write Seto     ;
-       property d                     :TSingle3D  read Getd      write Setd     ;
-       property Siz2                  :TdSingle   read GetSiz2   write SetSiz2  ;
-       property Size                  :TdSingle   read GetSize   write SetSize  ;
-       property Unitor                :TdSingle3D read GetUnitor write SetUnitor;
+       property _s[ const I_:Integer ] :TdSingle   read GetV      write SetV     ; default;
+       property o                      :TSingle3D  read Geto      write Seto     ;
+       property d                      :TSingle3D  read Getd      write Setd     ;
+       property Siz2                   :TdSingle   read GetSiz2   write SetSiz2  ;
+       property Size                   :TdSingle   read GetSize   write SetSize  ;
+       property Unitor                 :TdSingle3D read GetUnitor write SetUnitor;
        ///// 演算子
        class operator Negative( const V_:TdSingle3D ) :TdSingle3D; inline;
        class operator Positive( const V_:TdSingle3D ) :TdSingle3D; inline;
@@ -290,9 +278,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
       2:( _1 :TdSingle;
           _2 :TdSingle;
           _3 :TdSingle;                  );
-      3:(  A :TdSingle;
-           B :TdSingle;
-           C :TdSingle;                  );
      end;
 
      TdSinglePos3D = TdSingle3D;
@@ -318,12 +303,12 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
        constructor Create( const X_,Y_,Z_:TdDouble );
        ///// プロパティ
-       property V[ const I_:Integer ] :TdDouble   read GetV      write SetV     ; default;
-       property o                     :TDouble3D  read Geto      write Seto     ;
-       property d                     :TDouble3D  read Getd      write Setd     ;
-       property Siz2                  :TdDouble   read GetSiz2   write SetSiz2  ;
-       property Size                  :TdDouble   read GetSize   write SetSize  ;
-       property Unitor                :TdDouble3D read GetUnitor write SetUnitor;
+       property _s[ const I_:Integer ] :TdDouble   read GetV      write SetV     ; default;
+       property o                      :TDouble3D  read Geto      write Seto     ;
+       property d                      :TDouble3D  read Getd      write Setd     ;
+       property Siz2                   :TdDouble   read GetSiz2   write SetSiz2  ;
+       property Size                   :TdDouble   read GetSize   write SetSize  ;
+       property Unitor                 :TdDouble3D read GetUnitor write SetUnitor;
        ///// 演算子
        class operator Negative( const V_:TdDouble3D ) :TdDouble3D; inline;
        class operator Positive( const V_:TdDouble3D ) :TdDouble3D; inline;
@@ -343,21 +328,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
       2:( _1 :TdDouble;
           _2 :TdDouble;
           _3 :TdDouble;                  );
-      3:(  A :TdDouble;
-           B :TdDouble;
-           C :TdDouble;                  );
      end;
 
      TdDoublePos3D = TdDouble3D;
      TdDoubleVec3D = TdDouble3D;
-
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSingleImplicit3D
-
-     TSingleImplicit3D = reference to function( const P_:TdSingle3D ) :TdSingle;
-
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDoubleImplicit3D
-
-     TDoubleImplicit3D = reference to function( const P_:TdDouble3D ) :TdDouble;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSingleSiz3D
 
@@ -543,8 +517,8 @@ function Ave( const P1_,P2_,P3_:TdDouble3D ) :TdDouble3D; inline; overload;
 function Ave( const P1_,P2_,P3_,P4_:TdSingle3D ) :TdSingle3D; inline; overload;
 function Ave( const P1_,P2_,P3_,P4_:TdDouble3D ) :TdDouble3D; inline; overload;
 
-function Nabla( const Func_:TSingleImplicit3D; const P_:TSingle3D ) :TSingle3D; inline; overload;
-function Nabla( const Func_:TDoubleImplicit3D; const P_:TDouble3D ) :TDouble3D; inline; overload;
+function Nabla( const Func_:TConstFunc<TdSingle3D,TdSingle>; const P_:TSingle3D ) :TSingle3D; inline; overload;
+function Nabla( const Func_:TConstFunc<TdDouble3D,TdDouble>; const P_:TDouble3D ) :TDouble3D; inline; overload;
 
 function PolySolveReal( const Ks_:TSingle3D; out Xs_:TSingle2D ) :Byte; overload;
 function PolySolveReal( const Ks_:TDouble3D; out Xs_:TDouble2D ) :Byte; overload;
@@ -561,11 +535,39 @@ uses System.SysUtils, System.Math;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
+constructor TByte3D.Create( const V_:Byte );
+begin
+     X := V_;
+     Y := V_;
+     Z := V_;
+end;
+
+constructor TByte3D.Create( const X_,Y_,Z_:Byte );
+begin
+     X := X_;
+     Y := Y_;
+     Z := Z_;
+end;
+
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TShortint3D
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TShortint3D.Create( const V_:Shortint );
+begin
+     X := V_;
+     Y := V_;
+     Z := V_;
+end;
+
+constructor TShortint3D.Create( const X_,Y_,Z_:Shortint );
+begin
+     X := X_;
+     Y := Y_;
+     Z := Z_;
+end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TWord3D
 
@@ -573,11 +575,39 @@ uses System.SysUtils, System.Math;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
+constructor TWord3D.Create( const V_:Word );
+begin
+     X := V_;
+     Y := V_;
+     Z := V_;
+end;
+
+constructor TWord3D.Create( const X_,Y_,Z_:Word );
+begin
+     X := X_;
+     Y := Y_;
+     Z := Z_;
+end;
+
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSmallint3D
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TSmallint3D.Create( const V_:Smallint );
+begin
+     X := V_;
+     Y := V_;
+     Z := V_;
+end;
+
+constructor TSmallint3D.Create( const X_,Y_,Z_:Smallint );
+begin
+     X := X_;
+     Y := Y_;
+     Z := Z_;
+end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TCardinal3D
 
@@ -585,11 +615,39 @@ uses System.SysUtils, System.Math;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
+constructor TCardinal3D.Create( const V_:Cardinal );
+begin
+     X := V_;
+     Y := V_;
+     Z := V_;
+end;
+
+constructor TCardinal3D.Create( const X_,Y_,Z_:Cardinal );
+begin
+     X := X_;
+     Y := Y_;
+     Z := Z_;
+end;
+
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TInteger3D
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TInteger3D.Create( const V_:Integer );
+begin
+     X := V_;
+     Y := V_;
+     Z := V_;
+end;
+
+constructor TInteger3D.Create( const X_,Y_,Z_:Integer );
+begin
+     X := X_;
+     Y := Y_;
+     Z := Z_;
+end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSingle3D
 
@@ -2183,42 +2241,34 @@ end;
 
 //------------------------------------------------------------------------------
 
-function Nabla( const Func_:TSingleImplicit3D; const P_:TSingle3D ) :TSingle3D;
+function Nabla( const Func_:TConstFunc<TdSingle3D,TdSingle>; const P_:TSingle3D ) :TSingle3D;
 var
-   P :TdSingle3D;
+   P, F :TdSingle3D;
 begin
      P.o := P_;
 
-     P.d := TSingle3D.Create( 1, 0, 0 );
+     P.d := TSingle3D.Create( 1, 0, 0 );  F.X := Func_( P );
+     P.d := TSingle3D.Create( 0, 1, 0 );  F.Y := Func_( P );
+     P.d := TSingle3D.Create( 0, 0, 1 );  F.Z := Func_( P );
 
-     Result.X := Func_( P ).d;
-
-     P.d := TSingle3D.Create( 0, 1, 0 );
-
-     Result.Y := Func_( P ).d;
-
-     P.d := TSingle3D.Create( 0, 0, 1 );
-
-     Result.Z := Func_( P ).d;
+     Result.X := F.X.d;
+     Result.Y := F.Y.d;
+     Result.Z := F.Z.d;
 end;
 
-function Nabla( const Func_:TDoubleImplicit3D; const P_:TDouble3D ) :TDouble3D;
+function Nabla( const Func_:TConstFunc<TdDouble3D,TdDouble>; const P_:TDouble3D ) :TDouble3D;
 var
-   P :TdDouble3D;
+   P, F :TdDouble3D;
 begin
      P.o := P_;
 
-     P.d := TDouble3D.Create( 1, 0, 0 );
+     P.d := TDouble3D.Create( 1, 0, 0 );  F.X := Func_( P );
+     P.d := TDouble3D.Create( 0, 1, 0 );  F.Y := Func_( P );
+     P.d := TDouble3D.Create( 0, 0, 1 );  F.Z := Func_( P );
 
-     Result.X := Func_( P ).d;
-
-     P.d := TDouble3D.Create( 0, 1, 0 );
-
-     Result.Y := Func_( P ).d;
-
-     P.d := TDouble3D.Create( 0, 0, 1 );
-
-     Result.Z := Func_( P ).d;
+     Result.X := F.X.d;
+     Result.Y := F.Y.d;
+     Result.Z := F.Z.d;
 end;
 
 //------------------------------------------------------------------------------
