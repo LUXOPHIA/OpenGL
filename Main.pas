@@ -18,9 +18,10 @@ type
   TForm1 = class(TForm)
     Panel1: TPanel;
       GLView1: TGLView;
-      GLView2: TGLView; 
-    GLView3: TGLView;
-    GLView4: TGLView;
+      GLView2: TGLView;
+    Panel2: TPanel;
+      GLView3: TGLView;
+      GLView4: TGLView;
     Timer1: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -32,7 +33,7 @@ type
     { public 宣言 }
     _BufferV :TGLBufferVS<TSingle3D>;
     _BufferC :TGLBufferVS<TAlphaColorF>;
-    _BufferF :TGLBufferI<TCardinal3D>;
+    _BufferF :TGLBufferE32;
     ///// メソッド
     procedure InitGeomet;
     procedure DrawModel;
@@ -54,28 +55,20 @@ implementation //###############################################################
 
 procedure TForm1.InitGeomet;
 const
-     Ps :array [ 0..8-1 ] of TSingle3D = ( ( X:-1; Y:-1; Z:-1 ),
-                                           ( X:+1; Y:-1; Z:-1 ),
-                                           ( X:-1; Y:+1; Z:-1 ),
-                                           ( X:+1; Y:+1; Z:-1 ),
-                                           ( X:-1; Y:-1; Z:+1 ),
-                                           ( X:+1; Y:-1; Z:+1 ),
-                                           ( X:-1; Y:+1; Z:+1 ),
-                                           ( X:+1; Y:+1; Z:+1 ) );
-     Cs :array [ 0..8-1 ] of TAlphaColorF = ( ( R:0; G:0; B:0; A:1 ),
-                                              ( R:1; G:0; B:0; A:1 ),
-                                              ( R:0; G:1; B:0; A:1 ),
-                                              ( R:1; G:1; B:0; A:1 ),
-                                              ( R:0; G:0; B:1; A:1 ),
-                                              ( R:1; G:0; B:1; A:1 ),
-                                              ( R:0; G:1; B:1; A:1 ),
-                                              ( R:1; G:1; B:1; A:1 ) );
-     Fs :array [ 0..12-1 ] of TCardinal3D = ( ( A:0; B:4; C:6 ), ( A:6; B:2; C:0 ),
-                                              ( A:0; B:1; C:5 ), ( A:5; B:4; C:0 ),
-                                              ( A:0; B:2; C:3 ), ( A:3; B:1; C:0 ),
-                                              ( A:7; B:5; C:1 ), ( A:1; B:3; C:7 ),
-                                              ( A:7; B:3; C:2 ), ( A:2; B:6; C:7 ),
-                                              ( A:7; B:6; C:4 ), ( A:4; B:5; C:7 ) );
+     Ps :array [ 0..8-1 ] of TSingle3D
+           = ( ( X:-1; Y:-1; Z:-1 ), ( X:+1; Y:-1; Z:-1 ),
+               ( X:-1; Y:+1; Z:-1 ), ( X:+1; Y:+1; Z:-1 ),
+               ( X:-1; Y:-1; Z:+1 ), ( X:+1; Y:-1; Z:+1 ),
+               ( X:-1; Y:+1; Z:+1 ), ( X:+1; Y:+1; Z:+1 ) );
+     Cs :array [ 0..8-1 ] of TAlphaColorF
+           = ( ( R:0; G:0; B:0; A:1 ), ( R:1; G:0; B:0; A:1 ),
+               ( R:0; G:1; B:0; A:1 ), ( R:1; G:1; B:0; A:1 ),
+               ( R:0; G:0; B:1; A:1 ), ( R:1; G:0; B:1; A:1 ),
+               ( R:0; G:1; B:1; A:1 ), ( R:1; G:1; B:1; A:1 ) );
+     Es :array [ 0..12-1 ] of TCardinal3D
+           = ( ( X:0; Y:4; Z:6 ), ( X:6; Y:2; Z:0 ), ( X:7; Y:5; Z:1 ), ( X:1; Y:3; Z:7 ),
+               ( X:0; Y:1; Z:5 ), ( X:5; Y:4; Z:0 ), ( X:7; Y:3; Z:2 ), ( X:2; Y:6; Z:7 ),
+               ( X:0; Y:2; Z:3 ), ( X:3; Y:1; Z:0 ), ( X:7; Y:6; Z:4 ), ( X:4; Y:5; Z:7 ) );
 begin
      //    2-------3
      //   /|      /|
@@ -87,7 +80,7 @@ begin
 
      _BufferV.Import( Ps );
      _BufferC.Import( Cs );
-     _BufferF.Import( Fs );
+     _BufferF.Import( Es );
 end;
 
 //------------------------------------------------------------------------------
@@ -133,7 +126,7 @@ begin
      begin
           glMatrixMode( GL_PROJECTION );
             glLoadIdentity;
-            glOrtho( -3, +3, -2, +2, _N, _F );
+            glOrtho( -3, +3, -3, +3, _N, _F );
           glMatrixMode( GL_MODELVIEW );
             glLoadIdentity;
             glTranslatef( 0, 0, -5 );
@@ -146,11 +139,11 @@ begin
      begin
           glMatrixMode( GL_PROJECTION );
             glLoadIdentity;
-            glOrtho( -4, +4, -2, +2, _N, _F );
+            glOrtho( -3, +3, -2, +2, _N, _F );
           glMatrixMode( GL_MODELVIEW );
             glLoadIdentity;
             glTranslatef( 0, 0, -5 );
-            glRotatef( -90, 0, 1, 0 );
+            glRotatef( +30, 1, 0, 0 );
             glRotatef( _Angle, 0, 1, 0 );
             DrawModel;
      end;
@@ -159,7 +152,7 @@ begin
      begin
           glMatrixMode( GL_PROJECTION );
             glLoadIdentity;
-            glOrtho( -3, +3, -3, +3, _N, _F );
+            glOrtho( -3, +3, -1.5, +1.5, _N, _F );
           glMatrixMode( GL_MODELVIEW );
             glLoadIdentity;
             glTranslatef( 0, 0, -5 );
@@ -171,13 +164,13 @@ begin
      begin
           glMatrixMode( GL_PROJECTION );
             glLoadIdentity;
-            glFrustum( -4/8*_N, +4/8*_N,
-                       -3/8*_N, +3/8*_N, _N, _F );
+            glFrustum( -4/4*_N, +4/4*_N,
+                       -3/4*_N, +3/4*_N, _N, _F );
           glMatrixMode( GL_MODELVIEW );
             glLoadIdentity;
-            glTranslatef( 0, 0, -8 );
+            glTranslatef( 0, +0.3, 0 );
+            glTranslatef( 0, 0, -3 );
             glRotatef( +30, 1, 0, 0 );
-            glRotatef( -30, 0, 1, 0 );
             glRotatef( _Angle, 0, 1, 0 );
             DrawModel;
      end;
@@ -189,7 +182,7 @@ procedure TForm1.FormCreate(Sender: TObject);
 begin
      _BufferV := TGLBufferVS<TSingle3D>   .Create( GL_STATIC_DRAW );
      _BufferC := TGLBufferVS<TAlphaColorF>.Create( GL_STATIC_DRAW );
-     _BufferF := TGLBufferI<TCardinal3D>  .Create( GL_STATIC_DRAW );
+     _BufferF := TGLBufferE32             .Create( GL_STATIC_DRAW );
 
      InitGeomet;
      InitRender;
