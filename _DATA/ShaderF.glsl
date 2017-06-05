@@ -2,6 +2,26 @@
 
 ////////////////////////////////////////////////////////////////////////////////【定数】
 
+const float Pi = 3.141592653589793;
+
+const float Pi2 = Pi * 2.0;
+
+const float P2i = Pi / 2.0;
+
+////////////////////////////////////////////////////////////////////////////////【ルーチン】
+
+vec2 VecToSky( vec4 Vector_ )
+{
+    vec2 Result;
+
+    Result.x = ( Pi - atan( -Vector_.x, -Vector_.z ) ) / Pi2;
+    Result.y =        acos(  Vector_.y             )   / Pi ;
+
+    return Result;
+}
+
+////////////////////////////////////////////////////////////////////////////////【共通定数】
+
 layout(std140) uniform TCamera
 {
   layout(row_major) mat4 Proj;
@@ -35,7 +55,11 @@ out vec4 _Frag_Col;
 
 void main()
 {
-  _Frag_Col = ( 1 + normalize( _Sender.Nor ) ) / 2 * texture( _Imager, _Sender.Tex );
+  vec4 C = _Camera.Move * vec4( 0, 0, 0, 1 );
+  vec4 V = normalize( _Sender.Pos - C );
+  vec4 R = reflect( V, normalize( _Sender.Nor ) );
+
+  _Frag_Col = texture( _Imager, VecToSky( R ) );
 }
 
 //##############################################################################
