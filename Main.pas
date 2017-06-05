@@ -140,7 +140,7 @@ begin
 
           with C do
           begin
-               Proj := TSingleM4.ProjOrth( -3, +3, -3, +3, _N, _F );
+               Proj := TSingleM4.ProjOrth( -2.5, +2.5, -2.5, +2.5, _N, _F );
 
                Move := TSingleM4.Translate( 0, +5, 0 )
                      * TSingleM4.RotateX( DegToRad( -90 ) );
@@ -172,7 +172,7 @@ begin
                Proj := TSingleM4.ProjPers( -4/4*_N, +4/4*_N, -3/4*_N, +3/4*_N, _N, _F );
 
                Move := TSingleM4.RotateX( DegToRad( -45 ) )
-                     * TSingleM4.Translate( 0, -0.3, +3 );
+                     * TSingleM4.Translate( 0, -0.35, +3 );
           end;
 
           Items[ 3 ] := C;
@@ -183,9 +183,9 @@ end;
 
 function BraidedTorus( const T_:TdSingle2D ) :TdSingle3D;
 const
-     LoopR :Single = 1.00;  LoopN :Integer = 3; 
-     TwisR :Single = 0.50;  TwisN :Integer = 5;
-     PipeR :Single = 0.25;
+     LoopR :Single = 1.0;  LoopN :Integer = 3; 
+     TwisR :Single = 0.5;  TwisN :Integer = 5;
+     PipeR :Single = 0.3;
 var
    T :TdSingle2D;
    cL, cT, cP, TX, PX, R,
@@ -213,8 +213,8 @@ end;
 
 procedure TForm1.InitGeomet;
 const
-     DivX :Integer = 1100;
-     DivY :Integer =   50;
+     DivX :Integer = 1300;
+     DivY :Integer =  100;
 //·························
      function XYtoI( const X_,Y_:Integer ) :Integer;
      begin
@@ -310,7 +310,7 @@ end;
 
 procedure TForm1.InitImager;
 begin
-     _Imager.LoadFromFile( '..\..\_DATA\Texture.png' );
+     _Imager.LoadFromFile( '..\..\_DATA\Spherical_1024x1024.png' );
 end;
 
 //------------------------------------------------------------------------------
