@@ -16,7 +16,6 @@ uses
   LUX.GPU.OpenGL.Buffer.Elem,
   LUX.GPU.OpenGL.Imager,
   LUX.GPU.OpenGL.Imager.FMX,
-  LUX.GPU.OpenGL.Pluger,
   LUX.GPU.OpenGL.Shader,
   LUX.GPU.OpenGL.Engine;
 
@@ -70,12 +69,6 @@ type
     _GeometUs :TGLBufferU<TSingleM4>;
     _Sample   :TGLSample;
     _Imager   :TGLImager2D_RGBA;
-    _PlugerV  :TGLPlugerV;
-    _PlugerU1 :TGLPlugerU;
-    _PlugerU2 :TGLPlugerU;
-    _PlugerU3 :TGLPlugerU;
-    _PlugerU4 :TGLPlugerU;
-    _PlugerI  :TGLPlugerI;
     _ShaderV  :TGLShaderV;
     _ShaderF  :TGLShaderF;
     _Engine   :TGLEngine;
@@ -83,7 +76,6 @@ type
     procedure InitCamera;
     procedure InitGeomet;
     procedure InitImager;
-    procedure InitPluger;
     procedure InitShader;
     procedure InitEngine;
     procedure DrawModel;
@@ -315,47 +307,6 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure TForm1.InitPluger;
-begin
-     with _PlugerV do
-     begin
-          Add( 0{BinP}, _GeometP{Buff} );
-          Add( 1{BinP}, _GeometN{Buff} );
-          Add( 2{BinP}, _GeometT{Buff} );
-     end;
-
-     with _PlugerU1 do
-     begin
-          Add( 0{BinP}, _CameraUs{Buff}, 0{Offs} );
-          Add( 1{BinP}, _GeometUs{Buff}          );
-     end;
-
-     with _PlugerU2 do
-     begin
-          Add( 0{BinP}, _CameraUs{Buff}, 1{Offs} );
-          Add( 1{BinP}, _GeometUs{Buff}          );
-     end;
-
-     with _PlugerU3 do
-     begin
-          Add( 0{BinP}, _CameraUs{Buff}, 2{Offs} );
-          Add( 1{BinP}, _GeometUs{Buff}          );
-     end;
-
-     with _PlugerU4 do
-     begin
-          Add( 0{BinP}, _CameraUs{Buff}, 3{Offs} );
-          Add( 1{BinP}, _GeometUs{Buff}          );
-     end;
-
-     with _PlugerI do
-     begin
-          Add( 0{BinP}, _Sample{Samp}, _Imager{Imag} );
-     end;
-end;
-
-//------------------------------------------------------------------------------
-
 procedure TForm1.InitShader;
 begin
      with _ShaderV do
@@ -425,19 +376,29 @@ end;
 
 procedure TForm1.DrawModel;
 begin
-     _PlugerI.Use;
+     _GeometUs.Use( 1{BinP}, 0{Offs} );
 
-       _Engine.Use;
+       _Sample.Use( 0{BinP} );
+       _Imager.Use( 0{BinP} );
 
-         _PlugerV.Use;  // TGLPulgerV.Use method must call after TGLEngine.Use method!
+         _Engine.Use;
 
-           _GeometE.Draw;
+           _GeometP.Use( 0{BinP} );
+           _GeometN.Use( 1{BinP} );
+           _GeometT.Use( 2{BinP} );
 
-         _PlugerV.Unuse;
+             _GeometE.Draw;
 
-       _Engine.Unuse;
+           _GeometP.Unuse( 0{BinP} );
+           _GeometN.Unuse( 1{BinP} );
+           _GeometT.Unuse( 2{BinP} );
 
-     _PlugerI.Unuse;
+         _Engine.Unuse;
+
+       _Sample.Unuse( 0{BinP} );
+       _Imager.Unuse( 0{BinP} );
+
+     _GeometUs.Unuse( 1{BinP} );
 end;
 
 //------------------------------------------------------------------------------
@@ -446,42 +407,38 @@ procedure TForm1.InitRender;
 begin
      GLView1.OnPaint := procedure
      begin
-          with _PlugerU1 do
-          begin
-               Use;
-                 DrawModel;
-               Unuse;
-          end;
+          _CameraUs.Use( 0{BinP}, 0{Offs} );
+
+            DrawModel;
+
+          _CameraUs.Unuse( 0{BinP} );
      end;
 
      GLView2.OnPaint := procedure
      begin
-          with _PlugerU2 do
-          begin
-               Use;
-                 DrawModel;
-               Unuse;
-          end;
+          _CameraUs.Use( 0{BinP}, 1{Offs} );
+
+            DrawModel;
+
+          _CameraUs.Unuse( 0{BinP} );
      end;
 
      GLView3.OnPaint := procedure
      begin
-          with _PlugerU3 do
-          begin
-               Use;
-                 DrawModel;
-               Unuse;
-          end;
+          _CameraUs.Use( 0{BinP}, 2{Offs} );
+
+            DrawModel;
+
+          _CameraUs.Unuse( 0{BinP} );
      end;
 
      GLView4.OnPaint := procedure
      begin
-          with _PlugerU4 do
-          begin
-               Use;
-                 DrawModel;
-               Unuse;
-          end;
+          _CameraUs.Use( 0{BinP}, 3{Offs} );
+
+            DrawModel;
+
+          _CameraUs.Unuse( 0{BinP} );
      end;
 end;
 
@@ -500,13 +457,6 @@ begin
      _Sample   := TGLSample             .Create;
      _Imager   := TGLImager2D_RGBA      .Create;
 
-     _PlugerV  := TGLPlugerV            .Create;
-     _PlugerU1 := TGLPlugerU            .Create;
-     _PlugerU2 := TGLPlugerU            .Create;
-     _PlugerU3 := TGLPlugerU            .Create;
-     _PlugerU4 := TGLPlugerU            .Create;
-     _PlugerI  := TGLPlugerI            .Create;
-
      _ShaderV  := TGLShaderV            .Create;
      _ShaderF  := TGLShaderF            .Create;
 
@@ -517,7 +467,6 @@ begin
      InitCamera;
      InitGeomet;
      InitImager;
-     InitPluger;
      InitShader;
      InitEngine;
      InitRender;
@@ -549,13 +498,6 @@ begin
 
      _ShaderV .DisposeOf;
      _ShaderF .DisposeOf;
-
-     _PlugerV .DisposeOf;
-     _PlugerU1.DisposeOf;
-     _PlugerU2.DisposeOf;
-     _PlugerU3.DisposeOf;
-     _PlugerU4.DisposeOf;
-     _PlugerI .DisposeOf;
 
      _Sample  .DisposeOf;
      _Imager  .DisposeOf;
