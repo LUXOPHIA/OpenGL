@@ -18,9 +18,10 @@ type
     procedure _OnMouseUp( Sender_:TObject; Button_:TMouseButton; Shift_:TShiftState; X_,Y_:Single ); inline;
     procedure _OnMouseWheel( Sender_:TObject; Shift_:TShiftState; WheelDelta_:Integer; var Handled_:Boolean ); inline;
   protected
-    _Form :TCommonCustomForm;
-    _WND  :HWND;
-    _DC   :HDC;
+    _Form   :TCommonCustomForm;
+    _WND    :HWND;
+    _DC     :HDC;
+    _Camera :TGLCamera;
     ///// イベント
     _OnPaint :TProc;
     ///// アクセス
@@ -41,9 +42,10 @@ type
     constructor Create( AOwner_:TComponent ); override;
     destructor Destroy; override;
     ///// プロパティ
-    property Form :TCommonCustomForm read _Form;
-    property WND  :HWND              read _WND ;
-    property DC   :HDC               read _DC  ;
+    property Form   :TCommonCustomForm read _Form                ;
+    property WND    :HWND              read _WND                 ;
+    property DC     :HDC               read _DC                  ;
+    property Camera :TGLCamera         read _Camera write _Camera;
     ///// イベント
     property OnPaint :TProc read _OnPaint write _OnPaint;
     ///// メソッド
@@ -123,6 +125,8 @@ begin
 
        glViewport( 0, 0, Round( _Form.Width  * Scene.GetSceneScale ),
                          Round( _Form.Height * Scene.GetSceneScale ) );
+
+       if Assigned( _Camera ) then _Camera.Render;
 
        _OnPaint;
 
