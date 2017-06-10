@@ -124,8 +124,8 @@ procedure TMyMatery.Use;
 begin
      _Engine.Use;
 
-     _Sample.Use( 0 );
-     _Imager.Use( 0 );
+     _Sample.Use( 0{BinP} );
+     _Imager.Use( 0{BinP} );
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
