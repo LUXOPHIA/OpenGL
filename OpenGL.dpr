@@ -39,7 +39,8 @@ uses
   LUX.GPU.OpenGL.Imager.FMX in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\FMX\LUX.GPU.OpenGL.Imager.FMX.pas',
   MYX.Camera in '_LIBRARY\MYX.Camera.pas',
   MYX.Shaper in '_LIBRARY\MYX.Shaper.pas',
-  MYX.Matery in '_LIBRARY\MYX.Matery.pas';
+  MYX.Matery in '_LIBRARY\MYX.Matery.pas',
+  LUX.Tree in '_LIBRARY\LUXOPHIA\LUX\LUX.Tree.pas';
 
 {$R *.res}
 

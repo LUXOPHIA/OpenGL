@@ -354,6 +354,7 @@
         <DCCReference Include="_LIBRARY\MYX.Camera.pas"/>
         <DCCReference Include="_LIBRARY\MYX.Shaper.pas"/>
         <DCCReference Include="_LIBRARY\MYX.Matery.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\LUX.Tree.pas"/>
         <None Include="_DATA\ShaderF.glsl"/>
         <None Include="_DATA\ShaderV.glsl"/>
         <BuildConfiguration Include="Release">
