@@ -22,18 +22,18 @@ vec2 VecToSky( vec4 Vector_ )
 
 ////////////////////////////////////////////////////////////////////////////////【共通定数】
 
-layout(std140) uniform TCamera
+layout(std140) uniform TCameraDat
 {
   layout(row_major) mat4 Proj;
   layout(row_major) mat4 Move;
 }
 _Camera;
 
-layout(std140) uniform TGeomet
+layout(std140) uniform TShaperDat
 {
   layout(row_major) mat4 Move;
 }
-_Geomet;
+_Shaper;
 
 uniform sampler2D _Imager;
 
