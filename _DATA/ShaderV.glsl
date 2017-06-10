@@ -2,18 +2,18 @@
 
 ////////////////////////////////////////////////////////////////////////////////【共通定数】
 
-layout(std140) uniform TCamera
+layout(std140) uniform TCameraDat
 {
   layout(row_major) mat4 Proj;
   layout(row_major) mat4 Move;
 }
 _Camera;
 
-layout(std140) uniform TGeomet
+layout(std140) uniform TShaperDat
 {
   layout(row_major) mat4 Move;
 }
-_Geomet;
+_Shaper;
 
 ////////////////////////////////////////////////////////////////////////////////【入出力】
 
@@ -35,8 +35,8 @@ _Result;
 
 void main()
 {
-  _Result.Pos =                     _Geomet.Move     * _Vertex_Pos;
-  _Result.Nor = transpose( inverse( _Geomet.Move ) ) * _Vertex_Nor;
+  _Result.Pos =                     _Shaper.Move     * _Vertex_Pos;
+  _Result.Nor = transpose( inverse( _Shaper.Move ) ) * _Vertex_Nor;
   _Result.Tex =                                        _Vertex_Tex;
 
   gl_Position = _Camera.Proj * inverse( _Camera.Move ) * _Result.Pos;

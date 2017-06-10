@@ -21,12 +21,12 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TCameraDat
 
-     TCameraDat = record
-     private
-     public
-       Proj :TSingleM4;
-       Move :TSingleM4;
-     end;
+TCameraDat = record
+private
+public
+  Proj :TSingleM4;
+  Move :TSingleM4;
+end;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
