@@ -1,4 +1,4 @@
-program OpenGL;
+﻿program OpenGL;
 
 uses
   System.StartUpCopy,
@@ -22,23 +22,23 @@ uses
   LUX.D2.V4 in '_LIBRARY\LUXOPHIA\LUX\LUX.D2.V4.pas',
   LUX.D3.M4 in '_LIBRARY\LUXOPHIA\LUX\LUX.D3.M4.pas',
   LUX.D3 in '_LIBRARY\LUXOPHIA\LUX\LUX.D3.pas',
-  LUX.GPU.OpenGL.Geometry in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Geometry.pas',
-  LUX.GPU.OpenGL.Material in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Material.pas',
   LUX.GPU.OpenGL.GLView in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\FMX\LUX.GPU.OpenGL.GLView.pas' {GLView: TFrame},
   LUX.GPU.OpenGL.FMX in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\FMX\LUX.GPU.OpenGL.FMX.pas',
-  LUX.GPU.OpenGL.Shader in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Shader.pas',
-  LUX.GPU.OpenGL.Buffer in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Buffer.pas',
-  LUX.GPU.OpenGL in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.pas',
-  LUX.GPU.OpenGL.Progra in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Progra.pas',
-  LUX.GPU.OpenGL.Buffer.Elem in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Buffer.Elem.pas',
-  LUX.GPU.OpenGL.Buffer.Unif in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Buffer.Unif.pas',
-  LUX.GPU.OpenGL.Buffer.Vert in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Buffer.Vert.pas',
-  LUX.GPU.OpenGL.Pluger in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Pluger.pas',
-  LUX.GPU.OpenGL.Engine in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Engine.pas',
-  LUX.GPU.OpenGL.Imager in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Imager.pas',
   LUX.GPU.OpenGL.Imager.FMX in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\FMX\LUX.GPU.OpenGL.Imager.FMX.pas',
   LUX.Tree in '_LIBRARY\LUXOPHIA\LUX\LUX.Tree.pas',
-  LUX.GPU.OpenGL.Material.FMX in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\FMX\LUX.GPU.OpenGL.Material.FMX.pas';
+  LUX.GPU.OpenGL.Material.FMX in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\FMX\LUX.GPU.OpenGL.Material.FMX.pas',
+  LUX.GPU.OpenGL.Buffer.Vert in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\» OBJECT\LUX.GPU.OpenGL.Buffer.Vert.pas',
+  LUX.GPU.OpenGL.Engine in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\» OBJECT\LUX.GPU.OpenGL.Engine.pas',
+  LUX.GPU.OpenGL.Imager in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\» OBJECT\LUX.GPU.OpenGL.Imager.pas',
+  LUX.GPU.OpenGL.Pluger in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\» OBJECT\LUX.GPU.OpenGL.Pluger.pas',
+  LUX.GPU.OpenGL.Progra in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\» OBJECT\LUX.GPU.OpenGL.Progra.pas',
+  LUX.GPU.OpenGL.Shader in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\» OBJECT\LUX.GPU.OpenGL.Shader.pas',
+  LUX.GPU.OpenGL.Buffer.Elem in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\» OBJECT\LUX.GPU.OpenGL.Buffer.Elem.pas',
+  LUX.GPU.OpenGL.Buffer in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\» OBJECT\LUX.GPU.OpenGL.Buffer.pas',
+  LUX.GPU.OpenGL.Buffer.Unif in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\» OBJECT\LUX.GPU.OpenGL.Buffer.Unif.pas',
+  LUX.GPU.OpenGL.Material in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Material.pas',
+  LUX.GPU.OpenGL in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.pas',
+  LUX.GPU.OpenGL.Geometry in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Geometry.pas';
 
 {$R *.res}
 
