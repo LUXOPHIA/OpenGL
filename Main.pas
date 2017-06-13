@@ -57,10 +57,10 @@ type
     _Scener  :TGLScener;
     _Shaper  :TGLShaper;
     _Matery  :TGLMateryI;
-    _Camera1 :TGLCamera;
-    _Camera2 :TGLCamera;
-    _Camera3 :TGLCamera;
-    _Camera4 :TGLCamera;
+    _Camera1 :TGLCameraOrth;
+    _Camera2 :TGLCameraOrth;
+    _Camera3 :TGLCameraOrth;
+    _Camera4 :TGLCameraPers;
     ///// メソッド
     procedure InitViewer;
     procedure InitCamera;
@@ -122,7 +122,7 @@ const
 begin
      with _Camera1 do
      begin
-          Proj := TSingleM4.ProjOrth( -2.5, +2.5, -2.5, +2.5, _N, _F );
+          Size := 5;
 
           Move := TSingleM4.Translate( 0, +5, 0 )
                 * TSingleM4.RotateX( DegToRad( -90 ) );
@@ -130,7 +130,7 @@ begin
 
      with _Camera2 do
      begin
-          Proj := TSingleM4.ProjOrth( -2, +2, -2, +2, _N, _F );
+          Size := 4;
 
           Move := TSingleM4.RotateX( DegToRad( -45 ) )
                 * TSingleM4.Translate( 0, 0, +5 );
@@ -138,14 +138,14 @@ begin
 
      with _Camera3 do
      begin
-          Proj := TSingleM4.ProjOrth( -1.5, +1.5, -1.5, +1.5, _N, _F );
+          Size := 3;
 
           Move := TSingleM4.Translate( 0, 0, +5 );
      end;
 
      with _Camera4 do
      begin
-          Proj := TSingleM4.ProjPers( -2/4*_N, +2/4*_N, -2/4*_N, +2/4*_N, _N, _F );
+          Angl := DegToRad( 60{°} );
 
           Move := TSingleM4.RotateX( DegToRad( -45 ) )
                 * TSingleM4.Translate( 0, 0, +3 );
@@ -235,10 +235,10 @@ begin
 
      _Scener  := TGLScener.Create;
 
-     _Camera1 := TGLCamera.Create( _Scener );
-     _Camera2 := TGLCamera.Create( _Scener );
-     _Camera3 := TGLCamera.Create( _Scener );
-     _Camera4 := TGLCamera.Create( _Scener );
+     _Camera1 := TGLCameraOrth.Create( _Scener );
+     _Camera2 := TGLCameraOrth.Create( _Scener );
+     _Camera3 := TGLCameraOrth.Create( _Scener );
+     _Camera4 := TGLCameraPers.Create( _Scener );
 
      _Matery  := TGLMateryI.Create;
 
