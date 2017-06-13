@@ -17,7 +17,10 @@ uses
   LUX.GPU.OpenGL.Imager,
   LUX.GPU.OpenGL.Imager.FMX,
   LUX.GPU.OpenGL.Shader,
-  LUX.GPU.OpenGL.Engine;
+  LUX.GPU.OpenGL.Engine,
+  LUX.GPU.OpenGL.Geometry,
+  LUX.GPU.OpenGL.Material,
+  LUX.GPU.OpenGL.Material.FMX;
 
 type
   TForm1 = class(TForm)
@@ -29,7 +32,6 @@ type
         Rectangle2: TRectangle;
           GLView3: TGLView;
           GLView4: TGLView;
-        Timer1: TTimer;
       TabItemS: TTabItem;
         TabControlS: TTabControl;
           TabItemSV: TTabItem;
@@ -44,42 +46,30 @@ type
         MemoP: TMemo;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure Timer1Timer(Sender: TObject);
     procedure MemoSVSChangeTracking(Sender: TObject);
     procedure MemoSFSChangeTracking(Sender: TObject);
+    procedure GLView4MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
+    procedure GLView4MouseMove(Sender: TObject; Shift: TShiftState; X, Y: Single);
+    procedure GLView4MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
   private
     { private 宣言 }
-    _Angle :Single;
+    _MouseS :TShiftState;
+    _MouseP :TSingle2D;
+    _MouseA :TSingle2D;
     ///// メソッド
     procedure EditShader( const Shader_:TGLShader; const Memo_:TMemo );
-  public type
-    TCamera = record
-    private
-    public
-      Proj :TSingleM4;
-      Move :TSingleM4;
-    end;
   public
     { public 宣言 }
-    _CameraUs :TGLBufferU<TCamera>;
-    _GeometP  :TGLBufferVS<TSingle3D>;
-    _GeometN  :TGLBufferVS<TSingle3D>;
-    _GeometT  :TGLBufferVS<TSingle2D>;
-    _GeometE  :TGLBufferE32;
-    _GeometUs :TGLBufferU<TSingleM4>;
-    _Sample   :TGLSample;
-    _Imager   :TGLImager2D_RGBA;
-    _ShaderV  :TGLShaderV;
-    _ShaderF  :TGLShaderF;
-    _Engine   :TGLEngine;
+    _World   :TGLWorld;
+    _Shape   :TGLShape;
+    _Materi  :TGLTexMateri;
+    _Camera1 :TGLCamera;
+    _Camera2 :TGLCamera;
+    _Camera3 :TGLCamera;
+    _Camera4 :TGLCamera;
     ///// メソッド
     procedure InitCamera;
-    procedure InitGeomet;
-    procedure InitImager;
-    procedure InitShader;
     procedure InitEngine;
-    procedure DrawModel;
-    procedure InitRender;
   end;
 
 var
@@ -105,7 +95,7 @@ begin
           begin
                Shader_.Source.Assign( Memo_.Lines );
 
-               with _Engine do
+               with _Materi.Engine do
                begin
                     TabItemV.Enabled := Status;
 
@@ -123,51 +113,41 @@ procedure TForm1.InitCamera;
 const
      _N :Single = 0.1;
      _F :Single = 1000;
-var
-   C :TCamera;
 begin
-     with _CameraUs do
+     with _World.CameraUs do
      begin
           Count := 4;
+     end;
 
-          with C do
-          begin
-               Proj := TSingleM4.ProjOrth( -2.5, +2.5, -2.5, +2.5, _N, _F );
+     with _Camera1 do
+     begin
+          Proj := TSingleM4.ProjOrth( -2.5, +2.5, -2.5, +2.5, _N, _F );
 
-               Move := TSingleM4.Translate( 0, +5, 0 )
-                     * TSingleM4.RotateX( DegToRad( -90 ) );
-          end;
+          Move := TSingleM4.Translate( 0, +5, 0 )
+                * TSingleM4.RotateX( DegToRad( -90 ) );
+     end;
 
-          Items[ 0 ] := C;
+     with _Camera2 do
+     begin
+          Proj := TSingleM4.ProjOrth( -3, +3, -2, +2, _N, _F );
 
-          with C do
-          begin
-               Proj := TSingleM4.ProjOrth( -3, +3, -2, +2, _N, _F );
+          Move := TSingleM4.RotateX( DegToRad( -45 ) )
+                * TSingleM4.Translate( 0, 0, +5 );
+     end;
 
-               Move := TSingleM4.RotateX( DegToRad( -45 ) )
-                     * TSingleM4.Translate( 0, 0, +5 );
-          end;
+     with _Camera3 do
+     begin
+          Proj := TSingleM4.ProjOrth( -3, +3, -1.5, +1.5, _N, _F );
 
-          Items[ 1 ] := C;
+          Move := TSingleM4.Translate( 0, 0, +5 );
+     end;
 
-          with C do
-          begin
-               Proj := TSingleM4.ProjOrth( -3, +3, -1.5, +1.5, _N, _F );
+     with _Camera4 do
+     begin
+          Proj := TSingleM4.ProjPers( -4/4*_N, +4/4*_N, -3/4*_N, +3/4*_N, _N, _F );
 
-               Move := TSingleM4.Translate( 0, 0, +5 );
-          end;
-
-          Items[ 2 ] := C;
-
-          with C do
-          begin
-               Proj := TSingleM4.ProjPers( -4/4*_N, +4/4*_N, -3/4*_N, +3/4*_N, _N, _F );
-
-               Move := TSingleM4.RotateX( DegToRad( -45 ) )
-                     * TSingleM4.Translate( 0, -0.35, +3 );
-          end;
-
-          Items[ 3 ] := C;
+          Move := TSingleM4.RotateX( DegToRad( -45 ) )
+                * TSingleM4.Translate( 0, -0.35, +3 );
      end;
 end;
 
@@ -203,145 +183,12 @@ begin
      end;
 end;
 
-procedure TForm1.InitGeomet;
-const
-     DivX :Integer = 1300;
-     DivY :Integer =  100;
-//·························
-     function XYtoI( const X_,Y_:Integer ) :Integer;
-     begin
-          Result := ( DivX + 1 ) * Y_ + X_;
-     end;
-     //····················
-     procedure MakeVerts;
-     var
-        C, X, Y, I :Integer;
-        Ps, Ns :TGLBufferData<TSingle3D>;
-        Ts :TGLBufferData<TSingle2D>;
-        T :TSingle2D;
-        M :TSingleM4;
-     begin
-          C := ( DivY + 1 ) * ( DivX + 1 );
-
-          _GeometP.Count := C;
-          _GeometN.Count := C;
-          _GeometT.Count := C;
-
-          Ps := _GeometP.Map( GL_WRITE_ONLY );
-          Ns := _GeometN.Map( GL_WRITE_ONLY );
-          Ts := _GeometT.Map( GL_WRITE_ONLY );
-
-          for Y := 0 to DivY do
-          begin
-               T.V := Y / DivY;
-               for X := 0 to DivX do
-               begin
-                    T.U := X / DivX;
-
-                    I := XYtoI( X, Y );
-
-                    Ts[ I ] := T;
-
-                    M := Tensor( T, BraidedTorus );
-
-                    Ps[ I ] := M.AxisP;
-                    Ns[ I ] := M.AxisZ;
-               end;
-          end;
-
-          _GeometP.Unmap;
-          _GeometN.Unmap;
-          _GeometT.Unmap;
-     end;
-     //····················
-     procedure MakeElems;
-     var
-        X0, Y0, X1, Y1, I, I00, I01, I10, I11 :Integer;
-        Es :TGLBufferData<TCardinal3D>;
-     begin
-          _GeometE.Count := 2 * DivY * DivX;
-
-          Es := _GeometE.Map( GL_WRITE_ONLY );
-
-          I := 0;
-          for Y0 := 0 to DivY-1 do
-          begin
-               Y1 := Y0 + 1;
-               for X0 := 0 to DivX-1 do
-               begin
-                    X1 := X0 + 1;
-
-                    I00 := XYtoI( X0, Y0 );  I01 := XYtoI( X1, Y0 );
-                    I10 := XYtoI( X0, Y1 );  I11 := XYtoI( X1, Y1 );
-
-                    //  00───01
-                    //  │      │
-                    //  │      │
-                    //  │      │
-                    //  10───11
-
-                    Es[ I ] := TCardinal3D.Create( I00, I10, I11 );  Inc( I );
-                    Es[ I ] := TCardinal3D.Create( I11, I01, I00 );  Inc( I );
-               end;
-          end;
-
-          _GeometE.Unmap;
-     end;
-//·························
-begin
-     MakeVerts;
-     MakeElems;
-
-     with _GeometUs do
-     begin
-          Count := 1{Pose};
-     end;
-end;
-
-//------------------------------------------------------------------------------
-
-procedure TForm1.InitImager;
-begin
-     _Imager.LoadFromFile( '..\..\_DATA\Spherical_1024x1024.png' );
-end;
-
-//------------------------------------------------------------------------------
-
-procedure TForm1.InitShader;
-begin
-     with _ShaderV do
-     begin
-          OnCompiled := procedure
-          begin
-               MemoSVE.Lines.Assign( Errors );
-
-               _Engine.Link;
-          end;
-     end;
-
-     with _ShaderF do
-     begin
-          OnCompiled := procedure
-          begin
-               MemoSFE.Lines.Assign( Errors );
-
-               _Engine.Link;
-          end;
-     end;
-end;
-
 //------------------------------------------------------------------------------
 
 procedure TForm1.InitEngine;
 begin
-     with _Engine do
+     with _Materi.Engine do
      begin
-          with Shaders do
-          begin
-               Add( _ShaderV{Shad} );
-               Add( _ShaderF{Shad} );
-          end;
-
           with VerBufs do
           begin
                Add( 0{BinP}, '_Vertex_Pos'{Name}, 3{EleN}, GL_FLOAT{EleT} );
@@ -367,78 +214,11 @@ begin
 
           OnLinked := procedure
           begin
+               MemoSVE.Lines.Assign( _Materi.ShaderV.Errors );
+               MemoSFE.Lines.Assign( _Materi.ShaderF.Errors );
+
                MemoP.Lines.Assign( Errors );
           end;
-     end;
-end;
-
-//------------------------------------------------------------------------------
-
-procedure TForm1.DrawModel;
-begin
-     _GeometUs.Use( 1{BinP}, 0{Offs} );
-
-       _Sample.Use( 0{BinP} );
-       _Imager.Use( 0{BinP} );
-
-         _Engine.Use;
-
-           _GeometP.Use( 0{BinP} );
-           _GeometN.Use( 1{BinP} );
-           _GeometT.Use( 2{BinP} );
-
-             _GeometE.Draw;
-
-           _GeometP.Unuse( 0{BinP} );
-           _GeometN.Unuse( 1{BinP} );
-           _GeometT.Unuse( 2{BinP} );
-
-         _Engine.Unuse;
-
-       _Sample.Unuse( 0{BinP} );
-       _Imager.Unuse( 0{BinP} );
-
-     _GeometUs.Unuse( 1{BinP} );
-end;
-
-//------------------------------------------------------------------------------
-
-procedure TForm1.InitRender;
-begin
-     GLView1.OnPaint := procedure
-     begin
-          _CameraUs.Use( 0{BinP}, 0{Offs} );
-
-            DrawModel;
-
-          _CameraUs.Unuse( 0{BinP} );
-     end;
-
-     GLView2.OnPaint := procedure
-     begin
-          _CameraUs.Use( 0{BinP}, 1{Offs} );
-
-            DrawModel;
-
-          _CameraUs.Unuse( 0{BinP} );
-     end;
-
-     GLView3.OnPaint := procedure
-     begin
-          _CameraUs.Use( 0{BinP}, 2{Offs} );
-
-            DrawModel;
-
-          _CameraUs.Unuse( 0{BinP} );
-     end;
-
-     GLView4.OnPaint := procedure
-     begin
-          _CameraUs.Use( 0{BinP}, 3{Offs} );
-
-            DrawModel;
-
-          _CameraUs.Unuse( 0{BinP} );
      end;
 end;
 
@@ -446,95 +226,108 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-     _CameraUs := TGLBufferU<TCamera>   .Create( GL_STATIC_DRAW  );
+     _MouseS := [];
+     _MouseP := TSingle2D.Create( 0, 0 );
+     _MouseA := TSingle2D.Create( 0, 0 );
 
-     _GeometP  := TGLBufferVS<TSingle3D>.Create( GL_STATIC_DRAW  );
-     _GeometN  := TGLBufferVS<TSingle3D>.Create( GL_STATIC_DRAW  );
-     _GeometT  := TGLBufferVS<TSingle2D>.Create( GL_STATIC_DRAW  );
-     _GeometE  := TGLBufferE32          .Create( GL_STATIC_DRAW  );
-     _GeometUs := TGLBufferU<TSingleM4> .Create( GL_DYNAMIC_DRAW );
+     _Materi := TGLTexMateri.Create;
 
-     _Sample   := TGLSample             .Create;
-     _Imager   := TGLImager2D_RGBA      .Create;
+     _Materi.Imager.LoadFromFile( '..\..\_DATA\Spherical_1024x1024.png' );
 
-     _ShaderV  := TGLShaderV            .Create;
-     _ShaderF  := TGLShaderF            .Create;
+     _World := TGLWorld.Create;
 
-     _Engine   := TGLEngine             .Create;
+     _World.GeometUs.Count := 5;
+
+     _Shape := TGLShape.Create( _World );
+
+     _Shape.Material := _Materi;
+
+     _Shape.LoadFromFunc( BraidedTorus, 1300, 100 );
+
+     _Camera1 := TGLCamera.Create( _World );  _Camera1._No := 0;
+     _Camera2 := TGLCamera.Create( _World );  _Camera2._No := 1;
+     _Camera3 := TGLCamera.Create( _World );  _Camera3._No := 2;
+     _Camera4 := TGLCamera.Create( _World );  _Camera4._No := 3;
+
+     GLView1.Camera := _Camera1;
+     GLView2.Camera := _Camera2;
+     GLView3.Camera := _Camera3;
+     GLView4.Camera := _Camera4;
 
      //////////
 
      InitCamera;
-     InitGeomet;
-     InitImager;
-     InitShader;
      InitEngine;
-     InitRender;
 
      //////////
 
-     with _ShaderV do
+     with _Materi.ShaderV do
      begin
           Source.LoadFromFile( '..\..\_DATA\ShaderV.glsl' );
 
           MemoSVS.Lines.Assign( Source );
      end;
 
-     with _ShaderF do
+     with _Materi.ShaderF do
      begin
           Source.LoadFromFile( '..\..\_DATA\ShaderF.glsl' );
 
           MemoSFS.Lines.Assign( Source );
      end;
-
-     //////////
-
-     _Angle := 0;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
-     _Engine  .DisposeOf;
-
-     _ShaderV .DisposeOf;
-     _ShaderF .DisposeOf;
-
-     _Sample  .DisposeOf;
-     _Imager  .DisposeOf;
-
-     _GeometP .DisposeOf;
-     _GeometN .DisposeOf;
-     _GeometT .DisposeOf;
-     _GeometE .DisposeOf;
-     _GeometUs.DisposeOf;
-
-     _CameraUs.DisposeOf;
+     _World.DisposeOf;
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-procedure TForm1.Timer1Timer(Sender: TObject);
-begin
-     _Angle := _Angle + 1;
-
-     _GeometUs[ 0 ] := TSingleM4.RotateY( DegToRad( _Angle ) );
-
-     GLView1.Repaint;
-     GLView2.Repaint;
-     GLView3.Repaint;
-     GLView4.Repaint;
-end;
-
-//------------------------------------------------------------------------------
-
 procedure TForm1.MemoSVSChangeTracking(Sender: TObject);
 begin
-     EditShader( _ShaderV, MemoSVS );
+     EditShader( _Materi.ShaderV, MemoSVS );
 end;
 
 procedure TForm1.MemoSFSChangeTracking(Sender: TObject);
 begin
-     EditShader( _ShaderF, MemoSFS );
+     EditShader( _Materi.ShaderF, MemoSFS );
+end;
+
+//------------------------------------------------------------------------------
+
+procedure TForm1.GLView4MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
+begin
+     _MouseS := Shift;
+     _MouseP := TSingle2D.Create( X, Y );
+end;
+
+procedure TForm1.GLView4MouseMove(Sender: TObject; Shift: TShiftState; X, Y: Single);
+var
+   P :TSingle2D;
+begin
+     if ssLeft in _MouseS then
+     begin
+          P := TSingle2D.Create( X, Y );
+
+          _MouseA := _MouseA + ( P - _MouseP );
+
+          _Shape.Move := TSingleM4.RotateX( DegToRad( _MouseA.Y ) )
+                       * TSingleM4.RotateY( DegToRad( _MouseA.X ) );
+
+          GLView1.Repaint;
+          GLView2.Repaint;
+          GLView3.Repaint;
+          GLView4.Repaint;
+
+          _MouseP := P;
+     end;
+end;
+
+procedure TForm1.GLView4MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
+begin
+     GLView4MouseMove( Sender, Shift, X, Y );
+
+     _MouseS := [];
 end;
 
 end. //######################################################################### ■
