@@ -22,6 +22,12 @@ vec2 VecToSky( vec4 Vector_ )
 
 ////////////////////////////////////////////////////////////////////////////////【共通定数】
 
+layout(std140) uniform TViewerDat
+{
+  layout(row_major) mat4 Scal;
+}
+_Viewer;
+
 layout(std140) uniform TCameraDat
 {
   layout(row_major) mat4 Proj;

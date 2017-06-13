@@ -2,6 +2,12 @@
 
 ////////////////////////////////////////////////////////////////////////////////【共通定数】
 
+layout(std140) uniform TViewerDat
+{
+  layout(row_major) mat4 Scal;
+}
+_Viewer;
+
 layout(std140) uniform TCameraDat
 {
   layout(row_major) mat4 Proj;
@@ -39,7 +45,7 @@ void main()
   _Result.Nor = transpose( inverse( _Shaper.Move ) ) * _Vertex_Nor;
   _Result.Tex =                                        _Vertex_Tex;
 
-  gl_Position = _Camera.Proj * inverse( _Camera.Move ) * _Result.Pos;
+  gl_Position = _Viewer.Scal * _Camera.Proj * inverse( _Camera.Move ) * _Result.Pos;
 }
 
 //##############################################################################
