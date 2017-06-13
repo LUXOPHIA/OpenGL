@@ -331,7 +331,7 @@ var
    P :TSingle2D;
    S :TShaperDat;
 begin
-     if ssLeft in Shift then
+     if ssLeft in _MouseS then
      begin
           P := TSingle2D.Create( X, Y );
 
