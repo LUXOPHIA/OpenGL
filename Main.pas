@@ -10,17 +10,11 @@ uses
   LUX, LUX.D1, LUX.D2, LUX.D3, LUX.M4,
   LUX.GPU.OpenGL,
   LUX.GPU.OpenGL.GLView,
-  LUX.GPU.OpenGL.Buffer,
-  LUX.GPU.OpenGL.Buffer.Unif,
-  LUX.GPU.OpenGL.Buffer.Vert,
-  LUX.GPU.OpenGL.Buffer.Elem,
-  LUX.GPU.OpenGL.Imager,
-  LUX.GPU.OpenGL.Imager.FMX,
   LUX.GPU.OpenGL.Shader,
-  LUX.GPU.OpenGL.Engine,
-  LUX.GPU.OpenGL.Geometry,
-  LUX.GPU.OpenGL.Material,
-  LUX.GPU.OpenGL.Material.FMX;
+  LUX.GPU.OpenGL.Scener,
+  LUX.GPU.OpenGL.Camera,
+  LUX.GPU.OpenGL.Shaper,
+  LUX.GPU.OpenGL.Matery.FMX;
 
 type
   TForm1 = class(TForm)
@@ -62,14 +56,16 @@ type
     { public 宣言 }
     _Scener  :TGLScener;
     _Shaper  :TGLShaper;
-    _Matery  :TGLMatery;
+    _Matery  :TGLMateryI;
     _Camera1 :TGLCamera;
     _Camera2 :TGLCamera;
     _Camera3 :TGLCamera;
     _Camera4 :TGLCamera;
     ///// メソッド
+    procedure InitViewer;
     procedure InitCamera;
-    procedure InitEngine;
+    procedure InitMatery;
+    procedure InitShaper;
   end;
 
 var
@@ -109,16 +105,21 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
+procedure TForm1.InitViewer;
+begin
+     GLView1.Camera := _Camera1;
+     GLView2.Camera := _Camera2;
+     GLView3.Camera := _Camera3;
+     GLView4.Camera := _Camera4;
+end;
+
+//------------------------------------------------------------------------------
+
 procedure TForm1.InitCamera;
 const
      _N :Single = 0.1;
      _F :Single = 1000;
 begin
-     with _Scener.CameraUs do
-     begin
-          Count := 4;
-     end;
-
      with _Camera1 do
      begin
           Proj := TSingleM4.ProjOrth( -2.5, +2.5, -2.5, +2.5, _N, _F );
@@ -129,7 +130,7 @@ begin
 
      with _Camera2 do
      begin
-          Proj := TSingleM4.ProjOrth( -3, +3, -2, +2, _N, _F );
+          Proj := TSingleM4.ProjOrth( -2, +2, -2, +2, _N, _F );
 
           Move := TSingleM4.RotateX( DegToRad( -45 ) )
                 * TSingleM4.Translate( 0, 0, +5 );
@@ -137,17 +138,48 @@ begin
 
      with _Camera3 do
      begin
-          Proj := TSingleM4.ProjOrth( -3, +3, -1.5, +1.5, _N, _F );
+          Proj := TSingleM4.ProjOrth( -1.5, +1.5, -1.5, +1.5, _N, _F );
 
           Move := TSingleM4.Translate( 0, 0, +5 );
      end;
 
      with _Camera4 do
      begin
-          Proj := TSingleM4.ProjPers( -4/4*_N, +4/4*_N, -3/4*_N, +3/4*_N, _N, _F );
+          Proj := TSingleM4.ProjPers( -2/4*_N, +2/4*_N, -2/4*_N, +2/4*_N, _N, _F );
 
           Move := TSingleM4.RotateX( DegToRad( -45 ) )
-                * TSingleM4.Translate( 0, -0.35, +3 );
+                * TSingleM4.Translate( 0, 0, +3 );
+     end;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure TForm1.InitMatery;
+begin
+     with _Matery do
+     begin
+          with ShaderV do
+          begin
+               Source.LoadFromFile( '..\..\_DATA\ShaderV.glsl' );
+
+               MemoSVS.Lines.Assign( Source );
+          end;
+
+          with ShaderF do
+          begin
+               Source.LoadFromFile( '..\..\_DATA\ShaderF.glsl' );
+
+               MemoSFS.Lines.Assign( Source );
+          end;
+
+          Imager.LoadFromFile( '..\..\_DATA\Spherical_1024x1024.png' );
+
+          OnBuilded := procedure
+          begin
+               MemoSVE.Lines.Assign( ShaderV.Errors );
+               MemoSFE.Lines.Assign( ShaderF.Errors );
+               MemoP  .Lines.Assign( Engine .Errors );
+          end;
      end;
 end;
 
@@ -183,19 +215,13 @@ begin
      end;
 end;
 
-//------------------------------------------------------------------------------
-
-procedure TForm1.InitEngine;
+procedure TForm1.InitShaper;
 begin
-     with _Matery.Engine do
+     with _Shaper do
      begin
-          OnLinked := procedure
-          begin
-               MemoSVE.Lines.Assign( _Matery.ShaderV.Errors );
-               MemoSFE.Lines.Assign( _Matery.ShaderF.Errors );
+          LoadFromFunc( BraidedTorus, 1300, 100 );
 
-               MemoP.Lines.Assign( Errors );
-          end;
+          Matery := _Matery;
      end;
 end;
 
@@ -207,50 +233,21 @@ begin
      _MouseP := TSingle2D.Create( 0, 0 );
      _MouseA := TSingle2D.Create( 0, 0 );
 
-     _Matery := TGLMatery.Create;
+     _Scener  := TGLScener.Create;
 
-     _Matery.Imager.LoadFromFile( '..\..\_DATA\Spherical_1024x1024.png' );
+     _Camera1 := TGLCamera.Create( _Scener );
+     _Camera2 := TGLCamera.Create( _Scener );
+     _Camera3 := TGLCamera.Create( _Scener );
+     _Camera4 := TGLCamera.Create( _Scener );
 
-     _Scener := TGLScener.Create;
+     _Matery  := TGLMateryI.Create;
 
-     _Scener.GeometUs.Count := 5;
+     _Shaper  := TGLShaper.Create( _Scener );
 
-     _Shaper := TGLShaper.Create( _Scener );
-
-     _Shaper.Material := _Matery;
-
-     _Shaper.LoadFromFunc( BraidedTorus, 1300, 100 );
-
-     _Camera1 := TGLCamera.Create( _Scener );  _Camera1._No := 0;
-     _Camera2 := TGLCamera.Create( _Scener );  _Camera2._No := 1;
-     _Camera3 := TGLCamera.Create( _Scener );  _Camera3._No := 2;
-     _Camera4 := TGLCamera.Create( _Scener );  _Camera4._No := 3;
-
-     GLView1.Camera := _Camera1;
-     GLView2.Camera := _Camera2;
-     GLView3.Camera := _Camera3;
-     GLView4.Camera := _Camera4;
-
-     //////////
-
+     InitViewer;
      InitCamera;
-     InitEngine;
-
-     //////////
-
-     with _Matery.ShaderV do
-     begin
-          Source.LoadFromFile( '..\..\_DATA\ShaderV.glsl' );
-
-          MemoSVS.Lines.Assign( Source );
-     end;
-
-     with _Matery.ShaderF do
-     begin
-          Source.LoadFromFile( '..\..\_DATA\ShaderF.glsl' );
-
-          MemoSFS.Lines.Assign( Source );
-     end;
+     InitMatery;
+     InitShaper;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
@@ -289,7 +286,7 @@ begin
           _MouseA := _MouseA + ( P - _MouseP );
 
           _Shaper.Move := TSingleM4.RotateX( DegToRad( _MouseA.Y ) )
-                       * TSingleM4.RotateY( DegToRad( _MouseA.X ) );
+                        * TSingleM4.RotateY( DegToRad( _MouseA.X ) );
 
           GLView1.Repaint;
           GLView2.Repaint;
