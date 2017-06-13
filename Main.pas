@@ -60,7 +60,7 @@ type
     procedure EditShader( const Shader_:TGLShader; const Memo_:TMemo );
   public
     { public 宣言 }
-    _World   :TGLWorld;
+    _Scener  :TGLScener;
     _Shaper  :TGLShaper;
     _Matery  :TGLMatery;
     _Camera1 :TGLCamera;
@@ -114,7 +114,7 @@ const
      _N :Single = 0.1;
      _F :Single = 1000;
 begin
-     with _World.CameraUs do
+     with _Scener.CameraUs do
      begin
           Count := 4;
      end;
@@ -211,20 +211,20 @@ begin
 
      _Matery.Imager.LoadFromFile( '..\..\_DATA\Spherical_1024x1024.png' );
 
-     _World := TGLWorld.Create;
+     _Scener := TGLScener.Create;
 
-     _World.GeometUs.Count := 5;
+     _Scener.GeometUs.Count := 5;
 
-     _Shaper := TGLShaper.Create( _World );
+     _Shaper := TGLShaper.Create( _Scener );
 
      _Shaper.Material := _Matery;
 
      _Shaper.LoadFromFunc( BraidedTorus, 1300, 100 );
 
-     _Camera1 := TGLCamera.Create( _World );  _Camera1._No := 0;
-     _Camera2 := TGLCamera.Create( _World );  _Camera2._No := 1;
-     _Camera3 := TGLCamera.Create( _World );  _Camera3._No := 2;
-     _Camera4 := TGLCamera.Create( _World );  _Camera4._No := 3;
+     _Camera1 := TGLCamera.Create( _Scener );  _Camera1._No := 0;
+     _Camera2 := TGLCamera.Create( _Scener );  _Camera2._No := 1;
+     _Camera3 := TGLCamera.Create( _Scener );  _Camera3._No := 2;
+     _Camera4 := TGLCamera.Create( _Scener );  _Camera4._No := 3;
 
      GLView1.Camera := _Camera1;
      GLView2.Camera := _Camera2;
@@ -255,7 +255,7 @@ end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
-     _World.DisposeOf;
+     _Scener.DisposeOf;
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
