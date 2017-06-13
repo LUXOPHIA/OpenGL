@@ -53,9 +53,9 @@ type
     procedure GLView4MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
   private
     { private 宣言 }
+    _MouseA :TSingle2D;
     _MouseS :TShiftState;
     _MouseP :TSingle2D;
-    _MouseA :TSingle2D;
     ///// メソッド
     procedure EditShader( const Shader_:TGLShader; const Memo_:TMemo );
   public
