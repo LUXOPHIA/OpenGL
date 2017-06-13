@@ -351,10 +351,8 @@
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Engine.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Imager.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\FMX\LUX.GPU.OpenGL.Imager.FMX.pas"/>
-        <DCCReference Include="_LIBRARY\MYX.Camera.pas"/>
-        <DCCReference Include="_LIBRARY\MYX.Shaper.pas"/>
-        <DCCReference Include="_LIBRARY\MYX.Matery.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\LUX.Tree.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\FMX\LUX.GPU.OpenGL.Material.FMX.pas"/>
         <None Include="_DATA\ShaderF.glsl"/>
         <None Include="_DATA\ShaderV.glsl"/>
         <BuildConfiguration Include="Release">

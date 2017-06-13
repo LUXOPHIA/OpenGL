@@ -37,10 +37,8 @@ uses
   LUX.GPU.OpenGL.Engine in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Engine.pas',
   LUX.GPU.OpenGL.Imager in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Imager.pas',
   LUX.GPU.OpenGL.Imager.FMX in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\FMX\LUX.GPU.OpenGL.Imager.FMX.pas',
-  MYX.Camera in '_LIBRARY\MYX.Camera.pas',
-  MYX.Shaper in '_LIBRARY\MYX.Shaper.pas',
-  MYX.Matery in '_LIBRARY\MYX.Matery.pas',
-  LUX.Tree in '_LIBRARY\LUXOPHIA\LUX\LUX.Tree.pas';
+  LUX.Tree in '_LIBRARY\LUXOPHIA\LUX\LUX.Tree.pas',
+  LUX.GPU.OpenGL.Material.FMX in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\FMX\LUX.GPU.OpenGL.Material.FMX.pas';
 
 {$R *.res}
 
