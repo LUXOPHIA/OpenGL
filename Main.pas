@@ -120,7 +120,7 @@ begin
 
      with C do
      begin
-          Proj := TSingleM4.ProjOrth( -3, +3, -2, +2, _N, _F );
+          Proj := TSingleM4.ProjOrth( -2, +2, -2, +2, _N, _F );
 
           Pose := TSingleM4.RotateX( DegToRad( -45 ) )
                 * TSingleM4.Translate( 0, 0, +5 );
@@ -130,7 +130,7 @@ begin
 
      with C do
      begin
-          Proj := TSingleM4.ProjOrth( -3, +3, -1.5, +1.5, _N, _F );
+          Proj := TSingleM4.ProjOrth( -1.5, +1.5, -1.5, +1.5, _N, _F );
 
           Pose := TSingleM4.Translate( 0, 0, +5 );
      end;
@@ -139,10 +139,10 @@ begin
 
      with C do
      begin
-          Proj := TSingleM4.ProjPers( -4/4*_N, +4/4*_N, -3/4*_N, +3/4*_N, _N, _F );
+          Proj := TSingleM4.ProjPers( -_N/2, +_N/2, -_N/2, +_N/2, _N, _F );
 
           Pose := TSingleM4.RotateX( DegToRad( -45 ) )
-                * TSingleM4.Translate( 0, 0, +3 );
+                * TSingleM4.Translate( 0, 0, +4 );
      end;
 
      _Camera4.Data := C;
