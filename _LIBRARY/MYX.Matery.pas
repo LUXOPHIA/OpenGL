@@ -84,15 +84,16 @@ begin
 
           with Verters do
           begin
-               Add( 0{BinP}, '_Vertex_Pos'{Name}, 3{EleN}, GL_FLOAT{EleT} );
-               Add( 1{BinP}, '_Vertex_Nor'{Name}, 3{EleN}, GL_FLOAT{EleT} );
-               Add( 2{BinP}, '_Vertex_Tex'{Name}, 2{EleN}, GL_FLOAT{EleT} );
+               Add( 0{BinP}, '_VerterPos'{Name}, 3{EleN}, GL_FLOAT{EleT} );
+               Add( 1{BinP}, '_VerterNor'{Name}, 3{EleN}, GL_FLOAT{EleT} );
+               Add( 2{BinP}, '_VerterTex'{Name}, 2{EleN}, GL_FLOAT{EleT} );
           end;
 
           with Unifors do
           begin
-               Add( 0{BinP}, 'TCameraDat'{Name} );
-               Add( 1{BinP}, 'TShaperDat'{Name} );
+               Add( 0{BinP}, 'TViewerScal'{Name} );
+               Add( 1{BinP}, 'TCameraData'{Name} );
+               Add( 2{BinP}, 'TShaperData'{Name} );
           end;
 
           with Imagers do
@@ -102,7 +103,7 @@ begin
 
           with Framers do
           begin
-               Add( 0{BinP}, '_Frag_Col'{Name} );
+               Add( 0{BinP}, '_FramerCol'{Name} );
           end;
      end;
 end;

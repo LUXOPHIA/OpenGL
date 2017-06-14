@@ -126,7 +126,7 @@ end;
 
 procedure TMyShaperBase.Draw;
 begin
-     _Data.Use( 1{BinP} );
+     _Data.Use( 2{BinP} );
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TMyShaper

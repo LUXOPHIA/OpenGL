@@ -105,7 +105,7 @@ end;
 
 procedure TMyCamera.Use;
 begin
-     _Data.Use( 0{BinP} );
+     _Data.Use( 1{BinP} );
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】

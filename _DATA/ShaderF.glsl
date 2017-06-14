@@ -2,10 +2,8 @@
 
 ////////////////////////////////////////////////////////////////////////////////【定数】
 
-const float Pi = 3.141592653589793;
-
+const float Pi  = 3.141592653589793;
 const float Pi2 = Pi * 2.0;
-
 const float P2i = Pi / 2.0;
 
 ////////////////////////////////////////////////////////////////////////////////【ルーチン】
@@ -22,16 +20,21 @@ vec2 VecToSky( vec4 Vector_ )
 
 ////////////////////////////////////////////////////////////////////////////////【共通定数】
 
-layout(std140) uniform TCameraDat
+layout(std140) uniform TViewerScal
+{
+  layout(row_major) mat4 _ViewerScal;
+};
+
+layout(std140) uniform TCameraData
 {
   layout(row_major) mat4 Proj;
-  layout(row_major) mat4 Move;
+  layout(row_major) mat4 Pose;
 }
 _Camera;
 
-layout(std140) uniform TShaperDat
+layout(std140) uniform TShaperData
 {
-  layout(row_major) mat4 Move;
+  layout(row_major) mat4 Pose;
 }
 _Shaper;
 
@@ -49,17 +52,17 @@ _Sender;
 
 //------------------------------------------------------------------------------
 
-out vec4 _Frag_Col;
+out vec4 _FramerCol;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 void main()
 {
-  vec4 C = _Camera.Move * vec4( 0, 0, 0, 1 );
+  vec4 C = _Camera.Pose * vec4( 0, 0, 0, 1 );
   vec4 V = normalize( _Sender.Pos - C );
   vec4 R = reflect( V, normalize( _Sender.Nor ) );
 
-  _Frag_Col = texture( _Imager, VecToSky( R ) );
+  _FramerCol = texture( _Imager, VecToSky( R ) );
 }
 
 //##############################################################################
