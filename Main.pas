@@ -11,8 +11,8 @@ uses
   LUX.GPU.OpenGL,
   LUX.GPU.OpenGL.GLView,
   LUX.GPU.OpenGL.Buffer,
-  LUX.GPU.OpenGL.Buffer.Vert,
-  LUX.GPU.OpenGL.Buffer.Elem;
+  LUX.GPU.OpenGL.Buffer.Verter,
+  LUX.GPU.OpenGL.Buffer.Elemer;
 
 type
   TForm1 = class(TForm)
@@ -31,9 +31,9 @@ type
     _Angle :Single;
   public
     { public 宣言 }
-    _BufferV :TGLBufferVS<TSingle3D>;
-    _BufferC :TGLBufferVS<TAlphaColorF>;
-    _BufferF :TGLBufferE32;
+    _VerterP :TGLVerterS<TSingle3D>;
+    _VerterC :TGLVerterS<TAlphaColorF>;
+    _Elemer  :TGLElemer32;
     ///// メソッド
     procedure InitGeomet;
     procedure DrawModel;
@@ -78,9 +78,9 @@ begin
      //  |/      |/
      //  4-------5
 
-     _BufferV.Import( Ps );
-     _BufferC.Import( Cs );
-     _BufferF.Import( Es );
+     _VerterP.Import( Ps );
+     _VerterC.Import( Cs );
+     _Elemer.Import( Es );
 end;
 
 //------------------------------------------------------------------------------
@@ -90,21 +90,21 @@ begin
      glEnableClientState( GL_VERTEX_ARRAY );
      glEnableClientState( GL_COLOR_ARRAY  );
 
-       with _BufferV do
+       with _VerterP do
        begin
             Bind;
               glVertexPointer( 3, GL_FLOAT, 0, nil );
             Unbind;
        end;
 
-       with _BufferC do
+       with _VerterC do
        begin
             Bind;
               glColorPointer( 4, GL_FLOAT, 0, nil );
             Unbind;
        end;
 
-       with _BufferF do
+       with _Elemer do
        begin
             Bind;
               glDrawElements( GL_TRIANGLES, 3{Poin} * 12{Face}, GL_UNSIGNED_INT, nil );
@@ -180,9 +180,9 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-     _BufferV := TGLBufferVS<TSingle3D>   .Create( GL_STATIC_DRAW );
-     _BufferC := TGLBufferVS<TAlphaColorF>.Create( GL_STATIC_DRAW );
-     _BufferF := TGLBufferE32             .Create( GL_STATIC_DRAW );
+     _VerterP := TGLVerterS<TSingle3D>   .Create( GL_STATIC_DRAW );
+     _VerterC := TGLVerterS<TAlphaColorF>.Create( GL_STATIC_DRAW );
+     _Elemer  := TGLElemer32             .Create( GL_STATIC_DRAW );
 
      InitGeomet;
      InitRender;
@@ -192,9 +192,9 @@ end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
-     _BufferV.DisposeOf;
-     _BufferC.DisposeOf;
-     _BufferF.DisposeOf;
+     _VerterP.DisposeOf;
+     _VerterC.DisposeOf;
+     _Elemer .DisposeOf;
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
