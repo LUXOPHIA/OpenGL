@@ -35,7 +35,7 @@ uses
   LUX.GPU.OpenGL.Shader in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\» OBJECT\LUX.GPU.OpenGL.Shader.pas',
   LUX.GPU.OpenGL.Buffer.Elemer in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\» OBJECT\LUX.GPU.OpenGL.Buffer.Elemer.pas',
   LUX.GPU.OpenGL.Buffer in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\» OBJECT\LUX.GPU.OpenGL.Buffer.pas',
-  LUX.GPU.OpenGL.Buffer.Unif in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\» OBJECT\LUX.GPU.OpenGL.Buffer.Unif.pas',
+  LUX.GPU.OpenGL.Buffer.Unifor in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\» OBJECT\LUX.GPU.OpenGL.Buffer.Unifor.pas',
   LUX.GPU.OpenGL.Matery in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Matery.pas',
   LUX.GPU.OpenGL in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.pas',
   LUX.GPU.OpenGL.Shaper in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Shaper.pas',
