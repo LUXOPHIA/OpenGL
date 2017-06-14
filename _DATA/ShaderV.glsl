@@ -15,6 +15,11 @@ layout(std140) uniform TCameraDat
 }
 _Camera;
 
+layout(std140) uniform TCameraPose
+{
+  layout(row_major) mat4 _CameraPose;
+};
+
 layout(std140) uniform TShaperDat
 {
   layout(row_major) mat4 Move;
@@ -45,7 +50,7 @@ void main()
   _Result.Nor = transpose( inverse( _Shaper.Move ) ) * _Vertex_Nor;
   _Result.Tex =                                        _Vertex_Tex;
 
-  gl_Position = _Viewer.Scal * _Camera.Proj * inverse( _Camera.Move ) * _Result.Pos;
+  gl_Position = _Viewer.Scal * _Camera.Proj * inverse( _CameraPose ) * _Result.Pos;
 }
 
 //##############################################################################

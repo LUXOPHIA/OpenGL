@@ -35,6 +35,11 @@ layout(std140) uniform TCameraDat
 }
 _Camera;
 
+layout(std140) uniform TCameraPose
+{
+  layout(row_major) mat4 _CameraPose;
+};
+
 layout(std140) uniform TShaperDat
 {
   layout(row_major) mat4 Move;
