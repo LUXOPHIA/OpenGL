@@ -116,9 +116,6 @@ end;
 //------------------------------------------------------------------------------
 
 procedure TForm1.InitCamera;
-const
-     _N :Single = 0.1;
-     _F :Single = 1000;
 begin
      with _Camera1 do
      begin
