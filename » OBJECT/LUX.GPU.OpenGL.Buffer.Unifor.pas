@@ -1,9 +1,9 @@
-﻿unit LUX.GPU.OpenGL.Buffer.Elem;
+﻿unit LUX.GPU.OpenGL.Buffer.Unifor;
 
 interface //#################################################################### ■
 
 uses Winapi.OpenGL, Winapi.OpenGLext,
-     LUX, LUX.D3, LUX.GPU.OpenGL, LUX.GPU.OpenGL.Buffer;
+     LUX, LUX.GPU.OpenGL, LUX.GPU.OpenGL.Buffer;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -11,36 +11,31 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBufferE<_TYPE_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLUnifor<_TYPE_>
 
-     IGLBufferE = interface( IGLBuffer )
-     ['{BCD91AB4-D6E5-49E1-8670-D4C4ED39AFD3}']
-       ///// アクセス
-       function GetElemT :GLenum;
-       ///// プロパティ
-       property ElemT :GLenum read GetElemT;
+     IGLUnifor = interface( IGLBuffer )
+     ['{923ECB97-7686-4B53-A9FC-AB4365C7CC4B}']
        ///// メソッド
-       procedure Draw;
+       procedure Use( const BinP_:GLuint ); overload;
+       procedure Use( const BinP_:GLuint; const Offs_:Integer; const Size_:Integer = 1 ); overload;
+       procedure Unuse( const BinP_:GLuint ); overload;
      end;
 
      //-------------------------------------------------------------------------
 
-     TGLBufferE<_TYPE_:record> = class( TGLBuffer<_TYPE_>, IGLBufferE )
+     TGLUnifor<_TYPE_:record> = class( TGLBuffer<_TYPE_>, IGLUnifor )
      private
      protected
        ///// アクセス
        function GetKind :GLenum; override;
-       function GetElemT :GLenum;
-     public
-       ///// プロパティ
-       property ElemT :GLenum read GetElemT;
        ///// メソッド
-       procedure Draw;
+       function InitAlign :GLint; override;
+     public
+       ///// メソッド
+       procedure Use( const BinP_:GLuint ); overload;
+       procedure Use( const BinP_:GLuint; const Offs_:Integer; const Size_:Integer = 1 ); overload;
+       procedure Unuse( const BinP_:GLuint ); overload;
      end;
-
-     TGLBufferE8  = TGLBufferE<TByte3D>;
-     TGLBufferE16 = TGLBufferE<TWord3D>;
-     TGLBufferE32 = TGLBufferE<TCardinal3D>;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
 
@@ -54,7 +49,7 @@ implementation //###############################################################
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBufferE<_TYPE_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLUnifor<_TYPE_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -62,32 +57,35 @@ implementation //###############################################################
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TGLBufferE<_TYPE_>.GetKind :GLenum;
+function TGLUnifor<_TYPE_>.GetKind :GLenum;
 begin
-     Result := GL_ELEMENT_ARRAY_BUFFER;
+     Result := GL_UNIFORM_BUFFER;
 end;
 
-function TGLBufferE<_TYPE_>.GetElemT :GLenum;
+/////////////////////////////////////////////////////////////////////// メソッド
+
+function TGLUnifor<_TYPE_>.InitAlign :GLint;
 begin
-     case  SizeOf( _TYPE_ ) of
-       3: Result := GL_UNSIGNED_BYTE;
-       6: Result := GL_UNSIGNED_SHORT;
-      12: Result := GL_UNSIGNED_INT;
-     else Assert( False, 'Unkown Type!' );
-     end;
+     glGetIntegerv( GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT, @Result );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLBufferE<_TYPE_>.Draw;
+procedure TGLUnifor<_TYPE_>.Use( const BinP_:GLuint );
 begin
-     Bind;
+     glBindBufferBase( GetKind, BinP_, _ID );
+end;
 
-       glDrawElements( GL_TRIANGLES, 3{Poin} * _Count, GetElemT, nil );
+procedure TGLUnifor<_TYPE_>.Use( const BinP_:GLuint; const Offs_:Integer; const Size_:Integer = 1 );
+begin
+     glBindBufferRange( GetKind, BinP_, _ID, _Strid * Offs_, _Strid * Size_ );
+end;
 
-     Unbind;
+procedure TGLUnifor<_TYPE_>.Unuse( const BinP_:GLuint );
+begin
+     glBindBufferBase( GetKind, BinP_, 0 );
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】

@@ -153,18 +153,19 @@ begin
                Add( _ShaderF{Shad} );
           end;
 
-          with VerBufs do
+          with Verters do
           begin
-               Add( 0{BinP}, '_Vertex_Pos'{Name}, 3{EleN}, GL_FLOAT{EleT} );
-               Add( 1{BinP}, '_Vertex_Nor'{Name}, 3{EleN}, GL_FLOAT{EleT} );
-               Add( 2{BinP}, '_Vertex_Tex'{Name}, 2{EleN}, GL_FLOAT{EleT} );
+               Add( 0{BinP}, '_VertexPos'{Name}, 3{EleN}, GL_FLOAT{EleT} );
+               Add( 1{BinP}, '_VertexNor'{Name}, 3{EleN}, GL_FLOAT{EleT} );
+               Add( 2{BinP}, '_VertexTex'{Name}, 2{EleN}, GL_FLOAT{EleT} );
           end;
 
-          with UniBufs do
+          with Unifors do
           begin
-               Add( 2{BinP}, 'TViewerDat'{Name} );
-               Add( 0{BinP}, 'TCameraDat'{Name} );
-               Add( 1{BinP}, 'TShaperDat'{Name} );
+               Add( 0{BinP}, 'TViewerScal'{Name} );
+               Add( 1{BinP}, 'TCameraProj'{Name} );
+               Add( 2{BinP}, 'TCameraPose'{Name} );
+               Add( 3{BinP}, 'TShaperPose'{Name} );
           end;
 
           with Imagers do
