@@ -193,7 +193,7 @@ begin
                Move := TSingleM4.Identify;
           end;
 
-          Dat := S;
+          Data := S;
      end;
 end;
 
@@ -343,7 +343,7 @@ begin
                      * TSingleM4.RotateY( DegToRad( _MouseA.X ) );
           end;
 
-          _Shaper.Dat := S;
+          _Shaper.Data := S;
 
           GLView1.Repaint;
           GLView2.Repaint;
