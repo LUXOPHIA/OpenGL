@@ -55,8 +55,8 @@ type
   public
     { public 宣言 }
     _Scener  :TGLScener;
-    _Shaper  :TGLShaper;
-    _Matery  :TGLMateryI;
+    _Shaper  :TGLShaperPoly;
+    _Matery  :IGLMateryImag;
     _Camera1 :TGLCameraOrth;
     _Camera2 :TGLCameraOrth;
     _Camera3 :TGLCameraOrth;
@@ -240,9 +240,9 @@ begin
      _Camera3 := TGLCameraOrth.Create( _Scener );
      _Camera4 := TGLCameraPers.Create( _Scener );
 
-     _Matery  := TGLMateryI.Create;
+     _Matery  := TGLMateryImag.Create;
 
-     _Shaper  := TGLShaper.Create( _Scener );
+     _Shaper  := TGLShaperPoly.Create( _Scener );
 
      InitViewer;
      InitCamera;
