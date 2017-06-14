@@ -1,4 +1,4 @@
-﻿unit LUX.GPU.OpenGL.Geometry;
+﻿unit LUX.GPU.OpenGL.Shaper;
 
 interface //#################################################################### ■
 
@@ -6,110 +6,66 @@ uses Winapi.OpenGL, Winapi.OpenGLext,
      LUX, LUX.D2, LUX.D3, LUX.M4, LUX.Tree,
      LUX.GPU.OpenGL,
      LUX.GPU.OpenGL.Buffer,
-     LUX.GPU.OpenGL.Buffer.Unif,
-     LUX.GPU.OpenGL.Buffer.Vert,
-     LUX.GPU.OpenGL.Buffer.Elem,
-     LUX.GPU.OpenGL.Material;
+     LUX.GPU.OpenGL.Buffer.Verter,
+     LUX.GPU.OpenGL.Buffer.Elemer,
+     LUX.GPU.OpenGL.Scener,
+     LUX.GPU.OpenGL.Matery;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     TGLWorld = class;
-
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
-
-     TCamera = record
-     private
-     public
-       Proj :TSingleM4;
-       Move :TSingleM4;
-     end;
-
-     TGeomet = record
-     private
-     public
-       Move :TSingleM4;
-     end;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLNode
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLShaper
 
-     TGLNode = class( TTreeNode<TGLNode> )
+     TGLShaper = class( TGLNode, IGLShaper )
      private
      protected
-       _Move :TSingleM4;
-       ///// アクセス
-       procedure SetMove( const Move_:TSingleM4 ); virtual;
+       _Matery :IGLMatery;
      public
-       constructor Create; override;
+       constructor Create( const Paren_:ITreeNode ); override;
        destructor Destroy; override;
        ///// プロパティ
-       property Move :TSingleM4 read _Move write SetMove;
-       ///// メソッド
-       procedure Draw; virtual;
+       property Matery :IGLMatery read _Matery write _Matery;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLWorld
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLShaperPoly
 
-     TGLWorld = class( TGLNode )
+     TGLShaperPoly = class( TGLShaper )
      private
      protected
-       _CameraUs :TGLBufferU<TCamera>;
-       _GeometUs :TGLBufferU<TSingleM4>;
+       _PosBuf :TGLVerterS<TSingle3D>;
+       _NorBuf :TGLVerterS<TSingle3D>;
+       _TexBuf :TGLVerterS<TSingle2D>;
+       _EleBuf :TGLElemer32;
      public
-       constructor Create; override;
+       constructor Create( const Paren_:ITreeNode ); override;
        destructor Destroy; override;
        ///// プロパティ
-       property CameraUs :TGLBufferU<TCamera>   read _CameraUs;
-       property GeometUs :TGLBufferU<TSingleM4> read _GeometUs;
-       ///// メソッド
-       procedure Compile;
-       procedure Render;
-     end;
-
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLCamera
-
-     TGLCamera = class( TGLNode )
-     private
-       ///// メソッド
-       procedure RegBuf;
-     protected
-       _Proj :TSingleM4;
-       ///// アクセス
-       procedure SetMove( const Move_:TSingleM4 ); override;
-       procedure SetProj( const Proj_:TSingleM4 ); virtual;
-     public
-       _No :Integer;
-       constructor Create; override;
-       destructor Destroy; override;
-       ///// プロパティ
-       property Proj :TSingleM4 read _Proj write SetProj;
-       ///// メソッド
-       procedure Render;
-     end;
-
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLShape
-
-     TGLShape = class( TGLNode )
-     private
-     protected
-       _PosBuf   :TGLBufferVS<TSingle3D>;
-       _NorBuf   :TGLBufferVS<TSingle3D>;
-       _TexBuf   :TGLBufferVS<TSingle2D>;
-       _EleBuf   :TGLBufferE32;
-       _Material :TGLMaterial;
-     public
-       constructor Create; override;
-       destructor Destroy; override;
-       ///// プロパティ
-       property PosBuf   :TGLBufferVS<TSingle3D> read _PosBuf;
-       property NorBuf   :TGLBufferVS<TSingle3D> read _NorBuf;
-       property EleBuf   :TGLBufferE32           read _EleBuf;
-       property Material :TGLMaterial            read _Material write _Material;
+       property PosBuf :TGLVerterS<TSingle3D> read _PosBuf;
+       property NorBuf :TGLVerterS<TSingle3D> read _NorBuf;
+       property TexBuf :TGLVerterS<TSingle2D> read _TexBuf;
+       property EleBuf :TGLElemer32           read _EleBuf;
        ///// メソッド
        procedure Draw; override;
        procedure LoadFromFileSTL( const FileName_:String );
        procedure LoadFromFunc( const Func_:TConstFunc<TdSingle2D,TdSingle3D>; const DivU_,DivV_:Integer );
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLShaper
+
+     TGLShaperCopy = class( TGLShaper )
+     private
+     protected
+       _Shaper :TGLShaperPoly;
+     public
+       constructor Create( const Paren_:ITreeNode ); override;
+       destructor Destroy; override;
+       ///// プロパティ
+       property Shaper :TGLShaperPoly read _Shaper write _Shaper;
+       ///// メソッド
+       procedure Draw; override;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -126,43 +82,7 @@ uses System.SysUtils, System.Classes;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLNode
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
-
-/////////////////////////////////////////////////////////////////////// アクセス
-
-procedure TGLNode.SetMove( const Move_:TSingleM4 );
-begin
-     _Move := Move_;
-
-     ( RootNode as TGLWorld )._GeometUs[ Order ] := _Move;
-end;
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
-
-constructor TGLNode.Create;
-begin
-     inherited;
-
-end;
-
-destructor TGLNode.Destroy;
-begin
-
-     inherited;
-end;
-
-/////////////////////////////////////////////////////////////////////// メソッド
-
-procedure TGLNode.Draw;
-begin
-
-end;
-
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLWorld
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLShaper
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -170,97 +90,20 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLWorld.Create;
+constructor TGLShaper.Create( const Paren_:ITreeNode );
 begin
      inherited;
 
-     _CameraUs := TGLBufferU<TCamera>  .Create( GL_DYNAMIC_DRAW );
-     _GeometUs := TGLBufferU<TSingleM4>.Create( GL_DYNAMIC_DRAW );
+     Move := TSingleM4.Identify;
 end;
 
-destructor TGLWorld.Destroy;
-begin
-     _CameraUs.Free;
-     _GeometUs.Free;
-
-     inherited;
-end;
-
-/////////////////////////////////////////////////////////////////////// メソッド
-
-procedure TGLWorld.Compile;
-begin
-
-end;
-
-procedure TGLWorld.Render;
-var
-   I :Integer;
-begin
-     for I := 0 to ChildsN-1 do Childs[ I ].Draw;
-end;
-
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLCamera
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
-
-/////////////////////////////////////////////////////////////////////// メソッド
-
-procedure TGLCamera.RegBuf;
-var
-   C :TCamera;
-begin
-     C.Proj := _Proj;
-     C.Move := _Move;
-
-     ( RootNode as TGLWorld ).CameraUs[ _No ] := C;
-end;
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
-
-/////////////////////////////////////////////////////////////////////// アクセス
-
-procedure TGLCamera.SetMove( const Move_:TSingleM4 );
-begin
-     inherited;
-
-     RegBuf;
-end;
-
-procedure TGLCamera.SetProj( const Proj_:TSingleM4 );
-begin
-     _Proj := Proj_;  RegBuf;
-end;
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
-
-constructor TGLCamera.Create;
-begin
-     inherited;
-
-end;
-
-destructor TGLCamera.Destroy;
+destructor TGLShaper.Destroy;
 begin
 
      inherited;
 end;
 
-/////////////////////////////////////////////////////////////////////// メソッド
-
-procedure TGLCamera.Render;
-begin
-     with ( RootNode as TGLWorld ) do
-     begin
-          CameraUs.Use( 0{BinP}, _No{Offs} );
-
-          Render;
-
-          CameraUs.Unuse( 0{BinP} );
-     end;
-end;
-
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLShape
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLShaperPoly
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -268,52 +111,44 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLShape.Create;
+constructor TGLShaperPoly.Create( const Paren_:ITreeNode );
 begin
      inherited;
 
-     _PosBuf := TGLBufferVS<TSingle3D>.Create( GL_STATIC_DRAW );
-     _NorBuf := TGLBufferVS<TSingle3D>.Create( GL_STATIC_DRAW );
-     _TexBuf := TGLBufferVS<TSingle2D>.Create( GL_STATIC_DRAW );
-     _EleBuf := TGLBufferE32          .Create( GL_STATIC_DRAW );
+     _PosBuf := TGLVerterS<TSingle3D>.Create( GL_STATIC_DRAW );
+     _NorBuf := TGLVerterS<TSingle3D>.Create( GL_STATIC_DRAW );
+     _TexBuf := TGLVerterS<TSingle2D>.Create( GL_STATIC_DRAW );
+     _EleBuf := TGLElemer32          .Create( GL_STATIC_DRAW );
 end;
 
-destructor TGLShape.Destroy;
+destructor TGLShaperPoly.Destroy;
 begin
-     _PosBuf.Free;
-     _NorBuf.Free;
-     _TexBuf.Free;
-     _EleBuf.Free;
+     _PosBuf.DisposeOf;
+     _NorBuf.DisposeOf;
+     _TexBuf.DisposeOf;
+     _EleBuf.DisposeOf;
 
      inherited;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLShape.Draw;
+procedure TGLShaperPoly.Draw;
 begin
-     ( RootNode as TGLWorld ).GeometUs.Use( 1{BinP}, Order{Offs} );
+     inherited;
 
-     _Material.Use;
+     _Matery.Use;
 
-       _PosBuf.Use( 0 );
-       _NorBuf.Use( 1 );
-       _TexBuf.Use( 2 );
+     _PosBuf.Use( 0{BinP} );
+     _NorBuf.Use( 1{BinP} );
+     _TexBuf.Use( 2{BinP} );
 
-         _EleBuf.Draw;
-
-       _PosBuf.Unuse( 0 );
-       _NorBuf.Unuse( 1 );
-       _TexBuf.Unuse( 2 );
-
-     _Material.Unuse;
-
-     ( RootNode as TGLWorld ).GeometUs.Unuse( 1{BinP} );
+     _EleBuf.Draw;
 end;
 
 //------------------------------------------------------------------------------
 
-procedure TGLShape.LoadFromFileSTL( const FileName_:String );
+procedure TGLShaperPoly.LoadFromFileSTL( const FileName_:String );
 var
    F :TFileStream;
    Hs :array [ 0..80-1 ] of AnsiChar;
@@ -330,16 +165,17 @@ var
    Es :TGLBufferData<TCardinal3D>;
 begin
      F := TFileStream.Create( FileName_, fmOpenRead );
+     try
+        F.Read( Hs, SizeOf( Hs ) );
 
-     F.Read( Hs, SizeOf( Hs ) );
+        F.Read( FsN, SizeOf( FsN ) );
 
-     F.Read( FsN, SizeOf( FsN ) );
+        SetLength( Fs, FsN );
 
-     SetLength( Fs, FsN );
-
-     F.Read( Fs[0], 50 * FsN );
-
-     F.DisposeOf;
+        F.Read( Fs[0], 50 * FsN );
+     finally
+            F.DisposeOf;
+     end;
 
      _PosBuf.Count := 3 * FsN;
      _NorBuf.Count := 3 * FsN;
@@ -379,7 +215,7 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure TGLShape.LoadFromFunc( const Func_:TConstFunc<TdSingle2D,TdSingle3D>; const DivU_,DivV_:Integer );
+procedure TGLShaperPoly.LoadFromFunc( const Func_:TConstFunc<TdSingle2D,TdSingle3D>; const DivU_,DivV_:Integer );
 //·····························
      function XYtoI( const X_,Y_:Integer ) :Integer;
      begin
@@ -464,6 +300,41 @@ procedure TGLShape.LoadFromFunc( const Func_:TConstFunc<TdSingle2D,TdSingle3D>; 
 begin
      MakeVerts;
      MakeElems;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLShaper
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TGLShaperCopy.Create( const Paren_:ITreeNode );
+begin
+     inherited;
+
+end;
+
+destructor TGLShaperCopy.Destroy;
+begin
+
+     inherited;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TGLShaperCopy.Draw;
+begin
+     inherited;
+
+     _Matery.Use;
+
+     _Shaper.PosBuf.Use( 0{BinP} );
+     _Shaper.NorBuf.Use( 1{BinP} );
+     _Shaper.TexBuf.Use( 2{BinP} );
+
+     _Shaper.EleBuf.Draw;
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
