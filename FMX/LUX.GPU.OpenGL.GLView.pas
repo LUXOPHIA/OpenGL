@@ -5,8 +5,9 @@ interface //####################################################################
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
-  Winapi.Windows, Winapi.OpenGL, FMX.Platform.Win,
-  LUX, LUX.GPU.OpenGL;
+  FMX.Platform.Win,
+  Winapi.Windows, Winapi.OpenGL, Winapi.OpenGLext,
+  LUX, LUX.M4, LUX.GPU.OpenGL, LUX.GPU.OpenGL.FMX, LUX.GPU.OpenGL.Buffer.Unifor, LUX.GPU.OpenGL.Camera;
 
 type
   TGLView = class(TFrame)
@@ -17,9 +18,11 @@ type
     procedure _OnMouseUp( Sender_:TObject; Button_:TMouseButton; Shift_:TShiftState; X_,Y_:Single ); inline;
     procedure _OnMouseWheel( Sender_:TObject; Shift_:TShiftState; WheelDelta_:Integer; var Handled_:Boolean ); inline;
   protected
-    _Form :TCommonCustomForm;
-    _WND  :HWND;
-    _DC   :HDC;
+    _Form   :TCommonCustomForm;
+    _WND    :HWND;
+    _DC     :HDC;
+    _Viewer :TGLUnifor<TSingleM4>;
+    _Camera :TGLCamera;
     ///// イベント
     _OnPaint :TProc;
     ///// アクセス
@@ -40,9 +43,10 @@ type
     constructor Create( AOwner_:TComponent ); override;
     destructor Destroy; override;
     ///// プロパティ
-    property Form :TCommonCustomForm read _Form;
-    property WND  :HWND              read _WND ;
-    property DC   :HDC               read _DC  ;
+    property Form   :TCommonCustomForm read _Form                ;
+    property WND    :HWND              read _WND                 ;
+    property DC     :HDC               read _DC                  ;
+    property Camera :TGLCamera         read _Camera write _Camera;
     ///// イベント
     property OnPaint :TProc read _OnPaint write _OnPaint;
     ///// メソッド
@@ -64,6 +68,8 @@ implementation //###############################################################
 
 procedure TGLView._OnMouseDown( Sender_:TObject; Button_:TMouseButton; Shift_:TShiftState; X_,Y_:Single );
 begin
+     _Form.MouseCapture;
+
      MouseDown( Button_, Shift_, X_, Y_ );
 end;
 
@@ -75,6 +81,8 @@ end;
 procedure TGLView._OnMouseUp( Sender_:TObject; Button_:TMouseButton; Shift_:TShiftState; X_,Y_:Single );
 begin
      MouseUp( Button_, Shift_, X_, Y_ );
+
+     _Form.ReleaseCapture;
 end;
 
 procedure TGLView._OnMouseWheel( Sender_:TObject; Shift_:TShiftState; WheelDelta_:Integer; var Handled_:Boolean );
@@ -118,6 +126,8 @@ begin
 
        glViewport( 0, 0, Round( _Form.Width  * Scene.GetSceneScale ),
                          Round( _Form.Height * Scene.GetSceneScale ) );
+
+       if Assigned( _Camera ) then _Camera.Render;
 
        _OnPaint;
 
@@ -168,6 +178,12 @@ begin
      R := TRectF.Create( LocalToAbsolute( TPointF.Zero ) * Scene.GetSceneScale, Width, Height );
 
      _Form.Bounds := R.Round;
+
+     if Height < Width then _Viewer[ 0 ] := TSingleM4.Scale( Height / Width, 1, 1 )
+                       else
+     if Width < Height then _Viewer[ 0 ] := TSingleM4.Scale( 1, Width / Height, 1 )
+                       else _Viewer[ 0 ] := TSingleM4.Identify;
+
 end;
 
 //------------------------------------------------------------------------------
@@ -190,15 +206,22 @@ constructor TGLView.Create( AOwner_:TComponent );
 begin
      inherited;
 
+     HitTest := False;
+
      _OnPaint := procedure begin end;
 
      CreateWindow;
 
      CreateDC;
+
+     _Viewer := TGLUnifor<TSingleM4>.Create( GL_DYNAMIC_DRAW );
+     _Viewer.Count := 1;
 end;
 
 destructor TGLView.Destroy;
 begin
+     _Viewer.DisposeOf;
+
      DestroyDC;
 
      inherited;
@@ -247,10 +270,14 @@ begin
        glClearColor( 0, 0, 0, 0 );
 
        glClear( GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT );
+
+       _Viewer.Use( 0{BinP} );
 end;
 
 procedure TGLView.EndRender;
 begin
+       _Viewer.Unuse( 0{BinP} );
+
        glFlush;
 
        SwapBuffers( _DC );
