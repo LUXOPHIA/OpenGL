@@ -34,20 +34,15 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TMyShaperBase = class
      private
      protected
-       class var _Data :TGLUnifor<TMyShaperData>;
-     protected
-       _Ord :Integer;
+       _Data :TGLUnifor<TMyShaperData>;
        ///// アクセス
-       function GetDat :TMyShaperData;
-       procedure SetDat( const Data_:TMyShaperData );
+       function GetData :TMyShaperData;
+       procedure SetData( const Data_:TMyShaperData );
      public
-       class constructor Create;
        constructor Create;
        destructor Destroy; override;
-       class destructor Destroy;
        ///// プロパティ
-       property Ord :Integer    read   _Ord;
-       property Dat :TMyShaperData read GetDat write SetDat;
+       property Data :TMyShaperData read GetData write SetData;
        ///// メソッド
        procedure Draw; virtual;
      end;
@@ -100,42 +95,27 @@ implementation //###############################################################
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TMyShaperBase.GetDat :TMyShaperData;
+function TMyShaperBase.GetData :TMyShaperData;
 begin
-     Result := _Data[ _Ord ];
+     Result := _Data[ 0 ];
 end;
 
-procedure TMyShaperBase.SetDat( const Data_:TMyShaperData );
+procedure TMyShaperBase.SetData( const Data_:TMyShaperData );
 begin
-     _Data[ _Ord ] := Data_;
+     _Data[ 0 ] := Data_;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
-
-class constructor TMyShaperBase.Create;
-begin
-     inherited;
-
-     _Data := TGLUnifor<TMyShaperData>.Create( GL_DYNAMIC_DRAW );
-end;
 
 constructor TMyShaperBase.Create;
 begin
      inherited;
 
-     with _Data do
-     begin
-          _Ord := Count;  Count := Count + 1;
-     end;
+     _Data := TGLUnifor<TMyShaperData>.Create( GL_DYNAMIC_DRAW );
+     _Data.Count := 1;
 end;
 
 destructor TMyShaperBase.Destroy;
-begin
-
-     inherited;
-end;
-
-class destructor TMyShaperBase.Destroy;
 begin
      _Data.DisposeOf;
 
@@ -146,7 +126,7 @@ end;
 
 procedure TMyShaperBase.Draw;
 begin
-     _Data.Use( 1{BinP}, _Ord{Offs} );
+     _Data.Use( 1{BinP} );
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TMyShaper
