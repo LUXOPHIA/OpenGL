@@ -7,9 +7,9 @@ uses Winapi.OpenGL, Winapi.OpenGLext,
      LUX.GPU.OpenGL,
      LUX.GPU.OpenGL.GLView,
      LUX.GPU.OpenGL.Buffer,
-     LUX.GPU.OpenGL.Buffer.Unif,
-     LUX.GPU.OpenGL.Buffer.Vert,
-     LUX.GPU.OpenGL.Buffer.Elem,
+     LUX.GPU.OpenGL.Buffer.Unifor,
+     LUX.GPU.OpenGL.Buffer.Verter,
+     LUX.GPU.OpenGL.Buffer.Elemer,
      LUX.GPU.OpenGL.Imager,
      LUX.GPU.OpenGL.Imager.FMX,
      LUX.GPU.OpenGL.Shader,
@@ -82,14 +82,14 @@ begin
                Add( _ShaderF{Shad} );
           end;
 
-          with VerBufs do
+          with Verters do
           begin
                Add( 0{BinP}, '_Vertex_Pos'{Name}, 3{EleN}, GL_FLOAT{EleT} );
                Add( 1{BinP}, '_Vertex_Nor'{Name}, 3{EleN}, GL_FLOAT{EleT} );
                Add( 2{BinP}, '_Vertex_Tex'{Name}, 2{EleN}, GL_FLOAT{EleT} );
           end;
 
-          with UniBufs do
+          with Unifors do
           begin
                Add( 0{BinP}, 'TCameraDat'{Name} );
                Add( 1{BinP}, 'TShaperDat'{Name} );

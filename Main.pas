@@ -106,7 +106,7 @@ const
      _N :Single = 0.1;
      _F :Single = 1000;
 var
-   C :TCameraDat;
+   C :TMyCameraData;
 begin
      with C do
      begin
@@ -116,7 +116,7 @@ begin
                 * TSingleM4.RotateX( DegToRad( -90 ) );
      end;
 
-     _Camera1.Dat := C;
+     _Camera1.Data := C;
 
      with C do
      begin
@@ -126,7 +126,7 @@ begin
                 * TSingleM4.Translate( 0, 0, +5 );
      end;
 
-     _Camera2.Dat := C;
+     _Camera2.Data := C;
 
      with C do
      begin
@@ -135,7 +135,7 @@ begin
           Move := TSingleM4.Translate( 0, 0, +5 );
      end;
 
-     _Camera3.Dat := C;
+     _Camera3.Data := C;
 
      with C do
      begin
@@ -145,7 +145,7 @@ begin
                 * TSingleM4.Translate( 0, 0, +3 );
      end;
 
-     _Camera4.Dat := C;
+     _Camera4.Data := C;
 end;
 
 //------------------------------------------------------------------------------
@@ -182,7 +182,7 @@ end;
 
 procedure TForm1.InitShaper;
 var
-   S :TShaperDat;
+   S :TMyShaperData;
 begin
      with _Shaper do
      begin
@@ -329,7 +329,7 @@ end;
 procedure TForm1.GLView4MouseMove(Sender: TObject; Shift: TShiftState; X, Y: Single);
 var
    P :TSingle2D;
-   S :TShaperDat;
+   S :TMyShaperData;
 begin
      if ssLeft in _MouseS then
      begin
