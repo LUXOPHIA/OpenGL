@@ -5,8 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
-  Winapi.OpenGL,
-  LUX, LUX.GPU.OpenGL;
+  Winapi.OpenGL, Winapi.OpenGLext,
+  LUX, LUX.M4, LUX.GPU.OpenGL, LUX.GPU.OpenGL.VCL, LUX.GPU.OpenGL.Buffer.Unifor, LUX.GPU.OpenGL.Camera;
 
 type
   TGLView = class(TFrame)
@@ -16,7 +16,9 @@ type
     procedure WMPaint( var Message_:TWMPaint ); message WM_PAINT;
     procedure WMEraseBkgnd( var Message_:TWmEraseBkgnd ); message WM_ERASEBKGND;
   protected
-    _DC :HDC;
+    _DC     :HDC;
+    _Viewer :TGLUnifor<TSingleM4>;
+    _Camera :TGLCamera;
     ///// イベント
     _OnPaint :TProc;
     ///// メソッド
@@ -30,7 +32,8 @@ type
     constructor Create( AOwner_:TComponent ); override;
     destructor Destroy; override;
     ///// プロパティ
-    property DC :HDC read _DC;
+    property DC     :HDC       read _DC                  ;
+    property Camera :TGLCamera read _Camera write _Camera;
     ///// イベント
     property OnPaint :TProc read _OnPaint write _OnPaint;
     ///// メソッド
@@ -62,6 +65,8 @@ begin
 
        glViewport( 0, 0, ClientWidth, ClientHeight );
 
+       if Assigned( _Camera ) then _Camera.Render;
+
        _OnPaint;
 
      EndRender;
@@ -75,7 +80,15 @@ procedure TGLView.Resize;
 begin
      inherited;
 
-     Self.Repaint;
+     if not( csDestroying in ComponentState ) then
+     begin
+          if Height < Width then _Viewer[ 0 ] := TSingleM4.Scale( Height / Width, 1, 1 )
+                            else
+          if Width < Height then _Viewer[ 0 ] := TSingleM4.Scale( 1, Width / Height, 1 )
+                            else _Viewer[ 0 ] := TSingleM4.Identify;
+
+          Self.Repaint;
+     end;
 end;
 
 //------------------------------------------------------------------------------
@@ -117,10 +130,15 @@ begin
      _OnPaint := procedure begin end;
 
      CreateDC;
+
+     _Viewer := TGLUnifor<TSingleM4>.Create( GL_DYNAMIC_DRAW );
+     _Viewer.Count := 1;
 end;
 
 destructor TGLView.Destroy;
 begin
+     _Viewer.DisposeOf;
+
      DestroyDC;
 
      inherited;
@@ -158,10 +176,14 @@ begin
        glClearColor( 0, 0, 0, 0 );
 
        glClear( GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT );
+
+       _Viewer.Use( 0{BinP} );
 end;
 
 procedure TGLView.EndRender;
 begin
+       _Viewer.Unuse( 0{BinP} );
+
        glFlush;
 
        SwapBuffers( _DC );
