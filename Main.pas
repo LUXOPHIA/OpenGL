@@ -112,7 +112,7 @@ begin
      begin
           Proj := TSingleM4.ProjOrth( -2.5, +2.5, -2.5, +2.5, _N, _F );
 
-          Move := TSingleM4.Translate( 0, +5, 0 )
+          Pose := TSingleM4.Translate( 0, +5, 0 )
                 * TSingleM4.RotateX( DegToRad( -90 ) );
      end;
 
@@ -122,7 +122,7 @@ begin
      begin
           Proj := TSingleM4.ProjOrth( -3, +3, -2, +2, _N, _F );
 
-          Move := TSingleM4.RotateX( DegToRad( -45 ) )
+          Pose := TSingleM4.RotateX( DegToRad( -45 ) )
                 * TSingleM4.Translate( 0, 0, +5 );
      end;
 
@@ -132,7 +132,7 @@ begin
      begin
           Proj := TSingleM4.ProjOrth( -3, +3, -1.5, +1.5, _N, _F );
 
-          Move := TSingleM4.Translate( 0, 0, +5 );
+          Pose := TSingleM4.Translate( 0, 0, +5 );
      end;
 
      _Camera3.Data := C;
@@ -141,7 +141,7 @@ begin
      begin
           Proj := TSingleM4.ProjPers( -4/4*_N, +4/4*_N, -3/4*_N, +3/4*_N, _N, _F );
 
-          Move := TSingleM4.RotateX( DegToRad( -45 ) )
+          Pose := TSingleM4.RotateX( DegToRad( -45 ) )
                 * TSingleM4.Translate( 0, 0, +3 );
      end;
 
@@ -190,7 +190,7 @@ begin
 
           with S do
           begin
-               Move := TSingleM4.Identify;
+               Pose := TSingleM4.Identify;
           end;
 
           Data := S;
@@ -339,7 +339,7 @@ begin
 
           with S do
           begin
-               Move := TSingleM4.RotateX( DegToRad( _MouseA.Y ) )
+               Pose := TSingleM4.RotateX( DegToRad( _MouseA.Y ) )
                      * TSingleM4.RotateY( DegToRad( _MouseA.X ) );
           end;
 
