@@ -2,35 +2,31 @@
 
 ////////////////////////////////////////////////////////////////////////////////【共通定数】
 
-layout(std140) uniform TViewerDat
+layout(std140) uniform TViewerScal
 {
-  layout(row_major) mat4 Scal;
-}
-_Viewer;
+  layout(row_major) mat4 _ViewerScal;
+};
 
-layout(std140) uniform TCameraDat
+layout(std140) uniform TCameraProj
 {
-  layout(row_major) mat4 Proj;
-  layout(row_major) mat4 Move;
-}
-_Camera;
+  layout(row_major) mat4 _CameraProj;
+};
 
 layout(std140) uniform TCameraPose
 {
   layout(row_major) mat4 _CameraPose;
 };
 
-layout(std140) uniform TShaperDat
+layout(std140) uniform TShaperPose
 {
-  layout(row_major) mat4 Move;
-}
-_Shaper;
+  layout(row_major) mat4 _ShaperPose;
+};
 
 ////////////////////////////////////////////////////////////////////////////////【入出力】
 
-in vec4 _Vertex_Pos;
-in vec4 _Vertex_Nor;
-in vec2 _Vertex_Tex;
+in vec4 _VertexPos;
+in vec4 _VertexNor;
+in vec2 _VertexTex;
 
 //------------------------------------------------------------------------------
 
@@ -46,11 +42,11 @@ _Result;
 
 void main()
 {
-  _Result.Pos =                     _Shaper.Move     * _Vertex_Pos;
-  _Result.Nor = transpose( inverse( _Shaper.Move ) ) * _Vertex_Nor;
-  _Result.Tex =                                        _Vertex_Tex;
+  _Result.Pos =                     _ShaperPose     * _VertexPos;
+  _Result.Nor = transpose( inverse( _ShaperPose ) ) * _VertexNor;
+  _Result.Tex =                                       _VertexTex;
 
-  gl_Position = _Viewer.Scal * _Camera.Proj * inverse( _CameraPose ) * _Result.Pos;
+  gl_Position = _ViewerScal * _CameraProj * inverse( _CameraPose ) * _Result.Pos;
 }
 
 //##############################################################################

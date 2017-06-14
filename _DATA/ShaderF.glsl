@@ -22,29 +22,25 @@ vec2 VecToSky( vec4 Vector_ )
 
 ////////////////////////////////////////////////////////////////////////////////【共通定数】
 
-layout(std140) uniform TViewerDat
+layout(std140) uniform TViewerScal
 {
-  layout(row_major) mat4 Scal;
-}
-_Viewer;
+  layout(row_major) mat4 _ViewerScal;
+};
 
-layout(std140) uniform TCameraDat
+layout(std140) uniform TCameraProj
 {
-  layout(row_major) mat4 Proj;
-  layout(row_major) mat4 Move;
-}
-_Camera;
+  layout(row_major) mat4 _CameraProj;
+};
 
 layout(std140) uniform TCameraPose
 {
   layout(row_major) mat4 _CameraPose;
 };
 
-layout(std140) uniform TShaperDat
+layout(std140) uniform TShaperPose
 {
-  layout(row_major) mat4 Move;
-}
-_Shaper;
+  layout(row_major) mat4 _ShaperPose;
+};
 
 uniform sampler2D _Imager;
 
@@ -66,7 +62,7 @@ out vec4 _Frag_Col;
 
 void main()
 {
-  vec4 C = _Camera.Move * vec4( 0, 0, 0, 1 );
+  vec4 C = _CameraPose * vec4( 0, 0, 0, 1 );
   vec4 V = normalize( _Sender.Pos - C );
   vec4 R = reflect( V, normalize( _Sender.Nor ) );
 
