@@ -54,12 +54,12 @@ type
   public
     { public 宣言 }
     _Scener  :TGLScener;
-    _Shaper  :TGLShaperPoly;
-    _Matery  :IGLMateryImag;
     _Camera1 :TGLCameraOrth;
     _Camera2 :TGLCameraOrth;
     _Camera3 :TGLCameraOrth;
     _Camera4 :TGLCameraPers;
+    _Matery  :IGLMateryImag;
+    _Shaper  :TGLShaperPoly;
     ///// メソッド
     procedure MakeCamera;
     procedure MakeMatery;
