@@ -62,10 +62,9 @@ type
     _Camera3 :TGLCameraOrth;
     _Camera4 :TGLCameraPers;
     ///// メソッド
-    procedure InitViewer;
-    procedure InitCamera;
-    procedure InitMatery;
-    procedure InitShaper;
+    procedure MakeCamera;
+    procedure MakeMatery;
+    procedure MakeShaper;
   end;
 
 var
@@ -105,18 +104,13 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TForm1.InitViewer;
+procedure TForm1.MakeCamera;
 begin
-     GLView1.Camera := _Camera1;
-     GLView2.Camera := _Camera2;
-     GLView3.Camera := _Camera3;
-     GLView4.Camera := _Camera4;
-end;
+     _Camera1 := TGLCameraOrth.Create( _Scener );
+     _Camera2 := TGLCameraOrth.Create( _Scener );
+     _Camera3 := TGLCameraOrth.Create( _Scener );
+     _Camera4 := TGLCameraPers.Create( _Scener );
 
-//------------------------------------------------------------------------------
-
-procedure TForm1.InitCamera;
-begin
      with _Camera1 do
      begin
           Size := 5;
@@ -147,12 +141,19 @@ begin
           Pose := TSingleM4.RotateX( DegToRad( -45 ) )
                 * TSingleM4.Translate( 0, 0, +3 );
      end;
+
+     GLView1.Camera := _Camera1;
+     GLView2.Camera := _Camera2;
+     GLView3.Camera := _Camera3;
+     GLView4.Camera := _Camera4;
 end;
 
 //------------------------------------------------------------------------------
 
-procedure TForm1.InitMatery;
+procedure TForm1.MakeMatery;
 begin
+     _Matery := TGLMateryImag.Create;
+
      with _Matery do
      begin
           with ShaderV do
@@ -212,8 +213,10 @@ begin
      end;
 end;
 
-procedure TForm1.InitShaper;
+procedure TForm1.MakeShaper;
 begin
+     _Shaper := TGLShaperPoly.Create( _Scener );
+
      with _Shaper do
      begin
           LoadFromFunc( BraidedTorus, 1300, 100 );
@@ -230,21 +233,11 @@ begin
      _MouseP := TSingle2D.Create( 0, 0 );
      _MouseA := TSingle2D.Create( 0, 0 );
 
-     _Scener  := TGLScener.Create;
+     _Scener := TGLScener.Create;
 
-     _Camera1 := TGLCameraOrth.Create( _Scener );
-     _Camera2 := TGLCameraOrth.Create( _Scener );
-     _Camera3 := TGLCameraOrth.Create( _Scener );
-     _Camera4 := TGLCameraPers.Create( _Scener );
-
-     _Matery  := TGLMateryImag.Create;
-
-     _Shaper  := TGLShaperPoly.Create( _Scener );
-
-     InitViewer;
-     InitCamera;
-     InitMatery;
-     InitShaper;
+     MakeCamera;
+     MakeMatery;
+     MakeShaper;
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
