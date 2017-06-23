@@ -28,8 +28,8 @@ type
   public
     { public 宣言 }
     ///// メソッド
-    procedure DrawModel;
-    procedure InitRender;
+    procedure InitViewer;
+    procedure DrawShaper;
   end;
 
 var
@@ -45,7 +45,68 @@ implementation //###############################################################
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TForm1.DrawModel;
+procedure TForm1.InitViewer;
+const
+     _N :Single = 0.1;
+     _F :Single = 1000;
+begin
+     GLViewer1.OnPaint := procedure
+     begin
+          glMatrixMode( GL_PROJECTION );
+            glLoadIdentity;
+            glOrtho( -2, +2, -2, +2, _N, _F );
+          glMatrixMode( GL_MODELVIEW );
+            glLoadIdentity;
+            glTranslatef( 0, 0, -5 );
+            glRotatef( +90, 1, 0, 0 );
+            glRotatef( _Angle, 0, 1, 0 );
+            DrawShaper;
+     end;
+
+     GLViewer2.OnPaint := procedure
+     begin
+          glMatrixMode( GL_PROJECTION );
+            glLoadIdentity;
+            glOrtho( -3, +3, -2, +2, _N, _F );
+          glMatrixMode( GL_MODELVIEW );
+            glLoadIdentity;
+            glTranslatef( 0, 0, -5 );
+            glRotatef( +30, 1, 0, 0 );
+            glRotatef( _Angle, 0, 1, 0 );
+            DrawShaper;
+     end;
+
+     GLViewer3.OnPaint := procedure
+     begin
+          glMatrixMode( GL_PROJECTION );
+            glLoadIdentity;
+            glOrtho( -3, +3, -1.5, +1.5, _N, _F );
+          glMatrixMode( GL_MODELVIEW );
+            glLoadIdentity;
+            glTranslatef( 0, 0, -5 );
+            glRotatef( _Angle, 0, 1, 0 );
+            DrawShaper;
+     end;
+
+     GLViewer4.OnPaint := procedure
+     begin
+          glMatrixMode( GL_PROJECTION );
+            glLoadIdentity;
+            glFrustum( -4/4*_N, +4/4*_N,
+                       -3/4*_N, +3/4*_N, _N, _F );
+          glMatrixMode( GL_MODELVIEW );
+            glLoadIdentity;
+            glTranslatef( 0, +0.3, 0 );
+            glTranslatef( 0, 0, -3 );
+            glRotatef( +30, 1, 0, 0 );
+            glRotatef( _Angle, 0, 1, 0 );
+            DrawShaper;
+     end;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure TForm1.DrawShaper;
 const
      Ps :array [ 1..8 ] of TSingle3D
            = ( ( X:-1; Y:-1; Z:-1 ), ( X:+1; Y:-1; Z:-1 ),
@@ -62,7 +123,7 @@ const
                ( 1, 2, 6, 5 ), ( 8, 4, 3, 7 ),
                ( 1, 3, 4, 2 ), ( 8, 7, 5, 6 ) );
 var
-   N, K, I :Integer;
+   N, K, E :Integer;
 begin
      //    3-------4
      //   /|      /|
@@ -78,85 +139,24 @@ begin
        begin
             for K := 1 to 4 do
             begin
-                 I := Es[ N, K ];
+                 E := Es[ N, K ];
 
-                 with Cs[ I ] do glColor3f( R, G, B );
+                 with Cs[ E ] do glColor3f( R, G, B );
 
-                 with Ps[ I ] do glVertex3f( X, Y, Z );
+                 with Ps[ E ] do glVertex3f( X, Y, Z );
             end;
        end;
 
      glEnd;
 end;
 
-//------------------------------------------------------------------------------
-
-procedure TForm1.InitRender;
-const
-     _N :Single = 0.1;
-     _F :Single = 1000;
-begin
-     GLViewer1.OnPaint := procedure
-     begin
-          glMatrixMode( GL_PROJECTION );
-            glLoadIdentity;
-            glOrtho( -3, +3, -3, +3, _N, _F );
-          glMatrixMode( GL_MODELVIEW );
-            glLoadIdentity;
-            glTranslatef( 0, 0, -5 );
-            glRotatef( +90, 1, 0, 0 );
-            glRotatef( _Angle, 0, 1, 0 );
-            DrawModel;
-     end;
-
-     GLViewer2.OnPaint := procedure
-     begin
-          glMatrixMode( GL_PROJECTION );
-            glLoadIdentity;
-            glOrtho( -3, +3, -2, +2, _N, _F );
-          glMatrixMode( GL_MODELVIEW );
-            glLoadIdentity;
-            glTranslatef( 0, 0, -5 );
-            glRotatef( +30, 1, 0, 0 );
-            glRotatef( _Angle, 0, 1, 0 );
-            DrawModel;
-     end;
-
-     GLViewer3.OnPaint := procedure
-     begin
-          glMatrixMode( GL_PROJECTION );
-            glLoadIdentity;
-            glOrtho( -3, +3, -1.5, +1.5, _N, _F );
-          glMatrixMode( GL_MODELVIEW );
-            glLoadIdentity;
-            glTranslatef( 0, 0, -5 );
-            glRotatef( _Angle, 0, 1, 0 );
-            DrawModel;
-     end;
-
-     GLViewer4.OnPaint := procedure
-     begin
-          glMatrixMode( GL_PROJECTION );
-            glLoadIdentity;
-            glFrustum( -4/4*_N, +4/4*_N,
-                       -3/4*_N, +3/4*_N, _N, _F );
-          glMatrixMode( GL_MODELVIEW );
-            glLoadIdentity;
-            glTranslatef( 0, +0.3, 0 );
-            glTranslatef( 0, 0, -3 );
-            glRotatef( +30, 1, 0, 0 );
-            glRotatef( _Angle, 0, 1, 0 );
-            DrawModel;
-     end;
-end;
-
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-     InitRender;
-
      _Angle := 0;
+
+     InitViewer;
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
