@@ -38,7 +38,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _PosBuf :TGLVerterS<TSingle3D>;
        _NorBuf :TGLVerterS<TSingle3D>;
        _TexBuf :TGLVerterS<TSingle2D>;
-       _EleBuf :TGLElemer32;
+       _EleBuf :TGLElemerTria32;
      public
        constructor Create( const Paren_:ITreeNode ); override;
        destructor Destroy; override;
@@ -46,14 +46,15 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property PosBuf :TGLVerterS<TSingle3D> read _PosBuf;
        property NorBuf :TGLVerterS<TSingle3D> read _NorBuf;
        property TexBuf :TGLVerterS<TSingle2D> read _TexBuf;
-       property EleBuf :TGLElemer32           read _EleBuf;
+       property EleBuf :TGLElemerTria32       read _EleBuf;
        ///// メソッド
        procedure Draw; override;
-       procedure LoadFromFileSTL( const FileName_:String );
        procedure LoadFromFunc( const Func_:TConstFunc<TdSingle2D,TdSingle3D>; const DivU_,DivV_:Integer );
+       procedure LoadFromFileSTL( const FileName_:String );
+       procedure LoadFromFileOBJ( const FileName_:String );
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLShaper
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLShaperCopy
 
      TGLShaperCopy = class( TGLShaper )
      private
@@ -76,7 +77,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 implementation //############################################################### ■
 
-uses System.SysUtils, System.Classes;
+uses System.SysUtils, System.Classes, System.RegularExpressions, System.Generics.Collections;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
@@ -94,7 +95,6 @@ constructor TGLShaper.Create( const Paren_:ITreeNode );
 begin
      inherited;
 
-     Move := TSingleM4.Identify;
 end;
 
 destructor TGLShaper.Destroy;
@@ -118,7 +118,7 @@ begin
      _PosBuf := TGLVerterS<TSingle3D>.Create( GL_STATIC_DRAW );
      _NorBuf := TGLVerterS<TSingle3D>.Create( GL_STATIC_DRAW );
      _TexBuf := TGLVerterS<TSingle2D>.Create( GL_STATIC_DRAW );
-     _EleBuf := TGLElemer32          .Create( GL_STATIC_DRAW );
+     _EleBuf := TGLElemerTria32      .Create( GL_STATIC_DRAW );
 end;
 
 destructor TGLShaperPoly.Destroy;
@@ -144,6 +144,95 @@ begin
      _TexBuf.Use( 2{BinP} );
 
      _EleBuf.Draw;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure TGLShaperPoly.LoadFromFunc( const Func_:TConstFunc<TdSingle2D,TdSingle3D>; const DivU_,DivV_:Integer );
+//··································
+     function XYtoI( const X_,Y_:Integer ) :Integer;
+     begin
+          Result := ( DivU_ + 1 ) * Y_ + X_;
+     end;
+     //·····························
+     procedure MakeVerts;
+     var
+        C, X, Y, I :Integer;
+        Ps, Ns :TGLBufferData<TSingle3D>;
+        Ts :TGLBufferData<TSingle2D>;
+        T :TSingle2D;
+        M :TSingleM4;
+     begin
+          C := ( DivV_ + 1 ) * ( DivU_ + 1 );
+
+          _PosBuf.Count := C;
+          _NorBuf.Count := C;
+          _TexBuf.Count := C;
+
+          Ps := _PosBuf.Map( GL_WRITE_ONLY );
+          Ns := _NorBuf.Map( GL_WRITE_ONLY );
+          Ts := _TexBuf.Map( GL_WRITE_ONLY );
+
+          for Y := 0 to DivV_ do
+          begin
+               T.V := Y / DivV_;
+               for X := 0 to DivU_ do
+               begin
+                    T.U := X / DivU_;
+
+                    I := XYtoI( X, Y );
+
+                    Ts[ I ] := T;
+
+                    M := Tensor( T, Func_ );
+
+                    Ps[ I ] := M.AxisP;
+                    Ns[ I ] := M.AxisZ;
+               end;
+          end;
+
+          _PosBuf.Unmap;
+          _NorBuf.Unmap;
+          _TexBuf.Unmap;
+     end;
+     //·····························
+     procedure MakeElems;
+     var
+        X0, Y0, X1, Y1, I, I00, I01, I10, I11 :Integer;
+        Es :TGLBufferData<TCardinal3D>;
+     begin
+          _EleBuf.Count := 2 * DivV_ * DivU_;
+
+          Es := _EleBuf.Map( GL_WRITE_ONLY );
+
+          I := 0;
+          for Y0 := 0 to DivV_-1 do
+          begin
+               Y1 := Y0 + 1;
+               for X0 := 0 to DivU_-1 do
+               begin
+                    X1 := X0 + 1;
+
+                    I00 := XYtoI( X0, Y0 );  I01 := XYtoI( X1, Y0 );
+                    I10 := XYtoI( X0, Y1 );  I11 := XYtoI( X1, Y1 );
+
+                    //  00───01
+                    //  │      │
+                    //  │      │
+                    //  │      │
+                    //  10───11
+
+                    Es[ I ] := TCardinal3D.Create( I00, I10, I11 );  Inc( I );
+                    Es[ I ] := TCardinal3D.Create( I11, I01, I00 );  Inc( I );
+               end;
+          end;
+
+          _EleBuf.Unmap;
+     end;
+//··································
+begin
+     MakeVerts;
+     MakeElems;
 end;
 
 //------------------------------------------------------------------------------
@@ -215,94 +304,177 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure TGLShaperPoly.LoadFromFunc( const Func_:TConstFunc<TdSingle2D,TdSingle3D>; const DivU_,DivV_:Integer );
-//·····························
-     function XYtoI( const X_,Y_:Integer ) :Integer;
-     begin
-          Result := ( DivU_ + 1 ) * Y_ + X_;
-     end;
-     //························
-     procedure MakeVerts;
+procedure TGLShaperPoly.LoadFromFileOBJ( const FileName_:String );
+type
+    TVert = record
+      P :Integer;
+      N :Integer;
+      T :Integer;
+    end;
+var
+   Vs :TDictionary<TVert,Integer>;
+//·····································
+     function ReadVert( const M_:TMatch ) :Cardinal;
      var
-        C, X, Y, I :Integer;
-        Ps, Ns :TGLBufferData<TSingle3D>;
-        Ts :TGLBufferData<TSingle2D>;
-        T :TSingle2D;
-        M :TSingleM4;
+        V :TVert;
      begin
-          C := ( DivV_ + 1 ) * ( DivU_ + 1 );
-
-          _PosBuf.Count := C;
-          _NorBuf.Count := C;
-          _TexBuf.Count := C;
-
-          Ps := _PosBuf.Map( GL_WRITE_ONLY );
-          Ns := _NorBuf.Map( GL_WRITE_ONLY );
-          Ts := _TexBuf.Map( GL_WRITE_ONLY );
-
-          for Y := 0 to DivV_ do
+          with V do
           begin
-               T.V := Y / DivV_;
-               for X := 0 to DivU_ do
-               begin
-                    T.U := X / DivU_;
-
-                    I := XYtoI( X, Y );
-
-                    Ts[ I ] := T;
-
-                    M := Tensor( T, Func_ );
-
-                    Ps[ I ] := M.AxisP;
-                    Ns[ I ] := M.AxisZ;
-               end;
+               P := StrToIntDef( M_.Groups[ 1 ].Value, 0 ) - 1;
+               T := StrToIntDef( M_.Groups[ 2 ].Value, 0 ) - 1;
+               N := StrToIntDef( M_.Groups[ 3 ].Value, 0 ) - 1;
           end;
 
-          _PosBuf.Unmap;
-          _NorBuf.Unmap;
-          _TexBuf.Unmap;
-     end;
-     //························
-     procedure MakeElems;
-     var
-        X0, Y0, X1, Y1, I, I00, I01, I10, I11 :Integer;
-        Es :TGLBufferData<TCardinal3D>;
-     begin
-          _EleBuf.Count := 2 * DivV_ * DivU_;
-
-          Es := _EleBuf.Map( GL_WRITE_ONLY );
-
-          I := 0;
-          for Y0 := 0 to DivV_-1 do
+          if Vs.ContainsKey( V ) then Result := Vs[ V ]
+          else
           begin
-               Y1 := Y0 + 1;
-               for X0 := 0 to DivU_-1 do
-               begin
-                    X1 := X0 + 1;
-
-                    I00 := XYtoI( X0, Y0 );  I01 := XYtoI( X1, Y0 );
-                    I10 := XYtoI( X0, Y1 );  I11 := XYtoI( X1, Y1 );
-
-                    //  00───01
-                    //  │      │
-                    //  │      │
-                    //  │      │
-                    //  10───11
-
-                    Es[ I ] := TCardinal3D.Create( I00, I10, I11 );  Inc( I );
-                    Es[ I ] := TCardinal3D.Create( I11, I01, I00 );  Inc( I );
-               end;
+               Result := Vs.Count;  Vs.Add( V, Result );
           end;
-
-          _EleBuf.Unmap;
      end;
-//·····························
+//·····································
+var
+   F :TStreamReader;
+   RV, RN, RT, RF, RI :TRegEx;
+   Ps, Ns :TArray<TSingle3D>;
+   Ts :TArray<TSingle2D>;
+   L :String; 
+   P, N :TSingle3D;
+   T :TSingle2D;
+   Es :TArray<TCardinal3D>;
+   Ms :TMatchCollection;
+   E :TCardinal3D;
+   K :Integer;
+   V :TPair<TVert,Integer>;
 begin
-     MakeVerts;
-     MakeElems;
+     Vs := TDictionary<TVert,Integer>.Create;
+
+     F := TStreamReader.Create( FileName_, TEncoding.Default );
+     try
+          RV := TRegEx.Create( 'v[ \t]+([^ \t]+)[ \t]+([^ \t]+)[ \t]+([^ \t\n]+)' );
+          RN := TRegEx.Create( 'vn[ \t]+([^ \t]+)[ \t]+([^ \t]+)[ \t]+([^ \t\n]+)' );
+          RT := TRegEx.Create( 'vt[ \t]+([^ \t]+)[ \t]+([^ \t]+)' );
+          RF := TRegEx.Create( 'f( [^\n]+)' );
+          RI := TRegEx.Create( '[ \t]+(\d+)/?(\d*)/?(\d*)' );
+
+          Ps := [];
+          Ns := [];
+          Ts := [];
+          Es := [];
+          while not F.EndOfStream do
+          begin
+               L := F.ReadLine;
+
+               with RV.Match( L ) do
+               begin
+                    if Success then
+                    begin
+                         P.X := Groups[ 1 ].Value.ToSingle;
+                         P.Y := Groups[ 2 ].Value.ToSingle;
+                         P.Z := Groups[ 3 ].Value.ToSingle;
+
+                         Ps := Ps + [ P ];
+                    end;
+               end;
+
+               with RN.Match( L ) do
+               begin
+                    if Success then
+                    begin
+                         N.X := Groups[ 1 ].Value.ToSingle;
+                         N.Y := Groups[ 2 ].Value.ToSingle;
+                         N.Z := Groups[ 3 ].Value.ToSingle;
+
+                         Ns := Ns + [ N ];
+                    end;
+               end;
+
+               with RT.Match( L ) do
+               begin
+                    if Success then
+                    begin
+                         T.X := Groups[ 1 ].Value.ToSingle;
+                         T.Y := Groups[ 2 ].Value.ToSingle;
+
+                         Ts := Ts + [ T ];
+                    end;
+               end;
+
+               with RF.Match( L ) do
+               begin
+                    if Success then
+                    begin
+                         Ms := RI.Matches( Groups[ 1 ].Value );
+
+                         E.X := ReadVert( Ms[ 0 ] );
+                         E.Y := ReadVert( Ms[ 1 ] );
+                         E.Z := ReadVert( Ms[ 2 ] );
+
+                         Es := Es + [ E ];
+
+                         for K := 3 to Ms.Count-1 do
+                         begin
+                              E.Y := E.Z;  E.Z := ReadVert( Ms[ K ] );
+
+                              Es := Es + [ E ];
+                         end;
+                    end;
+               end;
+          end;
+     finally
+            F.DisposeOf;
+     end;
+
+     if Length( Ps ) > 0 then
+     begin
+          with _PosBuf do
+          begin
+               Count := Vs.Count;
+
+               with Map( GL_WRITE_ONLY ) do
+               begin
+                    for V in Vs do Items[ V.Value ] := Ps[ V.Key.P ];
+               end;
+
+               Unmap;
+          end;
+     end;
+
+     if Length( Ns ) > 0 then
+     begin
+          with _NorBuf do
+          begin
+               Count := Vs.Count;
+
+               with Map( GL_WRITE_ONLY ) do
+               begin
+                    for V in Vs do Items[ V.Value ] := Ns[ V.Key.N ];
+               end;
+
+               Unmap;
+          end;
+     end;
+
+     if Length( Ts ) > 0 then
+     begin
+          with _TexBuf do
+          begin
+               Count := Vs.Count;
+
+               with Map( GL_WRITE_ONLY ) do
+               begin
+                    for V in Vs do Items[ V.Value ] := Ts[ V.Key.T ];
+               end;
+
+               Unmap;
+          end;
+     end;
+
+     Vs.DisposeOf;
+
+     _EleBuf.Import( Es );
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLShaper
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLShaperCopy
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
