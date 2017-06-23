@@ -8,7 +8,7 @@ uses
   FMX.StdCtrls, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo, FMX.Objects, FMX.TabControl,
   Winapi.OpenGL, Winapi.OpenGLext,
   LUX, LUX.D1, LUX.D2, LUX.D3, LUX.M4,
-  LUX.GPU.OpenGL.GLView, LUX.GPU.OpenGL.Shader,
+  LUX.GPU.OpenGL.Viewer, LUX.GPU.OpenGL.Shader,
   MYX.Camera,
   MYX.Shaper,
   MYX.Matery;
@@ -18,11 +18,11 @@ type
     TabControl1: TTabControl;
       TabItemV: TTabItem;
         Rectangle1: TRectangle;
-          GLView1: TGLView;
-          GLView2: TGLView;
+          GLViewer1: TGLViewer;
+          GLViewer2: TGLViewer;
         Rectangle2: TRectangle;
-          GLView3: TGLView;
-          GLView4: TGLView;
+          GLViewer3: TGLViewer;
+          GLViewer4: TGLViewer;
       TabItemS: TTabItem;
         TabControlS: TTabControl;
           TabItemSV: TTabItem;
@@ -39,9 +39,9 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure MemoSVSChangeTracking(Sender: TObject);
     procedure MemoSFSChangeTracking(Sender: TObject);
-    procedure GLView4MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
-    procedure GLView4MouseMove(Sender: TObject; Shift: TShiftState; X, Y: Single);
-    procedure GLView4MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
+    procedure GLViewer4MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
+    procedure GLViewer4MouseMove(Sender: TObject; Shift: TShiftState; X, Y: Single);
+    procedure GLViewer4MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
   private
     { private 宣言 }
     _MouseA :TSingle2D;
@@ -247,28 +247,28 @@ end;
 
 procedure TForm1.InitViewer;
 begin
-     GLView1.OnPaint := procedure
+     GLViewer1.OnPaint := procedure
      begin
           _Camera1.Use;
           _Matery .Use;
           _Shaper .Draw;
      end;
 
-     GLView2.OnPaint := procedure
+     GLViewer2.OnPaint := procedure
      begin
           _Camera2.Use;
           _Matery .Use;
           _Shaper .Draw;
      end;
 
-     GLView3.OnPaint := procedure
+     GLViewer3.OnPaint := procedure
      begin
           _Camera3.Use;
           _Matery .Use;
           _Shaper .Draw;
      end;
 
-     GLView4.OnPaint := procedure
+     GLViewer4.OnPaint := procedure
      begin
           _Camera4.Use;
           _Matery .Use;
@@ -320,13 +320,13 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure TForm1.GLView4MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
+procedure TForm1.GLViewer4MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
 begin
      _MouseS := Shift;
      _MouseP := TSingle2D.Create( X, Y );
 end;
 
-procedure TForm1.GLView4MouseMove(Sender: TObject; Shift: TShiftState; X, Y: Single);
+procedure TForm1.GLViewer4MouseMove(Sender: TObject; Shift: TShiftState; X, Y: Single);
 var
    P :TSingle2D;
    S :TMyShaperData;
@@ -345,18 +345,18 @@ begin
 
           _Shaper.Data := S;
 
-          GLView1.Repaint;
-          GLView2.Repaint;
-          GLView3.Repaint;
-          GLView4.Repaint;
+          GLViewer1.Repaint;
+          GLViewer2.Repaint;
+          GLViewer3.Repaint;
+          GLViewer4.Repaint;
 
           _MouseP := P;
      end;
 end;
 
-procedure TForm1.GLView4MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
+procedure TForm1.GLViewer4MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
 begin
-     GLView4MouseMove( Sender, Shift, X, Y );
+     GLViewer4MouseMove( Sender, Shift, X, Y );
 
      _MouseS := [];
 end;
