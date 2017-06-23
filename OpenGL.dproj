@@ -332,8 +332,8 @@
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\LUX.D2.V4.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\LUX.D3.M4.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\LUX.D3.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\FMX\LUX.GPU.OpenGL.GLView.pas">
-            <Form>GLView</Form>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\FMX\LUX.GPU.OpenGL.Viewer.pas">
+            <Form>GLViewer</Form>
             <FormType>fmx</FormType>
             <DesignClass>TFrame</DesignClass>
         </DCCReference>
