@@ -9,16 +9,16 @@ uses
   Winapi.OpenGL,
   LUX, LUX.D3,
   LUX.GPU.OpenGL,
-  LUX.GPU.OpenGL.GLView;
+  LUX.GPU.OpenGL.Viewer;
 
 type
   TForm1 = class(TForm)
     Panel1: TPanel;
-      GLView1: TGLView;
-      GLView2: TGLView;
+      GLViewer1: TGLViewer;
+      GLViewer2: TGLViewer;
     Panel2: TPanel;
-      GLView3: TGLView;
-      GLView4: TGLView;
+      GLViewer3: TGLViewer;
+      GLViewer4: TGLViewer;
     Timer1: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
@@ -89,7 +89,7 @@ const
      _N :Single = 0.1;
      _F :Single = 1000;
 begin
-     GLView1.OnPaint := procedure
+     GLViewer1.OnPaint := procedure
      begin
           glMatrixMode( GL_PROJECTION );
             glLoadIdentity;
@@ -102,7 +102,7 @@ begin
             DrawModel;
      end;
 
-     GLView2.OnPaint := procedure
+     GLViewer2.OnPaint := procedure
      begin
           glMatrixMode( GL_PROJECTION );
             glLoadIdentity;
@@ -115,7 +115,7 @@ begin
             DrawModel;
      end;
 
-     GLView3.OnPaint := procedure
+     GLViewer3.OnPaint := procedure
      begin
           glMatrixMode( GL_PROJECTION );
             glLoadIdentity;
@@ -127,7 +127,7 @@ begin
             DrawModel;
      end;
 
-     GLView4.OnPaint := procedure
+     GLViewer4.OnPaint := procedure
      begin
           glMatrixMode( GL_PROJECTION );
             glLoadIdentity;
@@ -158,10 +158,10 @@ procedure TForm1.Timer1Timer(Sender: TObject);
 begin
      _Angle := _Angle + 1;
 
-     GLView1.Repaint;
-     GLView2.Repaint;
-     GLView3.Repaint;
-     GLView4.Repaint;
+     GLViewer1.Repaint;
+     GLViewer2.Repaint;
+     GLViewer3.Repaint;
+     GLViewer4.Repaint;
 end;
 
 end. //######################################################################### ■
