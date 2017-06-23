@@ -52,18 +52,18 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TMyShaper = class( TMyShaperBase )
      private
      protected
-       _Poss :TGLVerterS<TSingle3D>;
-       _Nors :TGLVerterS<TSingle3D>;
-       _Texs :TGLVerterS<TSingle2D>;
-       _Eles :TGLElemerTria32;
+       _PosBuf :TGLVerterS<TSingle3D>;
+       _NorBuf :TGLVerterS<TSingle3D>;
+       _TexBuf :TGLVerterS<TSingle2D>;
+       _EleBuf :TGLElemerTria32;
      public
        constructor Create;
        destructor Destroy; override;
        ///// プロパティ
-       property Poss :TGLVerterS<TSingle3D> read _Poss;
-       property Nors :TGLVerterS<TSingle3D> read _Nors;
-       property Texs :TGLVerterS<TSingle2D> read _Texs;
-       property Eles :TGLElemerTria32       read _Eles;
+       property PosBuf :TGLVerterS<TSingle3D> read _PosBuf;
+       property NorBuf :TGLVerterS<TSingle3D> read _NorBuf;
+       property TexBuf :TGLVerterS<TSingle2D> read _TexBuf;
+       property EleBuf :TGLElemerTria32       read _EleBuf;
        ///// メソッド
        procedure Draw; override;
        procedure LoadFormFunc( const Func_:TConstFunc<TdSingle2D,TdSingle3D>; const DivX_,DivY_:Integer );
@@ -143,18 +143,18 @@ constructor TMyShaper.Create;
 begin
      inherited;
 
-     _Poss := TGLVerterS<TSingle3D>.Create( GL_STATIC_DRAW );
-     _Nors := TGLVerterS<TSingle3D>.Create( GL_STATIC_DRAW );
-     _Texs := TGLVerterS<TSingle2D>.Create( GL_STATIC_DRAW );
-     _Eles := TGLElemerTria32      .Create( GL_STATIC_DRAW );
+     _PosBuf := TGLVerterS<TSingle3D>.Create( GL_STATIC_DRAW );
+     _NorBuf := TGLVerterS<TSingle3D>.Create( GL_STATIC_DRAW );
+     _TexBuf := TGLVerterS<TSingle2D>.Create( GL_STATIC_DRAW );
+     _EleBuf := TGLElemerTria32      .Create( GL_STATIC_DRAW );
 end;
 
 destructor TMyShaper.Destroy;
 begin
-     _Poss.DisposeOf;
-     _Nors.DisposeOf;
-     _Texs.DisposeOf;
-     _Eles.DisposeOf;
+     _PosBuf.DisposeOf;
+     _NorBuf.DisposeOf;
+     _TexBuf.DisposeOf;
+     _EleBuf.DisposeOf;
 
      inherited;
 end;
@@ -165,11 +165,11 @@ procedure TMyShaper.Draw;
 begin
      inherited;
 
-     _Poss.Use( 0{BinP} );
-     _Nors.Use( 1{BinP} );
-     _Texs.Use( 2{BinP} );
+     _PosBuf.Use( 0{BinP} );
+     _NorBuf.Use( 1{BinP} );
+     _TexBuf.Use( 2{BinP} );
 
-     _Eles.Draw;
+     _EleBuf.Draw;
 end;
 
 //------------------------------------------------------------------------------
@@ -191,13 +191,13 @@ procedure TMyShaper.LoadFormFunc( const Func_:TConstFunc<TdSingle2D,TdSingle3D>;
      begin
           C := ( DivY_ + 1 ) * ( DivX_ + 1 );
 
-          _Poss.Count := C;
-          _Nors.Count := C;
-          _Texs.Count := C;
+          _PosBuf.Count := C;
+          _NorBuf.Count := C;
+          _TexBuf.Count := C;
 
-          Ps := _Poss.Map( GL_WRITE_ONLY );
-          Ns := _Nors.Map( GL_WRITE_ONLY );
-          Ts := _Texs.Map( GL_WRITE_ONLY );
+          Ps := _PosBuf.Map( GL_WRITE_ONLY );
+          Ns := _NorBuf.Map( GL_WRITE_ONLY );
+          Ts := _TexBuf.Map( GL_WRITE_ONLY );
 
           for Y := 0 to DivY_ do
           begin
@@ -217,9 +217,9 @@ procedure TMyShaper.LoadFormFunc( const Func_:TConstFunc<TdSingle2D,TdSingle3D>;
                end;
           end;
 
-          _Poss.Unmap;
-          _Nors.Unmap;
-          _Texs.Unmap;
+          _PosBuf.Unmap;
+          _NorBuf.Unmap;
+          _TexBuf.Unmap;
      end;
      //·························
      procedure MakeElems;
@@ -227,9 +227,9 @@ procedure TMyShaper.LoadFormFunc( const Func_:TConstFunc<TdSingle2D,TdSingle3D>;
         X0, Y0, X1, Y1, I, I00, I01, I10, I11 :Integer;
         Es :TGLBufferData<TCardinal3D>;
      begin
-          _Eles.Count := 2 * DivY_ * DivX_;
+          _EleBuf.Count := 2 * DivY_ * DivX_;
 
-          Es := _Eles.Map( GL_WRITE_ONLY );
+          Es := _EleBuf.Map( GL_WRITE_ONLY );
 
           I := 0;
           for Y0 := 0 to DivY_-1 do
@@ -253,7 +253,7 @@ procedure TMyShaper.LoadFormFunc( const Func_:TConstFunc<TdSingle2D,TdSingle3D>;
                end;
           end;
 
-          _Eles.Unmap;
+          _EleBuf.Unmap;
      end;
 //······························
 begin
