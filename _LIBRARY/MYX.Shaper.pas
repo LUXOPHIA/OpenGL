@@ -5,7 +5,7 @@ interface //####################################################################
 uses Winapi.OpenGL, Winapi.OpenGLext,
      LUX, LUX.D1, LUX.D2, LUX.D3, LUX.M4,
      LUX.GPU.OpenGL,
-     LUX.GPU.OpenGL.GLView,
+     LUX.GPU.OpenGL.Viewer,
      LUX.GPU.OpenGL.Buffer,
      LUX.GPU.OpenGL.Buffer.Unifor,
      LUX.GPU.OpenGL.Buffer.Verter,
@@ -55,7 +55,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _Poss :TGLVerterS<TSingle3D>;
        _Nors :TGLVerterS<TSingle3D>;
        _Texs :TGLVerterS<TSingle2D>;
-       _Eles :TGLElemer32;
+       _Eles :TGLElemerTria32;
      public
        constructor Create;
        destructor Destroy; override;
@@ -63,7 +63,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Poss :TGLVerterS<TSingle3D> read _Poss;
        property Nors :TGLVerterS<TSingle3D> read _Nors;
        property Texs :TGLVerterS<TSingle2D> read _Texs;
-       property Eles :TGLElemer32           read _Eles;
+       property Eles :TGLElemerTria32       read _Eles;
        ///// メソッド
        procedure Draw; override;
        procedure LoadFormFunc( const Func_:TConstFunc<TdSingle2D,TdSingle3D>; const DivX_,DivY_:Integer );
@@ -146,7 +146,7 @@ begin
      _Poss := TGLVerterS<TSingle3D>.Create( GL_STATIC_DRAW );
      _Nors := TGLVerterS<TSingle3D>.Create( GL_STATIC_DRAW );
      _Texs := TGLVerterS<TSingle2D>.Create( GL_STATIC_DRAW );
-     _Eles := TGLElemer32          .Create( GL_STATIC_DRAW );
+     _Eles := TGLElemerTria32      .Create( GL_STATIC_DRAW );
 end;
 
 destructor TMyShaper.Destroy;

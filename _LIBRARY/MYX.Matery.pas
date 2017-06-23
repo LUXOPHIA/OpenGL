@@ -5,7 +5,7 @@ interface //####################################################################
 uses Winapi.OpenGL, Winapi.OpenGLext,
      LUX, LUX.D1, LUX.D2, LUX.D3, LUX.M4,
      LUX.GPU.OpenGL,
-     LUX.GPU.OpenGL.GLView,
+     LUX.GPU.OpenGL.Viewer,
      LUX.GPU.OpenGL.Buffer,
      LUX.GPU.OpenGL.Buffer.Unifor,
      LUX.GPU.OpenGL.Buffer.Verter,
