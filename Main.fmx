@@ -28,7 +28,7 @@ object Form1: TForm1
     Size.PlatformDefault = False
     StyleLookup = 'pushpanel'
     TabOrder = 4
-    inline GLView1: TGLView
+    inline GLViewer1: TGLViewer
       Align = Top
       Margins.Left = 5.000000000000000000
       Margins.Top = 5.000000000000000000
@@ -40,7 +40,7 @@ object Form1: TForm1
       Size.Height = 300.000000000000000000
       Size.PlatformDefault = False
     end
-    inline GLView2: TGLView
+    inline GLViewer2: TGLViewer
       Align = Client
       Margins.Left = 5.000000000000000000
       Margins.Top = 5.000000000000000000
@@ -61,7 +61,7 @@ object Form1: TForm1
     Size.PlatformDefault = False
     StyleLookup = 'pushpanel'
     TabOrder = 2
-    inline GLView3: TGLView
+    inline GLViewer3: TGLViewer
       Align = Top
       Margins.Left = 5.000000000000000000
       Margins.Top = 5.000000000000000000
@@ -73,7 +73,7 @@ object Form1: TForm1
       Size.Height = 200.000000000000000000
       Size.PlatformDefault = False
     end
-    inline GLView4: TGLView
+    inline GLViewer4: TGLViewer
       Align = Client
       Margins.Left = 5.000000000000000000
       Margins.Top = 5.000000000000000000
