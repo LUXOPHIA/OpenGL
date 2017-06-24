@@ -33,6 +33,7 @@ object Form1: TForm1
       Size.Width = 300.000000000000000000
       Size.Height = 300.000000000000000000
       Size.PlatformDefault = False
+      OnDblClick = GLViewer1DblClick
     end
     inline GLViewer2: TGLViewer
       Align = Client
@@ -43,6 +44,7 @@ object Form1: TForm1
       Size.Width = 300.000000000000000000
       Size.Height = 200.000000000000000000
       Size.PlatformDefault = False
+      OnDblClick = GLViewer2DblClick
     end
   end
   object Timer1: TTimer
@@ -72,6 +74,7 @@ object Form1: TForm1
       Size.Width = 400.000000000000000000
       Size.Height = 200.000000000000000000
       Size.PlatformDefault = False
+      OnDblClick = GLViewer3DblClick
     end
     inline GLViewer4: TGLViewer
       Align = Client
@@ -82,6 +85,7 @@ object Form1: TForm1
       Size.Width = 400.000000000000000000
       Size.Height = 300.000000000000000000
       Size.PlatformDefault = False
+      OnDblClick = GLViewer4DblClick
     end
   end
 end
