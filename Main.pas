@@ -37,7 +37,7 @@ type
     { public 宣言 }
     _VerterP :TGLVerterS<TSingle3D>;
     _VerterC :TGLVerterS<TAlphaColorF>;
-    _Elemer  :TGLElemerTria32;
+    _Elemer  :TGLElemerFace32;
     ///// メソッド
     procedure InitViewer;
     procedure InitShaper;
@@ -188,7 +188,7 @@ begin
 
      _VerterP := TGLVerterS<TSingle3D>   .Create( GL_STATIC_DRAW );
      _VerterC := TGLVerterS<TAlphaColorF>.Create( GL_STATIC_DRAW );
-     _Elemer  := TGLElemerTria32         .Create( GL_STATIC_DRAW );
+     _Elemer  := TGLElemerFace32         .Create( GL_STATIC_DRAW );
 
      InitViewer;
      InitShaper;
