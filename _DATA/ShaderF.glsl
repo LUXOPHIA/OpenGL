@@ -1,14 +1,12 @@
-﻿#version 150
+﻿#version 430
 
-////////////////////////////////////////////////////////////////////////////////【定数】
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%【定数】
 
-const float Pi = 3.141592653589793;
-
+const float Pi  = 3.141592653589793;
 const float Pi2 = Pi * 2.0;
-
 const float P2i = Pi / 2.0;
 
-////////////////////////////////////////////////////////////////////////////////【ルーチン】
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%【ルーチン】
 
 vec2 VecToSky( vec4 Vector_ )
 {
@@ -20,33 +18,35 @@ vec2 VecToSky( vec4 Vector_ )
     return Result;
 }
 
-////////////////////////////////////////////////////////////////////////////////【共通定数】
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%【共通定数】
 
-layout(std140) uniform TViewerScal
+layout( std140 ) uniform TViewerScal
 {
-  layout(row_major) mat4 _ViewerScal;
+  layout( row_major ) mat4 _ViewerScal;
 };
 
-layout(std140) uniform TCameraProj
+layout( std140 ) uniform TCameraProj
 {
-  layout(row_major) mat4 _CameraProj;
+  layout( row_major ) mat4 _CameraProj;
 };
 
-layout(std140) uniform TCameraPose
+layout( std140 ) uniform TCameraPose
 {
-  layout(row_major) mat4 _CameraPose;
+  layout( row_major ) mat4 _CameraPose;
 };
 
-layout(std140) uniform TShaperPose
+layout( std140 ) uniform TShaperPose
 {
-  layout(row_major) mat4 _ShaperPose;
+  layout( row_major ) mat4 _ShaperPose;
 };
+
+//------------------------------------------------------------------------------
 
 uniform sampler2D _Imager;
 
-////////////////////////////////////////////////////////////////////////////////【入出力】
+//############################################################################## ■
 
-in TSendVF
+in TSenderGF
 {
   vec4 Pos;
   vec4 Nor;
@@ -56,9 +56,9 @@ _Sender;
 
 //------------------------------------------------------------------------------
 
-out vec4 _Frag_Col;
+out vec4 _ResultCol;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 void main()
 {
@@ -66,7 +66,7 @@ void main()
   vec4 V = normalize( _Sender.Pos - C );
   vec4 R = reflect( V, normalize( _Sender.Nor ) );
 
-  _Frag_Col = texture( _Imager, VecToSky( R ) );
+  _ResultCol = texture( _Imager, VecToSky( R ) );
 }
 
-//##############################################################################
+//############################################################################## ■
