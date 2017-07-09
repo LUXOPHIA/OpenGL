@@ -1,36 +1,36 @@
-﻿#version 150
+﻿#version 430
 
-////////////////////////////////////////////////////////////////////////////////【共通定数】
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%【共通定数】
 
-layout(std140) uniform TViewerScal
+layout( std140 ) uniform TViewerScal
 {
-  layout(row_major) mat4 _ViewerScal;
+  layout( row_major ) mat4 _ViewerScal;
 };
 
-layout(std140) uniform TCameraProj
+layout( std140 ) uniform TCameraProj
 {
-  layout(row_major) mat4 _CameraProj;
+  layout( row_major ) mat4 _CameraProj;
 };
 
-layout(std140) uniform TCameraPose
+layout( std140 ) uniform TCameraPose
 {
-  layout(row_major) mat4 _CameraPose;
+  layout( row_major ) mat4 _CameraPose;
 };
 
-layout(std140) uniform TShaperPose
+layout( std140 ) uniform TShaperPose
 {
-  layout(row_major) mat4 _ShaperPose;
+  layout( row_major ) mat4 _ShaperPose;
 };
 
-////////////////////////////////////////////////////////////////////////////////【入出力】
+//############################################################################## ■
 
-in vec4 _VertexPos;
-in vec4 _VertexNor;
-in vec2 _VertexTex;
+in vec4 _SenderPos;
+in vec4 _SenderNor;
+in vec2 _SenderTex;
 
 //------------------------------------------------------------------------------
 
-out TSendVF
+out TSenderVG
 {
   vec4 Pos;
   vec4 Nor;
@@ -38,15 +38,15 @@ out TSendVF
 }
 _Result;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 void main()
 {
-  _Result.Pos =                     _ShaperPose     * _VertexPos;
-  _Result.Nor = transpose( inverse( _ShaperPose ) ) * _VertexNor;
-  _Result.Tex =                                       _VertexTex;
+  _Result.Pos =                     _ShaperPose     * _SenderPos;
+  _Result.Nor = transpose( inverse( _ShaperPose ) ) * _SenderNor;
+  _Result.Tex =                                       _SenderTex;
 
-  gl_Position = _ViewerScal * _CameraProj * inverse( _CameraPose ) * _Result.Pos;
+  //gl_Position = _ViewerScal * _CameraProj * inverse( _CameraPose ) * _Result.Pos;
 }
 
-//##############################################################################
+//############################################################################## ■
