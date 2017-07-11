@@ -148,6 +148,8 @@ object Form1: TForm1
           710s
           484s
           710s
+          484s
+          710s
           484s)
         object TabItemSV: TTabItem
           CustomIcon = <
@@ -199,6 +201,66 @@ object Form1: TForm1
             Viewport.Height = 350.000000000000000000
           end
           object SplitterSV: TSplitter
+            Align = Bottom
+            Cursor = crVSplit
+            MinSize = 50.000000000000000000
+            Position.Y = 364.000000000000000000
+            ShowGrip = False
+            Size.Width = 710.000000000000000000
+            Size.Height = 10.000000000000000000
+            Size.PlatformDefault = False
+          end
+        end
+        object TabItemSG: TTabItem
+          CustomIcon = <
+            item
+            end>
+          IsSelected = False
+          Size.Width = 73.000000000000000000
+          Size.Height = 26.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = ''
+          TabOrder = 0
+          Text = 'Geometry'
+          ExplicitSize.cx = 71.000000000000000000
+          ExplicitSize.cy = 26.000000000000000000
+          object MemoSGE: TMemo
+            Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+            DataDetectorTypes = []
+            ReadOnly = True
+            StyledSettings = [Size, Style, FontColor]
+            TextSettings.Font.Family = 'MS Gothic'
+            Align = MostBottom
+            Margins.Left = 10.000000000000000000
+            Margins.Right = 10.000000000000000000
+            Margins.Bottom = 10.000000000000000000
+            Position.X = 10.000000000000000000
+            Position.Y = 374.000000000000000000
+            Size.Width = 690.000000000000000000
+            Size.Height = 100.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+            Viewport.Width = 686.000000000000000000
+            Viewport.Height = 96.000000000000000000
+          end
+          object MemoSGS: TMemo
+            Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+            DataDetectorTypes = []
+            StyledSettings = [Size, Style, FontColor]
+            TextSettings.Font.Family = 'MS Gothic'
+            OnChangeTracking = MemoSGSChangeTracking
+            Align = Client
+            Margins.Left = 10.000000000000000000
+            Margins.Top = 10.000000000000000000
+            Margins.Right = 10.000000000000000000
+            Size.Width = 690.000000000000000000
+            Size.Height = 354.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 1
+            Viewport.Width = 686.000000000000000000
+            Viewport.Height = 350.000000000000000000
+          end
+          object SplitterSG: TSplitter
             Align = Bottom
             Cursor = crVSplit
             MinSize = 50.000000000000000000
