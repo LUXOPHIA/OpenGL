@@ -31,6 +31,10 @@ type
             MemoSVS: TMemo;
             SplitterSV: TSplitter;
             MemoSVE: TMemo;
+          TabItemSG: TTabItem;
+            MemoSGE: TMemo;
+            SplitterSG: TSplitter;
+            MemoSGS: TMemo;
           TabItemSF: TTabItem;
             MemoSFS: TMemo;
             SplitterSF: TSplitter;
@@ -47,6 +51,7 @@ type
     procedure GLViewer4MouseMove(Sender: TObject; Shift: TShiftState; X, Y: Single);
     procedure GLViewer4MouseUp(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
     procedure MemoSVSChangeTracking(Sender: TObject);
+    procedure MemoSGSChangeTracking(Sender: TObject);
     procedure MemoSFSChangeTracking(Sender: TObject);
   private
     { private 宣言 }
@@ -93,12 +98,6 @@ begin
           begin
                Shader_.Source.Assign( Memo_.Lines );
 
-               with _Matery.Engine do
-               begin
-                    TabItemV.Enabled := Status;
-
-                    if not Status then TabControl1.TabIndex := 1;
-               end;
           end );
      end;
 end;
@@ -142,7 +141,7 @@ begin
           Angl := DegToRad( 60{°} );
 
           Pose := TSingleM4.RotateX( DegToRad( -45 ) )
-                * TSingleM4.Translate( 0, 0, +3 );
+                * TSingleM4.Translate( 0, 0, +2 );
      end;
 
      GLViewer1.Camera := _Camera1;
@@ -166,6 +165,13 @@ begin
                MemoSVS.Lines.Assign( Source );
           end;
 
+          with ShaderG do
+          begin
+               Source.LoadFromFile( '..\..\_DATA\ShaderG.glsl' );
+
+               MemoSGS.Lines.Assign( Source );
+          end;
+
           with ShaderF do
           begin
                Source.LoadFromFile( '..\..\_DATA\ShaderF.glsl' );
@@ -178,8 +184,16 @@ begin
           OnBuilded := procedure
           begin
                MemoSVE.Lines.Assign( ShaderV.Errors );
+               MemoSGE.Lines.Assign( ShaderG.Errors );
                MemoSFE.Lines.Assign( ShaderF.Errors );
                MemoP  .Lines.Assign( Engine .Errors );
+
+               with Engine do
+               begin
+                    TabItemV.Enabled := Status;
+
+                    if not Status then TabControl1.TabIndex := 1;
+               end;
           end;
      end;
 end;
@@ -332,6 +346,11 @@ end;
 procedure TForm1.MemoSVSChangeTracking(Sender: TObject);
 begin
      EditShader( _Matery.ShaderV, MemoSVS );
+end;
+
+procedure TForm1.MemoSGSChangeTracking(Sender: TObject);
+begin
+     EditShader( _Matery.ShaderG, MemoSGS );
 end;
 
 procedure TForm1.MemoSFSChangeTracking(Sender: TObject);
