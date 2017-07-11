@@ -152,9 +152,9 @@ TPoin Corner( TPoin P1_, TPoin P2_, TPoin P3_ )
 
 void main()
 {
-  TPoin P1 = TPoin( _Sender[ 0 ] );
-  TPoin P2 = TPoin( _Sender[ 1 ] );
-  TPoin P3 = TPoin( _Sender[ 2 ] );
+  TPoin P1 = TPoin( _Sender[ 0 ].Pos, _Sender[ 0 ].Nor, _Sender[ 0 ].Tex );
+  TPoin P2 = TPoin( _Sender[ 1 ].Pos, _Sender[ 1 ].Nor, _Sender[ 1 ].Tex );
+  TPoin P3 = TPoin( _Sender[ 2 ].Pos, _Sender[ 2 ].Nor, _Sender[ 2 ].Tex );
 
   //  P3
   //  │＼
