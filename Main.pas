@@ -13,6 +13,7 @@ uses
   LUX.GPU.OpenGL.Scener,
   LUX.GPU.OpenGL.Camera,
   LUX.GPU.OpenGL.Shaper,
+  LUX.GPU.OpenGL.Matery,
   LUX.GPU.OpenGL.Matery.FMX;
 
 type
@@ -56,7 +57,7 @@ type
   private
     { private 宣言 }
     _MouseA :TSingle2D;
-    _MouseS :TShiftState;
+    _MouseS :TGLNode;
     _MouseP :TSingle2D;
     ///// メソッド
     procedure EditShader( const Shader_:TGLShader; const Memo_:TMemo );
@@ -117,31 +118,31 @@ begin
      begin
           Size := 5;
 
-          Pose := TSingleM4.Translate( 0, +5, 0 )
-                * TSingleM4.RotateX( DegToRad( -90 ) );
+          AbsoPose := TSingleM4.Translate( 0, +5, 0 )
+                    * TSingleM4.RotateX( DegToRad( -90 ) );
      end;
 
      with _Camera2 do
      begin
           Size := 4;
 
-          Pose := TSingleM4.RotateX( DegToRad( -45 ) )
-                * TSingleM4.Translate( 0, 0, +5 );
+          AbsoPose := TSingleM4.RotateX( DegToRad( -45 ) )
+                    * TSingleM4.Translate( 0, 0, +5 );
      end;
 
      with _Camera3 do
      begin
           Size := 3;
 
-          Pose := TSingleM4.Translate( 0, 0, +5 );
+          AbsoPose := TSingleM4.Translate( 0, 0, +5 );
      end;
 
      with _Camera4 do
      begin
           Angl := DegToRad( 60{°} );
 
-          Pose := TSingleM4.RotateX( DegToRad( -45 ) )
-                * TSingleM4.Translate( 0, 0, +2 );
+          AbsoPose := TSingleM4.RotateX( DegToRad( -45 ) )
+                    * TSingleM4.Translate( 0, 0, +10 );
      end;
 
      GLViewer1.Camera := _Camera1;
@@ -240,15 +241,22 @@ begin
 
           Matery := _Matery;
      end;
+
+     with TGLShaperLineCube.Create( _Shaper ) do
+     begin
+          SizeX := 3.6;
+          SizeY := 1.6;
+          SizeZ := 3.6;
+     end;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-     _MouseS := [];
-     _MouseP := TSingle2D.Create( 0, 0 );
      _MouseA := TSingle2D.Create( 0, 0 );
+     _MouseS := nil;
+     _MouseP := TSingle2D.Create( 0, 0 );
 
      _Scener := TGLScener.Create;
 
@@ -308,7 +316,7 @@ end;
 
 procedure TForm1.GLViewer4MouseDown(Sender: TObject; Button: TMouseButton; Shift: TShiftState; X, Y: Single);
 begin
-     _MouseS := Shift;
+     _MouseS := GLViewer4.Picker;
      _MouseP := TSingle2D.Create( X, Y );
 end;
 
@@ -316,14 +324,14 @@ procedure TForm1.GLViewer4MouseMove(Sender: TObject; Shift: TShiftState; X, Y: S
 var
    P :TSingle2D;
 begin
-     if ssLeft in _MouseS then
+     if Assigned( _MouseS ) then
      begin
           P := TSingle2D.Create( X, Y );
 
           _MouseA := _MouseA + ( P - _MouseP );
 
-          _Shaper.Pose := TSingleM4.RotateX( DegToRad( _MouseA.Y ) )
-                        * TSingleM4.RotateY( DegToRad( _MouseA.X ) );
+          _MouseS.RelaPose := TSingleM4.RotateX( DegToRad( _MouseA.Y ) )
+                            * TSingleM4.RotateY( DegToRad( _MouseA.X ) );
 
           GLViewer1.Repaint;
           GLViewer2.Repaint;
@@ -338,7 +346,7 @@ procedure TForm1.GLViewer4MouseUp(Sender: TObject; Button: TMouseButton; Shift: 
 begin
      GLViewer4MouseMove( Sender, Shift, X, Y );
 
-     _MouseS := [];
+     _MouseS := nil;
 end;
 
 //------------------------------------------------------------------------------
