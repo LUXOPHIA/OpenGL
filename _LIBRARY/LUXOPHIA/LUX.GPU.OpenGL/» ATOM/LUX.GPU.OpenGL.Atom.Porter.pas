@@ -1,15 +1,23 @@
-﻿unit LUX.GPU.OpenGL.Engine;
+﻿unit LUX.GPU.OpenGL.Atom.Porter;
 
 interface //#################################################################### ■
 
 uses System.Generics.Collections,
      Winapi.OpenGL, Winapi.OpenGLext,
-     LUX, LUX.GPU.OpenGL, LUX.GPU.OpenGL.Buffer, LUX.GPU.OpenGL.Buffer.Verter,
-     LUX.GPU.OpenGL.Buffer.Unifor, LUX.GPU.OpenGL.Shader, LUX.GPU.OpenGL.Progra;
+     LUX,
+     LUX.GPU.OpenGL.Atom;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPortF
+
+     TGLPortF = record
+     private
+     public
+       Name :String;
+     end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPortV
 
@@ -49,9 +57,45 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPortsV
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPorter<_TPort_>
 
-     TGLPortsV = class( TGLPorts<TGLPortV> )
+     TGLPorter<_TPort_:record> = class( TDictionary<GLuint,_TPort_> )
+     private
+     protected
+       _Progra :IGLProgra;
+       ///// メソッド
+       procedure AddPort( const BinP_:GLuint; const Port_:_TPort_ ); virtual; abstract;
+       procedure DelPort( const BinP_:GLuint; const Port_:_TPort_ ); virtual; abstract;
+     public
+       constructor Create( const Progra_:IGLProgra );
+       ///// プロパティ
+       property Progra :IGLProgra read _Progra;
+       ///// メソッド
+       procedure Add( const BindI_:GLuint; const Port_:_TPort_ );
+       procedure Remove( const BindI_:GLuint );
+       procedure Del( const BindI_:GLuint );
+       procedure AddPorts;
+       procedure DelPorts;
+       procedure Use; virtual;
+       procedure Unuse; virtual;
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPorterF
+
+     TGLPorterF = class( TGLPorter<TGLPortF> )
+     private
+     protected
+       ///// メソッド
+       procedure AddPort( const BinP_:GLuint; const Port_:TGLPortF ); override;
+       procedure DelPort( const BinP_:GLuint; const Port_:TGLPortF ); override;
+     public
+       ///// メソッド
+       procedure Add( const BinP_:GLuint; const Name_:String );
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPorterV
+
+     TGLPorterV = class( TGLPorter<TGLPortV> )
      private
      protected
        _Varray :TGLVarray;
@@ -59,7 +103,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AddPort( const BinP_:GLuint; const Port_:TGLPortV ); override;
        procedure DelPort( const BinP_:GLuint; const Port_:TGLPortV ); override;
      public
-       constructor Create( const Progra_:TGLProgra );
+       constructor Create( const Progra_:IGLProgra );
        destructor Destroy; override;
        ///// メソッド
        procedure Add( const BinP_:GLuint; const Name_:String;
@@ -70,9 +114,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure Unuse; override;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPortsU
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPorterU
 
-     TGLPortsU = class( TGLPorts<TGLPortU> )
+     TGLPorterU = class( TGLPorter<TGLPortU> )
      private
      protected
        ///// メソッド
@@ -83,9 +127,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure Add( const BinP_:GLuint; const Name_:String );
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPortsI
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPorterI
 
-     TGLPortsI = class( TGLPorts<TGLPortI> )
+     TGLPorterI = class( TGLPorter<TGLPortI> )
      private
      protected
        ///// メソッド
@@ -94,49 +138,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
        ///// メソッド
        procedure Add( const BinP_:GLuint; const Name_:String );
-     end;
-
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLEngine
-
-     IGLEngine = interface( IGLProgra )
-     ['{0B2FDEDE-30D3-439B-AC76-E61F9E028CD0}']
-     {protected}
-       ///// アクセス
-       function GetVerters :TGLPortsV;
-       function GetUnifors :TGLPortsU;
-       function GetImagers :TGLPortsI;
-     {public}
-       ///// プロパティ
-       property Verters :TGLPortsV read GetVerters;
-       property Unifors :TGLPortsU read GetUnifors;
-       property Imagers :TGLPortsI read GetImagers;
-       ///// メソッド
-       procedure Use;
-       procedure Unuse;
-     end;
-
-     TGLEngine = class( TGLProgra, IGLEngine )
-     private
-     protected
-       _Verters :TGLPortsV;
-       _Unifors :TGLPortsU;
-       _Imagers :TGLPortsI;
-       ///// アクセス
-       function GetVerters :TGLPortsV;
-       function GetUnifors :TGLPortsU;
-       function GetImagers :TGLPortsI;
-       ///// イベント
-       procedure DoOnLinked; override;
-     public
-       constructor Create;
-       destructor Destroy; override;
-       ///// プロパティ
-       property Verters :TGLPortsV read GetVerters;
-       property Unifors :TGLPortsU read GetUnifors;
-       property Imagers :TGLPortsI read GetImagers;
-       ///// メソッド
-       procedure Use; override;
-       procedure Unuse; override;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -148,6 +149,12 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 implementation //############################################################### ■
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPortF
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPortV
 
@@ -190,7 +197,77 @@ end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPortsV
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPorter<_TPort_>
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TGLPorter<_TPort_>.Create( const Progra_:IGLProgra );
+begin
+     inherited Create;
+
+     _Progra := Progra_;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TGLPorter<_TPort_>.Add( const BindI_:GLuint; const Port_:_TPort_ );
+begin
+     inherited AddOrSetValue( BindI_, Port_ );
+
+     AddPort( BindI_, Port_ );
+end;
+
+procedure TGLPorter<_TPort_>.Remove( const BindI_:GLuint );
+begin
+     DelPort( BindI_, Items[ BindI_ ] );
+
+     inherited Remove( BindI_ );
+end;
+
+procedure TGLPorter<_TPort_>.Del( const BindI_:GLuint );
+begin
+     Remove( BindI_ );
+end;
+
+//------------------------------------------------------------------------------
+
+procedure TGLPorter<_TPort_>.AddPorts;
+var
+   P :TPair<GLuint,_TPort_>;
+begin
+     for P in Self do
+     begin
+          with P do AddPort( Key, Value );
+     end;
+end;
+
+procedure TGLPorter<_TPort_>.DelPorts;
+var
+   P :TPair<GLuint,_TPort_>;
+begin
+     for P in Self do
+     begin
+          with P do DelPort( Key, Value );
+     end;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure TGLPorter<_TPort_>.Use;
+begin
+
+end;
+
+procedure TGLPorter<_TPort_>.Unuse;
+begin
+
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPorterF
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -198,7 +275,41 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLPortsV.AddPort( const BinP_:GLuint; const Port_:TGLPortV );
+procedure TGLPorterF.AddPort( const BinP_:GLuint; const Port_:TGLPortF );
+begin
+     glBindFragDataLocation( _Progra.ID, BinP_, PGLchar( AnsiString( Port_.Name ) ) );
+end;
+
+procedure TGLPorterF.DelPort( const BinP_:GLuint; const Port_:TGLPortF );
+begin
+
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TGLPorterF.Add( const BinP_:GLuint; const Name_:String );
+var
+   P :TGLPortF;
+begin
+     with P do
+     begin
+          Name := Name_;
+     end;
+
+     inherited Add( BinP_, P );
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPorterV
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TGLPorterV.AddPort( const BinP_:GLuint; const Port_:TGLPortV );
 var
    L :GLuint;
 begin
@@ -224,7 +335,7 @@ begin
      end;
 end;
 
-procedure TGLPortsV.DelPort( const BinP_:GLuint; const Port_:TGLPortV );
+procedure TGLPorterV.DelPort( const BinP_:GLuint; const Port_:TGLPortV );
 var
    L :GLuint;
 begin
@@ -242,14 +353,14 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLPortsV.Create( const Progra_:TGLProgra );
+constructor TGLPorterV.Create( const Progra_:IGLProgra );
 begin
      inherited;
 
      _Varray := TGLVarray.Create;
 end;
 
-destructor TGLPortsV.Destroy;
+destructor TGLPorterV.Destroy;
 begin
      _Varray.DisposeOf;
 
@@ -258,22 +369,22 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLPortsV.Use;
+procedure TGLPorterV.Use;
 begin
      _Varray.Bind;
 end;
 
-procedure TGLPortsV.Unuse;
+procedure TGLPorterV.Unuse;
 begin
      _Varray.Unbind;
 end;
 
 //------------------------------------------------------------------------------
 
-procedure TGLPortsV.Add( const BinP_:GLuint; const Name_:String;
-                                             const EleN_:GLint;
-                                             const EleT_:GLenum;
-                                             const Offs_:GLuint = 0 );
+procedure TGLPorterV.Add( const BinP_:GLuint; const Name_:String;
+                                              const EleN_:GLint;
+                                              const EleT_:GLenum;
+                                              const Offs_:GLuint = 0 );
 var
    P :TGLPortV;
 begin
@@ -288,7 +399,7 @@ begin
      inherited Add( BinP_, P );
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPortsU
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPorterU
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -296,7 +407,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLPortsU.AddPort( const BinP_:GLuint; const Port_:TGLPortU );
+procedure TGLPorterU.AddPort( const BinP_:GLuint; const Port_:TGLPortU );
 var
    L :GLuint;
 begin
@@ -305,7 +416,7 @@ begin
      glUniformBlockBinding( _Progra.ID, L, BinP_ );
 end;
 
-procedure TGLPortsU.DelPort( const BinP_:GLuint; const Port_:TGLPortU );
+procedure TGLPorterU.DelPort( const BinP_:GLuint; const Port_:TGLPortU );
 begin
 
 end;
@@ -314,7 +425,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLPortsU.Add( const BinP_:GLuint; const Name_:String );
+procedure TGLPorterU.Add( const BinP_:GLuint; const Name_:String );
 var
    P :TGLPortU;
 begin
@@ -326,7 +437,7 @@ begin
      inherited Add( BinP_, P );
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPortsI
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPorterI
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -334,7 +445,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLPortsI.AddPort( const BinP_:GLuint; const Port_:TGLPortI );
+procedure TGLPorterI.AddPort( const BinP_:GLuint; const Port_:TGLPortI );
 var
    L :GLuint;
 begin
@@ -350,7 +461,7 @@ begin
      end;
 end;
 
-procedure TGLPortsI.DelPort( const BinP_:GLuint; const Port_:TGLPortI );
+procedure TGLPorterI.DelPort( const BinP_:GLuint; const Port_:TGLPortI );
 begin
 
 end;
@@ -359,7 +470,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLPortsI.Add( const BinP_:GLuint; const Name_:String );
+procedure TGLPorterI.Add( const BinP_:GLuint; const Name_:String );
 var
    P :TGLPortI;
 begin
@@ -369,82 +480,6 @@ begin
      end;
 
      inherited Add( BinP_, P );
-end;
-
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLEngine
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
-
-/////////////////////////////////////////////////////////////////////// アクセス
-
-function TGLEngine.GetVerters :TGLPortsV;
-begin
-     Result := _Verters;
-end;
-
-function TGLEngine.GetUnifors :TGLPortsU;
-begin
-     Result := _Unifors;
-end;
-
-function TGLEngine.GetImagers :TGLPortsI;
-begin
-     Result := _Imagers;
-end;
-
-/////////////////////////////////////////////////////////////////////// イベント
-
-procedure TGLEngine.DoOnLinked;
-begin
-     _Verters.AddPorts;
-     _Unifors.AddPorts;
-     _Imagers.AddPorts;
-
-     inherited;
-end;
-
-/////////////////////////////////////////////////////////////////////// メソッド
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
-
-constructor TGLEngine.Create;
-begin
-     inherited Create;
-
-     _Verters := TGLPortsV.Create( Self );
-     _Unifors := TGLPortsU.Create( Self );
-     _Imagers := TGLPortsI.Create( Self );
-end;
-
-destructor TGLEngine.Destroy;
-begin
-     _Verters.DisposeOf;
-     _Unifors.DisposeOf;
-     _Imagers.DisposeOf;
-
-     inherited;
-end;
-
-/////////////////////////////////////////////////////////////////////// メソッド
-
-procedure TGLEngine.Use;
-begin
-     inherited;
-
-     _Verters.Use;
-     _Unifors.Use;
-     _Imagers.Use;
-end;
-
-procedure TGLEngine.Unuse;
-begin
-     _Verters.Unuse;
-     _Unifors.Unuse;
-     _Imagers.Unuse;
-
-     inherited;
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
