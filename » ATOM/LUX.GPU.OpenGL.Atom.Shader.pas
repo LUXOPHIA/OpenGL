@@ -1,10 +1,11 @@
-﻿unit LUX.GPU.OpenGL.Shader;
+﻿unit LUX.GPU.OpenGL.Atom.Shader;
 
 interface //#################################################################### ■
 
 uses System.SysUtils, System.Classes,
      Winapi.OpenGL, Winapi.OpenGLext,
-     LUX, LUX.GPU.OpenGL;
+     LUX,
+     LUX.GPU.OpenGL.Atom;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -14,27 +15,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLShader
 
-     IGLShader = interface( IGLObject )
-     ['{1E06B97A-6947-4960-8CD7-8FAD5CBCC546}']
-       ///// アクセス
-       function GetKind :GLenum;
-       function GetSource :TStringList;
-       function GetStatus :Boolean;
-       function GetErrors :TStringList;
-       ///// プロパティ
-       property Kind   :GLenum      read GetKind  ;
-       property Source :TStringList read GetSource;
-       property Status :Boolean     read GetStatus;
-       property Errors :TStringList read GetErrors;
-     end;
-
-     TGLShader = class( TGLObject, IGLShader )
+     TGLShader = class( TGLAtomer, IGLShader )
      private
      protected
        _Kind   :GLenum;
        _Source :TStringList;
        _Status :Boolean;
        _Errors :TStringList;
+       _Progra :IGLProgra;
        ///// イベント
        _OnCompiled :TProc;
        ///// アクセス
@@ -43,6 +31,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetSource( Sender_:TObject );
        function GetStatus :Boolean;
        function GetErrors :TStringList;
+       function GetProgra :IGLProgra;
+       procedure SetProgra( const Progra_:IGLProgra );
        ///// メソッド
        procedure Compile( const Source_:String );
        function glGetStatus :Boolean;
@@ -55,6 +45,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Source :TStringList read GetSource;
        property Status :Boolean     read GetStatus;
        property Errors :TStringList read GetErrors;
+       property Progra :IGLProgra   read GetProgra write SetProgra;
        ///// イベント
        property OnCompiled :TProc read _OnCompiled write _OnCompiled;
      end;
@@ -125,7 +116,9 @@ begin
      _Status      := glGetStatus;
      _Errors.Text := glGetErrors;
 
-     _OnCompiled;
+     if Assigned( _OnCompiled ) then _OnCompiled;
+
+     if Assigned( _Progra ) then _Progra.Link;
 end;
 
 //------------------------------------------------------------------------------
@@ -138,6 +131,18 @@ end;
 function TGLShader.GetErrors :TStringList;
 begin
      Result := _Errors;
+end;
+
+//------------------------------------------------------------------------------
+
+function TGLShader.GetProgra :IGLProgra;
+begin
+     Result := _Progra;
+end;
+
+procedure TGLShader.SetProgra( const Progra_:IGLProgra );
+begin
+     _Progra := Progra_;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
@@ -193,8 +198,6 @@ begin
      _Kind := Kind_;
 
      _ID := glCreateShader( _Kind );
-
-     _OnCompiled := procedure begin end;
 end;
 
 destructor TGLShader.Destroy;
