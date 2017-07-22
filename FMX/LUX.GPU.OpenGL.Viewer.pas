@@ -8,7 +8,11 @@ uses
   FMX.Platform.Win,
   Winapi.Windows, Winapi.OpenGL, Winapi.OpenGLext,
   LUX, LUX.D3, LUX.D4, LUX.M4, LUX.FMX.Forms,
-  LUX.GPU.OpenGL, LUX.GPU.OpenGL.FMX, LUX.GPU.OpenGL.Buffer.Unifor, LUX.GPU.OpenGL.Scener, LUX.GPU.OpenGL.Camera;
+  LUX.GPU.OpenGL,
+  LUX.GPU.OpenGL.FMX,
+  LUX.GPU.OpenGL.Atom.Buffer.Unifor,
+  LUX.GPU.OpenGL.Scener,
+  LUX.GPU.OpenGL.Camera;
 
 type
   TGLViewer = class(TFrame)
@@ -25,7 +29,7 @@ type
     _DC     :HDC;
     _Viewer :TGLUnifor<TSingleM4>;
     _Camera :TGLCamera;
-    _Picker :TGLNode;
+    _Picker :TGLObject;
     ///// イベント
     _OnPaint :TProc;
     ///// アクセス
@@ -52,7 +56,7 @@ type
     property DC     :HDC                read   _DC                  ;
     property PixSiz :System.Types.TSize read GetPixSiz              ;
     property Camera :TGLCamera          read   _Camera write _Camera;
-    property Picker :TGLNode            read   _Picker              ;
+    property Picker :TGLObject          read   _Picker              ;
     ///// イベント
     property OnPaint :TProc read _OnPaint write _OnPaint;
     ///// メソッド
@@ -64,7 +68,7 @@ type
     procedure EndRender;
     function MakeScreenShot :FMX.Graphics.TBitmap;
     function ShootRay( const X_,Y_:Single ) :TSingleRay3D;
-    function PickObject( const X_,Y_:Single ) :TGLNode;
+    function PickObject( const X_,Y_:Single ) :TGLObject;
   end;
 
 implementation //############################################################### ■
@@ -381,7 +385,7 @@ begin
      end;
 end;
 
-function TGLViewer.PickObject( const X_,Y_:Single ) :TGLNode;
+function TGLViewer.PickObject( const X_,Y_:Single ) :TGLObject;
 begin
      Result := _Camera.Scener.HitRay( ShootRay( X_, Y_ ) );
 end;
