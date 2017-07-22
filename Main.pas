@@ -10,9 +10,9 @@ uses
   LUX, LUX.D3,
   LUX.GPU.OpenGL,
   LUX.GPU.OpenGL.Viewer,
-  LUX.GPU.OpenGL.Buffer,
-  LUX.GPU.OpenGL.Buffer.Verter,
-  LUX.GPU.OpenGL.Buffer.Elemer;
+  LUX.GPU.OpenGL.Atom.Buffer,
+  LUX.GPU.OpenGL.Atom.Buffer.Verter,
+  LUX.GPU.OpenGL.Atom.Buffer.Elemer;
 
 type
   TForm1 = class(TForm)
