@@ -6,8 +6,8 @@ uses System.SysUtils,
      Winapi.OpenGL, Winapi.OpenGLext,
      LUX,
      LUX.GPU.OpenGL,
-     LUX.GPU.OpenGL.Shader,
-     LUX.GPU.OpenGL.Engine;
+     LUX.GPU.OpenGL.Atom.Shader,
+     LUX.GPU.OpenGL.Atom.Progra;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -21,21 +21,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      ['{13071090-B024-474A-BDA2-AB604AD10B16}']
      {protected}
        ///// アクセス
+       function GetProgra  :TGLProgra;
        function GetShaderV :TGLShaderV;
-       function GetShaderG :TGLShaderG;
        function GetShaderF :TGLShaderF;
-       function GetEngine  :TGLEngine;
-       /////
-       function GetOnBuilded :TProc;
-       procedure SetOnBuilded( const OnBuilded_:TProc );
      {public}
        ///// プロパティ
+       property Progra  :TGLProgra  read GetProgra ;
        property ShaderV :TGLShaderV read GetShaderV;
-       property ShaderG :TGLShaderG read GetShaderG;
        property ShaderF :TGLShaderF read GetShaderF;
-       property Engine  :TGLEngine  read GetEngine ;
-       ///// イベント
-       property OnBuilded :TProc read GetOnBuilded write SetOnBuilded;
        ///// メソッド
        procedure Use;
        procedure Unuse;
@@ -46,67 +39,74 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TGLMatery = class( TInterfacedObject, IGLMatery )
      private
      protected
+       _Progra  :TGLProgra;
        _ShaderV :TGLShaderV;
-       _ShaderG :TGLShaderG;
        _ShaderF :TGLShaderF;
-       _Engine  :TGLEngine;
-       ///// イベント
-       _OnBuilded :TProc;
        ///// アクセス
+       function GetProgra  :TGLProgra;
        function GetShaderV :TGLShaderV;
-       function GetShaderG :TGLShaderG;
        function GetShaderF :TGLShaderF;
-       function GetEngine  :TGLEngine;
-       /////
-       function GetOnBuilded :TProc;
-       procedure SetOnBuilded( const OnBuilded_:TProc );
      public
        constructor Create;
        destructor Destroy; override;
        ///// プロパティ
+       property Progra  :TGLProgra  read GetProgra ;
        property ShaderV :TGLShaderV read GetShaderV;
-       property ShaderG :TGLShaderG read GetShaderG;
        property ShaderF :TGLShaderF read GetShaderF;
-       property Engine  :TGLEngine  read GetEngine ;
-       ///// イベント
-       property OnBuilded :TProc read GetOnBuilded write SetOnBuilded;
        ///// メソッド
        procedure Use; virtual;
        procedure Unuse; virtual;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLMateryColor
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLMateryG
 
-     TGLMateryColor = class( TInterfacedObject, IGLMatery )
+     IGLMateryG = interface( IGLMatery )
+     ['{6BF0D994-51C2-4884-9C64-4E02EF5B5226}']
+     {protected}
+       ///// アクセス
+       function GetShaderG :TGLShaderG;
+     {public}
+       ///// プロパティ
+       property ShaderG :TGLShaderG read GetShaderG;
+     end;
+
+     //-------------------------------------------------------------------------
+
+     TGLMateryG = class( TGLMatery, IGLMateryG )
      private
      protected
-       _ShaderV :TGLShaderV;
        _ShaderG :TGLShaderG;
-       _ShaderF :TGLShaderF;
-       _Engine  :TGLEngine;
-       ///// イベント
-       _OnBuilded :TProc;
        ///// アクセス
-       function GetShaderV :TGLShaderV;
        function GetShaderG :TGLShaderG;
-       function GetShaderF :TGLShaderF;
-       function GetEngine  :TGLEngine;
-       /////
-       function GetOnBuilded :TProc;
-       procedure SetOnBuilded( const OnBuilded_:TProc );
      public
        constructor Create;
        destructor Destroy; override;
        ///// プロパティ
-       property ShaderV :TGLShaderV read GetShaderV;
        property ShaderG :TGLShaderG read GetShaderG;
-       property ShaderF :TGLShaderF read GetShaderF;
-       property Engine  :TGLEngine  read GetEngine ;
-       ///// イベント
-       property OnBuilded :TProc read GetOnBuilded write SetOnBuilded;
-       ///// メソッド
-       procedure Use; virtual;
-       procedure Unuse; virtual;
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLMateryColor
+
+     TGLMateryColor = class( TGLMatery )
+     private
+     protected
+       ///// アクセス
+     public
+       constructor Create;
+       destructor Destroy; override;
+       ///// プロパティ
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLMateryRGB
+
+     TGLMateryRGB = class( TGLMatery )
+     private
+     protected
+       ///// アクセス
+     public
+       constructor Create;
+       destructor Destroy; override;
+       ///// プロパティ
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -134,31 +134,14 @@ begin
      Result := _ShaderV;
 end;
 
-function TGLMatery.GetShaderG :TGLShaderG;
-begin
-     Result := _ShaderG;
-end;
-
 function TGLMatery.GetShaderF :TGLShaderF;
 begin
      Result := _ShaderF;
 end;
 
-function TGLMatery.GetEngine  :TGLEngine;
+function TGLMatery.GetProgra  :TGLProgra;
 begin
-     Result := _Engine;
-end;
-
-////////////////////////////////////////////////////////////////////////////////
-
-function TGLMatery.GetOnBuilded :TProc;
-begin
-     Result := _OnBuilded;
-end;
-
-procedure TGLMatery.SetOnBuilded( const OnBuilded_:TProc );
-begin
-     _OnBuilded := OnBuilded_;
+     Result := _Progra;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -167,45 +150,48 @@ constructor TGLMatery.Create;
 begin
      inherited;
 
-     _OnBuilded := procedure begin end;
-
+     _Progra  := TGLProgra .Create;
      _ShaderV := TGLShaderV.Create;
-     _ShaderG := TGLShaderG.Create;
      _ShaderF := TGLShaderF.Create;
-     _Engine  := TGLEngine .Create;
 
-     with _ShaderV do
+     with _ShaderV.Source do
      begin
-          OnCompiled := procedure
-          begin
-               _Engine.Link;
-          end;
+          BeginUpdate;
+
+          Add( '#version 430' );
+
+          Add( 'layout( std140 ) uniform TViewerScal{ layout( row_major ) mat4 _ViewerScal; };' );
+          Add( 'layout( std140 ) uniform TCameraProj{ layout( row_major ) mat4 _CameraProj; };' );
+          Add( 'layout( std140 ) uniform TCameraPose{ layout( row_major ) mat4 _CameraPose; };' );
+          Add( 'layout( std140 ) uniform TShaperPose{ layout( row_major ) mat4 _ShaperPose; };' );
+
+          Add( 'in vec4 _SenderPos;' );
+          Add( 'in vec4 _SenderNor;' );
+          Add( 'in vec2 _SenderTex;' );
+
+          Add( 'out TSenderVF' );
+          Add( '{' );
+          Add( '  vec4 Pos;' );
+          Add( '  vec4 Nor;' );
+          Add( '  vec2 Tex;' );
+          Add( '}' );
+          Add( '_Result;' );
+
+          Add( 'void main()' );
+          Add( '{' );
+          Add( '  _Result.Pos =                     _ShaperPose     * _SenderPos;' );
+          Add( '  _Result.Nor = transpose( inverse( _ShaperPose ) ) * _SenderNor;' );
+          Add( '  _Result.Tex =                                       _SenderTex;' );
+          Add( '  gl_Position = _ViewerScal * _CameraProj * inverse( _CameraPose ) * _Result.Pos;' );
+          Add( '}' );
+
+          EndUpdate;
      end;
 
-     with _ShaderG do
+     with _Progra do
      begin
-          OnCompiled := procedure
-          begin
-               _Engine.Link;
-          end;
-     end;
-
-     with _ShaderF do
-     begin
-          OnCompiled := procedure
-          begin
-               _Engine.Link;
-          end;
-     end;
-
-     with _Engine do
-     begin
-          with Shaders do
-          begin
-               Add( _ShaderV{Shad} );
-               Add( _ShaderG{Shad} );
-               Add( _ShaderF{Shad} );
-          end;
+          Attach( _ShaderV{Shad} );
+          Attach( _ShaderF{Shad} );
 
           with Verters do
           begin
@@ -231,20 +217,14 @@ begin
           begin
                Add( 0{BinP}, '_ResultCol'{Name} );
           end;
-
-          Onlinked := procedure
-          begin
-               _OnBuilded;
-          end;
      end;
 end;
 
 destructor TGLMatery.Destroy;
 begin
+     _Progra .DisposeOf;
      _ShaderV.DisposeOf;
-     _ShaderG.DisposeOf;
      _ShaderF.DisposeOf;
-     _Engine .DisposeOf;
 
      inherited;
 end;
@@ -253,12 +233,46 @@ end;
 
 procedure TGLMatery.Use;
 begin
-     _Engine.Use;
+     _Progra.Use;
 end;
 
 procedure TGLMatery.Unuse;
 begin
-     _Engine.Unuse;
+     _Progra.Unuse;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLMateryG
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+function TGLMateryG.GetShaderG :TGLShaderG;
+begin
+     Result := _ShaderG;
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TGLMateryG.Create;
+begin
+     inherited;
+
+     _ShaderG := TGLShaderG.Create;
+
+     with _Progra do
+     begin
+          Attach( _ShaderG{Shad} );
+     end;
+end;
+
+destructor TGLMateryG.Destroy;
+begin
+     _ShaderG.DisposeOf;
+
+     inherited;
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLMateryColor
@@ -269,140 +283,78 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TGLMateryColor.GetShaderV :TGLShaderV;
-begin
-     Result := _ShaderV;
-end;
-
-function TGLMateryColor.GetShaderG :TGLShaderG;
-begin
-     Result := _ShaderG;
-end;
-
-function TGLMateryColor.GetShaderF :TGLShaderF;
-begin
-     Result := _ShaderF;
-end;
-
-function TGLMateryColor.GetEngine  :TGLEngine;
-begin
-     Result := _Engine;
-end;
-
-////////////////////////////////////////////////////////////////////////////////
-
-function TGLMateryColor.GetOnBuilded :TProc;
-begin
-     Result := _OnBuilded;
-end;
-
-procedure TGLMateryColor.SetOnBuilded( const OnBuilded_:TProc );
-begin
-     _OnBuilded := OnBuilded_;
-end;
-
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
 constructor TGLMateryColor.Create;
 begin
      inherited;
 
-     _OnBuilded := procedure begin end;
-
-     _ShaderV := TGLShaderV.Create;
-     _ShaderF := TGLShaderF.Create;
-     _Engine  := TGLEngine .Create;
-
-     with _ShaderV do
-     begin
-          OnCompiled := procedure
-          begin
-               _Engine.Link;
-          end;
-     end;
-
-     with _ShaderF do
-     begin
-          OnCompiled := procedure
-          begin
-               _Engine.Link;
-          end;
-     end;
-
-     with _Engine do
-     begin
-          with Shaders do
-          begin
-               Add( _ShaderV{Shad} );
-               Add( _ShaderF{Shad} );
-          end;
-
-          with Verters do
-          begin
-               Add( 0{BinP}, '_SenderPos'{Name}, 3{EleN}, GL_FLOAT{EleT} );
-          end;
-
-          with Unifors do
-          begin
-               Add( 0{BinP}, 'TViewerScal'{Name} );
-               Add( 1{BinP}, 'TCameraProj'{Name} );
-               Add( 2{BinP}, 'TCameraPose'{Name} );
-               Add( 3{BinP}, 'TShaperPose'{Name} );
-          end;
-
-          with Framers do
-          begin
-               Add( 0{BinP}, '_ResultCol'{Name} );
-          end;
-
-          Onlinked := procedure
-          begin
-               _OnBuilded;
-          end;
-     end;
-
-     with _ShaderV.Source do
-     begin
-          BeginUpdate;
-          Add( '#version 430' );
-          Add( 'layout( std140 ) uniform TViewerScal{ layout( row_major ) mat4 _ViewerScal; };' );
-          Add( 'layout( std140 ) uniform TCameraProj{ layout( row_major ) mat4 _CameraProj; };' );
-          Add( 'layout( std140 ) uniform TCameraPose{ layout( row_major ) mat4 _CameraPose; };' );
-          Add( 'layout( std140 ) uniform TShaperPose{ layout( row_major ) mat4 _ShaperPose; };' );
-          Add( 'in vec4 _SenderPos;' );
-          Add( 'void main(){ gl_Position = _ViewerScal * _CameraProj * inverse( _CameraPose ) * _ShaperPose * _SenderPos; }' );
-          EndUpdate;
-     end;
-
      with _ShaderF.Source do
      begin
           BeginUpdate;
+
           Add( '#version 430' );
+
+          Add( 'in TSenderGF{' );
+          Add( '  vec4 Pos;' );
+          Add( '  vec4 Nor;' );
+          Add( '  vec2 Tex;' );
+          Add( '} _Sender;' );
+
           Add( 'out vec4 _ResultCol;' );
+
           Add( 'void main(){ _ResultCol = vec4( 1, 0, 0, 1 ); }' );
+
           EndUpdate;
      end;
 end;
 
 destructor TGLMateryColor.Destroy;
 begin
-     _ShaderV.DisposeOf;
-     _ShaderF.DisposeOf;
-     _Engine .DisposeOf;
 
      inherited;
 end;
 
-/////////////////////////////////////////////////////////////////////// メソッド
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLMateryRGB
 
-procedure TGLMateryColor.Use;
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TGLMateryRGB.Create;
 begin
-     _Engine.Use;
+     inherited;
+
+     with _ShaderF.Source do
+     begin
+          BeginUpdate;
+
+          Add( '#version 430' );
+
+          Add( 'in TSenderVF' );
+          Add( '{' );
+          Add( '  vec4 Pos;' );
+          Add( '  vec4 Nor;' );
+          Add( '  vec2 Tex;' );
+          Add( '}' );
+          Add( '_Sender;' );
+
+          Add( 'out vec4 _ResultCol;' );
+
+          Add( 'void main(){ _ResultCol = ( 1 + normalize( _Sender.Nor ) ) / 2; }' );
+
+          EndUpdate;
+     end;
 end;
 
-procedure TGLMateryColor.Unuse;
+destructor TGLMateryRGB.Destroy;
 begin
-     _Engine.Unuse;
+
+     inherited;
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
