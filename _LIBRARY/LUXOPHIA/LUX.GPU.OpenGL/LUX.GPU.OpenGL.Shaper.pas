@@ -5,13 +5,20 @@ interface //####################################################################
 uses Winapi.OpenGL, Winapi.OpenGLext,
      LUX, LUX.D2, LUX.D3, LUX.M4, LUX.Tree,
      LUX.GPU.OpenGL,
-     LUX.GPU.OpenGL.Buffer,
-     LUX.GPU.OpenGL.Buffer.Verter,
-     LUX.GPU.OpenGL.Buffer.Elemer,
+     LUX.GPU.OpenGL.Atom.Buffer,
+     LUX.GPU.OpenGL.Atom.Buffer.Verter,
+     LUX.GPU.OpenGL.Atom.Buffer.Elemer,
      LUX.GPU.OpenGL.Scener,
      LUX.GPU.OpenGL.Matery;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
+
+     TGLShaper         = class;
+     TGLShaperPoin     = class;
+     TGLShaperLine     = class;
+     TGLShaperFace     = class;
+     TGLShaperCopy     = class;
+     TGLShaperLineCube = class;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
@@ -19,7 +26,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLShaper
 
-     TGLShaper = class( TGLNode, IGLShaper )
+     TGLShaper = class( TGLObject, IGLShaper )
      private
      protected
        _Matery :IGLMatery;
@@ -27,7 +34,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure BeginDraw; override;
        procedure EndDraw; override;
      public
-       constructor Create( const Paren_:ITreeNode ); override;
+       constructor Create; override;
        destructor Destroy; override;
        ///// プロパティ
        property Matery :IGLMatery read _Matery write _Matery;
@@ -43,16 +50,17 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _TexBuf :TGLVerterS<TSingle2D>;
        ///// メソッド
        procedure BeginDraw; override;
-       procedure DrawCore; override;
+       procedure DrawMain; override;
        procedure EndDraw; override;
      public
-       constructor Create( const Paren_:ITreeNode ); override;
+       constructor Create; override;
        destructor Destroy; override;
        ///// プロパティ
        property PosBuf :TGLVerterS<TSingle3D> read _PosBuf;
        property NorBuf :TGLVerterS<TSingle3D> read _NorBuf;
        property TexBuf :TGLVerterS<TSingle2D> read _TexBuf;
        ///// メソッド
+       procedure CalcBouBox; override;
        procedure LoadFromFunc( const Func_:TConstFunc<TdSingle2D,TdSingle3D>; const DivU_,DivV_:Integer ); virtual;
        procedure LoadFromFileSTL( const FileName_:String );
        procedure LoadFromFileOBJ( const FileName_:String );
@@ -67,10 +75,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _LineW  :Single;
        ///// メソッド
        procedure BeginDraw; override;
-       procedure DrawCore; override;
+       procedure DrawMain; override;
        procedure EndDraw; override;
      public
-       constructor Create( const Paren_:ITreeNode ); override;
+       constructor Create; override;
        destructor Destroy; override;
        ///// プロパティ
        property EleBuf :TGLElemerLine32 read _EleBuf             ;
@@ -88,9 +96,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      protected
        _EleBuf :TGLElemerFace32;
        ///// メソッド
-       procedure DrawCore; override;
+       procedure DrawMain; override;
      public
-       constructor Create( const Paren_:ITreeNode ); override;
+       constructor Create; override;
        destructor Destroy; override;
        ///// プロパティ
        property EleBuf :TGLElemerFace32 read _EleBuf;
@@ -106,15 +114,46 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
      protected
        _Shaper :TGLShaperPoin;
+       ///// アクセス
+       function GetShaper :TGLShaperPoin;
+       procedure SetShaper( const Shaper_:TGLShaperPoin );
        ///// メソッド
        procedure BeginDraw; override;
-       procedure DrawCore; override;
+       procedure DrawMain; override;
        procedure EndDraw; override;
      public
-       constructor Create( const Paren_:ITreeNode ); override;
+       constructor Create; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Shaper :TGLShaperPoin read _Shaper write _Shaper;
+       property Shaper :TGLShaperPoin read GetShaper write SetShaper;
+       ///// メソッド
+       procedure CalcBouBox; override;
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLShaperLineCube
+
+     TGLShaperLineCube = class( TGLShaperLine )
+     private
+       ///// メソッド
+       procedure MakeModel;
+     protected
+       _SizeX :Single;
+       _SizeY :Single;
+       _SizeZ :Single;
+       ///// アクセス
+       function GetSizeX :Single;
+       procedure SetSizeX( const SizeX_:Single );
+       function GetSizeY :Single;
+       procedure SetSizeY( const SizeY_:Single );
+       function GetSizeZ :Single;
+       procedure SetSizeZ( const SizeZ_:Single );
+     public
+       constructor Create; override;
+       destructor Destroy; override;
+       ///// プロパティ
+       property SizeX :Single read GetSizeX write SetSizeX;
+       property SizeY :Single read GetSizeY write SetSizeY;
+       property SizeZ :Single read GetSizeZ write SetSizeZ;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -155,7 +194,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLShaper.Create( const Paren_:ITreeNode );
+constructor TGLShaper.Create;
 begin
      inherited;
 
@@ -184,7 +223,7 @@ begin
      _TexBuf.Use( 2{BinP} );
 end;
 
-procedure TGLShaperPoin.DrawCore;
+procedure TGLShaperPoin.DrawMain;
 begin
      glDrawArrays( GL_POINTS, 0, _PosBuf.Count );
 end;
@@ -200,7 +239,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLShaperPoin.Create( const Paren_:ITreeNode );
+constructor TGLShaperPoin.Create;
 begin
      inherited;
 
@@ -219,6 +258,38 @@ begin
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TGLShaperPoin.CalcBouBox;
+var
+   P :TGLBufferData<TSingle3D>;
+   I :Integer;
+begin
+     inherited;
+
+     P := _PosBuf.Map( GL_READ_ONLY );
+
+     for I := 0 to _PosBuf.Count-1 do
+     begin
+          with P[ I ] do
+          begin
+               if X < _BouBox.Min.X then _BouBox.Min.X := X
+                                    else
+               if _BouBox.Max.X < X then _BouBox.Max.X := X;
+
+               if Y < _BouBox.Min.Y then _BouBox.Min.Y := Y
+                                    else
+               if _BouBox.Max.Y < Y then _BouBox.Max.Y := Y;
+
+               if Z < _BouBox.Min.Z then _BouBox.Min.Z := Z
+                                    else
+               if _BouBox.Max.Z < Z then _BouBox.Max.Z := Z;
+          end;
+     end;
+
+     _PosBuf.Unmap;
+end;
+
+//------------------------------------------------------------------------------
 
 procedure TGLShaperPoin.LoadFromFunc( const Func_:TConstFunc<TdSingle2D,TdSingle3D>; const DivU_,DivV_:Integer );
 //··································
@@ -265,6 +336,8 @@ begin
      _PosBuf.Unmap;
      _NorBuf.Unmap;
      _TexBuf.Unmap;
+
+     CalcBouBox;
 end;
 
 //------------------------------------------------------------------------------
@@ -326,6 +399,8 @@ begin
 
      _PosBuf.Unmap;
      _NorBuf.Unmap;
+
+     CalcBouBox;
 end;
 
 //------------------------------------------------------------------------------
@@ -482,6 +557,8 @@ begin
      end;
 
      Vs.DisposeOf;
+
+     CalcBouBox;
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLShaperLine
@@ -499,7 +576,7 @@ begin
      glLineWidth( _LineW );
 end;
 
-procedure TGLShaperLine.DrawCore;
+procedure TGLShaperLine.DrawMain;
 begin
      _EleBuf.Draw;
 end;
@@ -512,7 +589,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLShaperLine.Create( const Paren_:ITreeNode );
+constructor TGLShaperLine.Create;
 begin
      inherited;
 
@@ -641,6 +718,8 @@ begin
      _PosBuf.Unmap;
      _NorBuf.Unmap;
      _EleBuf.Unmap;
+
+     CalcBouBox;
 end;
 
 //------------------------------------------------------------------------------
@@ -812,6 +891,8 @@ begin
      Vs.DisposeOf;
 
      _EleBuf.Import( Es );
+
+     CalcBouBox;
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLShaperFace
@@ -822,14 +903,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLShaperFace.DrawCore;
+procedure TGLShaperFace.DrawMain;
 begin
      _EleBuf.Draw;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLShaperFace.Create( const Paren_:ITreeNode );
+constructor TGLShaperFace.Create;
 begin
      inherited;
 
@@ -952,6 +1033,8 @@ begin
      _PosBuf.Unmap;
      _NorBuf.Unmap;
      _EleBuf.Unmap;
+
+     CalcBouBox;
 end;
 
 //------------------------------------------------------------------------------
@@ -1124,6 +1207,8 @@ begin
      Vs.DisposeOf;
 
      _EleBuf.Import( Es );
+
+     CalcBouBox;
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLShaperCopy
@@ -1131,6 +1216,20 @@ end;
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+function TGLShaperCopy.GetShaper :TGLShaperPoin;
+begin
+     Result := _Shaper;
+end;
+
+procedure TGLShaperCopy.SetShaper( const Shaper_:TGLShaperPoin );
+begin
+     _Shaper := Shaper_;
+
+     CalcBouBox;
+end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
@@ -1148,9 +1247,9 @@ begin
      end;
 end;
 
-procedure TGLShaperCopy.DrawCore;
+procedure TGLShaperCopy.DrawMain;
 begin
-     _Shaper.DrawCore;
+     _Shaper.DrawMain;
 end;
 
 procedure TGLShaperCopy.EndDraw;
@@ -1169,13 +1268,132 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLShaperCopy.Create( const Paren_:ITreeNode );
+constructor TGLShaperCopy.Create;
 begin
      inherited;
 
 end;
 
 destructor TGLShaperCopy.Destroy;
+begin
+
+     inherited;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TGLShaperCopy.CalcBouBox;
+begin
+     _BouBox := _Shaper.BouBox;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLShaperLineCube
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TGLShaperLineCube.MakeModel;
+var
+   SX, SY, SZ :Single;
+begin
+     SX := _SizeX / 2;
+     SY := _SizeY / 2;
+     SZ := _SizeZ / 2;
+
+     _PosBuf[ 0 ] := TSingle3D.Create( -SX, -SY, -SZ );
+     _PosBuf[ 1 ] := TSingle3D.Create( +SX, -SY, -SZ );
+     _PosBuf[ 2 ] := TSingle3D.Create( -SX, +SY, -SZ );
+     _PosBuf[ 3 ] := TSingle3D.Create( +SX, +SY, -SZ );
+     _PosBuf[ 4 ] := TSingle3D.Create( -SX, -SY, +SZ );
+     _PosBuf[ 5 ] := TSingle3D.Create( +SX, -SY, +SZ );
+     _PosBuf[ 6 ] := TSingle3D.Create( -SX, +SY, +SZ );
+     _PosBuf[ 7 ] := TSingle3D.Create( +SX, +SY, +SZ );
+
+     _BouBox.Min.X := -SX;  _BouBox.Max.X := +SX;
+     _BouBox.Min.Y := -SY;  _BouBox.Max.Y := +SY;
+     _BouBox.Min.Z := -SZ;  _BouBox.Max.Z := +SZ;
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+function TGLShaperLineCube.GetSizeX :Single;
+begin
+     Result := _SizeX;
+end;
+
+procedure TGLShaperLineCube.SetSizeX( const SizeX_:Single );
+begin
+     _SizeX := SizeX_;  MakeModel;
+end;
+
+function TGLShaperLineCube.GetSizeY :Single;
+begin
+     Result := _SizeY;
+end;
+
+procedure TGLShaperLineCube.SetSizeY( const SizeY_:Single );
+begin
+     _SizeY := SizeY_;  MakeModel;
+end;
+
+function TGLShaperLineCube.GetSizeZ :Single;
+begin
+     Result := _SizeZ;
+end;
+
+procedure TGLShaperLineCube.SetSizeZ( const SizeZ_:Single );
+begin
+     _SizeZ := SizeZ_;  MakeModel;
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TGLShaperLineCube.Create;
+begin
+     inherited;
+
+     _PosBuf.Count :=  8;
+     _NorBuf.Count :=  8;
+     _EleBuf.Count := 12;
+
+     _Matery := TGLMateryColor.Create;
+
+     _NorBuf[ 0 ] := TSingle3D.Create( -1, -1, -1 ).Unitor;
+     _NorBuf[ 1 ] := TSingle3D.Create( +1, -1, -1 ).Unitor;
+     _NorBuf[ 2 ] := TSingle3D.Create( -1, +1, -1 ).Unitor;
+     _NorBuf[ 3 ] := TSingle3D.Create( +1, +1, -1 ).Unitor;
+     _NorBuf[ 4 ] := TSingle3D.Create( -1, -1, +1 ).Unitor;
+     _NorBuf[ 5 ] := TSingle3D.Create( +1, -1, +1 ).Unitor;
+     _NorBuf[ 6 ] := TSingle3D.Create( -1, +1, +1 ).Unitor;
+     _NorBuf[ 7 ] := TSingle3D.Create( +1, +1, +1 ).Unitor;
+
+     _EleBuf[ 00 ] := TCardinal2D.Create( 0, 1 );
+     _EleBuf[ 01 ] := TCardinal2D.Create( 0, 2 );
+     _EleBuf[ 02 ] := TCardinal2D.Create( 0, 4 );
+
+     _EleBuf[ 03 ] := TCardinal2D.Create( 1, 3 );
+     _EleBuf[ 04 ] := TCardinal2D.Create( 2, 6 );
+     _EleBuf[ 05 ] := TCardinal2D.Create( 4, 5 );
+
+     _EleBuf[ 06 ] := TCardinal2D.Create( 7, 6 );
+     _EleBuf[ 07 ] := TCardinal2D.Create( 7, 5 );
+     _EleBuf[ 08 ] := TCardinal2D.Create( 7, 3 );
+
+     _EleBuf[ 09 ] := TCardinal2D.Create( 6, 4 );
+     _EleBuf[ 10 ] := TCardinal2D.Create( 5, 1 );
+     _EleBuf[ 11 ] := TCardinal2D.Create( 3, 2 );
+
+     _SizeX := 1;
+     _SizeY := 1;
+     _SizeZ := 1;
+
+     MakeModel;
+end;
+
+destructor TGLShaperLineCube.Destroy;
 begin
 
      inherited;

@@ -1,9 +1,10 @@
-﻿unit LUX.GPU.OpenGL.Imager;
+﻿unit LUX.GPU.OpenGL.Atom.Imager;
 
 interface //#################################################################### ■
 
 uses Winapi.OpenGL, Winapi.OpenGLext,
-     LUX, LUX.Lattice.T1, LUX.Lattice.T2, LUX.Lattice.T3, LUX.GPU.OpenGL;
+     LUX, LUX.Lattice.T1, LUX.Lattice.T2, LUX.Lattice.T3,
+     LUX.GPU.OpenGL.Atom;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -13,7 +14,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLSample
 
-     IGLSample = interface( IGLObject )
+     IGLSample = interface( IGLAtomer )
      ['{3511FEC3-70A0-4BC1-90CB-9C8A6D175317}']
        ///// アクセス
        function GetWrapU :GLint;
@@ -39,7 +40,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLSample = class( TGLObject, IGLSample )
+     TGLSample = class( TGLAtomer, IGLSample )
      private
      protected
        _WrapU     :GLint;
@@ -77,7 +78,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager<_TPixel_>
 
-     IGLImager = interface( IGLObject )
+     IGLImager = interface( IGLAtomer )
      ['{971E7C74-69C1-4A7A-85D0-659CFAB5EBD5}']
        ///// アクセス
        function GetKind :GLenum;
@@ -103,7 +104,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLImager<_TPixel_:record> = class( TGLObject, IGLImager )
+     TGLImager<_TPixel_:record> = class( TGLAtomer, IGLImager )
      private
      protected
        _Kind   :GLenum;
