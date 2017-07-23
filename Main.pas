@@ -86,18 +86,9 @@ procedure TForm1.EditShader( const Shader_:TGLShader; const Memo_:TMemo );
 begin
      if Memo_.IsFocused then
      begin
-          TabItemV.Enabled := False;
-
           TIdleTask.Run( procedure
           begin
                Shader_.Source.Assign( Memo_.Lines );
-
-               with _Matery.Engine do
-               begin
-                    TabItemV.Enabled := Status;
-
-                    if not Status then TabControl1.TabIndex := 1;
-               end;
           end );
      end;
 end;
@@ -161,30 +152,26 @@ begin
      begin
           with ShaderV do
           begin
-               OnCompiled := procedure
-               begin
-                    MemoSVE.Lines.Assign( Errors );
-
-                    _Matery.Engine.Link;
-               end;
-
                Source.LoadFromFile( '..\..\_DATA\ShaderV.glsl' );
 
                MemoSVS.Lines.Assign( Source );
+
+               OnCompiled := procedure
+               begin
+                    MemoSVE.Lines.Assign( Errors );
+               end;
           end;
 
           with ShaderF do
           begin
-               OnCompiled := procedure
-               begin
-                    MemoSFE.Lines.Assign( Errors );
-
-                    _Matery.Engine.Link;
-               end;
-
                Source.LoadFromFile( '..\..\_DATA\ShaderF.glsl' );
 
                MemoSFS.Lines.Assign( Source );
+
+               OnCompiled := procedure
+               begin
+                    MemoSFE.Lines.Assign( Errors );
+               end;
           end;
 
           with Engine do
@@ -192,10 +179,17 @@ begin
                OnLinked := procedure
                begin
                     MemoP.Lines.Assign( Errors );
+
+                    TabItemV.Enabled := Status;
+
+                    if not Status then TabControl1.TabIndex := 1;
                end;
           end;
 
-          Imager.LoadFromFile( '..\..\_DATA\Spherical_1024x1024.png' );
+          with Imager do
+          begin
+               LoadFromFile( '..\..\_DATA\Spherical_1024x1024.png' );
+          end;
      end;
 end;
 
@@ -285,9 +279,6 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-     _MouseA := TSingle2D.Create( 0, 0 );
-     _MouseS := [];
-
      _Camera1 := TMyCamera.Create;
      _Camera2 := TMyCamera.Create;
      _Camera3 := TMyCamera.Create;

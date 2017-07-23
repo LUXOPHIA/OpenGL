@@ -178,8 +178,8 @@ object Form1: TForm1
             Size.Height = 100.000000000000000000
             Size.PlatformDefault = False
             TabOrder = 0
-            Viewport.Width = 690.000000000000000000
-            Viewport.Height = 100.000000000000000000
+            Viewport.Width = 686.000000000000000000
+            Viewport.Height = 96.000000000000000000
           end
           object MemoSVS: TMemo
             Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
@@ -195,8 +195,8 @@ object Form1: TForm1
             Size.Height = 354.000000000000000000
             Size.PlatformDefault = False
             TabOrder = 1
-            Viewport.Width = 690.000000000000000000
-            Viewport.Height = 354.000000000000000000
+            Viewport.Width = 686.000000000000000000
+            Viewport.Height = 350.000000000000000000
           end
           object SplitterSV: TSplitter
             Align = Bottom
@@ -238,8 +238,8 @@ object Form1: TForm1
             Size.Height = 100.000000000000000000
             Size.PlatformDefault = False
             TabOrder = 0
-            Viewport.Width = 690.000000000000000000
-            Viewport.Height = 100.000000000000000000
+            Viewport.Width = 686.000000000000000000
+            Viewport.Height = 96.000000000000000000
           end
           object MemoSFS: TMemo
             Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
@@ -255,8 +255,8 @@ object Form1: TForm1
             Size.Height = 354.000000000000000000
             Size.PlatformDefault = False
             TabOrder = 1
-            Viewport.Width = 690.000000000000000000
-            Viewport.Height = 354.000000000000000000
+            Viewport.Width = 686.000000000000000000
+            Viewport.Height = 350.000000000000000000
           end
           object SplitterSF: TSplitter
             Align = Bottom
@@ -299,8 +299,8 @@ object Form1: TForm1
         Size.Height = 510.000000000000000000
         Size.PlatformDefault = False
         TabOrder = 0
-        Viewport.Width = 710.000000000000000000
-        Viewport.Height = 510.000000000000000000
+        Viewport.Width = 706.000000000000000000
+        Viewport.Height = 506.000000000000000000
       end
     end
   end
