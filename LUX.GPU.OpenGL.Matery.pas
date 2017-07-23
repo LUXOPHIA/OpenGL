@@ -7,7 +7,7 @@ uses System.SysUtils,
      LUX,
      LUX.GPU.OpenGL,
      LUX.GPU.OpenGL.Atom.Shader,
-     LUX.GPU.OpenGL.Atom.Progra;
+     LUX.GPU.OpenGL.Atom.Engine;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -21,12 +21,12 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      ['{13071090-B024-474A-BDA2-AB604AD10B16}']
      {protected}
        ///// アクセス
-       function GetProgra  :TGLProgra;
+       function GetEngine  :TGLEngine;
        function GetShaderV :TGLShaderV;
        function GetShaderF :TGLShaderF;
      {public}
        ///// プロパティ
-       property Progra  :TGLProgra  read GetProgra ;
+       property Engine  :TGLEngine  read GetEngine ;
        property ShaderV :TGLShaderV read GetShaderV;
        property ShaderF :TGLShaderF read GetShaderF;
        ///// メソッド
@@ -39,18 +39,18 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TGLMatery = class( TInterfacedObject, IGLMatery )
      private
      protected
-       _Progra  :TGLProgra;
+       _Engine  :TGLEngine;
        _ShaderV :TGLShaderV;
        _ShaderF :TGLShaderF;
        ///// アクセス
-       function GetProgra  :TGLProgra;
+       function GetEngine  :TGLEngine;
        function GetShaderV :TGLShaderV;
        function GetShaderF :TGLShaderF;
      public
        constructor Create;
        destructor Destroy; override;
        ///// プロパティ
-       property Progra  :TGLProgra  read GetProgra ;
+       property Engine  :TGLEngine  read GetEngine ;
        property ShaderV :TGLShaderV read GetShaderV;
        property ShaderF :TGLShaderF read GetShaderF;
        ///// メソッド
@@ -139,9 +139,9 @@ begin
      Result := _ShaderF;
 end;
 
-function TGLMatery.GetProgra  :TGLProgra;
+function TGLMatery.GetEngine  :TGLEngine;
 begin
-     Result := _Progra;
+     Result := _Engine;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -150,7 +150,7 @@ constructor TGLMatery.Create;
 begin
      inherited;
 
-     _Progra  := TGLProgra .Create;
+     _Engine  := TGLEngine .Create;
      _ShaderV := TGLShaderV.Create;
      _ShaderF := TGLShaderF.Create;
 
@@ -158,37 +158,37 @@ begin
      begin
           BeginUpdate;
 
-          Add( '#version 430' );
+            Add( '#version 430' );
 
-          Add( 'layout( std140 ) uniform TViewerScal{ layout( row_major ) mat4 _ViewerScal; };' );
-          Add( 'layout( std140 ) uniform TCameraProj{ layout( row_major ) mat4 _CameraProj; };' );
-          Add( 'layout( std140 ) uniform TCameraPose{ layout( row_major ) mat4 _CameraPose; };' );
-          Add( 'layout( std140 ) uniform TShaperPose{ layout( row_major ) mat4 _ShaperPose; };' );
+            Add( 'layout( std140 ) uniform TViewerScal{ layout( row_major ) mat4 _ViewerScal; };' );
+            Add( 'layout( std140 ) uniform TCameraProj{ layout( row_major ) mat4 _CameraProj; };' );
+            Add( 'layout( std140 ) uniform TCameraPose{ layout( row_major ) mat4 _CameraPose; };' );
+            Add( 'layout( std140 ) uniform TShaperPose{ layout( row_major ) mat4 _ShaperPose; };' );
 
-          Add( 'in vec4 _SenderPos;' );
-          Add( 'in vec4 _SenderNor;' );
-          Add( 'in vec2 _SenderTex;' );
+            Add( 'in vec4 _SenderPos;' );
+            Add( 'in vec4 _SenderNor;' );
+            Add( 'in vec2 _SenderTex;' );
 
-          Add( 'out TSenderVF' );
-          Add( '{' );
-          Add( '  vec4 Pos;' );
-          Add( '  vec4 Nor;' );
-          Add( '  vec2 Tex;' );
-          Add( '}' );
-          Add( '_Result;' );
+            Add( 'out TSenderVF' );
+            Add( '{' );
+            Add( '  vec4 Pos;' );
+            Add( '  vec4 Nor;' );
+            Add( '  vec2 Tex;' );
+            Add( '}' );
+            Add( '_Result;' );
 
-          Add( 'void main()' );
-          Add( '{' );
-          Add( '  _Result.Pos =                     _ShaperPose     * _SenderPos;' );
-          Add( '  _Result.Nor = transpose( inverse( _ShaperPose ) ) * _SenderNor;' );
-          Add( '  _Result.Tex =                                       _SenderTex;' );
-          Add( '  gl_Position = _ViewerScal * _CameraProj * inverse( _CameraPose ) * _Result.Pos;' );
-          Add( '}' );
+            Add( 'void main()' );
+            Add( '{' );
+            Add( '  _Result.Pos =                     _ShaperPose     * _SenderPos;' );
+            Add( '  _Result.Nor = transpose( inverse( _ShaperPose ) ) * _SenderNor;' );
+            Add( '  _Result.Tex =                                       _SenderTex;' );
+            Add( '  gl_Position = _ViewerScal * _CameraProj * inverse( _CameraPose ) * _Result.Pos;' );
+            Add( '}' );
 
           EndUpdate;
      end;
 
-     with _Progra do
+     with _Engine do
      begin
           Attach( _ShaderV{Shad} );
           Attach( _ShaderF{Shad} );
@@ -222,7 +222,7 @@ end;
 
 destructor TGLMatery.Destroy;
 begin
-     _Progra .DisposeOf;
+     _Engine .DisposeOf;
      _ShaderV.DisposeOf;
      _ShaderF.DisposeOf;
 
@@ -233,12 +233,12 @@ end;
 
 procedure TGLMatery.Use;
 begin
-     _Progra.Use;
+     _Engine.Use;
 end;
 
 procedure TGLMatery.Unuse;
 begin
-     _Progra.Unuse;
+     _Engine.Unuse;
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLMateryG
@@ -262,7 +262,7 @@ begin
 
      _ShaderG := TGLShaderG.Create;
 
-     with _Progra do
+     with _Engine do
      begin
           Attach( _ShaderG{Shad} );
      end;
@@ -293,17 +293,19 @@ begin
      begin
           BeginUpdate;
 
-          Add( '#version 430' );
+            Add( '#version 430' );
 
-          Add( 'in TSenderGF{' );
-          Add( '  vec4 Pos;' );
-          Add( '  vec4 Nor;' );
-          Add( '  vec2 Tex;' );
-          Add( '} _Sender;' );
+            Add( 'in TSenderVF' );
+            Add( '{' );
+            Add( '  vec4 Pos;' );
+            Add( '  vec4 Nor;' );
+            Add( '  vec2 Tex;' );
+            Add( '}' );
+            Add( '_Sender;' );
 
-          Add( 'out vec4 _ResultCol;' );
+            Add( 'out vec4 _ResultCol;' );
 
-          Add( 'void main(){ _ResultCol = vec4( 1, 0, 0, 1 ); }' );
+            Add( 'void main(){ _ResultCol = vec4( 1, 0, 0, 1 ); }' );
 
           EndUpdate;
      end;
@@ -333,19 +335,19 @@ begin
      begin
           BeginUpdate;
 
-          Add( '#version 430' );
+            Add( '#version 430' );
 
-          Add( 'in TSenderVF' );
-          Add( '{' );
-          Add( '  vec4 Pos;' );
-          Add( '  vec4 Nor;' );
-          Add( '  vec2 Tex;' );
-          Add( '}' );
-          Add( '_Sender;' );
+            Add( 'in TSenderVF' );
+            Add( '{' );
+            Add( '  vec4 Pos;' );
+            Add( '  vec4 Nor;' );
+            Add( '  vec2 Tex;' );
+            Add( '}' );
+            Add( '_Sender;' );
 
-          Add( 'out vec4 _ResultCol;' );
+            Add( 'out vec4 _ResultCol;' );
 
-          Add( 'void main(){ _ResultCol = ( 1 + normalize( _Sender.Nor ) ) / 2; }' );
+            Add( 'void main(){ _ResultCol = ( 1 + normalize( _Sender.Nor ) ) / 2; }' );
 
           EndUpdate;
      end;
