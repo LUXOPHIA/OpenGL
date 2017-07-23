@@ -192,7 +192,7 @@ begin
                end;
           end;
 
-          with Progra do
+          with Engine do
           begin
                OnLinked := procedure
                begin
