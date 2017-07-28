@@ -12,45 +12,44 @@ procedure TForm1.FormCreate(Sender: TObject);
 ～
 begin
      ～
-     _Arra := TGLVarray.Create;
-     InitGeomet;
+     _Varray := TGLVarray.Create;
      ～
 end;
 ```
 ```pascal
-procedure TForm1.InitGeomet;
+procedure TForm1.InitShaper;
 ～
 begin
      ～
-     with _Arra do
+     with _Varray do
      begin
           Bind;
             glEnableClientState( GL_VERTEX_ARRAY );
             glEnableClientState( GL_COLOR_ARRAY  );
-            with _BufV do
+            with _VerterP do
             begin
                  Bind;
                    glVertexPointer( 3, GL_FLOAT, 0, nil );
                  Unbind;
             end;
-            with _BufC do
+            with _VerterC do
             begin
                  Bind;
                    glColorPointer( 4, GL_FLOAT, 0, nil );
                  Unbind;
             end;
-            _BufF.Bind;
+            _Elemer.Bind;
           Unbind;
      end;
 end;
 ```
 ```pascal
-procedure TForm1.DrawModel;
+procedure TForm1.DrawShaper;
 begin
-     with _Prog do
+     with _Progra do
      begin
           Use;
-          with _Arra do
+          with _Varray do
           begin
                Bind;
                  glDrawElements( GL_TRIANGLES, 3{Poin} * 12{Face}, GL_UNSIGNED_INT, nil );
@@ -63,7 +62,7 @@ end;
 ```pascal
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
-     _Arra.DisposeOf;
+     _Varray.DisposeOf;
      ～
 end;
 ```
