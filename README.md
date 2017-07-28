@@ -8,6 +8,10 @@ OpenGL のバージョンを辿りながら実装していくことで、新し�
 * [OpenGL 2.1](https://github.com/LUXOPHIA/OpenGL/tree/OpenGL-2.1)
 * [OpenGL 3.0](https://github.com/LUXOPHIA/OpenGL/tree/OpenGL-3.0)
 
+最低限にクラス化したプロジエクト。
+
+* [Simple](https://github.com/LUXOPHIA/OpenGL/tree/simple)
+
 ----
 
 # OpenGL
