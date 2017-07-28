@@ -13,41 +13,33 @@ procedure TForm1.FormCreate(Sender: TObject);
 ～
 begin
      ～
-     _BufV := TGLBufferVS<TSingle3D>   .Create( GL_STATIC_DRAW  );
-     _BufC := TGLBufferVS<TAlphaColorF>.Create( GL_STATIC_DRAW  );
-     _BufF := TGLBufferI<TCardinal3D>  .Create( GL_STATIC_DRAW  );
-     _ShaV := TGLShaderV               .Create;
-     _ShaF := TGLShaderF               .Create;
-     _Prog := TGLProgra                .Create;
-     InitGeomet;
-     ～
+     _VerterP := TGLVerterS<TSingle3D>   .Create( GL_STATIC_DRAW );
+     _VerterC := TGLVerterS<TAlphaColorF>.Create( GL_STATIC_DRAW );
+     _Elemer  := TGLElemerFace32         .Create( GL_STATIC_DRAW );
+     _ShaderV := TGLShaderV              .Create;
+     _ShaderF := TGLShaderF              .Create;
+     _Progra  := TGLProgra               .Create;
+     InitShaper;
+     InitViewer;
 end;
 ```
 ```pascal
-procedure TForm1.InitGeomet;
+procedure TForm1.InitShaper;
 const
-     Ps :array [ 0..8-1 ] of TSingle3D = ( ( X:-1; Y:-1; Z:-1 ),
-                                           ( X:+1; Y:-1; Z:-1 ),
-                                           ( X:-1; Y:+1; Z:-1 ),
-                                           ( X:+1; Y:+1; Z:-1 ),
-                                           ( X:-1; Y:-1; Z:+1 ),
-                                           ( X:+1; Y:-1; Z:+1 ),
-                                           ( X:-1; Y:+1; Z:+1 ),
-                                           ( X:+1; Y:+1; Z:+1 ) );
-     Cs :array [ 0..8-1 ] of TAlphaColorF = ( ( R:0; G:0; B:0; A:1 ),
-                                              ( R:1; G:0; B:0; A:1 ),
-                                              ( R:0; G:1; B:0; A:1 ),
-                                              ( R:1; G:1; B:0; A:1 ),
-                                              ( R:0; G:0; B:1; A:1 ),
-                                              ( R:1; G:0; B:1; A:1 ),
-                                              ( R:0; G:1; B:1; A:1 ),
-                                              ( R:1; G:1; B:1; A:1 ) );
-     Fs :array [ 0..12-1 ] of TCardinal3D = ( ( A:0; B:4; _3:6 ), ( A:6; B:2; A:0 ),
-                                              ( A:0; B:1; _3:5 ), ( A:5; B:4; A:0 ),
-                                              ( A:0; B:2; _3:3 ), ( A:3; B:1; A:0 ),
-                                              ( A:7; B:5; _3:1 ), ( A:1; B:3; A:7 ),
-                                              ( A:7; B:3; _3:2 ), ( A:2; B:6; A:7 ),
-                                              ( A:7; B:6; _3:4 ), ( A:4; B:5; A:7 ) );
+     Ps :array [ 0..8-1 ] of TSingle3D
+           = ( ( X:-1; Y:-1; Z:-1 ), ( X:+1; Y:-1; Z:-1 ),
+               ( X:-1; Y:+1; Z:-1 ), ( X:+1; Y:+1; Z:-1 ),
+               ( X:-1; Y:-1; Z:+1 ), ( X:+1; Y:-1; Z:+1 ),
+               ( X:-1; Y:+1; Z:+1 ), ( X:+1; Y:+1; Z:+1 ) );
+     Cs :array [ 0..8-1 ] of TAlphaColorF
+           = ( ( R:0; G:0; B:0; A:1 ), ( R:1; G:0; B:0; A:1 ),
+               ( R:0; G:1; B:0; A:1 ), ( R:1; G:1; B:0; A:1 ),
+               ( R:0; G:0; B:1; A:1 ), ( R:1; G:0; B:1; A:1 ),
+               ( R:0; G:1; B:1; A:1 ), ( R:1; G:1; B:1; A:1 ) );
+     Es :array [ 0..12-1 ] of TCardinal3D
+           = ( ( X:0; Y:4; Z:6 ), ( X:6; Y:2; Z:0 ), ( X:7; Y:5; Z:1 ), ( X:1; Y:3; Z:7 ),
+               ( X:0; Y:1; Z:5 ), ( X:5; Y:4; Z:0 ), ( X:7; Y:3; Z:2 ), ( X:2; Y:6; Z:7 ),
+               ( X:0; Y:2; Z:3 ), ( X:3; Y:1; Z:0 ), ( X:7; Y:6; Z:4 ), ( X:4; Y:5; Z:7 ) );
 begin
      //    2-------3
      //   /|      /|
@@ -57,11 +49,11 @@ begin
      //  |/      |/
      //  4-------5
      ///// バッファ
-     _BufV.Import( Ps );
-     _BufC.Import( Cs );
-     _BufF.Import( Fs );
+     _VerterP.Import( Ps );
+     _VerterC.Import( Cs );
+     _Elemer .Import( Es );
      ///// シェーダ
-     with _ShaV do
+     with _ShaderV do
      begin
           with Source do
           begin
@@ -74,9 +66,9 @@ begin
                  Add( '}' );
                EndUpdate;
           end;
-          Assert( Status, Errors.Text );
-     end;
-     with _ShaF do
+          ～
+     end;
+     with _ShaderF do
      begin
           with Source do
           begin
@@ -88,13 +80,13 @@ begin
                  Add( '}' );
                EndUpdate;
           end;
-          Assert( Status, Errors.Text );
+          ～
      end;
      ///// プログラム
-     with _Prog do
+     with _Progra do
      begin
-          Attach( _ShaV );
-          Attach( _ShaF );
+          Attach( _ShaderV );
+          Attach( _ShaderF );
           Link;
           Assert( Status, Errors.Text );
      end;
@@ -103,12 +95,12 @@ end;
 ```pascal
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
-     _ShaV.DisposeOf;
-     _ShaF.DisposeOf;
-     _Prog.DisposeOf;
-     _BufV.DisposeOf;
-     _BufC.DisposeOf;
-     _BufF.DisposeOf;
+     _ShaderV.DisposeOf;
+     _ShaderF.DisposeOf;
+     _Progra .DisposeOf;
+     _VerterP.DisposeOf;
+     _VerterC.DisposeOf;
+     _Elemer .DisposeOf;
 end;
 ```
 
@@ -208,26 +200,26 @@ end;
 描画する際には、glDrawElements ルーチンを呼ぶ直前で、プログラムオブジェクトを利用可能にする。
 
 ```pascal
-procedure TForm1.DrawModel;
+procedure TForm1.DrawShaper;
 begin
      glEnableClientState( GL_VERTEX_ARRAY );
      glEnableClientState( GL_COLOR_ARRAY  );
-       with _BufV do
+       with _VerterP do
        begin
             Bind;
               glVertexPointer( 3, GL_FLOAT, 0, nil );
             Unbind;
        end;
-       with _BufC do
+       with _VerterC do
        begin
             Bind;
               glColorPointer( 4, GL_FLOAT, 0, nil );
             Unbind;
        end;
-       with _BufF do
+       with _Elemer do
        begin
             Bind;
-              with _Prog do
+              with _Progra do
               begin
                    Use;
                      glDrawElements( GL_TRIANGLES, 3{Poin} * 12{Face}, GL_UNSIGNED_INT, nil );
