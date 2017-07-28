@@ -8,41 +8,32 @@
 
 ```pascal
 procedure TForm1.FormCreate(Sender: TObject);
-～
 begin
      ～
-     _BufV := TGLBufferVS<TSingle3D>   .Create( GL_STATIC_DRAW  );
-     _BufC := TGLBufferVS<TAlphaColorF>.Create( GL_STATIC_DRAW  );
-     _BufF := TGLBufferI<TCardinal3D>  .Create( GL_STATIC_DRAW  );
-     InitGeomet;
-     ～
+     _VerterP := TGLVerterS<TSingle3D>   .Create( GL_STATIC_DRAW );
+     _VerterC := TGLVerterS<TAlphaColorF>.Create( GL_STATIC_DRAW );
+     _Elemer  := TGLElemerFace32         .Create( GL_STATIC_DRAW );
+     InitViewer;
+     InitShaper;
 end;
 ```
 ```pascal
-procedure TForm1.InitGeomet;
+procedure TForm1.InitShaper;
 const
-     Ps :array [ 0..8-1 ] of TSingle3D = ( ( X:-1; Y:-1; Z:-1 ),
-                                           ( X:+1; Y:-1; Z:-1 ),
-                                           ( X:-1; Y:+1; Z:-1 ),
-                                           ( X:+1; Y:+1; Z:-1 ),
-                                           ( X:-1; Y:-1; Z:+1 ),
-                                           ( X:+1; Y:-1; Z:+1 ),
-                                           ( X:-1; Y:+1; Z:+1 ),
-                                           ( X:+1; Y:+1; Z:+1 ) );
-     Cs :array [ 0..8-1 ] of TAlphaColorF = ( ( R:0; G:0; B:0; A:1 ),
-                                              ( R:1; G:0; B:0; A:1 ),
-                                              ( R:0; G:1; B:0; A:1 ),
-                                              ( R:1; G:1; B:0; A:1 ),
-                                              ( R:0; G:0; B:1; A:1 ),
-                                              ( R:1; G:0; B:1; A:1 ),
-                                              ( R:0; G:1; B:1; A:1 ),
-                                              ( R:1; G:1; B:1; A:1 ) );
-     Fs :array [ 0..12-1 ] of TCardinal3D = ( ( A:0; B:4; C:6 ), ( A:6; B:2; C:0 ),
-                                              ( A:0; B:1; C:5 ), ( A:5; B:4; C:0 ),
-                                              ( A:0; B:2; C:3 ), ( A:3; B:1; C:0 ),
-                                              ( A:7; B:5; C:1 ), ( A:1; B:3; C:7 ),
-                                              ( A:7; B:3; C:2 ), ( A:2; B:6; C:7 ),
-                                              ( A:7; B:6; C:4 ), ( A:4; B:5; C:7 ) );
+     Ps :array [ 0..8-1 ] of TSingle3D
+           = ( ( X:-1; Y:-1; Z:-1 ), ( X:+1; Y:-1; Z:-1 ),
+               ( X:-1; Y:+1; Z:-1 ), ( X:+1; Y:+1; Z:-1 ),
+               ( X:-1; Y:-1; Z:+1 ), ( X:+1; Y:-1; Z:+1 ),
+               ( X:-1; Y:+1; Z:+1 ), ( X:+1; Y:+1; Z:+1 ) );
+     Cs :array [ 0..8-1 ] of TAlphaColorF
+           = ( ( R:0; G:0; B:0; A:1 ), ( R:1; G:0; B:0; A:1 ),
+               ( R:0; G:1; B:0; A:1 ), ( R:1; G:1; B:0; A:1 ),
+               ( R:0; G:0; B:1; A:1 ), ( R:1; G:0; B:1; A:1 ),
+               ( R:0; G:1; B:1; A:1 ), ( R:1; G:1; B:1; A:1 ) );
+     Es :array [ 0..12-1 ] of TCardinal3D
+           = ( ( X:0; Y:4; Z:6 ), ( X:6; Y:2; Z:0 ), ( X:7; Y:5; Z:1 ), ( X:1; Y:3; Z:7 ),
+               ( X:0; Y:1; Z:5 ), ( X:5; Y:4; Z:0 ), ( X:7; Y:3; Z:2 ), ( X:2; Y:6; Z:7 ),
+               ( X:0; Y:2; Z:3 ), ( X:3; Y:1; Z:0 ), ( X:7; Y:6; Z:4 ), ( X:4; Y:5; Z:7 ) );
 begin
      //    2-------3
      //   /|      /|
@@ -51,17 +42,17 @@ begin
      //  | 0-----|-1
      //  |/      |/
      //  4-------5
-     _BufV.Import( Ps );
-     _BufC.Import( Cs );
-     _BufF.Import( Fs );
+     _VerterP.Import( Ps );
+     _VerterC.Import( Cs );
+     _Elemer .Import( Es );
 end;
 ```
 ```pascal
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
-     _BufV.DisposeOf;
-     _BufC.DisposeOf;
-     _BufF.DisposeOf;
+     _VerterP.DisposeOf;
+     _VerterC.DisposeOf;
+     _Elemer .DisposeOf;
 end;
 ```
 
@@ -113,23 +104,23 @@ end;
 描画する際は、[OpenGL 1.1](https://github.com/LUXOPHIA/OpenGL/blob/OpenGL-1.1) と同様に `glEnableClientState` ルーチンによって頂点配列機能を有効化した上で、`gl～Pointer` や `glDrawElements` ルーチンを呼ぶ直前に VBO をバインドする。もちろんこの場合、ルーチンに実データを渡す必要はないので、最後の引数は `nil` となる。
 
 ```pascal
-procedure TForm1.DrawModel;
+procedure TForm1.DrawShaper;
 begin
      glEnableClientState( GL_VERTEX_ARRAY );
      glEnableClientState( GL_COLOR_ARRAY  );
-       with _BufV do
+       with _VerterP do
        begin
             Bind;
               glVertexPointer( 3, GL_FLOAT, 0, nil );
             Unbind;
        end;
-       with _BufC do
+       with _VerterC do
        begin
             Bind;
               glColorPointer( 4, GL_FLOAT, 0, nil );
             Unbind;
        end;
-       with _BufF do
+       with _Elemer do
        begin
             Bind;
               glDrawElements( GL_TRIANGLES, 3{Poin} * 12{Face}, GL_UNSIGNED_INT, nil );
