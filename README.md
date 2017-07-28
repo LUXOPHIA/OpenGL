@@ -6,32 +6,24 @@
 [`glBegin`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glBegin.xml) ～ [`glEnd`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glEnd.xml) ルーチンで囲んだブロック内で、データを GPU へ転送するための [`glVertex`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glVertex.xml), [`glColor`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glColor.xml), [`glNormal`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glNormal.xml), [`glTexCoord`](https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/glTexCoord.xml) といった、それぞれのデータ型に特有のルーチンを呼びながら、頂点情報を一つ一つ追加していく。
 
 ```pascal
-procedure TForm1.DrawModel;
+procedure TForm1.DrawShaper;
 const
-     Ps :array [ 1..8 ] of TSingle3D = ( ( X:-1; Y:-1; Z:-1 ),
-                                         ( X:+1; Y:-1; Z:-1 ),
-                                         ( X:-1; Y:+1; Z:-1 ),
-                                         ( X:+1; Y:+1; Z:-1 ),
-                                         ( X:-1; Y:-1; Z:+1 ),
-                                         ( X:+1; Y:-1; Z:+1 ),
-                                         ( X:-1; Y:+1; Z:+1 ),
-                                         ( X:+1; Y:+1; Z:+1 ) );
-     Cs :array [ 1..8 ] of TAlphaColorF = ( ( R:0; G:0; B:0; A:1 ),
-                                            ( R:1; G:0; B:0; A:1 ),
-                                            ( R:0; G:1; B:0; A:1 ),
-                                            ( R:1; G:1; B:0; A:1 ),
-                                            ( R:0; G:0; B:1; A:1 ),
-                                            ( R:1; G:0; B:1; A:1 ),
-                                            ( R:0; G:1; B:1; A:1 ),
-                                            ( R:1; G:1; B:1; A:1 ) );
-     Fs :array [ 1..6, 1..4 ] of Integer = ( ( 1, 3, 4, 2 ),
-                                             ( 1, 5, 7, 3 ),
-                                             ( 1, 2, 6, 5 ),
-                                             ( 8, 4, 3, 7 ),
-                                             ( 8, 6, 2, 4 ),
-                                             ( 8, 7, 5, 6 ) );
+     Ps :array [ 1..8 ] of TSingle3D
+           = ( ( X:-1; Y:-1; Z:-1 ), ( X:+1; Y:-1; Z:-1 ),
+               ( X:-1; Y:+1; Z:-1 ), ( X:+1; Y:+1; Z:-1 ),
+               ( X:-1; Y:-1; Z:+1 ), ( X:+1; Y:-1; Z:+1 ),
+               ( X:-1; Y:+1; Z:+1 ), ( X:+1; Y:+1; Z:+1 ) );
+     Cs :array [ 1..8 ] of TAlphaColorF
+           = ( ( R:0; G:0; B:0; A:1 ), ( R:1; G:0; B:0; A:1 ),
+               ( R:0; G:1; B:0; A:1 ), ( R:1; G:1; B:0; A:1 ),
+               ( R:0; G:0; B:1; A:1 ), ( R:1; G:0; B:1; A:1 ),
+               ( R:0; G:1; B:1; A:1 ), ( R:1; G:1; B:1; A:1 ) );
+     Es :array [ 1..6, 1..4 ] of Cardinal
+           = ( ( 1, 5, 7, 3 ), ( 8, 6, 2, 4 ),
+               ( 1, 2, 6, 5 ), ( 8, 4, 3, 7 ),
+               ( 1, 3, 4, 2 ), ( 8, 7, 5, 6 ) );
 var
-   N, K, I :Integer;
+   N, K, E :Integer;
 begin
      //    3-------4
      //   /|      /|
