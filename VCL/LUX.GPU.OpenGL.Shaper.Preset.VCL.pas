@@ -1,4 +1,4 @@
-﻿unit LUX.GPU.OpenGL.Shaper.VCL;
+﻿unit LUX.GPU.OpenGL.Shaper.Preset.VCL;
 
 interface //#################################################################### ■
 
@@ -12,7 +12,8 @@ uses System.UITypes, System.Classes,
      LUX.GPU.OpenGL.Atom.Buffer.Elemer,
      LUX.GPU.OpenGL.Scener,
      LUX.GPU.OpenGL.Matery,
-     LUX.GPU.OpenGL.Matery.VCL,
+     LUX.GPU.OpenGL.Matery.Imager.Preset,
+     LUX.GPU.OpenGL.Matery.Preset,
      LUX.GPU.OpenGL.Shaper;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
