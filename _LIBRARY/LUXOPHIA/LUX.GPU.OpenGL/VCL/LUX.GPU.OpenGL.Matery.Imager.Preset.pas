@@ -1,4 +1,4 @@
-﻿unit LUX.GPU.OpenGL.Matery.VCL;
+﻿unit LUX.GPU.OpenGL.Matery.Imager.Preset;
 
 interface //#################################################################### ■
 
@@ -6,7 +6,7 @@ uses Winapi.OpenGL, Winapi.OpenGLext,
      LUX,
      LUX.GPU.OpenGL,
      LUX.GPU.OpenGL.Atom.Imager,
-     LUX.GPU.OpenGL.Atom.Imager.VCL,
+     LUX.GPU.OpenGL.Atom.Imager.Preset,
      LUX.GPU.OpenGL.Matery;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
@@ -34,7 +34,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLMateryImag = class( TGLMatery, IGLMateryImag )
+     TGLMateryImag = class( TGLMateryNorTex, IGLMateryImag )
      private
      protected
        _Sample :TGLSample;
@@ -55,7 +55,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLMateryImagG
 
-     TGLMateryImagG = class( TGLMateryG, IGLMateryImag )
+     TGLMateryImagG = class( TGLMateryNorTexG, IGLMateryImag )
      private
      protected
        _Sample :TGLSample;
