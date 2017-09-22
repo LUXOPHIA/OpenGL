@@ -62,7 +62,7 @@ out vec4 _ResultCol;
 
 void main()
 {
-  vec4 C = _CameraPose * vec4( 0, 0, 0, 1 );
+  vec4 C = _CameraPose[ 3 ];
   vec4 V = normalize( _Sender.Pos - C );
   vec4 R = reflect( V, normalize( _Sender.Nor ) );
 
