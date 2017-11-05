@@ -235,7 +235,7 @@ begin
 
           with S do
           begin
-               Pose := TSingleM4.Identify;
+               Pose := TSingleM4.Identity;
           end;
 
           Data := S;
