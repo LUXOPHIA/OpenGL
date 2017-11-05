@@ -6,9 +6,16 @@ uses System.Generics.Collections,
      Winapi.OpenGL, Winapi.OpenGLext,
      LUX, LUX.D1, LUX.D2, LUX.D3, LUX.M4, LUX.Tree,
      LUX.GPU.OpenGL,
-     LUX.GPU.OpenGL.Atom.Buffer.Unifor;
+     LUX.GPU.OpenGL.Atom.Buffer,
+     LUX.GPU.OpenGL.Atom.Buffer.Unifor,
+     LUX.GPU.OpenGL.Inform;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
+
+     IGLObject = interface;
+     IGLCamera = interface;
+     IGLShaper = interface;
+     IGLScener = interface;
 
      TGLObject = class;
      TGLScener = class;
@@ -28,13 +35,23 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetRelaPose( const RelaPose_:TSingleM4 );
        function GetAbsoPose :TSingleM4;
        procedure SetAbsoPose( const AbsoPose_:TSingleM4 );
+       function GetBouBox :TSingleArea3D;
+       procedure SetBouBox( const BouBox_:TSingleArea3D );
      {public}
        ///// プロパティ
-       property Scener   :TGLScener read GetScener                    ;
-       property RelaPose :TSingleM4 read GetRelaPose write SetRelaPose;
-       property AbsoPose :TSingleM4 read GetAbsoPose write SetAbsoPose;
+       property Scener   :TGLScener     read GetScener                    ;
+       property RelaPose :TSingleM4     read GetRelaPose write SetRelaPose;
+       property AbsoPose :TSingleM4     read GetAbsoPose write SetAbsoPose;
+       property BouBox   :TSingleArea3D read GetBouBox   write SetBouBox  ;
        ///// メソッド
+       procedure BeginDraw;
+       procedure DrawMain;
+       procedure EndDraw;
        procedure Draw;
+       procedure CalcBouBox;
+       function HitBouBox( const AbsoRay_:TSingleRay3D; out Len_:TSingleArea ) :Boolean;
+       procedure HitRay( const AbsoRay_:TSingleRay3D; var Len_:Single; var Obj_:TGLObject ); overload;
+       function HitRay( const AbsoRay_:TSingleRay3D ) :TGLObject; overload;
      end;
 
      //-------------------------------------------------------------------------
@@ -44,8 +61,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      protected
        _RelaPose :TSingleM4;
        _AbsoPose :TGLUnifor<TSingleM4>;  upAbsoPose :Boolean;
-       _BouBox   :TSingleArea3D;
        _Visible  :Boolean;
+       _HitTest  :Boolean;
+       _Inform   :TGLInform;
        ///// アクセス
        function GetScener :TGLScener; virtual;
        function GetRelaPose :TSingleM4; virtual;
@@ -53,10 +71,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure CalAbsoPose;
        function GetAbsoPose :TSingleM4; virtual;
        procedure SetAbsoPose( const AbsoPose_:TSingleM4 ); virtual;
-       ///// メソッド
-       procedure BeginDraw; virtual;
-       procedure DrawMain; virtual;
-       procedure EndDraw; virtual;
+       function GetBouBox :TSingleArea3D; virtual;
+       procedure SetBouBox( const BouBox_:TSingleArea3D ); virtual;
      public
        constructor Create; override;
        destructor Destroy; override;
@@ -65,13 +81,18 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property     Pose :TSingleM4     read GetRelaPose write SetRelaPose;
        property RelaPose :TSingleM4     read GetRelaPose write SetRelaPose;
        property AbsoPose :TSingleM4     read GetAbsoPose write SetAbsoPose;
-       property BouBox   :TSingleArea3D read   _BouBox                    ;
        property Visible  :Boolean       read   _Visible  write   _Visible ;
+       property HitTest  :Boolean       read   _HitTest  write   _HitTest ;
+       property Inform   :TGLInform     read   _Inform                    ;
+       property BouBox   :TSingleArea3D read GetBouBox   write SetBouBox  ;
        ///// メソッド
+       procedure BeginDraw; virtual;
+       procedure DrawMain; virtual;
+       procedure EndDraw; virtual;
        procedure Draw; virtual;
        procedure CalcBouBox; virtual;
-       function HitBouBox( const AbsoRay_:TSingleRay3D ) :TSingleArea;
-       procedure HitRay( const AbsoRay_:TSingleRay3D; var Len_:Single; var Obj_:TGLObject ); overload;
+       function HitBouBox( const AbsoRay_:TSingleRay3D; out Len_:TSingleArea ) :Boolean;
+       procedure HitRay( const AbsoRay_:TSingleRay3D; var Len_:Single; var Obj_:TGLObject ); overload; virtual;
        function HitRay( const AbsoRay_:TSingleRay3D ) :TGLObject; overload;
      end;
 
@@ -112,16 +133,17 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetRelaPose( const RelaPose_:TSingleM4 ); override;
        function GetAbsoPose :TSingleM4; override;
        procedure SetAbsoPose( const AbsoPose_:TSingleM4 ); override;
-       ///// メソッド
-       procedure BeginDraw; override;
-       procedure DrawMain; override;
-       procedure EndDraw; override;
      public
        constructor Create; override;
        destructor Destroy; override;
        ///// プロパティ
        property RelaPose :TSingleM4 read GetRelaPose;
        property AbsoPose :TSingleM4 read GetAbsoPose;
+       ///// メソッド
+       procedure BeginDraw; override;
+       procedure DrawMain; override;
+       procedure EndDraw; override;
+       procedure HitRay( const AbsoRay_:TSingleRay3D; var Len_:Single; var Obj_:TGLObject ); override;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -194,6 +216,44 @@ begin
      RelaPose := Paren.AbsoPose.Inverse * AbsoPose_;
 end;
 
+//------------------------------------------------------------------------------
+
+function TGLObject.GetBouBox :TSingleArea3D;
+begin
+     Result := _Inform.BouBox;
+end;
+
+procedure TGLObject.SetBouBox( const BouBox_:TSingleArea3D );
+begin
+     _Inform.BouBox := BouBox_;
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TGLObject.Create;
+begin
+     inherited;
+
+     _Inform := TGLInform.Create;
+
+     _AbsoPose := TGLUnifor<TSingleM4>.Create( GL_DYNAMIC_DRAW );
+     _AbsoPose.Count := 1;
+
+     RelaPose := TSingleM4.Identity;
+
+     _Visible := True;
+     _HitTest := False;
+end;
+
+destructor TGLObject.Destroy;
+begin
+     _AbsoPose.DisposeOf;
+
+     _Inform.DisposeOf;
+
+     inherited;
+end;
+
 /////////////////////////////////////////////////////////////////////// メソッド
 
 procedure TGLObject.BeginDraw;
@@ -210,31 +270,10 @@ end;
 
 procedure TGLObject.EndDraw;
 begin
+     _Inform.Draw;
+
      _AbsoPose.Unuse( 3{BinP} );
 end;
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
-
-constructor TGLObject.Create;
-begin
-     inherited;
-
-     _AbsoPose := TGLUnifor<TSingleM4>.Create( GL_DYNAMIC_DRAW );
-     _AbsoPose.Count := 1;
-
-     RelaPose := TSingleM4.Identify;
-
-     _Visible := True;
-end;
-
-destructor TGLObject.Destroy;
-begin
-     _AbsoPose.DisposeOf;
-
-     inherited;
-end;
-
-/////////////////////////////////////////////////////////////////////// メソッド
 
 procedure TGLObject.Draw;
 var
@@ -256,12 +295,12 @@ end;
 
 procedure TGLObject.CalcBouBox;
 begin
-     _BouBox := TSingleArea3D.NeMax;
+
 end;
 
 //------------------------------------------------------------------------------
 
-function TGLObject.HitBouBox( const AbsoRay_:TSingleRay3D ) :TSingleArea;
+function TGLObject.HitBouBox( const AbsoRay_:TSingleRay3D; out Len_:TSingleArea ) :Boolean;
 //······································
      procedure Slab( const Min_,Max_,Pos_,Vec_:Single );
      var
@@ -270,7 +309,7 @@ function TGLObject.HitBouBox( const AbsoRay_:TSingleRay3D ) :TSingleArea;
           T0 := ( Min_ - Pos_ ) / Vec_;
           T1 := ( Max_ - Pos_ ) / Vec_;
 
-          with Result do
+          with Len_ do
           begin
                if Min < T0 then Min := T0;
                if T1 < Max then Max := T1;
@@ -280,23 +319,36 @@ function TGLObject.HitBouBox( const AbsoRay_:TSingleRay3D ) :TSingleArea;
 var
    R :TSingleRay3D;
 begin
-     Result := TSingleArea.PoMax;
+     Result := False;
 
-     R := AbsoPose.Inverse * AbsoRay_;
-
-     with R, _BouBox do
+     if BouBox.Sign > 0 then
      begin
-          if Vec.X > 0 then Slab( Min.X, Max.X, Pos.X, Vec.X )
-                       else
-          if Vec.X < 0 then Slab( Max.X, Min.X, Pos.X, Vec.X );
+          Len_ := TSingleArea.PoMax;
 
-          if Vec.Y > 0 then Slab( Min.Y, Max.Y, Pos.Y, Vec.Y )
-                       else
-          if Vec.Y < 0 then Slab( Max.Y, Min.Y, Pos.Y, Vec.Y );
+          R := AbsoPose.Inverse * AbsoRay_;
 
-          if Vec.Z > 0 then Slab( Min.Z, Max.Z, Pos.Z, Vec.Z )
-                       else
-          if Vec.Z < 0 then Slab( Max.Z, Min.Z, Pos.Z, Vec.Z );
+          with R, BouBox do
+          begin
+               if Vec.X > 0 then Slab( Min.X, Max.X, Pos.X, Vec.X )
+                            else
+               if Vec.X < 0 then Slab( Max.X, Min.X, Pos.X, Vec.X )
+                            else
+               if ( Pos.X < Min.X ) or ( Max.X < Pos.X ) then Exit;
+
+               if Vec.Y > 0 then Slab( Min.Y, Max.Y, Pos.Y, Vec.Y )
+                            else
+               if Vec.Y < 0 then Slab( Max.Y, Min.Y, Pos.Y, Vec.Y )
+                            else
+               if ( Pos.Y < Min.Y ) or ( Max.Y < Pos.Y ) then Exit;
+
+               if Vec.Z > 0 then Slab( Min.Z, Max.Z, Pos.Z, Vec.Z )
+                            else
+               if Vec.Z < 0 then Slab( Max.Z, Min.Z, Pos.Z, Vec.Z )
+                            else
+               if ( Pos.Z < Min.Z ) or ( Max.Z < Pos.Z ) then Exit;
+          end;
+
+          Result := ( Len_.Min <= Len_.Max );
      end;
 end;
 
@@ -305,18 +357,16 @@ var
    L :TSingleArea;
    I :Integer;
 begin
-     L := HitBouBox( AbsoRay_ );
-
-     if L.Min <= L.Max then
+     if _Visible and _HitTest then
      begin
-          if L.Min < Len_ then
+          if HitBouBox( AbsoRay_, L ) and ( L.Min < Len_ ) then
           begin
                Len_ := L.Min;
                Obj_ := Self;
           end;
-     end;
 
-     for I := 0 to ChildsN-1 do Childs[ I ].HitRay( AbsoRay_, Len_, Obj_ );
+          for I := 0 to ChildsN-1 do Childs[ I ].HitRay( AbsoRay_, Len_, Obj_ );
+     end;
 end;
 
 function TGLObject.HitRay( const AbsoRay_:TSingleRay3D ) :TGLObject;
@@ -339,7 +389,7 @@ end;
 
 function TGLScener.GetRelaPose :TSingleM4;
 begin
-     Result := TSingleM4.Identify;
+     Result := TSingleM4.Identity;
 end;
 
 procedure TGLScener.SetRelaPose( const RelaPose_:TSingleM4 );
@@ -349,12 +399,26 @@ end;
 
 function TGLScener.GetAbsoPose :TSingleM4;
 begin
-     Result := TSingleM4.Identify;
+     Result := TSingleM4.Identity;
 end;
 
 procedure TGLScener.SetAbsoPose( const AbsoPose_:TSingleM4 );
 begin
 
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TGLScener.Create;
+begin
+     inherited;
+
+end;
+
+destructor TGLScener.Destroy;
+begin
+
+     inherited;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
@@ -374,18 +438,11 @@ begin
 
 end;
 
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
-
-constructor TGLScener.Create;
+procedure TGLScener.HitRay( const AbsoRay_:TSingleRay3D; var Len_:Single; var Obj_:TGLObject );
+var
+   I :Integer;
 begin
-     inherited;
-
-end;
-
-destructor TGLScener.Destroy;
-begin
-
-     inherited;
+     for I := 0 to ChildsN-1 do Childs[ I ].HitRay( AbsoRay_, Len_, Obj_ );
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
