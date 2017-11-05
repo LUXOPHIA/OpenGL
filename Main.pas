@@ -206,7 +206,7 @@ begin
 
           with Imager do
           begin
-               LoadFromFile( '..\..\_DATA\Spherical_1024x1024.png' );
+               LoadFromFile( '..\..\_DATA\Spherical_2048x1024.png' );
           end;
      end;
 end;
