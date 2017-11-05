@@ -1,9 +1,9 @@
-﻿unit LUX.GPU.OpenGL.Atom.Imager.FMX;
+﻿unit LUX.GPU.OpenGL.Atom.Imager.Preset;
 
 interface //#################################################################### ■
 
 uses System.UITypes,
-     FMX.Graphics,
+     Vcl.Graphics,
      LUX, LUX.GPU.OpenGL.Atom.Imager;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
@@ -66,38 +66,37 @@ implementation //###############################################################
 
 procedure TGLImager1D_RGBA.ImportFrom( const BMP_:TBitmap );
 var
-   B :TBitmapData;
    X :Integer;
+   C :TAlphaColorF;
 begin
      TexelsX := BMP_.Width;
 
-     BMP_.Map( TMapAccess.Read, B );
-
      for X := 0 to TexelsX-1 do
      begin
-          Texels[ X ] := TAlphaColorF.Create( B.GetPixel( X, 0 ) );
-     end;
+          with TColorRec( BMP_.Canvas.Pixels[ X, 0 ] ) do
+          begin
+               C.R := R / 255;
+               C.G := G / 255;
+               C.B := B / 255;
+               C.A := 1      ;
+          end;
 
-     BMP_.Unmap( B );
+          Texels[ X ] := C;
+     end;
 
      SendData;
 end;
 
 procedure TGLImager1D_RGBA.ExportTo( const BMP_:TBitmap );
 var
-   B :TBitmapData;
    X :Integer;
 begin
      BMP_.SetSize( TexelsX, 1 );
 
-     BMP_.Map( TMapAccess.Write, B );
-
      for X := 0 to TexelsX-1 do
      begin
-          B.SetPixel( X, 0, Texels[ X ].ToAlphaColor );
+          BMP_.Canvas.Pixels[ X, 0 ] := Texels[ X ].ToAlphaColor;
      end;
-
-     BMP_.Unmap( B );
 end;
 
 //------------------------------------------------------------------------------
@@ -138,45 +137,44 @@ end;
 
 procedure TGLImager2D_RGBA.ImportFrom( const BMP_:TBitmap );
 var
-   B :TBitmapData;
    X, Y :Integer;
+   C :TAlphaColorF;
 begin
      TexelsX := BMP_.Width ;
      TexelsY := BMP_.Height;
 
-     BMP_.Map( TMapAccess.Read, B );
-
-     for Y := 0 to TexelsX-1 do
+     for Y := 0 to TexelsY-1 do
      begin
           for X := 0 to TexelsX-1 do
           begin
-               Texels[ X, Y ] := TAlphaColorF.Create( B.GetPixel( X, Y ) );
+               with TColorRec( BMP_.Canvas.Pixels[ X, Y ] ) do
+               begin
+                    C.R := R / 255;
+                    C.G := G / 255;
+                    C.B := B / 255;
+                    C.A := 1      ;
+               end;
+
+               Texels[ X, Y ] := C;
           end;
      end;
-
-     BMP_.Unmap( B );
 
      SendData;
 end;
 
 procedure TGLImager2D_RGBA.ExportTo( const BMP_:TBitmap );
 var
-   B :TBitmapData;
    X, Y :Integer;
 begin
      BMP_.SetSize( TexelsX, TexelsY );
 
-     BMP_.Map( TMapAccess.Write, B );
-
-     for Y := 0 to TexelsX-1 do
+     for Y := 0 to TexelsY-1 do
      begin
           for X := 0 to TexelsX-1 do
           begin
-               B.SetPixel( X, Y, Texels[ X, Y ].ToAlphaColor );
+               BMP_.Canvas.Pixels[ X, Y ] := Texels[ X, Y ].ToAlphaColor;
           end;
      end;
-
-     BMP_.Unmap( B );
 end;
 
 //------------------------------------------------------------------------------

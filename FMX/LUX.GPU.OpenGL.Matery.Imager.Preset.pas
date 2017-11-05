@@ -1,4 +1,4 @@
-﻿unit LUX.GPU.OpenGL.Matery.VCL;
+﻿unit LUX.GPU.OpenGL.Matery.Imager.Preset;
 
 interface //#################################################################### ■
 
@@ -6,7 +6,7 @@ uses Winapi.OpenGL, Winapi.OpenGLext,
      LUX,
      LUX.GPU.OpenGL,
      LUX.GPU.OpenGL.Atom.Imager,
-     LUX.GPU.OpenGL.Atom.Imager.VCL,
+     LUX.GPU.OpenGL.Atom.Imager.Preset,
      LUX.GPU.OpenGL.Matery;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
@@ -18,7 +18,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLMateryImag
 
      IGLMateryImag = interface( IGLMatery )
-     ['{00978DAD-C3D0-4B55-BD80-935C01F19066}']
+     ['{426B4B0E-FDA1-44B2-9B2A-0B7371E2E7D0}']
      {protected}
        ///// アクセス
        function GetSample :TGLSample;
@@ -34,7 +34,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLMateryImag = class( TGLMatery, IGLMateryImag )
+     TGLMateryImag = class( TGLMateryNorTex, IGLMateryImag )
      private
      protected
        _Sample :TGLSample;
@@ -55,7 +55,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLMateryImagG
 
-     TGLMateryImagG = class( TGLMateryG, IGLMateryImag )
+     TGLMateryImagG = class( TGLMateryNorTexG, IGLMateryImag )
      private
      protected
        _Sample :TGLSample;
@@ -92,6 +92,8 @@ implementation //###############################################################
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
+/////////////////////////////////////////////////////////////////////// アクセス
+
 function TGLMateryImag.GetSample :TGLSample;
 begin
      Result := _Sample;
@@ -108,8 +110,16 @@ constructor TGLMateryImag.Create;
 begin
      inherited;
 
-     _Sample  := TGLSample       .Create;
-     _Imager  := TGLImager2D_RGBA.Create;
+     with _Engine do
+     begin
+          with Imagers do
+          begin
+               Add( 0{BinP}, '_Imager'{Name} );
+          end;
+     end;
+
+     _Sample := TGLSample       .Create;
+     _Imager := TGLImager2D_RGBA.Create;
 end;
 
 destructor TGLMateryImag.Destroy;
@@ -144,6 +154,8 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
+/////////////////////////////////////////////////////////////////////// アクセス
+
 function TGLMateryImagG.GetSample :TGLSample;
 begin
      Result := _Sample;
@@ -160,8 +172,16 @@ constructor TGLMateryImagG.Create;
 begin
      inherited;
 
-     _Sample  := TGLSample       .Create;
-     _Imager  := TGLImager2D_RGBA.Create;
+     with _Engine do
+     begin
+          with Imagers do
+          begin
+               Add( 0{BinP}, '_Imager'{Name} );
+          end;
+     end;
+
+     _Sample := TGLSample       .Create;
+     _Imager := TGLImager2D_RGBA.Create;
 end;
 
 destructor TGLMateryImagG.Destroy;
