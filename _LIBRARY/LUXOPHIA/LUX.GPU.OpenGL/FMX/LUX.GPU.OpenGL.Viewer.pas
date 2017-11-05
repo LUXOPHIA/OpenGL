@@ -9,7 +9,7 @@ uses
   Winapi.Windows, Winapi.OpenGL, Winapi.OpenGLext,
   LUX, LUX.D3, LUX.D4, LUX.M4, LUX.FMX.Forms,
   LUX.GPU.OpenGL,
-  LUX.GPU.OpenGL.FMX,
+  LUX.GPU.OpenGL.Window,
   LUX.GPU.OpenGL.Atom.Buffer.Unifor,
   LUX.GPU.OpenGL.Scener,
   LUX.GPU.OpenGL.Camera;
@@ -113,11 +113,15 @@ end;
 function TGLViewer.GetRootForm :TForm;
 begin
      Result := Self.Root.GetObject as TForm;
+
+     Assert( Assigned( Result ), 'Failed! TGLViewer.GetRootWND' );
 end;
 
 function TGLViewer.GetRootWND :HWND;
 begin
      Result := WindowHandleToPlatform( GetRootForm.Handle ).Wnd;
+
+     Assert( Result > 0, 'Failed! TGLViewer.GetRootWND' );
 end;
 
 function TGLViewer.GetPixSiz :System.Types.TSize;
@@ -141,6 +145,8 @@ end;
 procedure TGLViewer.ParentChanged;
 begin
      inherited;
+
+     Assert( Winapi.Windows.SetParent( _WND, GetRootWND ) > 0, 'Failed! SetParent @ TGLViewer.ParentChanged' );
 
      _Form.Visible := Self.ParentedVisible;
 end;
@@ -194,8 +200,6 @@ begin
      end;
 
      SetWindowLong( _WND, GWL_STYLE, WS_CHILD or WS_CLIPSIBLINGS );
-
-     Winapi.Windows.SetParent( _WND, GetRootWND );
 end;
 
 procedure TGLViewer.FitWindow;
@@ -209,7 +213,7 @@ begin
      if Height < Width then _Viewer[ 0 ] := TSingleM4.Scale( Height / Width, 1, 1 )
                        else
      if Width < Height then _Viewer[ 0 ] := TSingleM4.Scale( 1, Width / Height, 1 )
-                       else _Viewer[ 0 ] := TSingleM4.Identify;
+                       else _Viewer[ 0 ] := TSingleM4.Identity;
 
 end;
 
@@ -218,6 +222,8 @@ end;
 procedure TGLViewer.CreateDC;
 begin
      _DC := GetDC( _WND );
+
+     Assert( _DC > 0, 'Failed! TGLViewer.CreateDC' );
 
      _OpenGL_.ApplyPixelFormat( _DC );
 end;
@@ -278,12 +284,12 @@ procedure TGLViewer.BeginGL;
 begin
      _OpenGL_.EndGL;
 
-       wglMakeCurrent( _DC, _OpenGL_.RC );
+       Assert( wglMakeCurrent( _DC, _OpenGL_.RC ), 'Failed! TGLViewer.BeginGL' );
 end;
 
 procedure TGLViewer.EndGL;
 begin
-       wglMakeCurrent( _DC, 0 );
+       Assert( wglMakeCurrent( _DC, 0 ), 'Failed! TGLViewer.EndGL' );
 
      _OpenGL_.BeginGL;
 end;
@@ -357,23 +363,25 @@ end;
 
 function TGLViewer.ShootRay( const X_,Y_:Single ) :TSingleRay3D;
 var
+   M :TSingleM4;
    S, P0, P1 :TSingle4D;
 begin
+     M := _Camera.AbsoPose * _Camera.Proj.Inverse * _Viewer[ 0 ].Inverse;
+
      with GetPixSiz do
      begin
           S.X :=     X_ / Width  * 2 - 1;
           S.Y := 1 - Y_ / Height * 2    ;
-          S.Z := 1 - 0.2;
           S.W := 1;
      end;
 
-     P0 := _Camera.AbsoPose * TSingle4D.Create( 0, 0, 0, 1 );
-     P1 := _Camera.AbsoPose * _Camera.Proj.Inverse * _Viewer[ 0 ].Inverse * S;
+     S.Z := -1;  P0 := M * S;
+     S.Z := +1;  P1 := M * S;
 
      with Result do
      begin
-          Pos := TSingle3D(      P0 );
-          Vec := TSingle3D( P1 - P0 ).Unitor;
+          Pos :=               P0.ToCart  ;
+          Vec := Pos.UnitorTo( P1.ToCart );
      end;
 end;
 
