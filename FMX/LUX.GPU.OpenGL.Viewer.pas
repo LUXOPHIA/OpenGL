@@ -113,11 +113,15 @@ end;
 function TGLViewer.GetRootForm :TForm;
 begin
      Result := Self.Root.GetObject as TForm;
+
+     Assert( Assigned( Result ), 'Failed! TGLViewer.GetRootWND' );
 end;
 
 function TGLViewer.GetRootWND :HWND;
 begin
      Result := WindowHandleToPlatform( GetRootForm.Handle ).Wnd;
+
+     Assert( Result > 0, 'Failed! TGLViewer.GetRootWND' );
 end;
 
 function TGLViewer.GetPixSiz :System.Types.TSize;
@@ -141,6 +145,8 @@ end;
 procedure TGLViewer.ParentChanged;
 begin
      inherited;
+
+     Assert( Winapi.Windows.SetParent( _WND, GetRootWND ) > 0, 'Failed! SetParent @ TGLViewer.ParentChanged' );
 
      _Form.Visible := Self.ParentedVisible;
 end;
@@ -194,8 +200,6 @@ begin
      end;
 
      SetWindowLong( _WND, GWL_STYLE, WS_CHILD or WS_CLIPSIBLINGS );
-
-     Winapi.Windows.SetParent( _WND, GetRootWND );
 end;
 
 procedure TGLViewer.FitWindow;
@@ -218,6 +222,8 @@ end;
 procedure TGLViewer.CreateDC;
 begin
      _DC := GetDC( _WND );
+
+     Assert( _DC > 0, 'Failed! TGLViewer.CreateDC' );
 
      _OpenGL_.ApplyPixelFormat( _DC );
 end;
@@ -278,12 +284,12 @@ procedure TGLViewer.BeginGL;
 begin
      _OpenGL_.EndGL;
 
-       wglMakeCurrent( _DC, _OpenGL_.RC );
+       Assert( wglMakeCurrent( _DC, _OpenGL_.RC ), 'Failed! TGLViewer.BeginGL' );
 end;
 
 procedure TGLViewer.EndGL;
 begin
-       wglMakeCurrent( _DC, 0 );
+       Assert( wglMakeCurrent( _DC, 0 ), 'Failed! TGLViewer.EndGL' );
 
      _OpenGL_.BeginGL;
 end;
