@@ -1,8 +1,8 @@
-﻿unit LUX.GPU.OpenGL.VCL;
+﻿unit LUX.GPU.OpenGL.Window;
 
 interface //#################################################################### ■
 
-uses Vcl.Forms,
+uses FMX.Forms,
      LUX, LUX.GPU.OpenGL;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
@@ -13,13 +13,12 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TOpenGL_VCL
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TOepnGL
 
-     TOpenGL_VCL = class( TOpenGL )
+     TOepnGL_FMX = class( TOpenGL )
      private
-       _Form :TCustomForm;
+       _Form :TCommonCustomForm;
      protected
-       ///// メソッド
        procedure CreateWindow; override;
        procedure DestroyWindow; override;
      public
@@ -33,13 +32,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 implementation //############################################################### ■
 
-uses Winapi.OpenGLext;
+uses FMX.Platform.Win,
+     Winapi.OpenGLext;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TOpenGL_VCL
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TOepnGL
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -47,16 +47,16 @@ uses Winapi.OpenGLext;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TOpenGL_VCL.CreateWindow;
+procedure TOepnGL_FMX.CreateWindow;
 begin
-     _Form := TCustomForm.CreateNew( nil );
+     _Form := TCommonCustomForm.Create( nil );
 
-     _WND := _Form.Handle;
+     _WND := WindowHandleToPlatform( _Form.Handle ).Wnd;
 end;
 
-procedure TOpenGL_VCL.DestroyWindow;
+procedure TOepnGL_FMX.DestroyWindow;
 begin
-     _Form.Free;
+     _Form.DisposeOf;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -67,7 +67,7 @@ end;
 
 initialization //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 初期化
 
-     _OpenGL_ := TOpenGL_VCL.Create;
+     _OpenGL_ := TOepnGL_FMX.Create;
 
      InitOpenGLext;
 
