@@ -342,10 +342,7 @@
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\FMX\LUX.GPU.OpenGL.Matery.Imager.Preset.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\FMX\LUX.GPU.OpenGL.Window.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\FMX\LUX.GPU.OpenGL.Atom.Imager.Preset.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\LUX.Data.Lattice.T2.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\LUX.Data.Lattice.T3.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\LUX.Data.Octree.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\LUX.Data.Tree.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\LUX.D5.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\LUX.DN.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\LUX.M2.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\LUX.M3.pas"/>
@@ -361,8 +358,11 @@
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\LUX.D4.M4.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\LUX.D4.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\LUX.D4.V4.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\LUX.D5.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\LUX.Data.Lattice.T1.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\» Data\LUX.Data.Lattice.T1.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\» Data\LUX.Data.Lattice.T2.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\» Data\LUX.Data.Lattice.T3.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\» Data\LUX.Data.Octree.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\» Data\LUX.Data.Tree.pas"/>
         <None Include="_DATA\ShaderF.glsl"/>
         <None Include="_DATA\ShaderV.glsl"/>
         <None Include="_DATA\ShaderG.glsl"/>

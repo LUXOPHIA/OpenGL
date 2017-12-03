@@ -28,10 +28,7 @@ uses
   LUX.GPU.OpenGL.Matery.Imager.Preset in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\FMX\LUX.GPU.OpenGL.Matery.Imager.Preset.pas',
   LUX.GPU.OpenGL.Window in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\FMX\LUX.GPU.OpenGL.Window.pas',
   LUX.GPU.OpenGL.Atom.Imager.Preset in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\FMX\LUX.GPU.OpenGL.Atom.Imager.Preset.pas',
-  LUX.Data.Lattice.T2 in '_LIBRARY\LUXOPHIA\LUX\LUX.Data.Lattice.T2.pas',
-  LUX.Data.Lattice.T3 in '_LIBRARY\LUXOPHIA\LUX\LUX.Data.Lattice.T3.pas',
-  LUX.Data.Octree in '_LIBRARY\LUXOPHIA\LUX\LUX.Data.Octree.pas',
-  LUX.Data.Tree in '_LIBRARY\LUXOPHIA\LUX\LUX.Data.Tree.pas',
+  LUX.D5 in '_LIBRARY\LUXOPHIA\LUX\LUX.D5.pas',
   LUX.DN in '_LIBRARY\LUXOPHIA\LUX\LUX.DN.pas',
   LUX.M2 in '_LIBRARY\LUXOPHIA\LUX\LUX.M2.pas',
   LUX.M3 in '_LIBRARY\LUXOPHIA\LUX\LUX.M3.pas',
@@ -47,8 +44,11 @@ uses
   LUX.D4.M4 in '_LIBRARY\LUXOPHIA\LUX\LUX.D4.M4.pas',
   LUX.D4 in '_LIBRARY\LUXOPHIA\LUX\LUX.D4.pas',
   LUX.D4.V4 in '_LIBRARY\LUXOPHIA\LUX\LUX.D4.V4.pas',
-  LUX.D5 in '_LIBRARY\LUXOPHIA\LUX\LUX.D5.pas',
-  LUX.Data.Lattice.T1 in '_LIBRARY\LUXOPHIA\LUX\LUX.Data.Lattice.T1.pas';
+  LUX.Data.Lattice.T1 in '_LIBRARY\LUXOPHIA\LUX\» Data\LUX.Data.Lattice.T1.pas',
+  LUX.Data.Lattice.T2 in '_LIBRARY\LUXOPHIA\LUX\» Data\LUX.Data.Lattice.T2.pas',
+  LUX.Data.Lattice.T3 in '_LIBRARY\LUXOPHIA\LUX\» Data\LUX.Data.Lattice.T3.pas',
+  LUX.Data.Octree in '_LIBRARY\LUXOPHIA\LUX\» Data\LUX.Data.Octree.pas',
+  LUX.Data.Tree in '_LIBRARY\LUXOPHIA\LUX\» Data\LUX.Data.Tree.pas';
 
 {$R *.res}
 
