@@ -215,21 +215,21 @@ begin
 
        with _VerterP do
        begin
-            Bind;
+            Use;
               glVertexPointer( 3, GL_FLOAT, 0, nil );
-            Unbind;
+            Unuse;
        end;
 
        with _VerterC do
        begin
-            Bind;
+            Use;
               glColorPointer( 4, GL_FLOAT, 0, nil );
-            Unbind;
+            Unuse;
        end;
 
        with _Elemer do
        begin
-            Bind;
+            Use;
 
               with _Progra do
               begin
@@ -238,7 +238,7 @@ begin
                    Unuse;
               end;
 
-            Unbind;
+            Unuse;
        end;
 
      glDisableClientState( GL_VERTEX_ARRAY );
