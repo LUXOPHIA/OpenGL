@@ -37,10 +37,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLBuffer<_TYPE_:record> = class( TGLAtomer, IGLBuffer )
+     TGLBuffer<_TItem_:record> = class( TGLAtomer, IGLBuffer )
      private
      private type
-       PTYPE = ^_TYPE_;
+       _PItem_ = ^_TItem_;
      protected
        _Align :GLint;
        _Strid :GLint;
@@ -54,8 +54,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        function GetUsage :GLenum;
        function GetCount :Integer;
        procedure SetCount( const Count_:Integer );
-       function GetItems( const I_:Integer ) :_TYPE_;
-       procedure SetItems( const I_:Integer; const Item_:_TYPE_ );
+       function GetItems( const I_:Integer ) :_TItem_;
+       procedure SetItems( const I_:Integer; const Item_:_TItem_ );
        ///// メソッド
        function InitAlign :GLint; virtual;
        function InitStrid :GLint;
@@ -68,13 +68,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Strid                     :GLint   read GetStrid               ;
        property Usage                     :GLenum  read GetUsage               ;
        property Count                     :Integer read GetCount write SetCount;
-       property Items[ const I_:Integer ] :_TYPE_  read GetItems write SetItems; default;
+       property Items[ const I_:Integer ] :_TItem_ read GetItems write SetItems; default;
        ///// メソッド
        procedure Bind;
        procedure Unbind;
        procedure Use; virtual;
        procedure Unuse; virtual;
-       procedure Import( const Array_:array of _TYPE_ );
+       procedure Import( const Array_:array of _TItem_ );
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -97,55 +97,55 @@ implementation //###############################################################
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TGLBuffer<_TYPE_>.GetAlign :GLint;
+function TGLBuffer<_TItem_>.GetAlign :GLint;
 begin
      Result := _Align;
 end;
 
-function TGLBuffer<_TYPE_>.GetStrid :GLint;
+function TGLBuffer<_TItem_>.GetStrid :GLint;
 begin
      Result := _Strid;
 end;
 
-function TGLBuffer<_TYPE_>.GetUsage :GLenum;
+function TGLBuffer<_TItem_>.GetUsage :GLenum;
 begin
      Result := _Usage;
 end;
 
-function TGLBuffer<_TYPE_>.GetCount :Integer;
+function TGLBuffer<_TItem_>.GetCount :Integer;
 begin
      Result := _Count;
 end;
 
-procedure TGLBuffer<_TYPE_>.SetCount( const Count_:Integer );
+procedure TGLBuffer<_TItem_>.SetCount( const Count_:Integer );
 begin
      _Count := Count_;
 
      SetLength( _Items, _Strid * _Count );  upItems := True;
 end;
 
-function TGLBuffer<_TYPE_>.GetItems( const I_:Integer ) :_TYPE_;
+function TGLBuffer<_TItem_>.GetItems( const I_:Integer ) :_TItem_;
 begin
-     Result := PTYPE( @_Items[ _Strid * I_ ] )^;
+     Result := _PItem_( @_Items[ _Strid * I_ ] )^;
 end;
 
-procedure TGLBuffer<_TYPE_>.SetItems( const I_:Integer; const Item_:_TYPE_ );
+procedure TGLBuffer<_TItem_>.SetItems( const I_:Integer; const Item_:_TItem_ );
 begin
-     PTYPE( @_Items[ _Strid * I_ ] )^ := Item_;  upItems := True;
+     _PItem_( @_Items[ _Strid * I_ ] )^ := Item_;  upItems := True;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-function TGLBuffer<_TYPE_>.InitAlign :GLint;
+function TGLBuffer<_TItem_>.InitAlign :GLint;
 begin
      Result := 1;
 end;
 
-function TGLBuffer<_TYPE_>.InitStrid :GLint;
+function TGLBuffer<_TItem_>.InitStrid :GLint;
 var
    M :Integer;
 begin
-     Result := SizeOf( _TYPE_ );
+     Result := SizeOf( _TItem_ );
 
      M := Result mod _Align;
 
@@ -154,7 +154,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLBuffer<_TYPE_>.Create( const Usage_:GLenum );
+constructor TGLBuffer<_TItem_>.Create( const Usage_:GLenum );
 begin
      inherited Create;
 
@@ -167,7 +167,7 @@ begin
       Count := 0;
 end;
 
-destructor TGLBuffer<_TYPE_>.Destroy;
+destructor TGLBuffer<_TItem_>.Destroy;
 begin
      glDeleteBuffers( 1, @_ID );
 
@@ -176,19 +176,19 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLBuffer<_TYPE_>.Bind;
+procedure TGLBuffer<_TItem_>.Bind;
 begin
      glBindBuffer( GetKind, _ID );
 end;
 
-procedure TGLBuffer<_TYPE_>.Unbind;
+procedure TGLBuffer<_TItem_>.Unbind;
 begin
      glBindBuffer( GetKind, 0 );
 end;
 
 //------------------------------------------------------------------------------
 
-procedure TGLBuffer<_TYPE_>.Use;
+procedure TGLBuffer<_TItem_>.Use;
 begin
      Bind;
 
@@ -200,14 +200,14 @@ begin
        end;
 end;
 
-procedure TGLBuffer<_TYPE_>.Unuse;
+procedure TGLBuffer<_TItem_>.Unuse;
 begin
      Unbind;
 end;
 
 //------------------------------------------------------------------------------
 
-procedure TGLBuffer<_TYPE_>.Import( const Array_:array of _TYPE_ );
+procedure TGLBuffer<_TItem_>.Import( const Array_:array of _TItem_ );
 var
    I :Integer;
 begin
