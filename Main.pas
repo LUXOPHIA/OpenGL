@@ -157,23 +157,23 @@ begin
 
        with _VerterP do
        begin
-            Bind;
+            Use;
               glVertexPointer( 3, GL_FLOAT, 0, nil );
-            Unbind;
+            Unuse;
        end;
 
        with _VerterC do
        begin
-            Bind;
+            Use;
               glColorPointer( 4, GL_FLOAT, 0, nil );
-            Unbind;
+            Unuse;
        end;
 
        with _Elemer do
        begin
-            Bind;
+            Use;
               glDrawElements( GL_TRIANGLES, 3{Poin} * 12{Face}, GL_UNSIGNED_INT, nil );
-            Unbind;
+            Unuse;
        end;
 
      glDisableClientState( GL_VERTEX_ARRAY );
