@@ -184,8 +184,6 @@ procedure TMyShaper.LoadFormFunc( const Func_:TConstFunc<TdSingle2D,TdSingle3D>;
      procedure MakeVerts;
      var
         C, X, Y, I :Integer;
-        Ps, Ns :TGLBufferData<TSingle3D>;
-        Ts :TGLBufferData<TSingle2D>;
         T :TSingle2D;
         M :TSingleM4;
      begin
@@ -194,10 +192,6 @@ procedure TMyShaper.LoadFormFunc( const Func_:TConstFunc<TdSingle2D,TdSingle3D>;
           _PosBuf.Count := C;
           _NorBuf.Count := C;
           _TexBuf.Count := C;
-
-          Ps := _PosBuf.Map( GL_WRITE_ONLY );
-          Ns := _NorBuf.Map( GL_WRITE_ONLY );
-          Ts := _TexBuf.Map( GL_WRITE_ONLY );
 
           for Y := 0 to DivY_ do
           begin
@@ -208,28 +202,21 @@ procedure TMyShaper.LoadFormFunc( const Func_:TConstFunc<TdSingle2D,TdSingle3D>;
 
                     I := XYtoI( X, Y );
 
-                    Ts[ I ] := T;
+                    _TexBuf[ I ] := T;
 
                     M := Tensor( T, Func_ );
 
-                    Ps[ I ] := M.AxisP;
-                    Ns[ I ] := M.AxisZ;
+                    _PosBuf[ I ] := M.AxisP;
+                    _NorBuf[ I ] := M.AxisZ;
                end;
           end;
-
-          _PosBuf.Unmap;
-          _NorBuf.Unmap;
-          _TexBuf.Unmap;
      end;
      //·························
      procedure MakeElems;
      var
         X0, Y0, X1, Y1, I, I00, I01, I10, I11 :Integer;
-        Es :TGLBufferData<TCardinal3D>;
      begin
           _EleBuf.Count := 2 * DivY_ * DivX_;
-
-          Es := _EleBuf.Map( GL_WRITE_ONLY );
 
           I := 0;
           for Y0 := 0 to DivY_-1 do
@@ -248,12 +235,10 @@ procedure TMyShaper.LoadFormFunc( const Func_:TConstFunc<TdSingle2D,TdSingle3D>;
                     //  │      │
                     //  10───11
 
-                    Es[ I ] := TCardinal3D.Create( I00, I10, I11 );  Inc( I );
-                    Es[ I ] := TCardinal3D.Create( I11, I01, I00 );  Inc( I );
+                    _EleBuf[ I ] := TCardinal3D.Create( I00, I10, I11 );  Inc( I );
+                    _EleBuf[ I ] := TCardinal3D.Create( I11, I01, I00 );  Inc( I );
                end;
           end;
-
-          _EleBuf.Unmap;
      end;
 //······························
 begin
