@@ -25,10 +25,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// メソッド
        procedure CreateHandle; override;
        procedure DestroyHandle; override;
+       procedure DoParentFormChanged; override;
        procedure CreateDC;
        procedure DestroyDC;
      public
-       constructor Create( Owner_:TComponent ); override;
+       constructor CreateNew( Owner_:TComponent; Dummy_:NativeInt = 0 ); override;
        destructor Destroy; override;
        ///// プロパティ
        property ParentWind :HWND read GetParentWind;
@@ -59,7 +60,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 implementation //############################################################### ■
 
-uses FMX.Forms, FMX.Platform.Win,
+uses FMX.Controls, FMX.Forms, FMX.Platform.Win,
      Winapi.OpenGLext;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
@@ -90,8 +91,6 @@ begin
      SetWindowLong( _WND, GWL_STYLE, WS_CHILD or WS_CLIPSIBLINGS );
 
      CreateDC;
-
-     if Assigned( ParentForm ) then Assert( Winapi.Windows.SetParent( _WND, ParentWind ) > 0, 'Failed! TGLViewerForm.CreateHandle' );
 end;
 
 procedure TGLViewerForm.DestroyHandle;
@@ -99,6 +98,15 @@ begin
      DestroyDC;
 
      inherited;
+end;
+
+procedure TGLViewerForm.DoParentFormChanged;
+begin
+     inherited;
+
+     if Assigned( Parent ) and ( Parent is TControl ) then Visible := ( Parent as TControl ).ParentedVisible;
+
+     if Assigned( ParentForm ) then Assert( Winapi.Windows.SetParent( _WND, ParentWind ) > 0, 'Failed! TGLViewerForm.CreateHandle' );
 end;
 
 //------------------------------------------------------------------------------
@@ -119,13 +127,13 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLViewerForm.Create( Owner_:TComponent );
+constructor TGLViewerForm.CreateNew( Owner_:TComponent; Dummy_:NativeInt = 0 );
 begin
      inherited;
 
      BorderStyle := TFmxFormBorderStyle.None;
 
-     HandleNeeded;
+     Show; Hide;
 end;
 
 destructor TGLViewerForm.Destroy;
