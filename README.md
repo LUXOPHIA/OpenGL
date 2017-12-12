@@ -1,3 +1,17 @@
+# OpenGL
+**How to embed [OpenGL](https://en.wikipedia.org/wiki/OpenGL) viewing area as the component for [FMX: FireMonkey](https://en.wikipedia.org/wiki/FireMonkey) framework.**
+
+![](https://github.com/LUXOPHIA/OpenGL/raw/master/--------/_SCREENSHOT/OpenGL.png)
+
+シェーダのソースコードは、`TMemo` コンポーネントによって書き換えることができ、リアルタイムにコンパイルされて、適宜エラーメッセージも表示されます。
+
+![](https://github.com/LUXOPHIA/OpenGL/raw/master/--------/_SCREENSHOT/OpenGL-Shader-Vertex.png)
+
+[`glLinkProgram`](https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glLinkProgram.xhtml) ルーチンによるリンク時のエラーメッセージも、`TMemo` コンポーネントで確認できます。
+
+![](https://github.com/LUXOPHIA/OpenGL/raw/master/--------/_SCREENSHOT/OpenGL-Program.png)
+
+----
 ## 歴史に学ぶ OpenGL
 
 OpenGL のバージョンを辿りながら実装していくことで、新しい API が追加された意図を理解しながら、パイプラインの構造を把握していきます。
@@ -11,21 +25,6 @@ OpenGL のバージョンを辿りながら実装していくことで、新し�
 最低限にクラス化したプロジエクト。
 
 * [Simple](https://github.com/LUXOPHIA/OpenGL/tree/simple)
-
-----
-
-# OpenGL
-**How to embed [OpenGL](https://en.wikipedia.org/wiki/OpenGL) viewing area as the component for [FMX: FireMonkey](https://en.wikipedia.org/wiki/FireMonkey) framework.**
-
-![](https://github.com/LUXOPHIA/OpenGL/raw/master/--------/_SCREENSHOT/OpenGL.png)
-
-シェーダのソースコードは、`TMemo` コンポーネントによって書き換えることができ、リアルタイムにコンパイルされて、適宜エラーメッセージも表示されます。
-
-![](https://github.com/LUXOPHIA/OpenGL/raw/master/--------/_SCREENSHOT/OpenGL-Shader-Vertex.png)
-
-[`glLinkProgram`](https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glLinkProgram.xhtml) ルーチンによるリンク時のエラーメッセージも、`TMemo` コンポーネントで確認できます。
-
-![](https://github.com/LUXOPHIA/OpenGL/raw/master/--------/_SCREENSHOT/OpenGL-Program.png)
 
 ----
 * LUX.GPU.OpenGL
