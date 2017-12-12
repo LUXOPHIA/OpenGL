@@ -15,7 +15,7 @@ OpenGL のバージョンを辿りながら実装していくことで、新し�
 ----
 
 # OpenGL
-[FMX：FireMonkey](https://www.wikiwand.com/en/FireMonkey) フレームワークのコンポーネントとして [OpenGL](https://www.wikiwand.com/ja/OpenGL) の描画領域を埋め込む方法。
+**How to embed [OpenGL](https://en.wikipedia.org/wiki/OpenGL) viewing area as the component for [FMX: FireMonkey](https://en.wikipedia.org/wiki/FireMonkey) framework.**
 
 ![](https://github.com/LUXOPHIA/OpenGL/raw/master/--------/_SCREENSHOT/OpenGL.png)
 
