@@ -223,16 +223,13 @@ begin
           begin
                with _PosBuf[ I ] do
                begin
-                    if X < B.Min.X then B.Min.X := X
-                                   else
+                    if X < B.Min.X then B.Min.X := X;
                     if B.Max.X < X then B.Max.X := X;
 
-                    if Y < B.Min.Y then B.Min.Y := Y
-                                   else
+                    if Y < B.Min.Y then B.Min.Y := Y;
                     if B.Max.Y < Y then B.Max.Y := Y;
 
-                    if Z < B.Min.Z then B.Min.Z := Z
-                                   else
+                    if Z < B.Min.Z then B.Min.Z := Z;
                     if B.Max.Z < Z then B.Max.Z := Z;
                end;
           end;
