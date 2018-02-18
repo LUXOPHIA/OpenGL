@@ -6,7 +6,8 @@ uses System.Types, System.SysUtils, System.Classes, System.Math.Vectors, System.
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
-     PPByte = ^PByte;
+     PPByte    = ^PByte;
+     PPLongint = ^PLongint;
 
      //-------------------------------------------------------------------------
 
