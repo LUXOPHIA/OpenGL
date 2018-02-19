@@ -35,16 +35,34 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetMargsY( const MargsY_:Integer );
        function GetMargsZ :Integer;
        procedure SetMargsZ( const MargsZ_:Integer );
+       function GetItemByte :Integer;
+       function GetElemsN :Integer;
+       function GetElemsByte :Integer;
+       function GetCounStepX :Integer;
+       function GetCounStepY :Integer;
+       function GetCounStepZ :Integer;
+       function GetByteStepX :Integer;
+       function GetByteStepY :Integer;
+       function GetByteStepZ :Integer;
        ///// プロパティ
-       property ElemsX :Integer read GetElemsX                ;
-       property ElemsY :Integer read GetElemsY                ;
-       property ElemsZ :Integer read GetElemsZ                ;
-       property ItemsX :Integer read GetItemsX write SetItemsX;
-       property ItemsY :Integer read GetItemsY write SetItemsY;
-       property ItemsZ :Integer read GetItemsZ write SetItemsZ;
-       property MargsX :Integer read GetMargsX write SetMargsX;
-       property MargsY :Integer read GetMargsY write SetMargsY;
-       property MargsZ :Integer read GetMargsZ write SetMargsZ;
+       property ElemsX    :Integer read GetElemsX                   ;
+       property ElemsY    :Integer read GetElemsY                   ;
+       property ElemsZ    :Integer read GetElemsZ                   ;
+       property ItemsX    :Integer read GetItemsX    write SetItemsX;
+       property ItemsY    :Integer read GetItemsY    write SetItemsY;
+       property ItemsZ    :Integer read GetItemsZ    write SetItemsZ;
+       property MargsX    :Integer read GetMargsX    write SetMargsX;
+       property MargsY    :Integer read GetMargsY    write SetMargsY;
+       property MargsZ    :Integer read GetMargsZ    write SetMargsZ;
+       property ItemByte  :Integer read GetItemByte                 ;
+       property ElemsN    :Integer read GetElemsN                   ;
+       property ElemsByte :Integer read GetElemsByte                ;
+       property CounStepX :Integer read GetCounStepX                ;
+       property CounStepY :Integer read GetCounStepY                ;
+       property CounStepZ :Integer read GetCounStepZ                ;
+       property ByteStepX :Integer read GetByteStepX                ;
+       property ByteStepY :Integer read GetByteStepY                ;
+       property ByteStepZ :Integer read GetByteStepZ                ;
      end;
 
      //-------------------------------------------------------------------------
@@ -88,18 +106,17 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetMargsY( const MargsY_:Integer );
        function GetMargsZ :Integer;
        procedure SetMargsZ( const MargsZ_:Integer );
-       function GetItemSize :Integer;
-       function GetTotalN :Integer;
-       function GetTotalSize :Integer;
-
+       function GetItemByte :Integer;
+       function GetElemsN :Integer;
+       function GetElemsByte :Integer;
+       function GetCounStepX :Integer;
+       function GetCounStepY :Integer;
+       function GetCounStepZ :Integer;
+       function GetByteStepX :Integer;
+       function GetByteStepY :Integer;
+       function GetByteStepZ :Integer;
        function GetLines( const Y_,Z_:Integer ) :PByteArray;
        function GetLineSize :Integer;
-       function GetStepX :Integer;
-       function GetStepY :Integer;
-       function GetStepZ :Integer;
-       function GetElemStepX :Integer;
-       function GetElemStepY :Integer;
-       function GetElemStepZ :Integer;
      public
        constructor Create; overload;
        constructor Create( const ItemsX_,ItemsY_,ItemsZ_:Integer ); overload;
@@ -119,19 +136,17 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property MargsX                          :Integer    read GetMargsX   write SetMargsX;
        property MargsY                          :Integer    read GetMargsY   write SetMargsY;
        property MargsZ                          :Integer    read GetMargsZ   write SetMargsZ;
-
-       property ItemSize                        :Integer    read GetItemSize                ;
-       property TotalN                          :Integer    read GetTotalN                  ;
-       property TotalSize                       :Integer    read GetTotalSize               ;
-
+       property ItemByte                        :Integer    read GetItemByte                ;
+       property ElemsN                          :Integer    read GetElemsN                  ;
+       property ElemsByte                       :Integer    read GetElemsByte               ;
+       property CounStepX                       :Integer    read GetCounStepX               ;
+       property CounStepY                       :Integer    read GetCounStepY               ;
+       property CounStepZ                       :Integer    read GetCounStepZ               ;
+       property ByteStepX                       :Integer    read GetByteStepX               ;
+       property ByteStepY                       :Integer    read GetByteStepY               ;
+       property ByteStepZ                       :Integer    read GetByteStepZ               ;
        property Lines[ const Y_,Z_:Integer ]    :PByteArray read GetLines                   ;
        property LineSize                        :Integer    read GetLineSize                ;
-       property StepX                           :Integer    read GetStepX                   ;
-       property StepY                           :Integer    read GetStepY                   ;
-       property StepZ                           :Integer    read GetStepZ                   ;
-       property ElemStepX                       :Integer    read GetElemStepX               ;
-       property ElemStepY                       :Integer    read GetElemStepY               ;
-       property ElemStepZ                       :Integer    read GetElemStepZ               ;
        ///// イベント
        property OnChange :TNotifyEvent read _OnChange write _OnChange;
        ///// メソッド
@@ -328,7 +343,7 @@ begin
      _ElemsY := _MargsY + _ItemsY + _MargsY;
      _ElemsZ := _MargsZ + _ItemsZ + _MargsZ;
 
-     SetLength( _Items, GetTotalN );
+     SetLength( _Items, GetElemsN );
 end;
 
 function TArray3D<_TItem_>.XYZtoI( const X_,Y_,Z_:Integer ) :Integer;
@@ -438,19 +453,53 @@ end;
 
 //------------------------------------------------------------------------------
 
-function TArray3D<_TItem_>.GetItemSize :Integer;
+function TArray3D<_TItem_>.GetItemByte :Integer;
 begin
      Result := SizeOf( _TItem_ );
 end;
 
-function TArray3D<_TItem_>.GetTotalN :Integer;
+function TArray3D<_TItem_>.GetElemsN :Integer;
 begin
      Result := _ElemsZ * _ElemsY * _ElemsX;
 end;
 
-function TArray3D<_TItem_>.GetTotalSize :Integer;
+function TArray3D<_TItem_>.GetElemsByte :Integer;
 begin
-     Result := GetTotalN * GetItemSize;
+     Result := ItemByte * ElemsN;
+end;
+
+//------------------------------------------------------------------------------
+
+function TArray3D<_TItem_>.GetCounStepX :Integer;
+begin
+     Result := 1;
+end;
+
+function TArray3D<_TItem_>.GetCounStepY :Integer;
+begin
+     Result := CounStepX * _ElemsX;
+end;
+
+function TArray3D<_TItem_>.GetCounStepZ :Integer;
+begin
+     Result := CounStepY * _ElemsY;
+end;
+
+//------------------------------------------------------------------------------
+
+function TArray3D<_TItem_>.GetByteStepX :Integer;
+begin
+     Result := ItemByte * CounStepX;
+end;
+
+function TArray3D<_TItem_>.GetByteStepY :Integer;
+begin
+     Result := ItemByte * CounStepY;
+end;
+
+function TArray3D<_TItem_>.GetByteStepZ :Integer;
+begin
+     Result := ItemByte * CounStepZ;
 end;
 
 //------------------------------------------------------------------------------
@@ -462,41 +511,7 @@ end;
 
 function TArray3D<_TItem_>.GetLineSize :Integer;
 begin
-     Result := GetItemSize * _ItemsX;
-end;
-
-//------------------------------------------------------------------------------
-
-function TArray3D<_TItem_>.GetStepX :Integer;
-begin
-     Result := GetItemSize;
-end;
-
-function TArray3D<_TItem_>.GetStepY :Integer;
-begin
-     Result := GetStepX * _ElemsX;
-end;
-
-function TArray3D<_TItem_>.GetStepZ :Integer;
-begin
-     Result := GetStepY * _ElemsY;
-end;
-
-//------------------------------------------------------------------------------
-
-function TArray3D<_TItem_>.GetElemStepX :Integer;
-begin
-     Result := 1;
-end;
-
-function TArray3D<_TItem_>.GetElemStepY :Integer;
-begin
-     Result := GetElemStepX * _ElemsX;
-end;
-
-function TArray3D<_TItem_>.GetElemStepZ :Integer;
-begin
-     Result := GetElemStepY * _ElemsY;
+     Result := ItemByte * _ItemsX;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -552,12 +567,12 @@ end;
 
 procedure TArray3D<_TItem_>.Read( const Stream_:TStream );
 begin
-     Stream_.Read( _Items[ 0 ], GetTotalSize );
+     Stream_.Read( _Items[ 0 ], GetElemsByte );
 end;
 
 procedure TArray3D<_TItem_>.Write( const Stream_:TStream );
 begin
-     Stream_.Write( _Items[ 0 ], GetTotalSize );
+     Stream_.Write( _Items[ 0 ], GetElemsByte );
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TBricArray3D<_TItem_>
@@ -789,7 +804,7 @@ begin
           begin
                Move( _Grids[ Z, Y, -1 ], _Grids[ Z, Y, 0 ], 3 * SizeOf( _PItem_ ) );
 
-               Dec( _Grids[ Z, Y, -1 ], _Array.ElemStepX );
+               Dec( _Grids[ Z, Y, -1 ], _Array.CounStepX );
           end;
      end;
 end;
@@ -806,7 +821,7 @@ begin
           begin
                Move( _Grids[ Z, Y, 0 ], _Grids[ Z, Y, -1 ], 3 * SizeOf( _PItem_ ) );
 
-               Inc( _Grids[ Z, Y, +2 ], _Array.ElemStepX );
+               Inc( _Grids[ Z, Y, +2 ], _Array.CounStepX );
           end;
      end;
 end;
@@ -825,7 +840,7 @@ begin
 
           for X := -1 to +2 do
           begin
-               Dec( _Grids[ Z, -1, X ], _Array.ElemStepY );
+               Dec( _Grids[ Z, -1, X ], _Array.CounStepY );
           end;
      end;
 end;
@@ -842,7 +857,7 @@ begin
 
           for X := -1 to +2 do
           begin
-               Inc( _Grids[ Z, +2, X ], _Array.ElemStepY );
+               Inc( _Grids[ Z, +2, X ], _Array.CounStepY );
           end;
      end;
 end;
@@ -861,7 +876,7 @@ begin
      begin
           for X := -1 to +2 do
           begin
-               Dec( _Grids[ -1, Y, X ], _Array.ElemStepZ );
+               Dec( _Grids[ -1, Y, X ], _Array.CounStepZ );
           end;
      end;
 end;
@@ -878,7 +893,7 @@ begin
      begin
           for X := -1 to +2 do
           begin
-               Inc( _Grids[ +2, Y, X ], _Array.ElemStepZ );
+               Inc( _Grids[ +2, Y, X ], _Array.CounStepZ );
           end;
      end;
 end;
