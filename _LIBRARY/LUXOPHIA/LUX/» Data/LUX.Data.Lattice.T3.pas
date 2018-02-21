@@ -20,9 +20,12 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      IArray3D = interface
      ['{2ED01C38-BB77-4958-83DE-E4F723A74774}']
        ///// アクセス
+       function GetItemByte :Integer;
        function GetElemsX :Integer;
        function GetElemsY :Integer;
        function GetElemsZ :Integer;
+       function GetElemsN :Integer;
+       function GetElemsByte :Integer;
        function GetItemsX :Integer;
        procedure SetItemsX( const ItemsX_:Integer );
        function GetItemsY :Integer;
@@ -35,9 +38,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetMargsY( const MargsY_:Integer );
        function GetMargsZ :Integer;
        procedure SetMargsZ( const MargsZ_:Integer );
-       function GetItemByte :Integer;
-       function GetElemsN :Integer;
-       function GetElemsByte :Integer;
        function GetCounStepX :Integer;
        function GetCounStepY :Integer;
        function GetCounStepZ :Integer;
@@ -45,18 +45,18 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        function GetByteStepY :Integer;
        function GetByteStepZ :Integer;
        ///// プロパティ
+       property ItemByte  :Integer read GetItemByte                 ;
        property ElemsX    :Integer read GetElemsX                   ;
        property ElemsY    :Integer read GetElemsY                   ;
        property ElemsZ    :Integer read GetElemsZ                   ;
+       property ElemsN    :Integer read GetElemsN                   ;
+       property ElemsByte :Integer read GetElemsByte                ;
        property ItemsX    :Integer read GetItemsX    write SetItemsX;
        property ItemsY    :Integer read GetItemsY    write SetItemsY;
        property ItemsZ    :Integer read GetItemsZ    write SetItemsZ;
        property MargsX    :Integer read GetMargsX    write SetMargsX;
        property MargsY    :Integer read GetMargsY    write SetMargsY;
        property MargsZ    :Integer read GetMargsZ    write SetMargsZ;
-       property ItemByte  :Integer read GetItemByte                 ;
-       property ElemsN    :Integer read GetElemsN                   ;
-       property ElemsByte :Integer read GetElemsByte                ;
        property CounStepX :Integer read GetCounStepX                ;
        property CounStepY :Integer read GetCounStepY                ;
        property CounStepZ :Integer read GetCounStepZ                ;
@@ -75,7 +75,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure MakeArray; virtual;
        function XYZtoI( const X_,Y_,Z_:Integer ) :Integer; inline;
      protected
-       _Items  :TArray<_TItem_>;
+       _Elems  :TArray<_TItem_>;
        _ElemsX :Integer;
        _ElemsY :Integer;
        _ElemsZ :Integer;
@@ -88,12 +88,15 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// イベント
        _OnChange :TNotifyEvent;
        ///// アクセス
-       function GetItems( const X_,Y_,Z_:Integer ) :_TItem_;
-       procedure SetItems( const X_,Y_,Z_:Integer; const Item_:_TItem_ );
-       function GetItemP( const X_,Y_,Z_:Integer ) :_PItem_;
+       function GetItemByte :Integer;
        function GetElemsX :Integer;
        function GetElemsY :Integer;
        function GetElemsZ :Integer;
+       function GetElemsN :Integer;
+       function GetElemsByte :Integer;
+       function GetItems( const X_,Y_,Z_:Integer ) :_TItem_;
+       procedure SetItems( const X_,Y_,Z_:Integer; const Item_:_TItem_ );
+       function GetItemP( const X_,Y_,Z_:Integer ) :_PItem_;
        function GetItemsX :Integer;
        procedure SetItemsX( const ItemsX_:Integer );
        function GetItemsY :Integer;
@@ -106,9 +109,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetMargsY( const MargsY_:Integer );
        function GetMargsZ :Integer;
        procedure SetMargsZ( const MargsZ_:Integer );
-       function GetItemByte :Integer;
-       function GetElemsN :Integer;
-       function GetElemsByte :Integer;
        function GetCounStepX :Integer;
        function GetCounStepY :Integer;
        function GetCounStepZ :Integer;
@@ -125,20 +125,20 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Items[ const X_,Y_,Z_:Integer ] :_TItem_    read GetItems    write SetItems ; default;
-       property ItemP[ const X_,Y_,Z_:Integer ] :_PItem_    read GetItemP                   ;
+       property ItemByte                        :Integer    read GetItemByte                ;
        property ElemsX                          :Integer    read GetElemsX                  ;
        property ElemsY                          :Integer    read GetElemsY                  ;
        property ElemsZ                          :Integer    read GetElemsZ                  ;
+       property ElemsN                          :Integer    read GetElemsN                  ;
+       property ElemsByte                       :Integer    read GetElemsByte               ;
+       property Items[ const X_,Y_,Z_:Integer ] :_TItem_    read GetItems    write SetItems ; default;
+       property ItemP[ const X_,Y_,Z_:Integer ] :_PItem_    read GetItemP                   ;
        property ItemsX                          :Integer    read GetItemsX   write SetItemsX;
        property ItemsY                          :Integer    read GetItemsY   write SetItemsY;
        property ItemsZ                          :Integer    read GetItemsZ   write SetItemsZ;
        property MargsX                          :Integer    read GetMargsX   write SetMargsX;
        property MargsY                          :Integer    read GetMargsY   write SetMargsY;
        property MargsZ                          :Integer    read GetMargsZ   write SetMargsZ;
-       property ItemByte                        :Integer    read GetItemByte                ;
-       property ElemsN                          :Integer    read GetElemsN                  ;
-       property ElemsByte                       :Integer    read GetElemsByte               ;
        property CounStepX                       :Integer    read GetCounStepX               ;
        property CounStepY                       :Integer    read GetCounStepY               ;
        property CounStepZ                       :Integer    read GetCounStepZ               ;
@@ -174,6 +174,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property GridsY :Integer read GetGridsY write SetGridsY;
        property GridsZ :Integer read GetGridsZ write SetGridsZ;
      end;
+
+     //-------------------------------------------------------------------------
 
      TBricArray3D<_TItem_> = class( TArray3D<_TItem_>, IBricArray3D )
      private
@@ -215,6 +217,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property BricsY :Integer read GetBricsY write SetBricsY;
        property BricsZ :Integer read GetBricsZ write SetBricsZ;
      end;
+
+     //-------------------------------------------------------------------------
 
      TGridArray3D<_TItem_> = class( TArray3D<_TItem_>, IGridArray3D )
      private
@@ -273,6 +277,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure GoNextY( const N_:Integer ); overload;
        procedure GoPrevZ( const N_:Integer ); overload;
        procedure GoNextZ( const N_:Integer ); overload;
+       function InterpFrac( const Xd_,Yd_,Zd_:Single ) :_TItem_;
+       function Interp( const X_,Y_,Z_:Single ) :_TItem_;
      end;
 
      //-------------------------------------------------------------------------
@@ -283,11 +289,19 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _PItem_ = ^_TItem_;
      protected
        _Array :TGridArray3D<_TItem_>;
+       _HeadZ :array [ -1..+2 ] of _PItem_;
+       _HeadY :array [ -1..+2, -1..+2 ] of _PItem_;
        _Grids :array [ -1..+2, -1..+2, -1..+2 ] of _PItem_;
        _GX    :array [ -1..+2 ] of Integer;
        _GY    :array [ -1..+2 ] of Integer;
        _GZ    :array [ -1..+2 ] of Integer;
        ///// アクセス
+       function GetPosX :Integer;
+       procedure SetPosX( const PosX_:Integer );
+       function GetPosY :Integer;
+       procedure SetPosY( const PosY_:Integer );
+       function GetPosZ :Integer;
+       procedure SetPosZ( const PosZ_:Integer );
        function GetPos :TInteger3D;
        procedure SetPos( const Pos_:TInteger3D );
        function GetGrids( const X_,Y_,Z_:Shortint ) :_TItem_;
@@ -299,6 +313,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const Array_:TGridArray3D<_TItem_> );
        destructor Destroy; override;
        ///// プロパティ
+       property PosX                             :Integer    read GetPosX  write SetPosX ;
+       property PosY                             :Integer    read GetPosY  write SetPosY ;
+       property PosZ                             :Integer    read GetPosZ  write SetPosZ ;
        property Pos                              :TInteger3D read GetPos   write SetPos  ;
        property Grids[ const X_,Y_,Z_:Shortint ] :_TItem_    read GetGrids write SetGrids; default;
        property GX[ const I_:Shortint ]          :Integer    read GetGX                  ;
@@ -317,6 +334,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure GoNextY( const N_:Integer ); overload;
        procedure GoPrevZ( const N_:Integer ); overload;
        procedure GoNextZ( const N_:Integer ); overload;
+       function InterpFrac( const Xd_,Yd_,Zd_:Single ) :_TItem_; virtual; abstract;
+       function Interp( const X_,Y_,Z_:Single ) :_TItem_; virtual;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -326,6 +345,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
 
 implementation //############################################################### ■
+
+uses System.Math;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
@@ -343,7 +364,7 @@ begin
      _ElemsY := _MargsY + _ItemsY + _MargsY;
      _ElemsZ := _MargsZ + _ItemsZ + _MargsZ;
 
-     SetLength( _Items, GetElemsN );
+     SetLength( _Elems, ElemsN );
 end;
 
 function TArray3D<_TItem_>.XYZtoI( const X_,Y_,Z_:Integer ) :Integer;
@@ -355,19 +376,9 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TArray3D<_TItem_>.GetItems( const X_,Y_,Z_:Integer ) :_TItem_;
+function TArray3D<_TItem_>.GetItemByte :Integer;
 begin
-     Result := _Items[ XYZtoI( X_, Y_, Z_ ) ];
-end;
-
-procedure TArray3D<_TItem_>.SetItems( const X_,Y_,Z_:Integer; const Item_:_TItem_ );
-begin
-     _Items[ XYZtoI( X_, Y_, Z_ ) ] := Item_;
-end;
-
-function TArray3D<_TItem_>.GetItemP( const X_,Y_,Z_:Integer ) :_PItem_;
-begin
-     Result := @_Items[ XYZtoI( X_, Y_, Z_ ) ];
+     Result := SizeOf( _TItem_ );
 end;
 
 //------------------------------------------------------------------------------
@@ -385,6 +396,35 @@ end;
 function TArray3D<_TItem_>.GetElemsZ :Integer;
 begin
      Result := _ElemsZ;
+end;
+
+function TArray3D<_TItem_>.GetElemsN :Integer;
+begin
+     Result := _ElemsZ * _ElemsY * _ElemsX;
+end;
+
+function TArray3D<_TItem_>.GetElemsByte :Integer;
+begin
+     Result := ItemByte * ElemsN;
+end;
+
+//------------------------------------------------------------------------------
+
+function TArray3D<_TItem_>.GetItems( const X_,Y_,Z_:Integer ) :_TItem_;
+begin
+     Result := _Elems[ XYZtoI( X_, Y_, Z_ ) ];
+end;
+
+procedure TArray3D<_TItem_>.SetItems( const X_,Y_,Z_:Integer; const Item_:_TItem_ );
+begin
+     _Elems[ XYZtoI( X_, Y_, Z_ ) ] := Item_;
+end;
+
+//------------------------------------------------------------------------------
+
+function TArray3D<_TItem_>.GetItemP( const X_,Y_,Z_:Integer ) :_PItem_;
+begin
+     Result := @_Elems[ XYZtoI( X_, Y_, Z_ ) ];
 end;
 
 //------------------------------------------------------------------------------
@@ -453,23 +493,6 @@ end;
 
 //------------------------------------------------------------------------------
 
-function TArray3D<_TItem_>.GetItemByte :Integer;
-begin
-     Result := SizeOf( _TItem_ );
-end;
-
-function TArray3D<_TItem_>.GetElemsN :Integer;
-begin
-     Result := _ElemsZ * _ElemsY * _ElemsX;
-end;
-
-function TArray3D<_TItem_>.GetElemsByte :Integer;
-begin
-     Result := ItemByte * ElemsN;
-end;
-
-//------------------------------------------------------------------------------
-
 function TArray3D<_TItem_>.GetCounStepX :Integer;
 begin
      Result := 1;
@@ -506,7 +529,7 @@ end;
 
 function TArray3D<_TItem_>.GetLines( const Y_,Z_:Integer ) :PByteArray;
 begin
-     Result := @_Items[ XYZtoI( 0, Y_, Z_ ) ];
+     Result := @_Elems[ XYZtoI( 0, Y_, Z_ ) ];
 end;
 
 function TArray3D<_TItem_>.GetLineSize :Integer;
@@ -567,12 +590,12 @@ end;
 
 procedure TArray3D<_TItem_>.Read( const Stream_:TStream );
 begin
-     Stream_.Read( _Items[ 0 ], GetElemsByte );
+     Stream_.Read( _Elems[ 0 ], GetElemsByte );
 end;
 
 procedure TArray3D<_TItem_>.Write( const Stream_:TStream );
 begin
-     Stream_.Write( _Items[ 0 ], GetElemsByte );
+     Stream_.Write( _Elems[ 0 ], GetElemsByte );
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TBricArray3D<_TItem_>
@@ -726,22 +749,87 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TBricIterGridArray3D<_TItem_>.GetPos :TInteger3D;
+function TBricIterGridArray3D<_TItem_>.GetPosX :Integer;
 begin
-     Result := TInteger3D.Create( _GX[0], _GY[0], _GZ[0] );
+     Result := _GX[ 0 ];
 end;
 
-procedure TBricIterGridArray3D<_TItem_>.SetPos( const Pos_:TInteger3D );
+procedure TBricIterGridArray3D<_TItem_>.SetPosX( const PosX_:Integer );
 var
    X, Y, Z :Integer;
 begin
-     for X := -1 to +2 do _GX[ X ] := Pos_.X + X;
-     for Y := -1 to +2 do _GY[ Y ] := Pos_.Y + Y;
-     for Z := -1 to +2 do _GZ[ Z ] := Pos_.Z + Z;
+     for X := -1 to +2 do
+     begin
+          _GX[ X ] := PosX_ + X;
 
-     for Z := -1 to +2 do
+          for Y := -1 to +2 do
+          begin
+               for Z := -1 to +2 do
+               begin
+                    _Grids[ Z, Y, X ] := _HeadY[ Z, Y ];
+
+                    Inc( _Grids[ Z, Y, X ], _GX[ X ] * _Array.CounStepX );
+               end;
+          end;
+     end;
+end;
+
+function TBricIterGridArray3D<_TItem_>.GetPosY :Integer;
+begin
+     Result := _GY[ 0 ];
+end;
+
+procedure TBricIterGridArray3D<_TItem_>.SetPosY( const PosY_:Integer );
+var
+   Y, Z :Integer;
+begin
      for Y := -1 to +2 do
-     for X := -1 to +2 do _Grids[ Z, Y, X ] := _Array.ItemP[ _GX[ X ], _GY[ Y ], _GZ[ Z ] ];
+     begin
+          _GY[ Y ] := PosY_ + Y;
+
+          for Z := -1 to +2 do
+          begin
+               _HeadY[ Z, Y ] := _HeadZ[ Z ];
+
+               Inc( _HeadY[ Z, Y ], _GY[ Y ] * _Array.CounStepY );
+          end;
+     end;
+end;
+
+function TBricIterGridArray3D<_TItem_>.GetPosZ :Integer;
+begin
+     Result := _GZ[ 0 ];
+end;
+
+procedure TBricIterGridArray3D<_TItem_>.SetPosZ( const PosZ_:Integer );
+var
+   Z :Integer;
+begin
+     for Z := -1 to +2 do
+     begin
+          _GZ[ Z ] := PosZ_ + Z;
+
+          _HeadZ[ Z ] := _Array.ItemP[ 0, 0, 0 ];
+
+          Inc( _HeadZ[ Z ], _GZ[ Z ] * _Array.CounStepZ );
+     end;
+end;
+
+//------------------------------------------------------------------------------
+
+function TBricIterGridArray3D<_TItem_>.GetPos :TInteger3D;
+begin
+     Result := TInteger3D.Create( PosX, PosY, PosZ );
+end;
+
+procedure TBricIterGridArray3D<_TItem_>.SetPos( const Pos_:TInteger3D );
+begin
+     with Pos_ do
+     begin
+          PosZ := Z;
+          PosY := Y;
+          PosX := X;
+     end;
 end;
 
 //------------------------------------------------------------------------------
@@ -836,12 +924,11 @@ begin
 
      for Z := -1 to +2 do
      begin
+          Move( _HeadY[ Z, -1 ], _HeadY[ Z, 0 ],  3 * SizeOf( _PItem_ ) );  Dec( _HeadY[ Z, -1 ], _Array.CounStepY );
+
           Move( _Grids[ Z, -1 ], _Grids[ Z, 0 ], 12 * SizeOf( _PItem_ ) );
 
-          for X := -1 to +2 do
-          begin
-               Dec( _Grids[ Z, -1, X ], _Array.CounStepY );
-          end;
+          for X := -1 to +2 do Dec( _Grids[ Z, -1, X ], _Array.CounStepY );
      end;
 end;
 
@@ -853,12 +940,11 @@ begin
 
      for Z := -1 to +2 do
      begin
+          Move( _HeadY[ Z, 0 ], _HeadY[ Z, -1 ],  3 * SizeOf( _PItem_ ) );  Inc( _HeadY[ Z, +2 ], _Array.CounStepY );
+
           Move( _Grids[ Z, 0 ], _Grids[ Z, -1 ], 12 * SizeOf( _PItem_ ) );
 
-          for X := -1 to +2 do
-          begin
-               Inc( _Grids[ Z, +2, X ], _Array.CounStepY );
-          end;
+          for X := -1 to +2 do Inc( _Grids[ Z, +2, X ], _Array.CounStepY );
      end;
 end;
 
@@ -870,14 +956,13 @@ var
 begin
      Move( _GZ[ -1 ], _GZ[ 0 ], 3 * SizeOf( Integer ) );  Dec( _GZ[ -1 ] );
 
+     Move( _HeadZ[ -1 ], _HeadZ[ 0 ], 3 * SizeOf( _PItem_ ) );  Dec( _HeadZ[ -1 ], _Array.CounStepZ );
+
      Move( _Grids[ -1 ], _Grids[ 0 ], 48 * SizeOf( _PItem_ ) );
 
      for Y := -1 to +2 do
      begin
-          for X := -1 to +2 do
-          begin
-               Dec( _Grids[ -1, Y, X ], _Array.CounStepZ );
-          end;
+          for X := -1 to +2 do Dec( _Grids[ -1, Y, X ], _Array.CounStepZ );
      end;
 end;
 
@@ -886,6 +971,8 @@ var
    X, Y :Integer;
 begin
      Move( _GZ[ 0 ], _GZ[ -1 ], 3 * SizeOf( Integer ) );  Inc( _GZ[ +2 ] );
+
+     Move( _HeadZ[ 0 ], _HeadZ[ -1 ], 3 * SizeOf( _PItem_ ) );  Inc( _HeadZ[ +2 ], _Array.CounStepZ );
 
      Move( _Grids[ 0 ], _Grids[ -1 ], 48 * SizeOf( _PItem_ ) );
 
@@ -940,6 +1027,19 @@ var
    N :Integer;
 begin
      for N := 1 to N_ do GoNextZ;
+end;
+
+//------------------------------------------------------------------------------
+
+function TBricIterGridArray3D<_TItem_>.Interp( const X_,Y_,Z_:Single ) :_TItem_;
+var
+   Xd, Yd, Zd :Single;
+begin
+     PosZ := Floor( Z_ );  Zd := Z_ - PosZ;
+     PosY := Floor( Y_ );  Yd := Y_ - PosY;
+     PosX := Floor( X_ );  Xd := X_ - PosX;
+
+     Result := InterpFrac( Xd, Yd, Zd );
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
