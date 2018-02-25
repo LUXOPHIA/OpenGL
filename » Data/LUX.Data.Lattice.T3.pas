@@ -1136,7 +1136,7 @@ end;
 
 function TBricIterGridArray3D<_TItem_>.FracInterp( const Xd_,Yd_,Zd_:Single ) :_TItem_;
 begin
-     Result := Grids[ 0, 0, 0 ];
+     Result := Grids[ Round( Xd_ ), Round( Yd_ ), Round( Zd_ ) ];
 end;
 
 function TBricIterGridArray3D<_TItem_>.Interp( const X_,Y_,Z_:Single ) :_TItem_;
