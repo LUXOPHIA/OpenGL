@@ -7,6 +7,10 @@ uses System.SysUtils, System.Classes,
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
+     TSingleBricArray3D         = class;
+     TSingleGridArray3D         = class;
+     TSingleBricIterGridArray3D = class;
+
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
@@ -41,6 +45,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
      protected
      public
+       ///// メソッド
+       procedure ForBrics( const Proc_:TConstProc<TSingleBricIterGridArray3D> );
+       procedure ForEdgesX( const Proc_:TConstProc<TSingleBricIterGridArray3D> );
+       procedure ForEdgesY( const Proc_:TConstProc<TSingleBricIterGridArray3D> );
+       procedure ForEdgesZ( const Proc_:TConstProc<TSingleBricIterGridArray3D> );
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSingleBricIterGridArray3D
@@ -58,7 +67,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      protected
      public
        ///// メソッド
-       function InterpFrac( const Xd_,Yd_,Zd_:Single ) :Single; override;
+       function FracInterp( const Xd_,Yd_,Zd_:Single ) :Single; override;
+       function Grad( const X_,Y_,Z_:Single ) :TSingle3D;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -89,6 +99,42 @@ uses System.Math;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TSingleGridArray3D.ForBrics( const Proc_:TConstProc<TSingleBricIterGridArray3D> );
+begin
+     inherited ForBrics( procedure( const B_:TBricIterGridArray3D<Single> )
+     begin
+          Proc_( B_ as TSingleBricIterGridArray3D );
+     end );
+end;
+
+procedure TSingleGridArray3D.ForEdgesX( const Proc_:TConstProc<TSingleBricIterGridArray3D> );
+begin
+     inherited ForEdgesX( procedure( const E_:TBricIterGridArray3D<Single> )
+     begin
+          Proc_( E_ as TSingleBricIterGridArray3D );
+     end );
+end;
+
+procedure TSingleGridArray3D.ForEdgesY( const Proc_:TConstProc<TSingleBricIterGridArray3D> );
+begin
+     inherited ForEdgesY( procedure( const E_:TBricIterGridArray3D<Single> )
+     begin
+          Proc_( E_ as TSingleBricIterGridArray3D );
+     end );
+end;
+
+procedure TSingleGridArray3D.ForEdgesZ( const Proc_:TConstProc<TSingleBricIterGridArray3D> );
+begin
+     inherited ForEdgesZ( procedure( const E_:TBricIterGridArray3D<Single> )
+     begin
+          Proc_( E_ as TSingleBricIterGridArray3D );
+     end );
+end;
+
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSingleBricIterGridArray3D
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
@@ -99,7 +145,7 @@ uses System.Math;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-function TSingleBricIterGridArray3D.InterpFrac( const Xd_,Yd_,Zd_:Single ) :Single;
+function TSingleBricIterGridArray3D.FracInterp( const Xd_,Yd_,Zd_:Single ) :Single;
 var
    Z, Y :Integer;
    Ys :array [ -1..+2, -1..+2 ] of Single;
@@ -113,6 +159,18 @@ begin
      for Z := 0 to 1 do Zs[ Z ] := ( Ys[ Z, 1 ] - Ys[ Z, 0 ] ) * Yd_ + Ys[ Z, 0 ];
 
      Result := ( Zs[ 1 ] - Zs[ 0 ] ) * Zd_ + Zs[ 0 ];
+end;
+
+//------------------------------------------------------------------------------
+
+function TSingleBricIterGridArray3D.Grad( const X_,Y_,Z_:Single ) :TSingle3D;
+begin
+     with Result do
+     begin
+          X := ( Interp( X_+1, Y_  , Z_   ) - Interp( X_-1, Y_  , Z_   ) ) / 2;
+          Y := ( Interp( X_  , Y_+1, Z_   ) - Interp( X_  , Y_-1, Z_   ) ) / 2;
+          Z := ( Interp( X_  , Y_  , Z_+1 ) - Interp( X_  , Y_  , Z_-1 ) ) / 2;
+     end;
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
