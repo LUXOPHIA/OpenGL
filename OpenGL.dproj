@@ -367,6 +367,7 @@
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Buffer\LUX.GPU.OpenGL.Atom.Buffer.Elemer.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Buffer\LUX.GPU.OpenGL.Atom.Buffer.StoBuf.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Matery\Imager\_FMX\LUX.GPU.OpenGL.Matery.Imager.Preset.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\» Data\LUX.Data.Octree.Atom.pas"/>
         <None Include="_DATA\ShaderF.glsl"/>
         <None Include="_DATA\ShaderV.glsl"/>
         <None Include="_DATA\ShaderG.glsl"/>
