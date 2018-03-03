@@ -52,7 +52,8 @@ uses
   LUX.GPU.OpenGL.Atom.Buffer.Verter in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Buffer\LUX.GPU.OpenGL.Atom.Buffer.Verter.pas',
   LUX.GPU.OpenGL.Atom.Buffer.Elemer in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Buffer\LUX.GPU.OpenGL.Atom.Buffer.Elemer.pas',
   LUX.GPU.OpenGL.Atom.Buffer.StoBuf in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Buffer\LUX.GPU.OpenGL.Atom.Buffer.StoBuf.pas',
-  LUX.GPU.OpenGL.Matery.Imager.Preset in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Matery\Imager\_FMX\LUX.GPU.OpenGL.Matery.Imager.Preset.pas';
+  LUX.GPU.OpenGL.Matery.Imager.Preset in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Matery\Imager\_FMX\LUX.GPU.OpenGL.Matery.Imager.Preset.pas',
+  LUX.Data.Octree.Atom in '_LIBRARY\LUXOPHIA\LUX\» Data\LUX.Data.Octree.Atom.pas';
 
 {$R *.res}
 
