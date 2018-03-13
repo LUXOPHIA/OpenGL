@@ -1,9 +1,8 @@
-﻿unit LUX.GPU.OpenGL.Render;
+﻿unit LUX.GPU.OpenGL.Render_;
 
 interface //#################################################################### ■
 
 uses System.UITypes,
-     FMX.Graphics,
      Winapi.Windows, Winapi.OpenGL, Winapi.OpenGLext,
      LUX, LUX.M4,
      LUX.GPU.OpenGL.Atom.Buffer.Unifor,
@@ -16,9 +15,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLRender
+     ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGL_Render
 
-     TGLRender = class
+     TGL_Render = class
      private
      protected
        _Frame1 :TGLFramer1;
@@ -47,7 +46,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Color   :TAlphaColorF read GetColor  write SetColor ;
        ///// メソッド
        procedure Render;
-       function MakeScreenShot :FMX.Graphics.TBitmap;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -62,7 +60,7 @@ implementation //###############################################################
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLRender
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGL_Render
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -70,12 +68,12 @@ implementation //###############################################################
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TGLRender.GetSizeX :Integer;
+function TGL_Render.GetSizeX :Integer;
 begin
      Result := _SizeX;
 end;
 
-procedure TGLRender.SetSizeX( const SizeX_:Integer );
+procedure TGL_Render.SetSizeX( const SizeX_:Integer );
 begin
      _SizeX := SizeX_;
 
@@ -85,12 +83,12 @@ begin
      FitWindow;
 end;
 
-function TGLRender.GetSizeY :Integer;
+function TGL_Render.GetSizeY :Integer;
 begin
      Result := _SizeY;
 end;
 
-procedure TGLRender.SetSizeY( const SizeY_:Integer );
+procedure TGL_Render.SetSizeY( const SizeY_:Integer );
 begin
      _SizeY := SizeY_;
 
@@ -102,19 +100,19 @@ end;
 
 //------------------------------------------------------------------------------
 
-function TGLRender.GetColor :TAlphaColorF;
+function TGL_Render.GetColor :TAlphaColorF;
 begin
      Result := _Color;
 end;
 
-procedure TGLRender.SetColor( const Color_:TAlphaColorF );
+procedure TGL_Render.SetColor( const Color_:TAlphaColorF );
 begin
      _Color := Color_;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLRender.FitWindow;
+procedure TGL_Render.FitWindow;
 begin
      if _SizeY < _SizeX then _Viewer[ 0 ] := TSingleM4.Scale( _SizeY / _SizeX, 1, 1 )
                         else
@@ -124,7 +122,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLRender.Create;
+constructor TGL_Render.Create;
 begin
      inherited;
 
@@ -139,7 +137,7 @@ begin
      _Color := TAlphaColorF.Create( 0, 0, 0, 1 );
 end;
 
-destructor TGLRender.Destroy;
+destructor TGL_Render.Destroy;
 begin
      _Viewer.DisposeOf;
 
@@ -151,7 +149,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLRender.Render;
+procedure TGL_Render.Render;
 begin
        _FrameN.Bind;
 
@@ -171,47 +169,6 @@ begin
 
        _FrameN.Unbind;
        _FrameN.DrawToFramer( _Frame1 );
-end;
-
-function TGLRender.MakeScreenShot :FMX.Graphics.TBitmap;
-var
-   Cs :TArray<TAlphaColor>;
-   C, B :PAlphaColor;
-   Bs :TBitmapData;
-   S, Y :Integer;
-begin
-     Result := FMX.Graphics.TBitmap.Create;
-
-     with Result do
-     begin
-          SetSize( _SizeX, _SizeY );
-
-          SetLength( Cs, _SizeY * _SizeX );
-
-          C := @Cs[ 0 ];
-
-          _Frame1.Bind;
-
-            glReadBuffer( GL_COLOR_ATTACHMENT0 );
-            glReadPixels( 0, 0, _SizeX, _SizeY, GL_BGRA, GL_UNSIGNED_BYTE, C );
-
-          _Frame1.Unbind;
-
-          Map( TMapAccess.Write, Bs );
-
-          S := SizeOf( TAlphaColor ) * _SizeX;
-
-          for Y := _SizeY-1 downto 0 do
-          begin
-               B := Bs.GetScanline( Y );
-
-               System.Move( C^, B^, S );
-
-               Inc( C, _SizeX );
-          end;
-
-          Unmap( Bs );
-     end;
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
