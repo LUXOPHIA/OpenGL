@@ -14,7 +14,8 @@ uses
   LUX.GPU.OpenGL.Camera,
   LUX.GPU.OpenGL.Shaper,
   LUX.GPU.OpenGL.Matery,
-  LUX.GPU.OpenGL.Matery.Imager.Preset;
+  LUX.GPU.OpenGL.Matery.Imager.Preset,
+  LUX.GPU.OpenGL.Render;
 
 type
   TForm1 = class(TForm)
@@ -305,11 +306,18 @@ end;
 
 procedure TForm1.GLViewer4DblClick(Sender: TObject);
 begin
-     with GLViewer4.MakeScreenShot do
+     with TGLRender.Create do
      begin
+          SizeX := 3840;
+          SizeY := 2160;
+
+          Camera := _Camera4;
+
+          Render;
+
           SaveToFile( 'Viewer4.png' );
 
-          DisposeOF;
+          DisposeOf;
      end;
 end;
 
