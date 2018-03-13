@@ -11,7 +11,8 @@ uses Winapi.OpenGL, Winapi.OpenGLext,
      LUX.GPU.OpenGL.Atom.Buffer.Verter,
      LUX.GPU.OpenGL.Atom.Buffer.Elemer,
      LUX.GPU.OpenGL.Atom.Imager,
-     LUX.GPU.OpenGL.Atom.Imager.Preset,
+     LUX.GPU.OpenGL.Matery.Imager.Preset,
+     LUX.GPU.OpenGL.Atom.Imager.D2.Preset,
      LUX.GPU.OpenGL.Atom.Shader,
      LUX.GPU.OpenGL.Atom.Engine;
 
@@ -29,17 +30,15 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _ShaderV :TGLShaderV;
        _ShaderF :TGLShaderF;
        _Engine  :TGLEngine;
-       _Sample  :TGLSample;
-       _Imager  :TGLImager2D_RGBA;
+       _Imager  :TGLBricer2D_TAlphaColorF;
      public
        constructor Create;
        destructor Destroy; override;
        ///// プロパティ
-       property ShaderV :TGLShaderV       read _ShaderV;
-       property ShaderF :TGLShaderF       read _ShaderF;
-       property Engine  :TGLEngine        read _Engine ;
-       property Sample  :TGLSample        read _Sample ;
-       property Imager  :TGLImager2D_RGBA read _Imager ;
+       property ShaderV :TGLShaderV               read _ShaderV;
+       property ShaderF :TGLShaderF               read _ShaderF;
+       property Engine  :TGLEngine                read _Engine ;
+       property Imager  :TGLBricer2D_TAlphaColorF read _Imager ;
        ///// メソッド
        procedure Use;
      end;
@@ -68,11 +67,10 @@ constructor TMyMatery.Create;
 begin
      inherited;
 
-     _ShaderV := TGLShaderV      .Create;
-     _ShaderF := TGLShaderF      .Create;
-     _Engine  := TGLEngine       .Create;
-     _Sample  := TGLSample       .Create;
-     _Imager  := TGLImager2D_RGBA.Create;
+     _ShaderV := TGLShaderV              .Create;
+     _ShaderF := TGLShaderF              .Create;
+     _Engine  := TGLEngine               .Create;
+     _Imager  := TGLBricer2D_TAlphaColorF.Create;
 
      with _Engine do
      begin
@@ -107,7 +105,6 @@ end;
 
 destructor TMyMatery.Destroy;
 begin
-     _Sample .DisposeOf;
      _Imager .DisposeOf;
      _Engine .DisposeOf;
      _ShaderV.DisposeOf;
@@ -122,7 +119,6 @@ procedure TMyMatery.Use;
 begin
      _Engine.Use;
 
-     _Sample.Use( 0{BinP} );
      _Imager.Use( 0{BinP} );
 end;
 
