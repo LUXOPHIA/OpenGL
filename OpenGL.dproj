@@ -353,7 +353,6 @@
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Inform.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Matery.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Render.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Shaper\LUX.GPU.OpenGL.Shaper.Preset.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Matery\LUX.GPU.OpenGL.Matery.Preset.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Matery\Imager\_FMX\LUX.GPU.OpenGL.Matery.Imager.Preset.pas"/>
@@ -384,6 +383,8 @@
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.T1.D1.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.T1.D2.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.T1.D3.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Render\LUX.GPU.OpenGL.Render_.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Render\_FMX\LUX.GPU.OpenGL.Render.pas"/>
         <None Include="_DATA\ShaderF.glsl"/>
         <None Include="_DATA\ShaderV.glsl"/>
         <BuildConfiguration Include="Release">
