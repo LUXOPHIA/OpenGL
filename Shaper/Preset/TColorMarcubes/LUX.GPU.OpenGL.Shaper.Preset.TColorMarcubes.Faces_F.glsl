@@ -20,35 +20,17 @@ vec2 VecToSky( vec4 Vector_ )
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%【共通定数】
 
-layout( std140 ) uniform TViewerScal
-{
-  layout( row_major ) mat4 _ViewerScal;
-};
-
-layout( std140 ) uniform TCameraProj
-{
-  layout( row_major ) mat4 _CameraProj;
-};
-
-layout( std140 ) uniform TCameraPose
-{
-  layout( row_major ) mat4 _CameraPose;
-};
-
-layout( std140 ) uniform TShaperPose
-{
-  layout( row_major ) mat4 _ShaperPose;
-};
-
-//------------------------------------------------------------------------------
-
-uniform sampler2D _Imager;
+layout( std140 ) uniform TViewerScal{ layout( row_major ) mat4 _ViewerScal; };
+layout( std140 ) uniform TCameraProj{ layout( row_major ) mat4 _CameraProj; };
+layout( std140 ) uniform TCameraPose{ layout( row_major ) mat4 _CameraPose; };
+layout( std140 ) uniform TShaperPose{ layout( row_major ) mat4 _ShaperPose; };
 
 //############################################################################## ■
 
 in TSenderGF
 {
   vec4 Pos;
+  vec4 Col;
   vec4 Nor;
 }
 _Sender;
@@ -65,7 +47,8 @@ void main()
   vec4 V = normalize( _Sender.Pos - C );
   vec4 R = reflect( V, normalize( _Sender.Nor ) );
 
-  _ResultCol = texture( _Imager, VecToSky( R ) );
+  _ResultCol.rgb = _Sender.Col.rgb * clamp( dot( normalize( inverse( _CameraPose ) * _Sender.Nor ).xyz, normalize( vec3( 0, 1, 1 ) ) ), 0, 1 );
+  _ResultCol.a   = 1;
 }
 
 //############################################################################## ■
