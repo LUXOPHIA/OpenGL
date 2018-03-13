@@ -39,7 +39,6 @@ uses
   LUX.GPU.OpenGL.Inform in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Inform.pas',
   LUX.GPU.OpenGL.Matery in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Matery.pas',
   LUX.GPU.OpenGL in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.pas',
-  LUX.GPU.OpenGL.Render in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Render.pas',
   LUX.GPU.OpenGL.Shaper.Preset in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Shaper\LUX.GPU.OpenGL.Shaper.Preset.pas',
   LUX.GPU.OpenGL.Matery.Preset in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Matery\LUX.GPU.OpenGL.Matery.Preset.pas',
   LUX.GPU.OpenGL.Matery.Imager.Preset in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Matery\Imager\_FMX\LUX.GPU.OpenGL.Matery.Imager.Preset.pas',
@@ -69,7 +68,9 @@ uses
   LUX.Curve.T2.D3 in '_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.T2.D3.pas',
   LUX.Curve.T1.D1 in '_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.T1.D1.pas',
   LUX.Curve.T1.D2 in '_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.T1.D2.pas',
-  LUX.Curve.T1.D3 in '_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.T1.D3.pas';
+  LUX.Curve.T1.D3 in '_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.T1.D3.pas',
+  LUX.GPU.OpenGL.Render_ in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Render\LUX.GPU.OpenGL.Render_.pas',
+  LUX.GPU.OpenGL.Render in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Render\_FMX\LUX.GPU.OpenGL.Render.pas';
 
 {$R *.res}
 
