@@ -47,7 +47,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Color   :TAlphaColorF read GetColor  write SetColor ;
        ///// メソッド
        procedure Render;
+       procedure ExportToBMP( const BMP_:FMX.Graphics.TBitmap );
        function MakeScreenShot :FMX.Graphics.TBitmap;
+       procedure SaveToFile( const FileName_:String );
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -173,16 +175,14 @@ begin
        _FrameN.DrawToFramer( _Frame1 );
 end;
 
-function TGLRender.MakeScreenShot :FMX.Graphics.TBitmap;
+procedure TGLRender.ExportToBMP( const BMP_:FMX.Graphics.TBitmap );
 var
    Cs :TArray<TAlphaColor>;
    C, B :PAlphaColor;
    Bs :TBitmapData;
    S, Y :Integer;
 begin
-     Result := FMX.Graphics.TBitmap.Create;
-
-     with Result do
+     with BMP_ do
      begin
           SetSize( _SizeX, _SizeY );
 
@@ -211,6 +211,23 @@ begin
           end;
 
           Unmap( Bs );
+     end;
+end;
+
+function TGLRender.MakeScreenShot :FMX.Graphics.TBitmap;
+begin
+     Result := FMX.Graphics.TBitmap.Create;
+
+     ExportToBMP( Result );
+end;
+
+procedure TGLRender.SaveToFile( const FileName_:String );
+begin
+     with MakeScreenShot do
+     begin
+          SaveToFile( FileName_ );
+
+          DisposeOf;
      end;
 end;
 
