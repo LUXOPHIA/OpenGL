@@ -49,6 +49,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure Render;
        procedure ExportToBMP( const BMP_:Vcl.Graphics.TBitmap );
        function MakeScreenShot :Vcl.Graphics.TBitmap;
+       procedure SaveToFile( const FileName_:String );
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -215,6 +216,16 @@ begin
      Result := Vcl.Graphics.TBitmap.Create;
 
      ExportToBMP( Result );
+end;
+
+procedure TGLRender.SaveToFile( const FileName_:String );
+begin
+     with MakeScreenShot do
+     begin
+          SaveToFile( FileName_ );
+
+          DisposeOf;
+     end;
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
