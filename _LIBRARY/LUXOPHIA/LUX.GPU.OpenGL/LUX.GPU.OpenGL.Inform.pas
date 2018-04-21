@@ -8,7 +8,7 @@ uses System.Generics.Collections,
      LUX.GPU.OpenGL,
      LUX.GPU.OpenGL.Atom.Buffer,
      LUX.GPU.OpenGL.Atom.Buffer.VerBuf,
-     LUX.GPU.OpenGL.Atom.Buffer.Elemer,
+     LUX.GPU.OpenGL.Atom.Buffer.EleBuf,
      LUX.GPU.OpenGL.Atom.Buffer.Unifor,
      LUX.GPU.OpenGL.Matery,
      LUX.GPU.OpenGL.Matery.Preset;
@@ -29,7 +29,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _BouBox  :TSingleArea3D;
        _Matery  :IGLMateryColor;
        _PosBuf  :TGLVerBufS<TSingle3D>;
-       _EleBuf  :TGLElemerLine32;
+       _EleBuf  :TGLEleBufLine32;
        _Visible :Boolean;
        ///// アクセス
        function GetBouBox :TSingleArea3D; virtual;
@@ -131,7 +131,7 @@ begin
      _Matery := TGLMateryColor.Create;
 
      _PosBuf := TGLVerBufS<TSingle3D>.Create( GL_STATIC_DRAW );
-     _EleBuf := TGLElemerLine32      .Create( GL_STATIC_DRAW );
+     _EleBuf := TGLEleBufLine32      .Create( GL_STATIC_DRAW );
 
      _PosBuf.Count :=  8;
      _EleBuf.Count := 12;

@@ -1,4 +1,4 @@
-﻿unit LUX.GPU.OpenGL.Atom.Buffer.Elemer;
+﻿unit LUX.GPU.OpenGL.Atom.Buffer.EleBuf;
 
 interface //#################################################################### ■
 
@@ -13,9 +13,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLElemer<_TYPE_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLEleBuf<_TYPE_>
 
-     IGLElemer = interface( IGLBuffer )
+     IGLEleBuf = interface( IGLBuffer )
      ['{BCD91AB4-D6E5-49E1-8670-D4C4ED39AFD3}']
        ///// アクセス
        function GetElemT :GLenum;
@@ -27,7 +27,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLElemer<_TYPE_:record> = class( TGLBuffer<_TYPE_>, IGLElemer )
+     TGLEleBuf<_TYPE_:record> = class( TGLBuffer<_TYPE_>, IGLEleBuf )
      private
      protected
        ///// アクセス
@@ -41,15 +41,15 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure Draw; virtual; abstract;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLElemerFace<_TYPE_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLEleBufFace<_TYPE_>
 
-     IGLElemerFace = interface( IGLBuffer )
+     IGLEleBufFace = interface( IGLBuffer )
      ['{8D7AA8F0-FDEF-4B6C-A537-D861D07CB6D4}']
      end;
 
      //-------------------------------------------------------------------------
 
-     TGLElemerFace<_TYPE_:record> = class( TGLElemer<_TYPE_>, IGLElemerFace )
+     TGLEleBufFace<_TYPE_:record> = class( TGLEleBuf<_TYPE_>, IGLEleBufFace )
      private
      protected
        ///// アクセス
@@ -60,19 +60,19 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure Draw; override;
      end;
 
-     TGLElemerFace8  = TGLElemerFace<TByte3D>;
-     TGLElemerFace16 = TGLElemerFace<TWord3D>;
-     TGLElemerFace32 = TGLElemerFace<TCardinal3D>;
+     TGLEleBufFace8  = TGLEleBufFace<TByte3D>;
+     TGLEleBufFace16 = TGLEleBufFace<TWord3D>;
+     TGLEleBufFace32 = TGLEleBufFace<TCardinal3D>;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLElemerLine<_TYPE_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLEleBufLine<_TYPE_>
 
-     IGLElemerLine = interface( IGLBuffer )
+     IGLEleBufLine = interface( IGLBuffer )
      ['{7B63D84E-9B99-4661-94B5-0E508A59810A}']
      end;
 
      //-------------------------------------------------------------------------
 
-     TGLElemerLine<_TYPE_:record> = class( TGLElemer<_TYPE_>, IGLElemerLine )
+     TGLEleBufLine<_TYPE_:record> = class( TGLEleBuf<_TYPE_>, IGLEleBufLine )
      private
      protected
        ///// アクセス
@@ -83,9 +83,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure Draw; override;
      end;
 
-     TGLElemerLine8  = TGLElemerLine<TByte2D>;
-     TGLElemerLine16 = TGLElemerLine<TWord2D>;
-     TGLElemerLine32 = TGLElemerLine<TCardinal2D>;
+     TGLEleBufLine8  = TGLEleBufLine<TByte2D>;
+     TGLEleBufLine16 = TGLEleBufLine<TWord2D>;
+     TGLEleBufLine32 = TGLEleBufLine<TCardinal2D>;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
 
@@ -99,7 +99,7 @@ implementation //###############################################################
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLElemer<_TYPE_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLEleBuf<_TYPE_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -107,14 +107,14 @@ implementation //###############################################################
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TGLElemer<_TYPE_>.GetKind :GLenum;
+function TGLEleBuf<_TYPE_>.GetKind :GLenum;
 begin
      Result := GL_ELEMENT_ARRAY_BUFFER;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLElemerFace<_TYPE_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLEleBufFace<_TYPE_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -122,12 +122,12 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TGLElemerFace<_TYPE_>.GetElemN :GLint;
+function TGLEleBufFace<_TYPE_>.GetElemN :GLint;
 begin
      Result := 3;
 end;
 
-function TGLElemerFace<_TYPE_>.GetElemT :GLenum;
+function TGLEleBufFace<_TYPE_>.GetElemT :GLenum;
 begin
      case  SizeOf( _TYPE_ ) of
        3: Result := GL_UNSIGNED_BYTE;
@@ -141,7 +141,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLElemerFace<_TYPE_>.Draw;
+procedure TGLEleBufFace<_TYPE_>.Draw;
 begin
      inherited Use;
 
@@ -150,7 +150,7 @@ begin
      inherited Unuse;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLElemerLine<_TYPE_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLEleBufLine<_TYPE_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -158,12 +158,12 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TGLElemerLine<_TYPE_>.GetElemN :GLint;
+function TGLEleBufLine<_TYPE_>.GetElemN :GLint;
 begin
      Result := 2;
 end;
 
-function TGLElemerLine<_TYPE_>.GetElemT :GLenum;
+function TGLEleBufLine<_TYPE_>.GetElemT :GLenum;
 begin
      case  SizeOf( _TYPE_ ) of
        2: Result := GL_UNSIGNED_BYTE;
@@ -177,7 +177,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLElemerLine<_TYPE_>.Draw;
+procedure TGLEleBufLine<_TYPE_>.Draw;
 begin
      inherited Use;
 

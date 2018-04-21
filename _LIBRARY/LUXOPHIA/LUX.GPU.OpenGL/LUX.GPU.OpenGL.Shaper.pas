@@ -8,7 +8,7 @@ uses System.UITypes,
      LUX.GPU.OpenGL,
      LUX.GPU.OpenGL.Atom.Buffer,
      LUX.GPU.OpenGL.Atom.Buffer.VerBuf,
-     LUX.GPU.OpenGL.Atom.Buffer.Elemer,
+     LUX.GPU.OpenGL.Atom.Buffer.EleBuf,
      LUX.GPU.OpenGL.Scener,
      LUX.GPU.OpenGL.Matery;
 
@@ -129,13 +129,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TGLShaperLine = class( TGLShaperPoin )
      private
      protected
-       _EleBuf :TGLElemerLine32;
+       _EleBuf :TGLEleBufLine32;
        _LineW  :Single;
      public
        constructor Create; override;
        destructor Destroy; override;
        ///// プロパティ
-       property EleBuf :TGLElemerLine32 read _EleBuf             ;
+       property EleBuf :TGLEleBufLine32 read _EleBuf             ;
        property LineW  :Single          read _LineW  write _LineW;
        ///// メソッド
        procedure BeginDraw; override;
@@ -151,12 +151,12 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TGLShaperFace = class( TGLShaperPoin )
      private
      protected
-       _EleBuf :TGLElemerFace32;
+       _EleBuf :TGLEleBufFace32;
      public
        constructor Create; override;
        destructor Destroy; override;
        ///// プロパティ
-       property EleBuf :TGLElemerFace32 read _EleBuf;
+       property EleBuf :TGLEleBufFace32 read _EleBuf;
        ///// メソッド
        procedure DrawMain; override;
        procedure LoadFromFunc( const Func_:TConstFunc<TdSingle2D,TdSingle3D>; const DivU_,DivV_:Integer ); override;
@@ -706,7 +706,7 @@ constructor TGLShaperLine.Create;
 begin
      inherited;
 
-     _EleBuf := TGLElemerLine32.Create( GL_STATIC_DRAW );
+     _EleBuf := TGLEleBufLine32.Create( GL_STATIC_DRAW );
 
      _LineW := 1;
 end;
@@ -1010,7 +1010,7 @@ constructor TGLShaperFace.Create;
 begin
      inherited;
 
-     _EleBuf := TGLElemerFace32.Create( GL_STATIC_DRAW );
+     _EleBuf := TGLEleBufFace32.Create( GL_STATIC_DRAW );
 end;
 
 destructor TGLShaperFace.Destroy;
