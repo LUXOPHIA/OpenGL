@@ -11,8 +11,8 @@ uses
   LUX.GPU.OpenGL,
   LUX.GPU.OpenGL.Viewer,
   LUX.GPU.OpenGL.Atom.Buffer,
-  LUX.GPU.OpenGL.Atom.Buffer.Verter,
-  LUX.GPU.OpenGL.Atom.Buffer.Elemer;
+  LUX.GPU.OpenGL.Atom.Buffer.VerBuf,
+  LUX.GPU.OpenGL.Atom.Buffer.EleBuf;
 
 type
   TForm1 = class(TForm)
@@ -35,9 +35,9 @@ type
     _Angle :Single;
   public
     { public 宣言 }
-    _VerterP :TGLVerterS<TSingle3D>;
-    _VerterC :TGLVerterS<TAlphaColorF>;
-    _Elemer  :TGLElemerFace32;
+    _VerBufP :TGLVerBufS<TSingle3D>;
+    _VerBufC :TGLVerBufS<TAlphaColorF>;
+    _EleBuf  :TGLEleBufFace32;
     ///// メソッド
     procedure InitViewer;
     procedure InitShaper;
@@ -143,9 +143,9 @@ begin
      //  |/      |/
      //  4-------5
 
-     _VerterP.Import( Ps );
-     _VerterC.Import( Cs );
-     _Elemer .Import( Es );
+     _VerBufP.Import( Ps );
+     _VerBufC.Import( Cs );
+     _EleBuf .Import( Es );
 end;
 
 //------------------------------------------------------------------------------
@@ -155,21 +155,21 @@ begin
      glEnableClientState( GL_VERTEX_ARRAY );
      glEnableClientState( GL_COLOR_ARRAY  );
 
-       with _VerterP do
+       with _VerBufP do
        begin
             Use;
               glVertexPointer( 3, GL_FLOAT, 0, nil );
             Unuse;
        end;
 
-       with _VerterC do
+       with _VerBufC do
        begin
             Use;
               glColorPointer( 4, GL_FLOAT, 0, nil );
             Unuse;
        end;
 
-       with _Elemer do
+       with _EleBuf do
        begin
             Use;
               glDrawElements( GL_TRIANGLES, 3{Poin} * 12{Face}, GL_UNSIGNED_INT, nil );
@@ -186,9 +186,9 @@ procedure TForm1.FormCreate(Sender: TObject);
 begin
      _Angle := 0;
 
-     _VerterP := TGLVerterS<TSingle3D>   .Create( GL_STATIC_DRAW );
-     _VerterC := TGLVerterS<TAlphaColorF>.Create( GL_STATIC_DRAW );
-     _Elemer  := TGLElemerFace32         .Create( GL_STATIC_DRAW );
+     _VerBufP := TGLVerBufS<TSingle3D>   .Create( GL_STATIC_DRAW );
+     _VerBufC := TGLVerBufS<TAlphaColorF>.Create( GL_STATIC_DRAW );
+     _EleBuf  := TGLEleBufFace32         .Create( GL_STATIC_DRAW );
 
      InitViewer;
      InitShaper;
@@ -196,9 +196,9 @@ end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
-     _VerterP.DisposeOf;
-     _VerterC.DisposeOf;
-     _Elemer .DisposeOf;
+     _VerBufP.DisposeOf;
+     _VerBufC.DisposeOf;
+     _EleBuf .DisposeOf;
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
