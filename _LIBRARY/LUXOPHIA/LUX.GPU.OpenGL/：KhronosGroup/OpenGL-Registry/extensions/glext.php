@@ -835,7 +835,7 @@
 </li>
 <li value=451><a href="extensions/AMD/AMD_gpu_shader_int64.txt">GL_AMD_gpu_shader_int64</a>
 </li>
-<li value=452><a href="extensions/EXT/GLX_EXT_stereo_tree.txt">GL_EXT_glx_stereo_tree</a>
+<li value=452><a href="extensions/EXT/GLX_EXT_stereo_tree.txt">GLX_EXT_stereo_tree</a>
 </li>
 <li value=453><a href="extensions/AMD/AMD_gcn_shader.txt">GL_AMD_gcn_shader</a>
 </li>
@@ -980,5 +980,7 @@
     <br> <a href="extensions/EXT/EXT_shader_framebuffer_fetch.txt">GL_EXT_shader_framebuffer_fetch_non_coherent</a>
 </li>
 <li value=521><a href="extensions/INTEL/INTEL_blackhole_render.txt">GL_INTEL_blackhole_render</a>
+</li>
+<li value=522><a href="extensions/EXT/EXT_EGL_image_storage.txt">GL_EXT_EGL_image_storage</a>
 </li>
 </ol>
