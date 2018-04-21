@@ -119,7 +119,7 @@ procedure TGLImager1D<_TTexel_,_TTexels_>.SendPixBuf;
 begin
      glTexImage1D( _Kind, 0, _TexelF, _Texels.ElemsX, 0,
                              _PixelF,
-                             _PixelT, 0 );
+                             _PixelT, nil );
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer1D<_TTexel_>
