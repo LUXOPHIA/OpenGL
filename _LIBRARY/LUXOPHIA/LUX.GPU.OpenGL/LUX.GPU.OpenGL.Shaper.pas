@@ -7,7 +7,7 @@ uses System.UITypes,
      LUX, LUX.D2, LUX.D3, LUX.M4,
      LUX.GPU.OpenGL,
      LUX.GPU.OpenGL.Atom.Buffer,
-     LUX.GPU.OpenGL.Atom.Buffer.Verter,
+     LUX.GPU.OpenGL.Atom.Buffer.VerBuf,
      LUX.GPU.OpenGL.Atom.Buffer.Elemer,
      LUX.GPU.OpenGL.Scener,
      LUX.GPU.OpenGL.Matery;
@@ -104,16 +104,16 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TGLShaperPoin = class( TGLShaper )
      private
      protected
-       _PosBuf :TGLVerterS<TSingle3D>;
-       _NorBuf :TGLVerterS<TSingle3D>;
-       _TexBuf :TGLVerterS<TSingle2D>;
+       _PosBuf :TGLVerBufS<TSingle3D>;
+       _NorBuf :TGLVerBufS<TSingle3D>;
+       _TexBuf :TGLVerBufS<TSingle2D>;
      public
        constructor Create; override;
        destructor Destroy; override;
        ///// プロパティ
-       property PosBuf :TGLVerterS<TSingle3D> read _PosBuf;
-       property NorBuf :TGLVerterS<TSingle3D> read _NorBuf;
-       property TexBuf :TGLVerterS<TSingle2D> read _TexBuf;
+       property PosBuf :TGLVerBufS<TSingle3D> read _PosBuf;
+       property NorBuf :TGLVerBufS<TSingle3D> read _NorBuf;
+       property TexBuf :TGLVerBufS<TSingle2D> read _TexBuf;
        ///// メソッド
        procedure BeginDraw; override;
        procedure DrawMain; override;
@@ -383,9 +383,9 @@ constructor TGLShaperPoin.Create;
 begin
      inherited;
 
-     _PosBuf := TGLVerterS<TSingle3D>.Create( GL_STATIC_DRAW );
-     _NorBuf := TGLVerterS<TSingle3D>.Create( GL_STATIC_DRAW );
-     _TexBuf := TGLVerterS<TSingle2D>.Create( GL_STATIC_DRAW );
+     _PosBuf := TGLVerBufS<TSingle3D>.Create( GL_STATIC_DRAW );
+     _NorBuf := TGLVerBufS<TSingle3D>.Create( GL_STATIC_DRAW );
+     _TexBuf := TGLVerBufS<TSingle2D>.Create( GL_STATIC_DRAW );
 end;
 
 destructor TGLShaperPoin.Destroy;
