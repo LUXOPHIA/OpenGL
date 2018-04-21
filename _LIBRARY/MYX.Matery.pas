@@ -7,9 +7,9 @@ uses Winapi.OpenGL, Winapi.OpenGLext,
      LUX.GPU.OpenGL,
      LUX.GPU.OpenGL.Viewer,
      LUX.GPU.OpenGL.Atom.Buffer,
-     LUX.GPU.OpenGL.Atom.Buffer.Unifor,
-     LUX.GPU.OpenGL.Atom.Buffer.Verter,
-     LUX.GPU.OpenGL.Atom.Buffer.Elemer,
+     LUX.GPU.OpenGL.Atom.Buffer.UniBuf,
+     LUX.GPU.OpenGL.Atom.Buffer.VerBuf,
+     LUX.GPU.OpenGL.Atom.Buffer.EleBuf,
      LUX.GPU.OpenGL.Atom.Imager,
      LUX.GPU.OpenGL.Matery.Imager.Preset,
      LUX.GPU.OpenGL.Atom.Imager.D2.Preset,
@@ -77,14 +77,14 @@ begin
           Attach( _ShaderV{Shad} );
           Attach( _ShaderF{Shad} );
 
-          with Verters do
+          with VerBufs do
           begin
-               Add( 0{BinP}, '_VerterPos'{Name}, 3{EleN}, GL_FLOAT{EleT} );
-               Add( 1{BinP}, '_VerterNor'{Name}, 3{EleN}, GL_FLOAT{EleT} );
-               Add( 2{BinP}, '_VerterTex'{Name}, 2{EleN}, GL_FLOAT{EleT} );
+               Add( 0{BinP}, '_VerBufPos'{Name}, 3{EleN}, GL_FLOAT{EleT} );
+               Add( 1{BinP}, '_VerBufNor'{Name}, 3{EleN}, GL_FLOAT{EleT} );
+               Add( 2{BinP}, '_VerBufTex'{Name}, 2{EleN}, GL_FLOAT{EleT} );
           end;
 
-          with Unifors do
+          with UniBufs do
           begin
                Add( 0{BinP}, 'TViewerScal'{Name} );
                Add( 1{BinP}, 'TCameraData'{Name} );

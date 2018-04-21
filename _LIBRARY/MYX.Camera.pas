@@ -7,9 +7,9 @@ uses Winapi.OpenGL, Winapi.OpenGLext,
      LUX.GPU.OpenGL,
      LUX.GPU.OpenGL.Viewer,
      LUX.GPU.OpenGL.Atom.Buffer,
-     LUX.GPU.OpenGL.Atom.Buffer.Unifor,
-     LUX.GPU.OpenGL.Atom.Buffer.Verter,
-     LUX.GPU.OpenGL.Atom.Buffer.Elemer,
+     LUX.GPU.OpenGL.Atom.Buffer.UniBuf,
+     LUX.GPU.OpenGL.Atom.Buffer.VerBuf,
+     LUX.GPU.OpenGL.Atom.Buffer.EleBuf,
      LUX.GPU.OpenGL.Atom.Imager,
      LUX.GPU.OpenGL.Matery.Imager.Preset,
      LUX.GPU.OpenGL.Atom.Shader,
@@ -35,7 +35,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TMyCamera = class
      private
      protected
-       _Data :TGLUnifor<TMyCameraData>;
+       _Data :TGLUniBuf<TMyCameraData>;
        ///// アクセス
        function GetData :TMyCameraData;
        procedure SetData( const Data_:TMyCameraData );
@@ -90,7 +90,7 @@ constructor TMyCamera.Create;
 begin
      inherited;
 
-     _Data := TGLUnifor<TMyCameraData>.Create( GL_DYNAMIC_DRAW );
+     _Data := TGLUniBuf<TMyCameraData>.Create( GL_DYNAMIC_DRAW );
      _Data.Count := 1;
 end;
 
