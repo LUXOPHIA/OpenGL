@@ -398,7 +398,7 @@ end;
 
 procedure TGLImager.RecePixBuf;
 begin
-     glGetTexImage( _Kind, 0, _PixelF, _PixelT, 0 );
+     glGetTexImage( _Kind, 0, _PixelF, _PixelT, nil );
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
