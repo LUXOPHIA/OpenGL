@@ -53,7 +53,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        function GetStrid :GLint;
        function GetUsage :GLenum;
        function GetCount :Integer;
-       procedure SetCount( const Count_:Integer );
+       procedure SetCount( const Count_:Integer ); virtual;
        function GetItems( const I_:Integer ) :_TItem_;
        procedure SetItems( const I_:Integer; const Item_:_TItem_ );
        ///// メソッド
