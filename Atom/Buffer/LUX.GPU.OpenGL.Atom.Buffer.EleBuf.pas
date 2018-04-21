@@ -13,7 +13,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLEleBuf<_TYPE_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLEleBuf<_TItem_>
 
      IGLEleBuf = interface( IGLBuffer )
      ['{BCD91AB4-D6E5-49E1-8670-D4C4ED39AFD3}']
@@ -27,7 +27,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLEleBuf<_TYPE_:record> = class( TGLBuffer<_TYPE_>, IGLEleBuf )
+     TGLEleBuf<_TItem_:record> = class( TGLBuffer<_TItem_>, IGLEleBuf )
      private
      protected
        ///// アクセス
@@ -41,7 +41,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure Draw; virtual; abstract;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLEleBufFace<_TYPE_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLEleBufFace<_TItem_>
 
      IGLEleBufFace = interface( IGLBuffer )
      ['{8D7AA8F0-FDEF-4B6C-A537-D861D07CB6D4}']
@@ -49,7 +49,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLEleBufFace<_TYPE_:record> = class( TGLEleBuf<_TYPE_>, IGLEleBufFace )
+     TGLEleBufFace<_TItem_:record> = class( TGLEleBuf<_TItem_>, IGLEleBufFace )
      private
      protected
        ///// アクセス
@@ -64,7 +64,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TGLEleBufFace16 = TGLEleBufFace<TWord3D>;
      TGLEleBufFace32 = TGLEleBufFace<TCardinal3D>;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLEleBufLine<_TYPE_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLEleBufLine<_TItem_>
 
      IGLEleBufLine = interface( IGLBuffer )
      ['{7B63D84E-9B99-4661-94B5-0E508A59810A}']
@@ -72,7 +72,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLEleBufLine<_TYPE_:record> = class( TGLEleBuf<_TYPE_>, IGLEleBufLine )
+     TGLEleBufLine<_TItem_:record> = class( TGLEleBuf<_TItem_>, IGLEleBufLine )
      private
      protected
        ///// アクセス
@@ -99,7 +99,7 @@ implementation //###############################################################
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLEleBuf<_TYPE_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLEleBuf<_TItem_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -107,14 +107,14 @@ implementation //###############################################################
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TGLEleBuf<_TYPE_>.GetKind :GLenum;
+function TGLEleBuf<_TItem_>.GetKind :GLenum;
 begin
      Result := GL_ELEMENT_ARRAY_BUFFER;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLEleBufFace<_TYPE_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLEleBufFace<_TItem_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -122,14 +122,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TGLEleBufFace<_TYPE_>.GetElemN :GLint;
+function TGLEleBufFace<_TItem_>.GetElemN :GLint;
 begin
      Result := 3;
 end;
 
-function TGLEleBufFace<_TYPE_>.GetElemT :GLenum;
+function TGLEleBufFace<_TItem_>.GetElemT :GLenum;
 begin
-     case  SizeOf( _TYPE_ ) of
+     case  SizeOf( _TItem_ ) of
        3: Result := GL_UNSIGNED_BYTE;
        6: Result := GL_UNSIGNED_SHORT;
       12: Result := GL_UNSIGNED_INT;
@@ -141,7 +141,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLEleBufFace<_TYPE_>.Draw;
+procedure TGLEleBufFace<_TItem_>.Draw;
 begin
      inherited Use;
 
@@ -150,7 +150,7 @@ begin
      inherited Unuse;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLEleBufLine<_TYPE_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLEleBufLine<_TItem_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -158,14 +158,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TGLEleBufLine<_TYPE_>.GetElemN :GLint;
+function TGLEleBufLine<_TItem_>.GetElemN :GLint;
 begin
      Result := 2;
 end;
 
-function TGLEleBufLine<_TYPE_>.GetElemT :GLenum;
+function TGLEleBufLine<_TItem_>.GetElemT :GLenum;
 begin
-     case  SizeOf( _TYPE_ ) of
+     case  SizeOf( _TItem_ ) of
        2: Result := GL_UNSIGNED_BYTE;
        4: Result := GL_UNSIGNED_SHORT;
        8: Result := GL_UNSIGNED_INT;
@@ -177,7 +177,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLEleBufLine<_TYPE_>.Draw;
+procedure TGLEleBufLine<_TItem_>.Draw;
 begin
      inherited Use;
 
