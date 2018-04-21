@@ -123,7 +123,7 @@ begin
                                       _Texels.ElemsY,
                                       _Texels.ElemsZ, 0,
                              _PixelF,
-                             _PixelT, 0 );
+                             _PixelT, nil );
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer3D<_TTexel_>
