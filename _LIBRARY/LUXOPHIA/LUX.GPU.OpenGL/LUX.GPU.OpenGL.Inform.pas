@@ -9,7 +9,7 @@ uses System.Generics.Collections,
      LUX.GPU.OpenGL.Atom.Buffer,
      LUX.GPU.OpenGL.Atom.Buffer.VerBuf,
      LUX.GPU.OpenGL.Atom.Buffer.EleBuf,
-     LUX.GPU.OpenGL.Atom.Buffer.Unifor,
+     LUX.GPU.OpenGL.Atom.Buffer.UniBuf,
      LUX.GPU.OpenGL.Matery,
      LUX.GPU.OpenGL.Matery.Preset;
 

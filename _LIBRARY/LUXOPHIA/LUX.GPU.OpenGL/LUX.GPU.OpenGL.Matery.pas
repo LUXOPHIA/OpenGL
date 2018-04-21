@@ -6,7 +6,7 @@ uses System.SysUtils, System.UITypes,
      Winapi.OpenGL, Winapi.OpenGLext,
      LUX,
      LUX.GPU.OpenGL,
-     LUX.GPU.OpenGL.Atom.Buffer.Unifor,
+     LUX.GPU.OpenGL.Atom.Buffer.UniBuf,
      LUX.GPU.OpenGL.Atom.Shader,
      LUX.GPU.OpenGL.Atom.Engine;
 
@@ -237,7 +237,7 @@ begin
                Add( 0{BinP}, '_SenderPos'{Name}, 3{EleN}, GL_FLOAT{EleT} );
           end;
 
-          with Unifors do
+          with UniBufs do
           begin
                Add( 0{BinP}, 'TViewerScal'{Name} );
                Add( 1{BinP}, 'TCameraProj'{Name} );
