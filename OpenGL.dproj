@@ -366,14 +366,23 @@
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Imager\D1\_FMX\LUX.GPU.OpenGL.Atom.Imager.D1.Preset.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Imager\D2\_FMX\LUX.GPU.OpenGL.Atom.Imager.D2.Preset.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Imager\D3\_FMX\LUX.GPU.OpenGL.Atom.Imager.D3.Preset.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Buffer\LUX.GPU.OpenGL.Atom.Buffer.StoBuf.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Buffer\LUX.GPU.OpenGL.Atom.Buffer.Unifor.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Buffer\LUX.GPU.OpenGL.Atom.Buffer.Verter.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Buffer\LUX.GPU.OpenGL.Atom.Buffer.Elemer.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Matery\Imager\_FMX\LUX.GPU.OpenGL.Matery.Imager.Preset.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Matery\LUX.GPU.OpenGL.Matery.Preset.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Render\_FMX\LUX.GPU.OpenGL.Render.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Render\LUX.GPU.OpenGL.Render_.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\Data\LUX.Data.Dictionary.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Render_.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\LUX.GPU.OpenGL.Comput.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\_FMX\LUX.GPU.OpenGL.Render.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Buffer\LUX.GPU.OpenGL.Atom.Buffer.PixBuf.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Buffer\LUX.GPU.OpenGL.Atom.Buffer.StoBuf.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Buffer\LUX.GPU.OpenGL.Atom.Buffer.UniBuf.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Buffer\LUX.GPU.OpenGL.Atom.Buffer.VerBuf.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Buffer\LUX.GPU.OpenGL.Atom.Buffer.EleBuf.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Buffer\PixBuf\LUX.GPU.OpenGL.Atom.Buffer.PixBuf.D1.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Buffer\PixBuf\LUX.GPU.OpenGL.Atom.Buffer.PixBuf.D2.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Buffer\PixBuf\LUX.GPU.OpenGL.Atom.Buffer.PixBuf.D3.pas"/>
+        <None Include="_DATA\ShaderF.glsl"/>
+        <None Include="_DATA\ShaderV.glsl"/>
+        <None Include="_DATA\ShaderG.glsl"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -435,8 +444,26 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
+                <DeployFile LocalName="_DATA\ShaderG.glsl" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="$(BDS)\Redist\osx32\libcgsqlite3.dylib" Class="DependencyModule">
                     <Platform Name="OSX32">
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="_DATA\ShaderF.glsl" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="_DATA\ShaderV.glsl" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win64">
+                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
