@@ -16,7 +16,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPixBuf2D<_TYPE_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPixBuf2D<_TItem_>
 
      IGLPixBuf2D = interface( IGLPixBuf1D )
      ['{A3500166-874F-4CA2-84A8-8DDAFEA56712}']
@@ -31,7 +31,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLPixBuf2D<_TYPE_:record> = class( TGLPixBuf1D<_TYPE_>, IGLPixBuf2D )
+     TGLPixBuf2D<_TItem_:record> = class( TGLPixBuf1D<_TItem_>, IGLPixBuf2D )
      private
      protected
        _CellsY :Integer;
@@ -57,7 +57,7 @@ implementation //###############################################################
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPixBuf2D<_TYPE_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPixBuf2D<_TItem_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -65,19 +65,19 @@ implementation //###############################################################
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TGLPixBuf2D<_TYPE_>.GetCellsY :Integer;
+function TGLPixBuf2D<_TItem_>.GetCellsY :Integer;
 begin
      Result := _CellsY;
 end;
 
-procedure TGLPixBuf2D<_TYPE_>.SetCellsY( const CellsY_:Integer );
+procedure TGLPixBuf2D<_TItem_>.SetCellsY( const CellsY_:Integer );
 begin
      _CellsY := CellsY_;  MakeBuffer;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLPixBuf2D<_TYPE_>.MakeBuffer;
+procedure TGLPixBuf2D<_TItem_>.MakeBuffer;
 begin
      Count := _CellsY * _CellsX;
 end;
