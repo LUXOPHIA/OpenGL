@@ -237,7 +237,6 @@ begin
      _Inform := TGLInform.Create;
 
      _AbsoPose := TGLUniBuf<TSingleM4>.Create( GL_DYNAMIC_DRAW );
-     _AbsoPose.Count := 1;
 
      RelaPose := TSingleM4.Identity;
 

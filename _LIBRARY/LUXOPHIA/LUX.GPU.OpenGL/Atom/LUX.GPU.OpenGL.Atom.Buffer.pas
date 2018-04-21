@@ -164,7 +164,7 @@ begin
      glGenBuffers( 1, @_ID );
 
      _Usage := Usage_;
-      Count := 0;
+      Count := 1;
 end;
 
 destructor TGLBuffer<_TItem_>.Destroy;
