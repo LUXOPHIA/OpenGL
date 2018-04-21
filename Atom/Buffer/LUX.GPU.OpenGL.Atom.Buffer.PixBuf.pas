@@ -14,7 +14,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPixBuf<_TYPE_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPixBuf<_TItem_>
 
      IGLPixBuf = interface( IGLBuffer )
      ['{60D83A80-BD20-414E-8E71-5B96473F13EC}']
@@ -31,7 +31,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLPixBuf<_TYPE_:record> = class( TGLBuffer<_TYPE_>, IGLPixBuf )
+     TGLPixBuf<_TItem_:record> = class( TGLBuffer<_TItem_>, IGLPixBuf )
      private
      protected
        ///// アクセス
@@ -61,7 +61,7 @@ implementation //###############################################################
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPixBuf<_TYPE_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPixBuf<_TItem_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -69,27 +69,27 @@ implementation //###############################################################
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TGLPixBuf<_TYPE_>.GetKind :GLenum;
+function TGLPixBuf<_TItem_>.GetKind :GLenum;
 begin
      Result := GL_ARRAY_BUFFER;
 end;
 
 //------------------------------------------------------------------------------
 
-procedure TGLPixBuf<_TYPE_>.SetCount( const Count_:Integer );
+procedure TGLPixBuf<_TItem_>.SetCount( const Count_:Integer );
 begin
      inherited;
 
      BindRead;
 
-       glBufferData( GL_PIXEL_UNPACK_BUFFER_ARB, SizeOf( _TYPE_ ) * _Count, nil, _Usage );
+       glBufferData( GL_PIXEL_UNPACK_BUFFER_ARB, SizeOf( _TItem_ ) * _Count, nil, _Usage );
 
      UnbindRead;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-function TGLPixBuf<_TYPE_>.InitAlign :GLint;
+function TGLPixBuf<_TItem_>.InitAlign :GLint;
 begin
      Result := 1{Byte};
 end;
@@ -98,31 +98,31 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLPixBuf<_TYPE_>.BindRead;
+procedure TGLPixBuf<_TItem_>.BindRead;
 begin
      glBindBuffer( GL_PIXEL_UNPACK_BUFFER_ARB, _ID );
 end;
 
-procedure TGLPixBuf<_TYPE_>.UnbindRead;
+procedure TGLPixBuf<_TItem_>.UnbindRead;
 begin
      glBindBuffer( GL_PIXEL_UNPACK_BUFFER_ARB, 0 );
 end;
 
 //------------------------------------------------------------------------------
 
-procedure TGLPixBuf<_TYPE_>.BindWrite;
+procedure TGLPixBuf<_TItem_>.BindWrite;
 begin
      glBindBuffer( GL_PIXEL_PACK_BUFFER, _ID );
 end;
 
-procedure TGLPixBuf<_TYPE_>.UnbindWrite;
+procedure TGLPixBuf<_TItem_>.UnbindWrite;
 begin
      glBindBuffer( GL_PIXEL_PACK_BUFFER, 0 );
 end;
 
 //------------------------------------------------------------------------------
 
-procedure TGLPixBuf<_TYPE_>.CopyFrom( const Imager_:TGLImager );
+procedure TGLPixBuf<_TItem_>.CopyFrom( const Imager_:TGLImager );
 begin
      BindWrite;
 
@@ -131,7 +131,7 @@ begin
      UnbindWrite;
 end;
 
-procedure TGLPixBuf<_TYPE_>.CopyTo( const Imager_:TGLImager );
+procedure TGLPixBuf<_TItem_>.CopyTo( const Imager_:TGLImager );
 begin
      BindRead;
 

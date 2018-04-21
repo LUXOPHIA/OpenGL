@@ -15,7 +15,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPixBuf1D<_TYPE_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPixBuf1D<_TItem_>
 
      IGLPixBuf1D = interface( IGLBuffer )
      ['{335CA6ED-CF5C-4145-B561-4F1AC430C9DD}']
@@ -30,7 +30,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLPixBuf1D<_TYPE_:record> = class( TGLPixBuf<_TYPE_>, IGLPixBuf1D )
+     TGLPixBuf1D<_TItem_:record> = class( TGLPixBuf<_TItem_>, IGLPixBuf1D )
      private
      protected
        _CellsX :Integer;
@@ -56,7 +56,7 @@ implementation //###############################################################
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPixBuf1D<_TYPE_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPixBuf1D<_TItem_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -64,19 +64,19 @@ implementation //###############################################################
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TGLPixBuf1D<_TYPE_>.GetCellsX :Integer;
+function TGLPixBuf1D<_TItem_>.GetCellsX :Integer;
 begin
      Result := _CellsX;
 end;
 
-procedure TGLPixBuf1D<_TYPE_>.SetCellsX( const CellsX_:Integer );
+procedure TGLPixBuf1D<_TItem_>.SetCellsX( const CellsX_:Integer );
 begin
      _CellsX := CellsX_;  MakeBuffer;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLPixBuf1D<_TYPE_>.MakeBuffer;
+procedure TGLPixBuf1D<_TItem_>.MakeBuffer;
 begin
      Count := _CellsX;
 end;
