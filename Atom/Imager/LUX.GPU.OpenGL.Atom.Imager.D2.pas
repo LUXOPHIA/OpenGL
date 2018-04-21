@@ -121,7 +121,7 @@ begin
      glTexImage2D( _Kind, 0, _TexelF, _Texels.ElemsX,
                                       _Texels.ElemsY, 0,
                              _PixelF,
-                             _PixelT, 0 );
+                             _PixelT, nil );
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer2D<_TTexel_>
