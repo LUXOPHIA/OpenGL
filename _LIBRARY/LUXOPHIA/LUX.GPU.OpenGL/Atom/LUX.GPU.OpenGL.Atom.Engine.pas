@@ -21,12 +21,12 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      {protected}
        ///// アクセス
        function GetVerBufs :TGLPorterV;
-       function GetUnifors :TGLPorterU;
+       function GetUniBufs :TGLPorterU;
        function GetImagers :TGLPorterI;
      {public}
        ///// プロパティ
        property VerBufs :TGLPorterV read GetVerBufs;
-       property Unifors :TGLPorterU read GetUnifors;
+       property UniBufs :TGLPorterU read GetUniBufs;
        property Imagers :TGLPorterI read GetImagers;
      end;
 
@@ -36,12 +36,12 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
      protected
        _VerBufs :TGLPorterV;
-       _Unifors :TGLPorterU;
+       _UniBufs :TGLPorterU;
        _Imagers :TGLPorterI;
        _StoBufs :TGLPorterS;
        ///// アクセス
        function GetVerBufs :TGLPorterV;
-       function GetUnifors :TGLPorterU;
+       function GetUniBufs :TGLPorterU;
        function GetImagers :TGLPorterI;
        function GetStoBufs :TGLPorterS;
        ///// イベント
@@ -51,7 +51,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        destructor Destroy; override;
        ///// プロパティ
        property VerBufs :TGLPorterV read GetVerBufs;
-       property Unifors :TGLPorterU read GetUnifors;
+       property UniBufs :TGLPorterU read GetUniBufs;
        property Imagers :TGLPorterI read GetImagers;
        property StoBufs :TGLPorterS read GetStoBufs;
        ///// メソッド
@@ -86,9 +86,9 @@ begin
      Result := _VerBufs;
 end;
 
-function TGLEngine.GetUnifors :TGLPorterU;
+function TGLEngine.GetUniBufs :TGLPorterU;
 begin
-     Result := _Unifors;
+     Result := _UniBufs;
 end;
 
 function TGLEngine.GetImagers :TGLPorterI;
@@ -106,7 +106,7 @@ end;
 procedure TGLEngine.DoOnLinked;
 begin
      _VerBufs.AddPorts;
-     _Unifors.AddPorts;
+     _UniBufs.AddPorts;
      _Imagers.AddPorts;
      _StoBufs.AddPorts;
 
@@ -122,7 +122,7 @@ begin
      inherited Create;
 
      _VerBufs := TGLPorterV.Create( Self as IGLEngine );
-     _Unifors := TGLPorterU.Create( Self as IGLEngine );
+     _UniBufs := TGLPorterU.Create( Self as IGLEngine );
      _Imagers := TGLPorterI.Create( Self as IGLEngine );
      _StoBufs := TGLPorterS.Create( Self as IGLEngine );
 end;
@@ -130,7 +130,7 @@ end;
 destructor TGLEngine.Destroy;
 begin
      _VerBufs.DisposeOf;
-     _Unifors.DisposeOf;
+     _UniBufs.DisposeOf;
      _Imagers.DisposeOf;
      _StoBufs.DisposeOf;
 
@@ -160,7 +160,7 @@ begin
      inherited;
 
      _VerBufs.Use;
-     _Unifors.Use;
+     _UniBufs.Use;
      _Imagers.Use;
      _StoBufs.Use;
 end;
@@ -168,7 +168,7 @@ end;
 procedure TGLEngine.Unuse;
 begin
      _VerBufs.Unuse;
-     _Unifors.Unuse;
+     _UniBufs.Unuse;
      _Imagers.Unuse;
      _StoBufs.Unuse;
 
