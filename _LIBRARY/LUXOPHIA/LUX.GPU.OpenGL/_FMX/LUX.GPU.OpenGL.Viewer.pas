@@ -276,7 +276,6 @@ begin
      end;
 
      _Viewer := TGLUniBuf<TSingleM4>.Create( GL_DYNAMIC_DRAW );
-     _Viewer.Count := 1;
 end;
 
 destructor TGLViewer.Destroy;

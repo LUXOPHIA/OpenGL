@@ -263,7 +263,6 @@ begin
      inherited;
 
      _Color := TGLUniBuf<TAlphaColorF>.Create( GL_STATIC_DRAW );
-     _Color.Count := 1;
 
      with _ShaderF do
      begin
@@ -351,7 +350,6 @@ begin
      inherited;
 
      _Ambient := TGLUniBuf<TAlphaColorF>.Create( GL_STATIC_DRAW );
-     _Ambient.Count := 1;
 
      with _ShaderF do
      begin
@@ -454,8 +452,6 @@ begin
 
      _Ambient := TGLUniBuf<TAlphaColorF>.Create( GL_STATIC_DRAW );
      _Diffuse := TGLUniBuf<TAlphaColorF>.Create( GL_STATIC_DRAW );
-     _Ambient.Count := 1;
-     _Diffuse.Count := 1;
 
      with _ShaderF do
      begin
@@ -579,11 +575,8 @@ begin
      inherited;
 
      _Ambient := TGLUniBuf<TAlphaColorF>.Create( GL_STATIC_DRAW );
-     _Ambient.Count := 1;
      _Diffuse := TGLUniBuf<TAlphaColorF>.Create( GL_STATIC_DRAW );
-     _Diffuse.Count := 1;
      _RefI    := TGLUniBuf<Single>.Create( GL_STATIC_DRAW );
-     _RefI   .Count := 1;
 
      with _ShaderF do
      begin
@@ -734,7 +727,6 @@ begin
      inherited;
 
      _Color := TGLUniBuf<TAlphaColorF>.Create( GL_STATIC_DRAW );
-     _Color.Count := 1;
 
      with _ShaderF do
      begin
@@ -851,7 +843,6 @@ begin
      inherited;
 
      _RefI := TGLUniBuf<Single>.Create( GL_STATIC_DRAW );
-     _RefI.Count := 1;
 
      with _ShaderF do
      begin

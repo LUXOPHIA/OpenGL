@@ -130,7 +130,6 @@ begin
      inherited;
 
      _Proj := TGLUniBuf<TSingleM4>.Create( GL_STATIC_DRAW );
-     _Proj.Count := 1;
 
      _Offs := TSingle2D.Create( 0, 0 );
 end;

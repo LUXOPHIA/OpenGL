@@ -129,7 +129,7 @@ begin
      _Frame1 := TGLFramer1.Create;
      _FrameN := TGLFramerN.Create;
 
-     _Viewer := TGLUniBuf<TSingleM4>.Create( GL_DYNAMIC_DRAW ); _Viewer.Count := 1;
+     _Viewer := TGLUniBuf<TSingleM4>.Create( GL_DYNAMIC_DRAW );
 
      SizeX := 1920;
      SizeY := 1080;
