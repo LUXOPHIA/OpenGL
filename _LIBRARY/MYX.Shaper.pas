@@ -7,9 +7,9 @@ uses Winapi.OpenGL, Winapi.OpenGLext,
      LUX.GPU.OpenGL,
      LUX.GPU.OpenGL.Viewer,
      LUX.GPU.OpenGL.Atom.Buffer,
-     LUX.GPU.OpenGL.Atom.Buffer.Unifor,
-     LUX.GPU.OpenGL.Atom.Buffer.Verter,
-     LUX.GPU.OpenGL.Atom.Buffer.Elemer,
+     LUX.GPU.OpenGL.Atom.Buffer.UniBuf,
+     LUX.GPU.OpenGL.Atom.Buffer.VerBuf,
+     LUX.GPU.OpenGL.Atom.Buffer.EleBuf,
      LUX.GPU.OpenGL.Atom.Imager,
      LUX.GPU.OpenGL.Matery.Imager.Preset,
      LUX.GPU.OpenGL.Atom.Shader,
@@ -34,7 +34,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TMyShaperBase = class
      private
      protected
-       _Data :TGLUnifor<TMyShaperData>;
+       _Data :TGLUniBuf<TMyShaperData>;
        ///// アクセス
        function GetData :TMyShaperData;
        procedure SetData( const Data_:TMyShaperData );
@@ -52,18 +52,18 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TMyShaper = class( TMyShaperBase )
      private
      protected
-       _PosBuf :TGLVerterS<TSingle3D>;
-       _NorBuf :TGLVerterS<TSingle3D>;
-       _TexBuf :TGLVerterS<TSingle2D>;
-       _EleBuf :TGLElemerFace32;
+       _PosBuf :TGLVerBufS<TSingle3D>;
+       _NorBuf :TGLVerBufS<TSingle3D>;
+       _TexBuf :TGLVerBufS<TSingle2D>;
+       _EleBuf :TGLEleBufFace32;
      public
        constructor Create;
        destructor Destroy; override;
        ///// プロパティ
-       property PosBuf :TGLVerterS<TSingle3D> read _PosBuf;
-       property NorBuf :TGLVerterS<TSingle3D> read _NorBuf;
-       property TexBuf :TGLVerterS<TSingle2D> read _TexBuf;
-       property EleBuf :TGLElemerFace32       read _EleBuf;
+       property PosBuf :TGLVerBufS<TSingle3D> read _PosBuf;
+       property NorBuf :TGLVerBufS<TSingle3D> read _NorBuf;
+       property TexBuf :TGLVerBufS<TSingle2D> read _TexBuf;
+       property EleBuf :TGLEleBufFace32       read _EleBuf;
        ///// メソッド
        procedure Draw; override;
        procedure LoadFormFunc( const Func_:TConstFunc<TdSingle2D,TdSingle3D>; const DivX_,DivY_:Integer );
@@ -111,7 +111,7 @@ constructor TMyShaperBase.Create;
 begin
      inherited;
 
-     _Data := TGLUnifor<TMyShaperData>.Create( GL_DYNAMIC_DRAW );
+     _Data := TGLUniBuf<TMyShaperData>.Create( GL_DYNAMIC_DRAW );
      _Data.Count := 1;
 end;
 
@@ -143,10 +143,10 @@ constructor TMyShaper.Create;
 begin
      inherited;
 
-     _PosBuf := TGLVerterS<TSingle3D>.Create( GL_STATIC_DRAW );
-     _NorBuf := TGLVerterS<TSingle3D>.Create( GL_STATIC_DRAW );
-     _TexBuf := TGLVerterS<TSingle2D>.Create( GL_STATIC_DRAW );
-     _EleBuf := TGLElemerFace32      .Create( GL_STATIC_DRAW );
+     _PosBuf := TGLVerBufS<TSingle3D>.Create( GL_STATIC_DRAW );
+     _NorBuf := TGLVerBufS<TSingle3D>.Create( GL_STATIC_DRAW );
+     _TexBuf := TGLVerBufS<TSingle2D>.Create( GL_STATIC_DRAW );
+     _EleBuf := TGLEleBufFace32      .Create( GL_STATIC_DRAW );
 end;
 
 destructor TMyShaper.Destroy;

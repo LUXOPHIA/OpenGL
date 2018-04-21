@@ -22,9 +22,9 @@ _Shaper;
 
 ////////////////////////////////////////////////////////////////////////////////【入出力】
 
-in vec4 _VerterPos;
-in vec4 _VerterNor;
-in vec2 _VerterTex;
+in vec4 _VerBufPos;
+in vec4 _VerBufNor;
+in vec2 _VerBufTex;
 
 //------------------------------------------------------------------------------
 
@@ -40,9 +40,9 @@ _Result;
 
 void main()
 {
-  _Result.Pos =                     _Shaper.Pose     * _VerterPos;
-  _Result.Nor = transpose( inverse( _Shaper.Pose ) ) * _VerterNor;
-  _Result.Tex =                                        _VerterTex;
+  _Result.Pos =                     _Shaper.Pose     * _VerBufPos;
+  _Result.Nor = transpose( inverse( _Shaper.Pose ) ) * _VerBufNor;
+  _Result.Tex =                                        _VerBufTex;
 
   gl_Position = _ViewerScal * _Camera.Proj * inverse( _Camera.Pose ) * _Result.Pos;
 }
