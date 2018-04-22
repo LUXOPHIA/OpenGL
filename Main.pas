@@ -215,21 +215,21 @@ begin
 
        with _VerBufP do
        begin
-            Use;
+            Bind;
               glVertexPointer( 3, GL_FLOAT, 0, nil );
-            Unuse;
+            Unbind;
        end;
 
        with _VerBufC do
        begin
-            Use;
+            Bind;
               glColorPointer( 4, GL_FLOAT, 0, nil );
-            Unuse;
+            Unbind;
        end;
 
        with _EleBuf do
        begin
-            Use;
+            Bind;
 
               with _Progra do
               begin
@@ -238,7 +238,7 @@ begin
                    Unuse;
               end;
 
-            Unuse;
+            Unbind;
        end;
 
      glDisableClientState( GL_VERTEX_ARRAY );
