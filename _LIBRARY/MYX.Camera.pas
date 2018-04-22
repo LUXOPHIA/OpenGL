@@ -91,7 +91,6 @@ begin
      inherited;
 
      _Data := TGLUniBuf<TMyCameraData>.Create( GL_DYNAMIC_DRAW );
-     _Data.Count := 1;
 end;
 
 destructor TMyCamera.Destroy;

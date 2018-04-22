@@ -112,7 +112,6 @@ begin
      inherited;
 
      _Data := TGLUniBuf<TMyShaperData>.Create( GL_DYNAMIC_DRAW );
-     _Data.Count := 1;
 end;
 
 destructor TMyShaperBase.Destroy;
