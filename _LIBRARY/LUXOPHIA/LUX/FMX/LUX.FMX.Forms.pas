@@ -2,7 +2,7 @@
 
 interface //#################################################################### ■
 
-uses System.Classes, System.UITypes,
+uses System.Types, System.UITypes, System.Classes,
      FMX.Types, FMX.Forms,
      LUX;
 
@@ -12,9 +12,19 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TCommonCustomForm
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% HCommonCustomForm
 
-     TCommonCustomForm = class( FMX.Forms.TCommonCustomForm )
+     HCommonCustomForm = class helper for TCommonCustomForm
+     private
+     protected
+     public
+       ///// メソッド
+       function MousePos :TPointF;
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TLuxCommonCustomForm
+
+     TLuxCommonCustomForm = class( FMX.Forms.TCommonCustomForm )
      private
      protected
        ///// イベント
@@ -38,7 +48,7 @@ implementation //###############################################################
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TCommonCustomForm
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% HCommonCustomForm
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -46,7 +56,22 @@ implementation //###############################################################
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-procedure TCommonCustomForm.MouseUp( Button_:TMouseButton; Shift_:TShiftState; X_,Y_:Single; DoClick_:Boolean = True );
+/////////////////////////////////////////////////////////////////////// メソッド
+
+function HCommonCustomForm.MousePos :TPointF;
+begin
+     Result := ScreenToClient( Screen.MousePos );
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TLuxCommonCustomForm
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+procedure TLuxCommonCustomForm.MouseUp( Button_:TMouseButton; Shift_:TShiftState; X_,Y_:Single; DoClick_:Boolean = True );
 begin
      if Assigned( _OnMouseClick ) and DoClick_ then _OnMouseClick( Self, Button_, Shift_, X_, Y_ );
 
