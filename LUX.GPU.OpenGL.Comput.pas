@@ -11,7 +11,7 @@ uses System.SysUtils, System.UITypes,
      LUX.GPU.OpenGL.Atom.Buffer.VerBuf,
      LUX.GPU.OpenGL.Atom.Buffer.StoBuf,
      LUX.GPU.OpenGL.Atom.Image,
-     LUX.GPU.OpenGL.Atom.Imager,
+     LUX.GPU.OpenGL.Atom.Texture,
      LUX.GPU.OpenGL.Atom.Shader,
      LUX.GPU.OpenGL.Atom.Engine;
 
@@ -307,7 +307,7 @@ begin
      begin
           with _Images[ K ] do
           begin
-               _Engine.Texturs.Add( Index{BinP}, K{Name} );
+               _Engine.Textures.Add( Index{BinP}, K{Name} );
           end;
      end;
 
