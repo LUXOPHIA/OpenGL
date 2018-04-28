@@ -23,18 +23,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLImager2D<_TTexel_:record;_TTexels_:constructor,TArray2D<_TTexel_>> = class( TGLImager, IGLImager2D )
+     TGLImager2D<_TTexel_:record;_TTexels_:constructor,TArray2D<_TTexel_>> = class( TGLImager<_TTexel_,_TTexels_>, IGLImager2D )
      private
      protected
-       _Texels :_TTexels_;
      public
        constructor Create;
        destructor Destroy; override;
-       ///// プロパティ
-       property Texels :_TTexels_ read _Texels;
        ///// メソッド
        procedure SendData; override;
-       procedure ReceData; override;
        procedure SendPixBuf; override;
      end;
 
@@ -84,12 +80,10 @@ constructor TGLImager2D<_TTexel_,_TTexels_>.Create;
 begin
      inherited Create( GL_TEXTURE_2D );
 
-     _Texels := _TTexels_.Create;
 end;
 
 destructor TGLImager2D<_TTexel_,_TTexels_>.Destroy;
 begin
-     _Texels.DisposeOf;
 
      inherited;
 end;
@@ -104,13 +98,6 @@ begin
                                _PixelF,
                                _PixelT,
                                _Texels.Elem0P );
-     Unbind;
-end;
-
-procedure TGLImager2D<_TTexel_,_TTexels_>.ReceData;
-begin
-     Bind;
-       glGetTexImage( _Kind, 0, _PixelF, _PixelT, _Texels.Elem0P );
      Unbind;
 end;
 
@@ -136,7 +123,7 @@ constructor TGLBricer2D<_TTexel_>.Create;
 begin
      inherited;
 
-     with _Field do
+     with _Sampler do
      begin
           WrapU := GL_MIRRORED_REPEAT;
           WrapV := GL_MIRRORED_REPEAT;
@@ -161,7 +148,7 @@ constructor TGLGrider2D<_TTexel_>.Create;
 begin
      inherited;
 
-     with _Field do
+     with _Sampler do
      begin
           WrapU := GL_CLAMP_TO_EDGE;
           WrapV := GL_CLAMP_TO_EDGE;
