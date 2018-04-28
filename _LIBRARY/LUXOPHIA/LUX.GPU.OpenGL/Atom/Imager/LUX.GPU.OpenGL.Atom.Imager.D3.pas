@@ -40,7 +40,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer3D<_TTexel_>
 
-     TGLBricer3D<_TTexel_:record> = class( TGLImager3D<_TTexel_,TBricArray3D<_TTexel_>> )
+     TGLBricer3D<_TTexel_:record> = class( TGLImager3D<_TTexel_,TCellArray3D<_TTexel_>> )
      private
      protected
      public
@@ -50,7 +50,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLGrider3D<_TTexel_>
 
-     TGLGrider3D<_TTexel_:record> = class( TGLImager3D<_TTexel_,TGridArray3D<_TTexel_>> )
+     TGLGrider3D<_TTexel_:record> = class( TGLImager3D<_TTexel_,TPoinArray3D<_TTexel_>> )
      private
      protected
      public

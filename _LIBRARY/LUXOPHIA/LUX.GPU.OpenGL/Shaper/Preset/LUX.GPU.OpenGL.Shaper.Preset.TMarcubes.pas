@@ -354,9 +354,9 @@ begin
           MargsX := 1;
           MargsY := 1;
           MargsZ := 1;
-          BricsX := 100;
-          BricsY := 100;
-          BricsZ := 100;
+          CellsX := 100;
+          CellsY := 100;
+          CellsZ := 100;
      end;
 
      SizeX := 2;
@@ -412,12 +412,9 @@ end;
 
 procedure TMarcubes.MakeModel;
 begin
-     with _Grider do
-     begin
-          SendData;
+     _Grider.SendData;
 
-          with Texels do PoinsN := BricsX * BricsY * BricsZ;
-     end;
+     PoinsN := _Grider.Texels.CellsN;
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
