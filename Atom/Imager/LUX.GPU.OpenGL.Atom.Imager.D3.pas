@@ -3,7 +3,10 @@
 interface //#################################################################### ■
 
 uses Winapi.OpenGL, Winapi.OpenGLext,
-     LUX, LUX.Data.Lattice.T3, LUX.GPU.OpenGL.Atom.Imager;
+     LUX,
+     LUX.Data.Lattice.T3,
+     LUX.GPU.OpenGL.Atom.Textur.D3,
+     LUX.GPU.OpenGL.Atom.Imager;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -23,15 +26,20 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLImager3D<_TTexel_:record;_TTexels_:constructor,TArray3D<_TTexel_>> = class( TGLImager<_TTexel_,_TTexels_>, IGLImager3D )
+     TGLImager3D<_TTexel_:record;_TTexels_:constructor,TArray3D<_TTexel_>> = class( TGLTextur3D<_TTexel_,_TTexels_>, IGLImager3D )
      private
      protected
+       _Sampler :TGLSampler;
+       ///// アクセス
+       function GetSampler :TGLSampler;
      public
        constructor Create;
        destructor Destroy; override;
+       ///// プロパティ
+       property Sampler :TGLSampler read GetSampler;
        ///// メソッド
-       procedure SendData; override;
-       procedure SendPixBuf; override;
+       procedure Use( const BindI_:GLuint ); override;
+       procedure Unuse( const BindI_:GLuint ); override;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer3D<_TTexel_>
@@ -74,43 +82,43 @@ uses System.Math;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
+/////////////////////////////////////////////////////////////////////// アクセス
+
+function TGLImager3D<_TTexel_,_TTexels_>.GetSampler :TGLSampler;
+begin
+     Result := _Sampler;
+end;
+
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
 constructor TGLImager3D<_TTexel_,_TTexels_>.Create;
 begin
-     inherited Create( GL_TEXTURE_3D );
+     inherited;
 
+     _Sampler := TGLSampler.Create;
 end;
 
 destructor TGLImager3D<_TTexel_,_TTexels_>.Destroy;
 begin
+     _Sampler.DisposeOf;
 
      inherited;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLImager3D<_TTexel_,_TTexels_>.SendData;
+procedure TGLImager3D<_TTexel_,_TTexels_>.Use( const BindI_:GLuint );
 begin
-     Bind;
-       glTexImage3D( _Kind, 0, _TexelF, _Texels.ElemsX,
-                                        _Texels.ElemsY,
-                                        _Texels.ElemsZ, 0,
-                               _PixelF,
-                               _PixelT,
-                               _Texels.Elem0P );
-     Unbind;
+     inherited;
+
+     _Sampler.Use( BindI_ );
 end;
 
-//------------------------------------------------------------------------------
-
-procedure TGLImager3D<_TTexel_,_TTexels_>.SendPixBuf;
+procedure TGLImager3D<_TTexel_,_TTexels_>.Unuse( const BindI_:GLuint );
 begin
-     glTexImage3D( _Kind, 0, _TexelF, _Texels.ElemsX,
-                                      _Texels.ElemsY,
-                                      _Texels.ElemsZ, 0,
-                             _PixelF,
-                             _PixelT, nil );
+     _Sampler.Unuse( BindI_ );
+
+     inherited;
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer3D<_TTexel_>
