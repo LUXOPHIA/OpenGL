@@ -1,12 +1,12 @@
-﻿unit LUX.GPU.OpenGL.Matery.Imager.Preset;
+﻿unit LUX.GPU.OpenGL.Matery.Texture.Preset;
 
 interface //#################################################################### ■
 
 uses Winapi.OpenGL, Winapi.OpenGLext,
      LUX,
      LUX.GPU.OpenGL,
-     LUX.GPU.OpenGL.Atom.Imager,
-     LUX.GPU.OpenGL.Atom.Imager.D2.Preset,
+     LUX.GPU.OpenGL.Atom.Texture,
+     LUX.GPU.OpenGL.Atom.Texture.D2.Preset,
      LUX.GPU.OpenGL.Matery;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
@@ -108,7 +108,7 @@ begin
 
      with _Engine do
      begin
-          with Texturs do
+          with Textures do
           begin
                Add( 0{BinP}, '_Imager'{Name} );
           end;
@@ -161,7 +161,7 @@ begin
 
      with _Engine do
      begin
-          with Texturs do
+          with Textures do
           begin
                Add( 0{BinP}, '_Imager'{Name} );
           end;
