@@ -71,14 +71,14 @@ var
    B :TBitmapData;
    X, Y :Integer;
 begin
-     _Texels.BricsX := BMP_.Width ;
-     _Texels.BricsY := BMP_.Height;
+     _Texels.CellsX := BMP_.Width ;
+     _Texels.CellsY := BMP_.Height;
 
      BMP_.Map( TMapAccess.Read, B );
 
-     for Y := 0 to _Texels.BricsY-1 do
+     for Y := 0 to _Texels.CellsY-1 do
      begin
-          for X := 0 to _Texels.BricsX-1 do
+          for X := 0 to _Texels.CellsX-1 do
           begin
                Texels[ X, Y ] := TAlphaColorF.Create( B.GetPixel( X, Y ) );
           end;
@@ -96,13 +96,13 @@ var
 begin
      ReceData;
 
-     BMP_.SetSize( _Texels.BricsX, _Texels.BricsY );
+     BMP_.SetSize( _Texels.CellsX, _Texels.CellsY );
 
      BMP_.Map( TMapAccess.Write, B );
 
-     for Y := 0 to _Texels.BricsY-1 do
+     for Y := 0 to _Texels.CellsY-1 do
      begin
-          for X := 0 to _Texels.BricsX-1 do
+          for X := 0 to _Texels.CellsX-1 do
           begin
                B.SetPixel( X, Y, Texels[ X, Y ].ToAlphaColor );
           end;
