@@ -156,7 +156,7 @@ object Form1: TForm1
             item
             end>
           IsSelected = True
-          Size.Width = 54.000000000000000000
+          Size.Width = 53.000000000000000000
           Size.Height = 26.000000000000000000
           Size.PlatformDefault = False
           StyleLookup = ''
