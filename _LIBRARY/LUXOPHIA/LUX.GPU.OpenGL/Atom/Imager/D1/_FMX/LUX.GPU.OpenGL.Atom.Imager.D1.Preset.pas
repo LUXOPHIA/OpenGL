@@ -12,9 +12,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer1D_TAlphaColorF
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLCelTex1D_TAlphaColorF
 
-     TGLBricer1D_TAlphaColorF = class( TGLBricer1D<TAlphaColorF> )
+     TGLCelTex1D_TAlphaColorF = class( TGLCelTex1D<TAlphaColorF> )
      private
      protected
      public
@@ -41,7 +41,7 @@ uses Winapi.OpenGL, Winapi.OpenGLext;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer1D_TAlphaColorF
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLCelTex1D_TAlphaColorF
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -49,7 +49,7 @@ uses Winapi.OpenGL, Winapi.OpenGLext;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLBricer1D_TAlphaColorF.Create;
+constructor TGLCelTex1D_TAlphaColorF.Create;
 begin
      inherited;
 
@@ -58,7 +58,7 @@ begin
      _PixelT := GL_FLOAT;
 end;
 
-destructor TGLBricer1D_TAlphaColorF.Destroy;
+destructor TGLCelTex1D_TAlphaColorF.Destroy;
 begin
 
      inherited;
@@ -66,7 +66,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLBricer1D_TAlphaColorF.ImportFrom( const BMP_:TBitmap );
+procedure TGLCelTex1D_TAlphaColorF.ImportFrom( const BMP_:TBitmap );
 var
    B :TBitmapData;
    X :Integer;
@@ -85,7 +85,7 @@ begin
      SendData;
 end;
 
-procedure TGLBricer1D_TAlphaColorF.ExportTo( const BMP_:TBitmap );
+procedure TGLCelTex1D_TAlphaColorF.ExportTo( const BMP_:TBitmap );
 var
    B :TBitmapData;
    X :Integer;
@@ -104,7 +104,7 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure TGLBricer1D_TAlphaColorF.LoadFromFile( const FileName_:String );
+procedure TGLCelTex1D_TAlphaColorF.LoadFromFile( const FileName_:String );
 var
    B :TBitmap;
 begin
@@ -117,7 +117,7 @@ begin
      B.DisposeOf;
 end;
 
-procedure TGLBricer1D_TAlphaColorF.SaveToFile( const FileName_:String );
+procedure TGLCelTex1D_TAlphaColorF.SaveToFile( const FileName_:String );
 var
    B :TBitmap;
 begin
