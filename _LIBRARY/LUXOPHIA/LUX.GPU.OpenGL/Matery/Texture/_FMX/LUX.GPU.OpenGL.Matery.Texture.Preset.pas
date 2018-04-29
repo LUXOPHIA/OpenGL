@@ -110,7 +110,7 @@ begin
      begin
           with Texturs do
           begin
-               Add( 0{BinP}, '_Imager'{Name} );
+               Add( 0{BinP}, '_Textur'{Name} );
           end;
      end;
 
@@ -163,7 +163,7 @@ begin
      begin
           with Texturs do
           begin
-               Add( 0{BinP}, '_Imager'{Name} );
+               Add( 0{BinP}, '_Textur'{Name} );
           end;
      end;
 
