@@ -22,12 +22,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// アクセス
        function GetVerBufs :TGLPorterV;
        function GetUniBufs :TGLPorterU;
-       function GetImagers :TGLPorterI;
+       function GetTexturs :TGLPorterT;
+       function GetStoBufs :TGLPorterS;
      {public}
        ///// プロパティ
        property VerBufs :TGLPorterV read GetVerBufs;
        property UniBufs :TGLPorterU read GetUniBufs;
-       property Imagers :TGLPorterI read GetImagers;
+       property Texturs :TGLPorterT read GetTexturs;
+       property StoBufs :TGLPorterS read GetStoBufs;
      end;
 
      //-------------------------------------------------------------------------
@@ -37,12 +39,12 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      protected
        _VerBufs :TGLPorterV;
        _UniBufs :TGLPorterU;
-       _Imagers :TGLPorterI;
+       _Texturs :TGLPorterT;
        _StoBufs :TGLPorterS;
        ///// アクセス
        function GetVerBufs :TGLPorterV;
        function GetUniBufs :TGLPorterU;
-       function GetImagers :TGLPorterI;
+       function GetTexturs :TGLPorterT;
        function GetStoBufs :TGLPorterS;
        ///// イベント
        procedure DoOnLinked; override;
@@ -52,7 +54,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// プロパティ
        property VerBufs :TGLPorterV read GetVerBufs;
        property UniBufs :TGLPorterU read GetUniBufs;
-       property Imagers :TGLPorterI read GetImagers;
+       property Texturs :TGLPorterT read GetTexturs;
        property StoBufs :TGLPorterS read GetStoBufs;
        ///// メソッド
        procedure Attach( const Shader_:IGLShader ); override;
@@ -91,9 +93,9 @@ begin
      Result := _UniBufs;
 end;
 
-function TGLEngine.GetImagers :TGLPorterI;
+function TGLEngine.GetTexturs :TGLPorterT;
 begin
-     Result := _Imagers;
+     Result := _Texturs;
 end;
 
 function TGLEngine.GetStoBufs :TGLPorterS;
@@ -107,7 +109,7 @@ procedure TGLEngine.DoOnLinked;
 begin
      _VerBufs.AddPorts;
      _UniBufs.AddPorts;
-     _Imagers.AddPorts;
+     _Texturs.AddPorts;
      _StoBufs.AddPorts;
 
      inherited;
@@ -123,7 +125,7 @@ begin
 
      _VerBufs := TGLPorterV.Create( Self as IGLEngine );
      _UniBufs := TGLPorterU.Create( Self as IGLEngine );
-     _Imagers := TGLPorterI.Create( Self as IGLEngine );
+     _Texturs := TGLPorterT.Create( Self as IGLEngine );
      _StoBufs := TGLPorterS.Create( Self as IGLEngine );
 end;
 
@@ -131,7 +133,7 @@ destructor TGLEngine.Destroy;
 begin
      _VerBufs.DisposeOf;
      _UniBufs.DisposeOf;
-     _Imagers.DisposeOf;
+     _Texturs.DisposeOf;
      _StoBufs.DisposeOf;
 
      inherited;
@@ -161,7 +163,7 @@ begin
 
      _VerBufs.Use;
      _UniBufs.Use;
-     _Imagers.Use;
+     _Texturs.Use;
      _StoBufs.Use;
 end;
 
@@ -169,7 +171,7 @@ procedure TGLEngine.Unuse;
 begin
      _VerBufs.Unuse;
      _UniBufs.Unuse;
-     _Imagers.Unuse;
+     _Texturs.Unuse;
      _StoBufs.Unuse;
 
      inherited;
