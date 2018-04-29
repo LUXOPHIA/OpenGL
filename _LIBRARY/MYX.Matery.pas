@@ -10,9 +10,9 @@ uses Winapi.OpenGL, Winapi.OpenGLext,
      LUX.GPU.OpenGL.Atom.Buffer.UniBuf,
      LUX.GPU.OpenGL.Atom.Buffer.VerBuf,
      LUX.GPU.OpenGL.Atom.Buffer.EleBuf,
-     LUX.GPU.OpenGL.Atom.Imager,
-     LUX.GPU.OpenGL.Matery.Imager.Preset,
-     LUX.GPU.OpenGL.Atom.Imager.D2.Preset,
+     LUX.GPU.OpenGL.Atom.Textur,
+     LUX.GPU.OpenGL.Matery.Textur.Preset,
+     LUX.GPU.OpenGL.Atom.Textur.D2.Preset,
      LUX.GPU.OpenGL.Atom.Shader,
      LUX.GPU.OpenGL.Atom.Engine;
 
@@ -30,7 +30,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        _ShaderV :TGLShaderV;
        _ShaderF :TGLShaderF;
        _Engine  :TGLEngine;
-       _Imager  :TGLBricer2D_TAlphaColorF;
+       _Textur  :TGLCelTex2D_TAlphaColorF;
      public
        constructor Create;
        destructor Destroy; override;
@@ -38,7 +38,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property ShaderV :TGLShaderV               read _ShaderV;
        property ShaderF :TGLShaderF               read _ShaderF;
        property Engine  :TGLEngine                read _Engine ;
-       property Imager  :TGLBricer2D_TAlphaColorF read _Imager ;
+       property Textur  :TGLCelTex2D_TAlphaColorF read _Textur ;
        ///// メソッド
        procedure Use;
      end;
@@ -70,7 +70,7 @@ begin
      _ShaderV := TGLShaderV              .Create;
      _ShaderF := TGLShaderF              .Create;
      _Engine  := TGLEngine               .Create;
-     _Imager  := TGLBricer2D_TAlphaColorF.Create;
+     _Textur  := TGLCelTex2D_TAlphaColorF.Create;
 
      with _Engine do
      begin
@@ -91,9 +91,9 @@ begin
                Add( 2{BinP}, 'TShaperData'{Name} );
           end;
 
-          with Imagers do
+          with Texturs do
           begin
-               Add( 0{BinP}, '_Imager'{Name} );
+               Add( 0{BinP}, '_Textur'{Name} );
           end;
 
           with Framers do
@@ -105,7 +105,7 @@ end;
 
 destructor TMyMatery.Destroy;
 begin
-     _Imager .DisposeOf;
+     _Textur .DisposeOf;
      _Engine .DisposeOf;
      _ShaderV.DisposeOf;
      _ShaderF.DisposeOf;
@@ -119,7 +119,7 @@ procedure TMyMatery.Use;
 begin
      _Engine.Use;
 
-     _Imager.Use( 0{BinP} );
+     _Textur.Use( 0{BinP} );
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
