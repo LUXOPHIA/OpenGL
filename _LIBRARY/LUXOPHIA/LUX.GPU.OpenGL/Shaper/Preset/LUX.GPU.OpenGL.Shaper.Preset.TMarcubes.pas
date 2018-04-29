@@ -6,8 +6,8 @@ uses Winapi.OpenGL, Winapi.OpenGLext,
      LUX, LUX.D2, LUX.D3, LUX.M4,
      LUX.GPU.OpenGL,
      LUX.GPU.OpenGL.Atom.Buffer.UniBuf,
-     LUX.GPU.OpenGL.Atom.Imager.D2.Preset,
-     LUX.GPU.OpenGL.Atom.Imager.D3.Preset,
+     LUX.GPU.OpenGL.Atom.Textur.D2.Preset,
+     LUX.GPU.OpenGL.Atom.Textur.D3.Preset,
      LUX.GPU.OpenGL.Matery,
      LUX.GPU.OpenGL.Shaper;
 
@@ -50,12 +50,12 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TMarcubesMateryFacesMIR = class( TGLMateryNorTexG, IMarcubesMateryFacesMIR )
      private
      protected
-       _Imager :TGLBricer2D_TAlphaColorF;
+       _Textur :TGLCelTex2D_TAlphaColorF;
      public
        constructor Create;
        destructor Destroy; override;
        ///// プロパティ
-       property Imager :TGLBricer2D_TAlphaColorF read _Imager;
+       property Textur :TGLCelTex2D_TAlphaColorF read _Textur;
        ///// メソッド
        procedure Use; override;
        procedure Unuse; override;
@@ -85,7 +85,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
      protected
        _MaterC      :IMarcubesMateryCubes;
-       _Grider      :TGLGrider3D_Single;
+       _Grider      :TGLPoiTex3D_Single;
        _Size        :TGLUniBuf<TSingle3D>;
        _Threshold   :TGLUniBuf<Single>;
        _LineS       :Single;
@@ -103,7 +103,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create; override;
        destructor Destroy; override;
        ///// プロパティ
-       property Grider      :TGLGrider3D_Single read   _Grider                          ;
+       property Grider      :TGLPoiTex3D_Single read   _Grider                          ;
        property SizeX       :Single             read GetSizeX       write SetSizeX      ;
        property SizeY       :Single             read GetSizeY       write SetSizeY      ;
        property SizeZ       :Single             read GetSizeZ       write SetSizeZ      ;
@@ -157,7 +157,7 @@ begin
                Add( 5{BinP}, 'TThreshold'{Name} );
           end;
 
-          with Imagers do
+          with Texturs do
           begin
                Add( 0{BinP}, '_Grider'{Name} );
           end;
@@ -204,10 +204,10 @@ begin
                Add( 5{BinP}, 'TThreshold'{Name} );
           end;
 
-          with Imagers do
+          with Texturs do
           begin
                Add( 0{BinP}, '_Grider'{Name} );
-               Add( 1{BinP}, '_Imager'{Name} );
+               Add( 1{BinP}, '_Textur'{Name} );
           end;
 
           ShaderV.LoadFromResource( 'LUX_GPU_OpenGL_Shaper_Preset_TMarcubes_Faces_V_glsl' );
@@ -215,12 +215,12 @@ begin
           ShaderF.LoadFromResource( 'LUX_GPU_OpenGL_Shaper_Preset_TMarcubes_FacesMIR_F_glsl' );
      end;
 
-     _Imager := TGLBricer2D_TAlphaColorF.Create;
+     _Textur := TGLCelTex2D_TAlphaColorF.Create;
 end;
 
 destructor TMarcubesMateryFacesMIR.Destroy;
 begin
-     _Imager.DisposeOf;
+     _Textur.DisposeOf;
 
      inherited;
 end;
@@ -231,12 +231,12 @@ procedure TMarcubesMateryFacesMIR.Use;
 begin
      inherited;
 
-     _Imager.Use( 1 );
+     _Textur.Use( 1 );
 end;
 
 procedure TMarcubesMateryFacesMIR.Unuse;
 begin
-     _Imager.Unuse( 1 );
+     _Textur.Unuse( 1 );
 
      inherited;
 end;
@@ -270,7 +270,7 @@ begin
                Add( 5{BinP}, 'TThreshold'{Name} );
           end;
 
-          with Imagers do
+          with Texturs do
           begin
                Add( 0{BinP}, '_Grider'{Name} );
           end;
@@ -342,7 +342,7 @@ constructor TMarcubes.Create;
 begin
      inherited;
 
-     _Grider    := TGLGrider3D_Single.Create;
+     _Grider    := TGLPoiTex3D_Single.Create;
      _Size      := TGLUniBuf<TSingle3D>.Create( GL_STATIC_DRAW );
      _Threshold := TGLUniBuf<Single>.Create( GL_STATIC_DRAW );
 
@@ -354,9 +354,9 @@ begin
           MargsX := 1;
           MargsY := 1;
           MargsZ := 1;
-          BricsX := 100;
-          BricsY := 100;
-          BricsZ := 100;
+          CellsX := 100;
+          CellsY := 100;
+          CellsZ := 100;
      end;
 
      SizeX := 2;
@@ -412,12 +412,9 @@ end;
 
 procedure TMarcubes.MakeModel;
 begin
-     with _Grider do
-     begin
-          SendData;
+     _Grider.SendData;
 
-          with Texels do PoinsN := BricsX * BricsY * BricsZ;
-     end;
+     PoinsN := _Grider.Texels.CellsN;
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
