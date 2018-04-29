@@ -1,14 +1,9 @@
-﻿unit LUX.GPU.OpenGL.Atom.Buffer.PixBuf.D2;
+﻿unit LUX.GPU.OpenGL.Atom.Image.D3;
 
 interface //#################################################################### ■
 
 uses Winapi.OpenGL, Winapi.OpenGLext,
-     LUX,
-     LUX.GPU.OpenGL.Atom,
-     LUX.GPU.OpenGL.Atom.Buffer,
-     LUX.GPU.OpenGL.Atom.Textur,
-     LUX.GPU.OpenGL.Atom.Buffer.PixBuf,
-     LUX.GPU.OpenGL.Atom.Buffer.PixBuf.D1;
+     LUX, LUX.Data.Lattice.T3, LUX.GPU.OpenGL.Atom.Image;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -16,33 +11,25 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPixBuf2D<_TItem_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImage3D<_TTexel_,_TTexels_>
 
-     IGLPixBuf2D = interface( IGLPixBuf1D )
-     ['{A3500166-874F-4CA2-84A8-8DDAFEA56712}']
+     IGLImage3D = interface( IGLImage )
+     ['{EBD2C427-B4C8-4649-8654-E79708545A23}']
      {protected}
-       ///// アクセス
-       function GetCellsY :Integer;
-       procedure SetCellsY( const CellsY_:Integer );
      {public}
-       ///// プロパティ
-       property CellsY :Integer read GetCellsY write SetCellsY;
      end;
 
      //-------------------------------------------------------------------------
 
-     TGLPixBuf2D<_TItem_:record> = class( TGLPixBuf1D<_TItem_>, IGLPixBuf2D )
+     TGLImage3D<_TTexel_:record;_TTexels_:constructor,TArray3D<_TTexel_>> = class( TGLImage<_TTexel_,_TTexels_>, IGLImage3D )
      private
      protected
-       _CellsY :Integer;
-       ///// アクセス
-       function GetCellsY :Integer;
-       procedure SetCellsY( const CellsY_:Integer );
-       ///// メソッド
-       procedure MakeBuffer; override;
      public
-       ///// プロパティ
-       property CellsY :Integer read GetCellsY write SetCellsY;
+       constructor Create;
+       destructor Destroy; override;
+       ///// メソッド
+       procedure SendData; override;
+       procedure SendPixBuf; override;
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -53,38 +40,56 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 implementation //############################################################### ■
 
+uses System.Math;
+
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPixBuf2D<_TItem_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImage3D<_TTexel_,_TTexels_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
-/////////////////////////////////////////////////////////////////////// アクセス
-
-function TGLPixBuf2D<_TItem_>.GetCellsY :Integer;
-begin
-     Result := _CellsY;
-end;
-
-procedure TGLPixBuf2D<_TItem_>.SetCellsY( const CellsY_:Integer );
-begin
-     _CellsY := CellsY_;  MakeBuffer;
-end;
-
-/////////////////////////////////////////////////////////////////////// メソッド
-
-procedure TGLPixBuf2D<_TItem_>.MakeBuffer;
-begin
-     Count := _CellsY * _CellsX;
-end;
-
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
+constructor TGLImage3D<_TTexel_,_TTexels_>.Create;
+begin
+     inherited Create( GL_TEXTURE_3D );
+
+end;
+
+destructor TGLImage3D<_TTexel_,_TTexels_>.Destroy;
+begin
+
+     inherited;
+end;
+
 /////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TGLImage3D<_TTexel_,_TTexels_>.SendData;
+begin
+     Bind;
+       glTexImage3D( _Kind, 0, _TexelF, _Texels.ElemsX,
+                                        _Texels.ElemsY,
+                                        _Texels.ElemsZ, 0,
+                               _PixelF,
+                               _PixelT,
+                               _Texels.Elem0P );
+     Unbind;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure TGLImage3D<_TTexel_,_TTexels_>.SendPixBuf;
+begin
+     glTexImage3D( _Kind, 0, _TexelF, _Texels.ElemsX,
+                                      _Texels.ElemsY,
+                                      _Texels.ElemsZ, 0,
+                             _PixelF,
+                             _PixelT, nil );
+end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
 
