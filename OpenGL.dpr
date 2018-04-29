@@ -70,7 +70,23 @@ uses
   LUX.GPU.OpenGL.Atom.Textur.D3.Preset in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Textur\D3\_FMX\LUX.GPU.OpenGL.Atom.Textur.D3.Preset.pas',
   LUX.GPU.OpenGL.Atom.Textur.D2.Preset in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Textur\D2\_FMX\LUX.GPU.OpenGL.Atom.Textur.D2.Preset.pas',
   LUX.GPU.OpenGL.Atom.Textur.D1.Preset in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Textur\D1\_FMX\LUX.GPU.OpenGL.Atom.Textur.D1.Preset.pas',
-  LUX.GPU.OpenGL.Matery.Textur.Preset in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Matery\Textur\_FMX\LUX.GPU.OpenGL.Matery.Textur.Preset.pas';
+  LUX.GPU.OpenGL.Matery.Textur.Preset in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Matery\Textur\_FMX\LUX.GPU.OpenGL.Matery.Textur.Preset.pas',
+  LUX.Data.Lattice.T1.D1 in '_LIBRARY\LUXOPHIA\LUX\Data\Lattice\T1\LUX.Data.Lattice.T1.D1.pas',
+  LUX.Data.Lattice.T2.D1 in '_LIBRARY\LUXOPHIA\LUX\Data\Lattice\T2\LUX.Data.Lattice.T2.D1.pas',
+  LUX.Complex in '_LIBRARY\LUXOPHIA\LUX\Complex\LUX.Complex.pas',
+  LUX.Complex.D1 in '_LIBRARY\LUXOPHIA\LUX\Complex\LUX.Complex.D1.pas',
+  LUX.Curve.T2.D3 in '_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.T2.D3.pas',
+  LUX.Curve.T2.D2 in '_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.T2.D2.pas',
+  LUX.Curve.T2.D1 in '_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.T2.D1.pas',
+  LUX.Curve.T1.D3 in '_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.T1.D3.pas',
+  LUX.Curve.T1.D2 in '_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.T1.D2.pas',
+  LUX.Curve.T1.D1 in '_LIBRARY\LUXOPHIA\LUX\Curve\LUX.Curve.T1.D1.pas',
+  LUX.Math.Distribution in '_LIBRARY\LUXOPHIA\LUX\Math\LUX.Math.Distribution.pas',
+  LUX.Math.Special in '_LIBRARY\LUXOPHIA\LUX\Math\LUX.Math.Special.pas',
+  LUX.Math.Special.Beta in '_LIBRARY\LUXOPHIA\LUX\Math\Special\LUX.Math.Special.Beta.pas',
+  LUX.Math.Special.Gamma.Lanczos in '_LIBRARY\LUXOPHIA\LUX\Math\Special\LUX.Math.Special.Gamma.Lanczos.pas',
+  LUX.Math.Special.Gamma.Ooura in '_LIBRARY\LUXOPHIA\LUX\Math\Special\LUX.Math.Special.Gamma.Ooura.pas',
+  LUX.FMX.Controls in '_LIBRARY\LUXOPHIA\LUX\FMX\LUX.FMX.Controls.pas';
 
 {$R *.res}
 
