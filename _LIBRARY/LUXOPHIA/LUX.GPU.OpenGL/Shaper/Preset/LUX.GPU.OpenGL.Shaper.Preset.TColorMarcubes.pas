@@ -32,12 +32,12 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TColorMarcubesMateryFaces = class( TGLMateryNorTexG, IMarcubesMateryFaces )
      private
      protected
-       _Imager :TGLCelTex2D_TAlphaColorF;
+       _Textur :TGLCelTex2D_TAlphaColorF;
      public
        constructor Create;
        destructor Destroy; override;
        ///// プロパティ
-       property Imager :TGLCelTex2D_TAlphaColorF read _Imager;
+       property Textur :TGLCelTex2D_TAlphaColorF read _Textur;
        ///// メソッド
        procedure Use; override;
        procedure Unuse; override;
@@ -116,7 +116,7 @@ begin
                Add( 5{BinP}, 'TThreshold'{Name} );
           end;
 
-          with Textures do
+          with Texturs do
           begin
                Add( 0{BinP}, '_Grider'{Name} );
           end;
@@ -126,12 +126,12 @@ begin
           ShaderF.LoadFromResource( 'LUX_GPU_OpenGL_Shaper_Preset_TColorMarcubes_Faces_F_glsl' );
      end;
 
-     _Imager := TGLCelTex2D_TAlphaColorF.Create;
+     _Textur := TGLCelTex2D_TAlphaColorF.Create;
 end;
 
 destructor TColorMarcubesMateryFaces.Destroy;
 begin
-     _Imager.DisposeOf;
+     _Textur.DisposeOf;
 
      inherited;
 end;
@@ -142,12 +142,12 @@ procedure TColorMarcubesMateryFaces.Use;
 begin
      inherited;
 
-     _Imager.Use( 1 );
+     _Textur.Use( 1 );
 end;
 
 procedure TColorMarcubesMateryFaces.Unuse;
 begin
-     _Imager.Unuse( 1 );
+     _Textur.Unuse( 1 );
 
      inherited;
 end;
