@@ -4,7 +4,7 @@ interface //####################################################################
 
 uses System.UITypes,
      Vcl.Graphics,
-     LUX, LUX.GPU.OpenGL.Atom.Texture.D3;
+     LUX, LUX.GPU.OpenGL.Atom.Textur.D3;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
