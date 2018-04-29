@@ -42,7 +42,7 @@ layout( std140 ) uniform TShaperPose
 
 //------------------------------------------------------------------------------
 
-uniform sampler2D _Imager;
+uniform sampler2D _Textur;
 
 //############################################################################## ■
 
@@ -66,7 +66,7 @@ void main()
   vec4 V = normalize( _Sender.Pos - C );
   vec4 R = reflect( V, normalize( _Sender.Nor ) );
 
-  _ResultCol = texture( _Imager, VecToSky( R ) );
+  _ResultCol = texture( _Textur, VecToSky( R ) );
 }
 
 //############################################################################## ■
