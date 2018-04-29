@@ -1,4 +1,4 @@
-﻿unit LUX.GPU.OpenGL.Atom.Texture.D2;
+﻿unit LUX.GPU.OpenGL.Atom.Textur.D2;
 
 interface //#################################################################### ■
 
@@ -6,7 +6,7 @@ uses Winapi.OpenGL, Winapi.OpenGLext,
      LUX,
      LUX.Data.Lattice.T2,
      LUX.GPU.OpenGL.Atom.Image.D2,
-     LUX.GPU.OpenGL.Atom.Texture;
+     LUX.GPU.OpenGL.Atom.Textur;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
