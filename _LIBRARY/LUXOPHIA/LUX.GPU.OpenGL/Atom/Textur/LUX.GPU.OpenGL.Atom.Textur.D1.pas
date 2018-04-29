@@ -16,7 +16,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLTexture1D<_TTexel_,_TTexels_>
 
-     IGLTexture1D = interface( IGLTexture )
+     IGLTexture1D = interface( IGLTextur )
      ['{9802F2EE-57A9-4E2E-AE7F-CCC6A32DC3FE}']
      {protected}
      {public}

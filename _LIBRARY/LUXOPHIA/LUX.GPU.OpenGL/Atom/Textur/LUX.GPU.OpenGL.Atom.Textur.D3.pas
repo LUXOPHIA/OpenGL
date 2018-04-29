@@ -16,7 +16,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLTexture3D<_TTexel_,_TTexels_>
 
-     IGLTexture3D = interface( IGLTexture )
+     IGLTexture3D = interface( IGLTextur )
      ['{9901BFAD-086D-4BC7-A870-56DB2A7A2BD0}']
      {protected}
      {public}
