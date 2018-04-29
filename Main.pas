@@ -186,7 +186,7 @@ begin
                end;
           end;
 
-          with Imager do
+          with Textur do
           begin
                LoadFromFile( '..\..\_DATA\Spherical_1024x1024.png' );
           end;

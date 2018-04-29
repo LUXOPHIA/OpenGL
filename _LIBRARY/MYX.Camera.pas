@@ -10,8 +10,8 @@ uses Winapi.OpenGL, Winapi.OpenGLext,
      LUX.GPU.OpenGL.Atom.Buffer.UniBuf,
      LUX.GPU.OpenGL.Atom.Buffer.VerBuf,
      LUX.GPU.OpenGL.Atom.Buffer.EleBuf,
-     LUX.GPU.OpenGL.Atom.Imager,
-     LUX.GPU.OpenGL.Matery.Imager.Preset,
+     LUX.GPU.OpenGL.Atom.Textur,
+     LUX.GPU.OpenGL.Matery.Textur.Preset,
      LUX.GPU.OpenGL.Atom.Shader,
      LUX.GPU.OpenGL.Atom.Engine;
 
