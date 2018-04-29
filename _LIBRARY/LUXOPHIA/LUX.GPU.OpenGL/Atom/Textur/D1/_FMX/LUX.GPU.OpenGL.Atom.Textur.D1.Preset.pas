@@ -1,10 +1,10 @@
-﻿unit LUX.GPU.OpenGL.Atom.Imager.D2.Preset;
+﻿unit LUX.GPU.OpenGL.Atom.Textur.D1.Preset;
 
 interface //#################################################################### ■
 
 uses System.UITypes,
-     Vcl.Graphics,
-     LUX, LUX.GPU.OpenGL.Atom.Imager.D2;
+     FMX.Graphics,
+     LUX, LUX.GPU.OpenGL.Atom.Textur.D1;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -12,9 +12,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer2D_TAlphaColorF
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLCelTex1D_TAlphaColorF
 
-     TGLBricer2D_TAlphaColorF = class( TGLBricer2D<TAlphaColorF> )
+     TGLCelTex1D_TAlphaColorF = class( TGLCelTex1D<TAlphaColorF> )
      private
      protected
      public
@@ -41,7 +41,7 @@ uses Winapi.OpenGL, Winapi.OpenGLext;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBricer2D_TAlphaColorF
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLCelTex1D_TAlphaColorF
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -49,16 +49,16 @@ uses Winapi.OpenGL, Winapi.OpenGLext;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLBricer2D_TAlphaColorF.Create;
+constructor TGLCelTex1D_TAlphaColorF.Create;
 begin
      inherited;
 
-     _TexelF := GL_RGBA;
+     _TexelF := GL_RGBA32F;
      _PixelF := GL_RGBA;
      _PixelT := GL_FLOAT;
 end;
 
-destructor TGLBricer2D_TAlphaColorF.Destroy;
+destructor TGLCelTex1D_TAlphaColorF.Destroy;
 begin
 
      inherited;
@@ -66,51 +66,45 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLBricer2D_TAlphaColorF.ImportFrom( const BMP_:TBitmap );
+procedure TGLCelTex1D_TAlphaColorF.ImportFrom( const BMP_:TBitmap );
 var
-   X, Y :Integer;
-   C :TAlphaColorF;
+   B :TBitmapData;
+   X :Integer;
 begin
-     Texels.BricsX := BMP_.Width ;
-     Texels.BricsY := BMP_.Height;
+     _Texels.CellsX := BMP_.Width;
 
-     for Y := 0 to Texels.BricsY-1 do
+     BMP_.Map( TMapAccess.Read, B );
+
+     for X := 0 to _Texels.CellsX-1 do
      begin
-          for X := 0 to Texels.BricsX-1 do
-          begin
-               with TColorRec( BMP_.Canvas.Pixels[ X, Y ] ) do
-               begin
-                    C.R := R / 255;
-                    C.G := G / 255;
-                    C.B := B / 255;
-                    C.A := 1      ;
-               end;
-
-               Texels[ X, Y ] := C;
-          end;
+          Texels[ X ] := TAlphaColorF.Create( B.GetPixel( X, 0 ) );
      end;
+
+     BMP_.Unmap( B );
 
      SendData;
 end;
 
-procedure TGLBricer2D_TAlphaColorF.ExportTo( const BMP_:TBitmap );
+procedure TGLCelTex1D_TAlphaColorF.ExportTo( const BMP_:TBitmap );
 var
-   X, Y :Integer;
+   B :TBitmapData;
+   X :Integer;
 begin
-     BMP_.SetSize( Texels.BricsX, Texels.BricsY );
+     BMP_.SetSize( _Texels.CellsX, 1 );
 
-     for Y := 0 to Texels.BricsY-1 do
+     BMP_.Map( TMapAccess.Write, B );
+
+     for X := 0 to _Texels.CellsX-1 do
      begin
-          for X := 0 to Texels.BricsX-1 do
-          begin
-               BMP_.Canvas.Pixels[ X, Y ] := Texels[ X, Y ].ToAlphaColor;
-          end;
+          B.SetPixel( X, 0, Texels[ X ].ToAlphaColor );
      end;
+
+     BMP_.Unmap( B );
 end;
 
 //------------------------------------------------------------------------------
 
-procedure TGLBricer2D_TAlphaColorF.LoadFromFile( const FileName_:String );
+procedure TGLCelTex1D_TAlphaColorF.LoadFromFile( const FileName_:String );
 var
    B :TBitmap;
 begin
@@ -123,7 +117,7 @@ begin
      B.DisposeOf;
 end;
 
-procedure TGLBricer2D_TAlphaColorF.SaveToFile( const FileName_:String );
+procedure TGLCelTex1D_TAlphaColorF.SaveToFile( const FileName_:String );
 var
    B :TBitmap;
 begin
