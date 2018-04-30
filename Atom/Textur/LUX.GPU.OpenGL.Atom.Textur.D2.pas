@@ -5,7 +5,7 @@ interface //####################################################################
 uses Winapi.OpenGL, Winapi.OpenGLext,
      LUX,
      LUX.Data.Lattice.T2,
-     LUX.GPU.OpenGL.Atom.Image.D2,
+     LUX.GPU.OpenGL.Atom.Imager.D2,
      LUX.GPU.OpenGL.Atom.Textur;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
@@ -26,17 +26,17 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLTextur2D<_TTexel_:record;_TTexels_:constructor,TArray2D<_TTexel_>> = class( TGLImage2D<_TTexel_,_TTexels_>, IGLTextur2D )
+     TGLTextur2D<_TTexel_:record;_TTexels_:constructor,TArray2D<_TTexel_>> = class( TGLImager2D<_TTexel_,_TTexels_>, IGLTextur2D )
      private
      protected
-       _Sampler :TGLSampler;
+       _Samplr :TGLSamplr;
        ///// アクセス
-       function GetSampler :TGLSampler;
+       function GetSamplr :TGLSamplr;
      public
        constructor Create;
        destructor Destroy; override;
        ///// プロパティ
-       property Sampler :TGLSampler read GetSampler;
+       property Samplr :TGLSamplr read GetSamplr;
        ///// メソッド
        procedure Use( const BindI_:GLuint ); override;
        procedure Unuse( const BindI_:GLuint ); override;
@@ -84,9 +84,9 @@ uses System.Math;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TGLTextur2D<_TTexel_,_TTexels_>.GetSampler :TGLSampler;
+function TGLTextur2D<_TTexel_,_TTexels_>.GetSamplr :TGLSamplr;
 begin
-     Result := _Sampler;
+     Result := _Samplr;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -95,12 +95,12 @@ constructor TGLTextur2D<_TTexel_,_TTexels_>.Create;
 begin
      inherited;
 
-     _Sampler := TGLSampler.Create;
+     _Samplr := TGLSamplr.Create;
 end;
 
 destructor TGLTextur2D<_TTexel_,_TTexels_>.Destroy;
 begin
-     _Sampler.DisposeOf;
+     _Samplr.DisposeOf;
 
      inherited;
 end;
@@ -111,12 +111,12 @@ procedure TGLTextur2D<_TTexel_,_TTexels_>.Use( const BindI_:GLuint );
 begin
      inherited;
 
-     _Sampler.Use( BindI_ );
+     _Samplr.Use( BindI_ );
 end;
 
 procedure TGLTextur2D<_TTexel_,_TTexels_>.Unuse( const BindI_:GLuint );
 begin
-     _Sampler.Unuse( BindI_ );
+     _Samplr.Unuse( BindI_ );
 
      inherited;
 end;
@@ -133,7 +133,7 @@ constructor TGLCelTex2D<_TTexel_>.Create;
 begin
      inherited;
 
-     with _Sampler do
+     with _Samplr do
      begin
           WrapU := GL_MIRRORED_REPEAT;
           WrapV := GL_MIRRORED_REPEAT;
@@ -158,7 +158,7 @@ constructor TGLPoiTex2D<_TTexel_>.Create;
 begin
      inherited;
 
-     with _Sampler do
+     with _Samplr do
      begin
           WrapU := GL_CLAMP_TO_EDGE;
           WrapV := GL_CLAMP_TO_EDGE;
