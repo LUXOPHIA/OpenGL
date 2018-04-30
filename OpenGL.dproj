@@ -384,9 +384,6 @@
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Textur\LUX.GPU.OpenGL.Atom.Textur.D1.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Textur\LUX.GPU.OpenGL.Atom.Textur.D2.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Textur\LUX.GPU.OpenGL.Atom.Textur.D3.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Textur\D3\_FMX\LUX.GPU.OpenGL.Atom.Textur.D3.Preset.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Textur\D2\_FMX\LUX.GPU.OpenGL.Atom.Textur.D2.Preset.pas"/>
-        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Textur\D1\_FMX\LUX.GPU.OpenGL.Atom.Textur.D1.Preset.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Matery\Textur\_FMX\LUX.GPU.OpenGL.Matery.Textur.Preset.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\Data\Lattice\T1\LUX.Data.Lattice.T1.D1.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX\Data\Lattice\T2\LUX.Data.Lattice.T2.D1.pas"/>
@@ -407,6 +404,12 @@
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Imager\LUX.GPU.OpenGL.Atom.Imager.D2.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Imager\LUX.GPU.OpenGL.Atom.Imager.D3.pas"/>
         <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Imager\LUX.GPU.OpenGL.Atom.Imager.D1.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Imager\D1\_FMX\LUX.GPU.OpenGL.Atom.Imager.D1.Preset.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Imager\D2\_FMX\LUX.GPU.OpenGL.Atom.Imager.D2.Preset.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Imager\D3\_FMX\LUX.GPU.OpenGL.Atom.Imager.D3.Preset.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Textur\D1\LUX.GPU.OpenGL.Atom.Textur.D1.Preset.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Textur\D2\LUX.GPU.OpenGL.Atom.Textur.D2.Preset.pas"/>
+        <DCCReference Include="_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Textur\D3\LUX.GPU.OpenGL.Atom.Textur.D3.Preset.pas"/>
         <None Include="_DATA\ShaderF.glsl"/>
         <None Include="_DATA\ShaderV.glsl"/>
         <None Include="_DATA\ShaderG.glsl"/>
