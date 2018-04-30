@@ -77,11 +77,11 @@ uses
   LUX.GPU.OpenGL.Atom.Textur.D2 in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Textur\LUX.GPU.OpenGL.Atom.Textur.D2.pas',
   LUX.GPU.OpenGL.Atom.Textur.D3 in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Textur\LUX.GPU.OpenGL.Atom.Textur.D3.pas',
   LUX.GPU.OpenGL.Atom.Textur.D1 in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Textur\LUX.GPU.OpenGL.Atom.Textur.D1.pas',
-  LUX.GPU.OpenGL.Atom.Image.D3 in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Image\LUX.GPU.OpenGL.Atom.Image.D3.pas',
-  LUX.GPU.OpenGL.Atom.Image.D1 in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Image\LUX.GPU.OpenGL.Atom.Image.D1.pas',
-  LUX.GPU.OpenGL.Atom.Image.D2 in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Image\LUX.GPU.OpenGL.Atom.Image.D2.pas',
-  LUX.GPU.OpenGL.Atom.Image in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\LUX.GPU.OpenGL.Atom.Image.pas',
-  LUX.GPU.OpenGL.Atom.Textur in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\LUX.GPU.OpenGL.Atom.Textur.pas';
+  LUX.GPU.OpenGL.Atom.Textur in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\LUX.GPU.OpenGL.Atom.Textur.pas',
+  LUX.GPU.OpenGL.Atom.Imager.D2 in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Imager\LUX.GPU.OpenGL.Atom.Imager.D2.pas',
+  LUX.GPU.OpenGL.Atom.Imager.D3 in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Imager\LUX.GPU.OpenGL.Atom.Imager.D3.pas',
+  LUX.GPU.OpenGL.Atom.Imager.D1 in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\Imager\LUX.GPU.OpenGL.Atom.Imager.D1.pas',
+  LUX.GPU.OpenGL.Atom.Imager in '_LIBRARY\LUXOPHIA\LUX.GPU.OpenGL\Atom\LUX.GPU.OpenGL.Atom.Imager.pas';
 
 {$R *.res}
 
