@@ -6,7 +6,7 @@ uses Winapi.OpenGL, Winapi.OpenGLext,
      LUX,
      LUX.Data.Lattice,
      LUX.GPU.OpenGL.Atom,
-     LUX.GPU.OpenGL.Atom.Image;
+     LUX.GPU.OpenGL.Atom.Imager;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
