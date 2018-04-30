@@ -11,9 +11,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImage2D<_TTexel_,_TTexels_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager2D<_TTexel_,_TTexels_>
 
-     IGLImage2D = interface( IGLImager )
+     IGLImager2D = interface( IGLImager )
      ['{69B48023-273B-46B0-A8E4-AD79BABB51FD}']
      {protected}
      {public}
@@ -21,7 +21,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLImage2D<_TTexel_:record;_TTexels_:constructor,TArray2D<_TTexel_>> = class( TGLImager<_TTexel_,_TTexels_>, IGLImage2D )
+     TGLImager2D<_TTexel_:record;_TTexels_:constructor,TArray2D<_TTexel_>> = class( TGLImager<_TTexel_,_TTexels_>, IGLImager2D )
      private
      protected
      public
@@ -46,7 +46,7 @@ uses System.Math;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImage2D<_TTexel_,_TTexels_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager2D<_TTexel_,_TTexels_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -54,13 +54,13 @@ uses System.Math;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLImage2D<_TTexel_,_TTexels_>.Create;
+constructor TGLImager2D<_TTexel_,_TTexels_>.Create;
 begin
      inherited Create( GL_TEXTURE_2D );
 
 end;
 
-destructor TGLImage2D<_TTexel_,_TTexels_>.Destroy;
+destructor TGLImager2D<_TTexel_,_TTexels_>.Destroy;
 begin
 
      inherited;
@@ -68,7 +68,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLImage2D<_TTexel_,_TTexels_>.SendData;
+procedure TGLImager2D<_TTexel_,_TTexels_>.SendData;
 begin
      Bind;
        glTexImage2D( _Kind, 0, _TexelF, _Texels.ElemsX,
@@ -81,7 +81,7 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure TGLImage2D<_TTexel_,_TTexels_>.SendPixBuf;
+procedure TGLImager2D<_TTexel_,_TTexels_>.SendPixBuf;
 begin
      glTexImage2D( _Kind, 0, _TexelF, _Texels.ElemsX,
                                       _Texels.ElemsY, 0,
