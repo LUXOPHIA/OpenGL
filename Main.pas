@@ -188,7 +188,7 @@ begin
 
           with Textur do
           begin
-               LoadFromFile( '..\..\_DATA\Spherical_1024x1024.png' );
+               Imager.LoadFromFile( '..\..\_DATA\Spherical_1024x1024.png' );
           end;
      end;
 end;
