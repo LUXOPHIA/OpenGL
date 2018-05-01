@@ -150,9 +150,9 @@ begin
      //  |/      |/
      //  4-------5
 
-     _VerBufP.Import( Ps );
-     _VerBufC.Import( Cs );
-     _EleBuf .Import( Es );
+     _VerBufP.CopyFrom( Ps );
+     _VerBufC.CopyFrom( Cs );
+     _EleBuf .CopyFrom( Es );
 
      with _ShaderV do
      begin
