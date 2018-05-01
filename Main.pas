@@ -205,9 +205,9 @@ begin
                end;
           end;
 
-          with Textur.Imager do
+          with Textur do
           begin
-               LoadFromFile( '..\..\_DATA\Spherical_2048x1024.png' );
+               Imager.LoadFromFile( '..\..\_DATA\Spherical_2048x1024.png' );
           end;
      end;
 end;
