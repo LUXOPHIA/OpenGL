@@ -349,7 +349,7 @@ begin
      _Matery := TMarcubesMateryFacesRGB.Create;
      _MaterC := TMarcubesMateryCubes.Create;
 
-     with Textur.Texels do
+     with Textur.Imager.Grider do
      begin
           MargsX := 1;
           MargsY := 1;
@@ -412,9 +412,9 @@ end;
 
 procedure TMarcubes.MakeModel;
 begin
-     _Textur.SendData;
+     _Textur.Imager.SendData;
 
-     PoinsN := _Textur.Texels.CellsN;
+     PoinsN := _Textur.Imager.Grider.CellsN;
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
