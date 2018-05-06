@@ -3,7 +3,10 @@
 interface //#################################################################### ■
 
 uses Winapi.OpenGL, Winapi.OpenGLext,
-     LUX, LUX.Data.Lattice.T1, LUX.GPU.OpenGL.Atom.Imager;
+     LUX,
+     LUX.Data.Lattice.T1,
+     LUX.GPU.OpenGL.Atom.Buffer.PixBuf.D1,
+     LUX.GPU.OpenGL.Atom.Imager;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -11,7 +14,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager1D<_TItem_,_TGrider_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager1D<_TItem_,_TGrider_,_TGrid_>
 
      IGLImager1D = interface( IGLImager )
      ['{93701122-C0C0-4697-9E0E-C0D59EAB9706}']
@@ -21,7 +24,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLImager1D<_TItem_:record;_TGrider_:constructor,TArray1D<_TItem_>> = class( TGLImager<_TItem_,_TGrider_>, IGLImager1D )
+     TGLImager1D<_TItem_:record;
+                 _TGrider_:TArray1D<_TItem_>,constructor;
+                 _TGrid_:TGLPixBuf1D<_TItem_>,constructor> = class( TGLImager<_TItem_,_TGrider_,_TGrid_>, IGLImager1D )
      private
      protected
      public
@@ -42,7 +47,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLPoiIma1D<_TItem_:record> = class( TGLImager1D<_TItem_,TPoinArray1D<_TItem_>>, IGLPoiIma1D )
+     TGLPoiIma1D<_TItem_:record> = class( TGLImager1D<_TItem_,TPoinArray1D<_TItem_>,TGLPoiPix1D<_TItem_>>, IGLPoiIma1D )
      private
      protected
      public
@@ -58,7 +63,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLCelIma1D<_TItem_:record> = class( TGLImager1D<_TItem_,TCellArray1D<_TItem_>>, IGLCelIma1D )
+     TGLCelIma1D<_TItem_:record> = class( TGLImager1D<_TItem_,TCellArray1D<_TItem_>,TGLCelPix1D<_TItem_>>, IGLCelIma1D )
      private
      protected
      public
@@ -78,7 +83,7 @@ uses System.Math;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager1D<_TItem_,_TGrider_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager1D<_TItem_,_TGrider_,_TGrid_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -86,13 +91,13 @@ uses System.Math;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLImager1D<_TItem_,_TGrider_>.Create;
+constructor TGLImager1D<_TItem_,_TGrider_,_TGrid_>.Create;
 begin
      inherited Create( GL_TEXTURE_1D );
 
 end;
 
-destructor TGLImager1D<_TItem_,_TGrider_>.Destroy;
+destructor TGLImager1D<_TItem_,_TGrider_,_TGrid_>.Destroy;
 begin
 
      inherited;
@@ -100,7 +105,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLImager1D<_TItem_,_TGrider_>.SendData;
+procedure TGLImager1D<_TItem_,_TGrider_,_TGrid_>.SendData;
 begin
      Bind;
        glTexImage1D( _Kind, 0, _TexelF, _Grider.ElemsX, 0,
@@ -112,11 +117,13 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure TGLImager1D<_TItem_,_TGrider_>.SendPixBuf;
+procedure TGLImager1D<_TItem_,_TGrider_,_TGrid_>.SendPixBuf;
 begin
-     glTexImage1D( _Kind, 0, _TexelF, _Grider.ElemsX, 0,
-                             _PixelF,
-                             _PixelT, nil );
+     Bind;
+       glTexImage1D( _Kind, 0, _TexelF, _Grider.ElemsX, 0,
+                               _PixelF,
+                               _PixelT, nil );
+     Unbind;
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPoiIma1D<_TItem_,_TGrider_>

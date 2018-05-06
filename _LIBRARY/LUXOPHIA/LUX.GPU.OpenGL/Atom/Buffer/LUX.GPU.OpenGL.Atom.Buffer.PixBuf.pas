@@ -5,8 +5,7 @@ interface //####################################################################
 uses Winapi.OpenGL, Winapi.OpenGLext,
      LUX,
      LUX.GPU.OpenGL.Atom,
-     LUX.GPU.OpenGL.Atom.Buffer,
-     LUX.GPU.OpenGL.Atom.Imager;
+     LUX.GPU.OpenGL.Atom.Buffer;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -25,8 +24,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure UnbindRead;
        procedure BindWrite;
        procedure UnbindWrite;
-       procedure CopyFrom( const Image_:IGLImager );
-       procedure CopyTo( const Image_:IGLImager );
      end;
 
      //-------------------------------------------------------------------------
@@ -45,8 +42,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure UnbindRead;
        procedure BindWrite;
        procedure UnbindWrite;
-       procedure CopyFrom( const Image_:IGLImager );
-       procedure CopyTo( const Image_:IGLImager );
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -82,7 +77,7 @@ begin
 
      BindRead;
 
-       glBufferData( GL_PIXEL_UNPACK_BUFFER_ARB, SizeOf( _TItem_ ) * _Count, nil, _Usage );
+       glBufferData( GL_PIXEL_UNPACK_BUFFER, SizeOf( _TItem_ ) * _Count, nil, _Usage );
 
      UnbindRead;
 end;
@@ -100,12 +95,12 @@ end;
 
 procedure TGLPixBuf<_TItem_>.BindRead;
 begin
-     glBindBuffer( GL_PIXEL_UNPACK_BUFFER_ARB, _ID );
+     glBindBuffer( GL_PIXEL_UNPACK_BUFFER, _ID );
 end;
 
 procedure TGLPixBuf<_TItem_>.UnbindRead;
 begin
-     glBindBuffer( GL_PIXEL_UNPACK_BUFFER_ARB, 0 );
+     glBindBuffer( GL_PIXEL_UNPACK_BUFFER, 0 );
 end;
 
 //------------------------------------------------------------------------------
@@ -118,26 +113,6 @@ end;
 procedure TGLPixBuf<_TItem_>.UnbindWrite;
 begin
      glBindBuffer( GL_PIXEL_PACK_BUFFER, 0 );
-end;
-
-//------------------------------------------------------------------------------
-
-procedure TGLPixBuf<_TItem_>.CopyFrom( const Image_:IGLImager );
-begin
-     BindWrite;
-
-       Image_.RecePixBuf;
-
-     UnbindWrite;
-end;
-
-procedure TGLPixBuf<_TItem_>.CopyTo( const Image_:IGLImager );
-begin
-     BindRead;
-
-       Image_.SendPixBuf;
-
-     UnbindRead;
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
