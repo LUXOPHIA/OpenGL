@@ -17,14 +17,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBufferData<_TItem_>
 
      TGLBufferData<_TItem_:record> = class
-     private type
+     public type
        _PItem_ = ^_TItem_;
      private
        _Paren :IGLBuffer;
        _Start :Pointer;
        _Strid :GLint;
        ///// アクセス
-       function GetItemP( const I_:Integer ) :_PItem_;
+       function GetItemsP( const I_:Integer ) :_PItem_;
        function GetItems( const I_:Integer ) :_TItem_;
        procedure SetItems( const I_:Integer; const Item_:_TItem_ );
        function GetCount :Integer;
@@ -32,12 +32,12 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const Paren_:IGLBuffer; const Start_:Pointer; const Strid_:GLint );
        destructor Destroy; override;
        ///// プロパティ
-       property Paren                     :IGLBuffer read   _Paren               ;
-       property Start                     :Pointer   read   _Start               ;
-       property Strid                     :GLint     read   _Strid               ;
-       property Count                     :Integer   read GetCount               ;
-       property ItemP[ const I_:Integer ] :_PItem_   read GetItemP               ;
-       property Items[ const I_:Integer ] :_TItem_   read GetItems write SetItems; default;
+       property Paren                      :IGLBuffer read   _Paren                ;
+       property Start                      :Pointer   read   _Start                ;
+       property Strid                      :GLint     read   _Strid                ;
+       property Count                      :Integer   read GetCount                ;
+       property ItemsP[ const I_:Integer ] :_PItem_   read GetItemsP               ;
+       property Items[ const I_:Integer ]  :_TItem_   read GetItems  write SetItems; default;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLBuffer<_TItem_>
@@ -49,6 +49,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        function GetAlign :GLint;
        function GetStrid :GLint;
        function GetUsage :GLenum;
+       procedure SetUsage( const Usage_:GLenum );
        function GetCount :Integer;
        procedure SetCount( const Count_:Integer );
        ///// プロパティ
@@ -56,7 +57,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Align :GLint   read GetAlign               ;
        property Strid :GLint   read GetStrid               ;
        property ID    :GLuint  read GetID                  ;
-       property Usage :GLenum  read GetUsage               ;
+       property Usage :GLenum  read GetUsage write SetUsage;
        property Count :Integer read GetCount write SetCount;
        ///// メソッド
        procedure Bind;
@@ -80,6 +81,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        function GetAlign :GLint;
        function GetStrid :GLint;
        function GetUsage :GLenum;
+       procedure SetUsage( const Usage_:GLenum );
        function GetCount :Integer;
        procedure SetCount( const Count_:Integer ); virtual;
        function GetItems( const I_:Integer ) :_TItem_;
@@ -87,14 +89,16 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// メソッド
        function InitAlign :GLint; virtual;
        function InitStrid :GLint;
+       procedure MakeBuffer;
      public
-       constructor Create( const Usage_:GLenum );
+       constructor Create; overload;
+       constructor Create( const Usage_:GLenum ); overload;
        destructor Destroy; override;
        ///// プロパティ
        property Kind                      :GLenum  read GetKind                ;
        property Align                     :GLint   read GetAlign               ;
        property Strid                     :GLint   read GetStrid               ;
-       property Usage                     :GLenum  read GetUsage               ;
+       property Usage                     :GLenum  read GetUsage write SetUsage;
        property Count                     :Integer read GetCount write SetCount;
        property Items[ const I_:Integer ] :_TItem_ read GetItems write SetItems; default;
        ///// メソッド
@@ -123,7 +127,7 @@ implementation //###############################################################
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TGLBufferData<_TItem_>.GetItemP( const I_:Integer ) :_PItem_;
+function TGLBufferData<_TItem_>.GetItemsP( const I_:Integer ) :_PItem_;
 var
    P :PByte;
 begin
@@ -134,12 +138,12 @@ end;
 
 function TGLBufferData<_TItem_>.GetItems( const I_:Integer ) :_TItem_;
 begin
-     Result := GetItemP( I_ )^;
+     Result := GetItemsP( I_ )^;
 end;
 
 procedure TGLBufferData<_TItem_>.SetItems( const I_:Integer; const Item_:_TItem_ );
 begin
-     GetItemP( I_ )^ := Item_;
+     GetItemsP( I_ )^ := Item_;
 end;
 
 //------------------------------------------------------------------------------
@@ -185,10 +189,19 @@ begin
      Result := _Strid;
 end;
 
+//------------------------------------------------------------------------------
+
 function TGLBuffer<_TItem_>.GetUsage :GLenum;
 begin
      Result := _Usage;
 end;
+
+procedure TGLBuffer<_TItem_>.SetUsage( const Usage_:GLenum );
+begin
+     _Usage := Usage_;  MakeBuffer;
+end;
+
+//------------------------------------------------------------------------------
 
 function TGLBuffer<_TItem_>.GetCount :Integer;
 begin
@@ -197,14 +210,10 @@ end;
 
 procedure TGLBuffer<_TItem_>.SetCount( const Count_:Integer );
 begin
-     _Count := Count_;
-
-     Bind;
-
-       glBufferData( GetKind, _Strid * _Count, nil, _Usage );
-
-     Unbind;
+     _Count := Count_;  MakeBuffer;
 end;
+
+//------------------------------------------------------------------------------
 
 function TGLBuffer<_TItem_>.GetItems( const I_:Integer ) :_TItem_;
 begin
@@ -244,7 +253,23 @@ begin
      if M > 0 then Inc( Result, _Align - M );
 end;
 
+//------------------------------------------------------------------------------
+
+procedure TGLBuffer<_TItem_>.MakeBuffer;
+begin
+     Bind;
+
+       glBufferData( GetKind, _Strid * _Count, nil, _Usage );
+
+     Unbind;
+end;
+
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TGLBuffer<_TItem_>.Create;
+begin
+     Create( GL_STATIC_DRAW );
+end;
 
 constructor TGLBuffer<_TItem_>.Create( const Usage_:GLenum );
 begin
