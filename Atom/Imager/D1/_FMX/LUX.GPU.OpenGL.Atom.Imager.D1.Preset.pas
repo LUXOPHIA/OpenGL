@@ -21,8 +21,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create;
        destructor Destroy; override;
        ///// メソッド
-       procedure CopyFrom( const BMP_:TBitmap );
-       procedure CopyTo( const BMP_:TBitmap );
+       procedure CopyFrom( const BMP_:TBitmap ); overload;
+       procedure CopyTo( const BMP_:TBitmap ); overload;
        procedure LoadFromFile( const FileName_:String );
        procedure SaveToFile( const FileName_:String );
      end;
@@ -36,8 +36,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create;
        destructor Destroy; override;
        ///// メソッド
-       procedure CopyFrom( const BMP_:TBitmap );
-       procedure CopyTo( const BMP_:TBitmap );
+       procedure CopyFrom( const BMP_:TBitmap ); overload;
+       procedure CopyTo( const BMP_:TBitmap ); overload;
        procedure LoadFromFile( const FileName_:String );
        procedure SaveToFile( const FileName_:String );
      end;
