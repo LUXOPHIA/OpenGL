@@ -17,7 +17,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPoiTex2D<_TItem_>
 
-     TGLPoiTex2D<_TItem_:record;_TImager_:TGLPoiIma2D<_TItem_>,constructor> = class( TGLTextur<_TItem_,TPoinArray2D<_TItem_>,TGLPoiPix2D<_TItem_>,_TImager_> )
+     TGLPoiTex2D<_TItem_:record;_TImager_:TGLPoiIma2D<_TItem_>,constructor> = class( TGLTextur<_TItem_,TPoinArray2D<_TItem_>,TGLPoiPixIter2D<_TItem_>,TGLPoiPix2D<_TItem_>,_TImager_> )
      private
      protected
      public
@@ -27,7 +27,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLCelTex2D<_TItem_>
 
-     TGLCelTex2D<_TItem_:record;_TImager_:TGLCelIma2D<_TItem_>,constructor> = class( TGLTextur<_TItem_,TCellArray2D<_TItem_>,TGLCelPix2D<_TItem_>,_TImager_> )
+     TGLCelTex2D<_TItem_:record;_TImager_:TGLCelIma2D<_TItem_>,constructor> = class( TGLTextur<_TItem_,TCellArray2D<_TItem_>,TGLCelPixIter2D<_TItem_>,TGLCelPix2D<_TItem_>,_TImager_> )
      private
      protected
      public

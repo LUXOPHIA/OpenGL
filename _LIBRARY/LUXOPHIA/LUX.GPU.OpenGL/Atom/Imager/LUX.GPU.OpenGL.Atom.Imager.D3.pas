@@ -14,7 +14,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager3D<_TItem_,_TGrider_,_TGrid_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager3D<_TItem_,_TGrider_,_TIter_,_TGrid_>
 
      IGLImager3D = interface( IGLImager )
      ['{EBD2C427-B4C8-4649-8654-E79708545A23}']
@@ -26,7 +26,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      TGLImager3D<_TItem_:record;
                  _TGrider_:TArray3D<_TItem_>,constructor;
-                 _TGrid_:TGLPixBuf3D<_TItem_>,constructor> = class( TGLImager<_TItem_,_TGrider_,_TGrid_>, IGLImager3D )
+                 _TIter_:TGLPixBufIter3D<_TItem_>,constructor;
+                 _TGrid_:TGLPixBuf3D<_TItem_,_TIter_>,constructor> = class( TGLImager<_TItem_,_TGrider_,_TIter_,_TGrid_>, IGLImager3D )
      private
      protected
      public
@@ -37,7 +38,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SendPixBuf; override;
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPoiIma3D<_TItem_,_TGrider_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPoiIma3D<_TItem_>
 
      IGLPoiIma3D = interface( IGLImager3D )
      ['{35C2AB20-C24E-4BC7-8500-29DD6E51357B}']
@@ -47,13 +48,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLPoiIma3D<_TItem_:record> = class( TGLImager3D<_TItem_,TPoinArray3D<_TItem_>,TGLPoiPix3D<_TItem_>>, IGLPoiIma3D )
+     TGLPoiIma3D<_TItem_:record> = class( TGLImager3D<_TItem_,TPoinArray3D<_TItem_>,TGLPoiPixIter3D<_TItem_>,TGLPoiPix3D<_TItem_>>, IGLPoiIma3D )
      private
      protected
      public
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLCelIma3D<_TItem_,_TGrider_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLCelIma3D<_TItem_>
 
      IGLCelIma3D = interface( IGLImager3D )
      ['{2786645A-C1E4-4210-83D1-0F7CD7871778}']
@@ -63,7 +64,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLCelIma3D<_TItem_:record> = class( TGLImager3D<_TItem_,TCellArray3D<_TItem_>,TGLCelPix3D<_TItem_>>, IGLCelIma3D )
+     TGLCelIma3D<_TItem_:record> = class( TGLImager3D<_TItem_,TCellArray3D<_TItem_>,TGLCelPixIter3D<_TItem_>,TGLCelPix3D<_TItem_>>, IGLCelIma3D )
      private
      protected
      public
@@ -83,7 +84,7 @@ uses System.Math;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager3D<_TItem_,_TGrider_,_TGrid_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager3D<_TItem_,_TGrider_,_TIter_,_TGrid_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -91,13 +92,13 @@ uses System.Math;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLImager3D<_TItem_,_TGrider_,_TGrid_>.Create;
+constructor TGLImager3D<_TItem_,_TGrider_,_TIter_,_TGrid_>.Create;
 begin
      inherited Create( GL_TEXTURE_3D );
 
 end;
 
-destructor TGLImager3D<_TItem_,_TGrider_,_TGrid_>.Destroy;
+destructor TGLImager3D<_TItem_,_TGrider_,_TIter_,_TGrid_>.Destroy;
 begin
 
      inherited;
@@ -105,7 +106,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLImager3D<_TItem_,_TGrider_,_TGrid_>.SendData;
+procedure TGLImager3D<_TItem_,_TGrider_,_TIter_,_TGrid_>.SendData;
 begin
      Bind;
        glTexImage3D( _Kind, 0, _TexelF, _Grider.ElemsX,
@@ -119,18 +120,18 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure TGLImager3D<_TItem_,_TGrider_,_TGrid_>.SendPixBuf;
+procedure TGLImager3D<_TItem_,_TGrider_,_TIter_,_TGrid_>.SendPixBuf;
 begin
      Bind;
-       glTexImage3D( _Kind, 0, _TexelF, _Grider.ElemsX,
-                                        _Grider.ElemsY,
-                                        _Grider.ElemsZ, 0,
+       glTexImage3D( _Kind, 0, _TexelF, _Grid.ItemsX,
+                                        _Grid.ItemsY,
+                                        _Grid.ItemsZ, 0,
                                _PixelF,
                                _PixelT, nil );
      Unbind;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPoiIma3D<_TItem_,_TGrider_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPoiIma3D<_TItem_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -138,7 +139,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLCelIma3D<_TItem_,_TGrider_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLCelIma3D<_TItem_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
