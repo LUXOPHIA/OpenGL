@@ -6,6 +6,7 @@ uses Winapi.OpenGL, Winapi.OpenGLext,
      LUX,
      LUX.Data.Lattice,
      LUX.GPU.OpenGL.Atom,
+     LUX.GPU.OpenGL.Atom.Buffer,
      LUX.GPU.OpenGL.Atom.Buffer.PixBuf;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
@@ -49,17 +50,18 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLImager<_TItem_  :record;
+     TGLImager<_TItem_:record;
                _TGrider_:TCoreArray<_TItem_>,constructor;
-               _TPixBuf_:TGLPixBuf<_TItem_> ,constructor> = class( TGLAtomer, IGLImager )
+               _TIter_:TGLPixBufIter<_TItem_>,constructor;
+               _TGrid_:TGLPixBuf<_TItem_,_TIter_>,constructor> = class( TGLAtomer, IGLImager )
      private
      protected
+       _Grid :_TGrid_;
        _Grider :_TGrider_;
        _Kind   :GLenum;
        _TexelF :GLenum;
        _PixelF :GLenum;
        _PixelT :GLenum;
-       _PixBuf :_TPixBuf_;
        ///// アクセス
        function GetKind :GLenum;
        procedure SetKind( const Kind_:GLenum );
@@ -73,12 +75,12 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const Kind_:GLenum );
        destructor Destroy; override;
        ///// プロパティ
+       property Grid   :_TGrid_   read   _Grid                  ;
        property Grider :_TGrider_ read   _Grider                ;
        property Kind   :GLenum    read GetKind   write SetKind  ;
        property TexelF :GLenum    read GetTexelF write SetTexelF;
        property PixelF :GLenum    read GetPixelF write SetPixelF;
        property PixelT :GLenum    read GetPixelT write SetPixelT;
-       property PixBuf :_TPixBuf_ read   _PixBuf                ;
        ///// メソッド
        procedure Bind;
        procedure Unbind;
@@ -114,49 +116,49 @@ implementation //###############################################################
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TGLImager<_TItem_,_TGrider_,_TPixBuf_>.GetKind :GLenum;
+function TGLImager<_TItem_,_TGrider_,_TIter_,_TGrid_>.GetKind :GLenum;
 begin
      Result := _Kind;
 end;
 
-procedure TGLImager<_TItem_,_TGrider_,_TPixBuf_>.SetKind( const Kind_:GLenum );
+procedure TGLImager<_TItem_,_TGrider_,_TIter_,_TGrid_>.SetKind( const Kind_:GLenum );
 begin
      _Kind := Kind_;
 end;
 
-function TGLImager<_TItem_,_TGrider_,_TPixBuf_>.GetTexelF :GLenum;
+function TGLImager<_TItem_,_TGrider_,_TIter_,_TGrid_>.GetTexelF :GLenum;
 begin
      Result := _TexelF;
 end;
 
-procedure TGLImager<_TItem_,_TGrider_,_TPixBuf_>.SetTexelF( const TexelF_:GLenum );
+procedure TGLImager<_TItem_,_TGrider_,_TIter_,_TGrid_>.SetTexelF( const TexelF_:GLenum );
 begin
      _TexelF := TexelF_;
 end;
 
-function TGLImager<_TItem_,_TGrider_,_TPixBuf_>.GetPixelF :GLenum;
+function TGLImager<_TItem_,_TGrider_,_TIter_,_TGrid_>.GetPixelF :GLenum;
 begin
      Result := _PixelF;
 end;
 
-procedure TGLImager<_TItem_,_TGrider_,_TPixBuf_>.SetPixelF( const PixelF_:GLenum );
+procedure TGLImager<_TItem_,_TGrider_,_TIter_,_TGrid_>.SetPixelF( const PixelF_:GLenum );
 begin
      _PixelF := PixelF_;
 end;
 
-function TGLImager<_TItem_,_TGrider_,_TPixBuf_>.GetPixelT :GLenum;
+function TGLImager<_TItem_,_TGrider_,_TIter_,_TGrid_>.GetPixelT :GLenum;
 begin
      Result := _PixelT;
 end;
 
-procedure TGLImager<_TItem_,_TGrider_,_TPixBuf_>.SetPixelT( const PixelT_:GLenum );
+procedure TGLImager<_TItem_,_TGrider_,_TIter_,_TGrid_>.SetPixelT( const PixelT_:GLenum );
 begin
      _PixelT := PixelT_;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLImager<_TItem_,_TGrider_,_TPixBuf_>.Create( const Kind_:GLenum );
+constructor TGLImager<_TItem_,_TGrider_,_TIter_,_TGrid_>.Create( const Kind_:GLenum );
 begin
      inherited Create;
 
@@ -170,12 +172,24 @@ begin
        glTexParameteri( _Kind, GL_TEXTURE_MAX_LEVEL, 0 );
      Unbind;
 
-     _PixBuf := _TPixBuf_.Create;  _PixBuf.Usage := GL_DYNAMIC_DRAW;
+     _Grid := _TGrid_.Create;
+
+     _Grid.Usage := GL_DYNAMIC_DRAW;
+
+     _Grid.OnMap := procedure( const Buffer_:IGLBuffer )
+     begin
+          CopyTo( Buffer_ as IGLPixBuf );
+     end;
+
+     _Grid.OnUnmap := procedure( const Buffer_:IGLBuffer )
+     begin
+          CopyFrom( Buffer_ as IGLPixBuf );
+     end;
 end;
 
-destructor TGLImager<_TItem_,_TGrider_,_TPixBuf_>.Destroy;
+destructor TGLImager<_TItem_,_TGrider_,_TIter_,_TGrid_>.Destroy;
 begin
-     _PixBuf.DisposeOf;
+     _Grid.DisposeOf;
 
      _Grider.DisposeOf;
 
@@ -186,19 +200,19 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLImager<_TItem_,_TGrider_,_TPixBuf_>.Bind;
+procedure TGLImager<_TItem_,_TGrider_,_TIter_,_TGrid_>.Bind;
 begin
      glBindTexture( _Kind, _ID );
 end;
 
-procedure TGLImager<_TItem_,_TGrider_,_TPixBuf_>.Unbind;
+procedure TGLImager<_TItem_,_TGrider_,_TIter_,_TGrid_>.Unbind;
 begin
      glBindTexture( _Kind, 0 );
 end;
 
 //------------------------------------------------------------------------------
 
-procedure TGLImager<_TItem_,_TGrider_,_TPixBuf_>.Use( const BindI_:GLuint );
+procedure TGLImager<_TItem_,_TGrider_,_TIter_,_TGrid_>.Use( const BindI_:GLuint );
 begin
      glActiveTexture( GL_TEXTURE0 + BindI_ );
 
@@ -207,7 +221,7 @@ begin
      glActiveTexture( GL_TEXTURE0 );
 end;
 
-procedure TGLImager<_TItem_,_TGrider_,_TPixBuf_>.Unuse( const BindI_:GLuint );
+procedure TGLImager<_TItem_,_TGrider_,_TIter_,_TGrid_>.Unuse( const BindI_:GLuint );
 begin
      glActiveTexture( GL_TEXTURE0 + BindI_ );
 
@@ -218,19 +232,19 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure TGLImager<_TItem_,_TGrider_,_TPixBuf_>.UseComput( const BindI_:GLuint );
+procedure TGLImager<_TItem_,_TGrider_,_TIter_,_TGrid_>.UseComput( const BindI_:GLuint );
 begin
      glBindImageTexture( BindI_, ID, 0, GL_FALSE, 0, GL_READ_WRITE, _TexelF );
 end;
 
-procedure TGLImager<_TItem_,_TGrider_,_TPixBuf_>.UnuseComput( const BindI_:GLuint );
+procedure TGLImager<_TItem_,_TGrider_,_TIter_,_TGrid_>.UnuseComput( const BindI_:GLuint );
 begin
      glBindImageTexture( BindI_, 0, 0, GL_FALSE, 0, GL_READ_WRITE, _TexelF );
 end;
 
 //------------------------------------------------------------------------------
 
-procedure TGLImager<_TItem_,_TGrider_,_TPixBuf_>.ReceData;
+procedure TGLImager<_TItem_,_TGrider_,_TIter_,_TGrid_>.ReceData;
 begin
      Bind;
        glGetTexImage( _Kind, 0, _PixelF, _PixelT, _Grider.Elem0P );
@@ -239,7 +253,7 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure TGLImager<_TItem_,_TGrider_,_TPixBuf_>.RecePixBuf;
+procedure TGLImager<_TItem_,_TGrider_,_TIter_,_TGrid_>.RecePixBuf;
 begin
      Bind;
        glGetTexImage( _Kind, 0, _PixelF, _PixelT, nil );
@@ -248,7 +262,7 @@ end;
 
 //------------------------------------------------------------------------------
 
-procedure TGLImager<_TItem_,_TGrider_,_TPixBuf_>.CopyFrom( const PixBuf_:IGLPixBuf );
+procedure TGLImager<_TItem_,_TGrider_,_TIter_,_TGrid_>.CopyFrom( const PixBuf_:IGLPixBuf );
 begin
      PixBuf_.BindRead;
 
@@ -257,7 +271,7 @@ begin
      PixBuf_.UnbindRead;
 end;
 
-procedure TGLImager<_TItem_,_TGrider_,_TPixBuf_>.CopyTo( const PixBuf_:IGLPixBuf );
+procedure TGLImager<_TItem_,_TGrider_,_TIter_,_TGrid_>.CopyTo( const PixBuf_:IGLPixBuf );
 begin
      PixBuf_.BindWrite;
 
