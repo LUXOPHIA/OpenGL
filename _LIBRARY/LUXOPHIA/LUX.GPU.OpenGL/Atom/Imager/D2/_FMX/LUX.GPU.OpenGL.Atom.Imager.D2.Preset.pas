@@ -4,7 +4,9 @@ interface //####################################################################
 
 uses System.UITypes,
      FMX.Graphics,
-     LUX, LUX.GPU.OpenGL.Atom.Imager.D2;
+     LUX,
+     LUX.GPU.OpenGL.Atom.Buffer.PixBuf.D2,
+     LUX.GPU.OpenGL.Atom.Imager.D2;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -107,21 +109,24 @@ end;
 procedure TGLPoiIma2D_TAlphaColorF.CopyTo( const BMP_:TBitmap );
 var
    B :TBitmapData;
+   D :TGLPoiPixIter2D<TAlphaColorF>;
    X, Y :Integer;
 begin
-     ReceData;
-
-     BMP_.SetSize( _Grider.PoinsX, _Grider.PoinsY );
+     BMP_.SetSize( _Grid.PoinsX, _Grid.PoinsY );
 
      BMP_.Map( TMapAccess.Write, B );
 
-     for Y := 0 to _Grider.PoinsY-1 do
+     D := _Grid.Map( GL_READ_ONLY );
+
+     for Y := 0 to _Grid.PoinsY-1 do
      begin
-          for X := 0 to _Grider.PoinsX-1 do
+          for X := 0 to _Grid.PoinsX-1 do
           begin
-               B.SetPixel( X, Y, _Grider[ X, Y ].ToAlphaColor );
+               B.SetPixel( X, Y, D[ X, Y ].ToAlphaColor );
           end;
      end;
+
+     D.DisposeOf;
 
      BMP_.Unmap( B );
 end;
@@ -205,21 +210,24 @@ end;
 procedure TGLCelIma2D_TAlphaColorF.CopyTo( const BMP_:TBitmap );
 var
    B :TBitmapData;
+   D :TGLCelPixIter2D<TAlphaColorF>;
    X, Y :Integer;
 begin
-     ReceData;
-
-     BMP_.SetSize( _Grider.CellsX, _Grider.CellsY );
+     BMP_.SetSize( _Grid.CellsX, _Grid.CellsY );
 
      BMP_.Map( TMapAccess.Write, B );
 
-     for Y := 0 to _Grider.CellsY-1 do
+     D := _Grid.Map( GL_READ_ONLY );
+
+     for Y := 0 to _Grid.CellsY-1 do
      begin
-          for X := 0 to _Grider.CellsX-1 do
+          for X := 0 to _Grid.CellsX-1 do
           begin
-               B.SetPixel( X, Y, _Grider[ X, Y ].ToAlphaColor );
+               B.SetPixel( X, Y, D[ X, Y ].ToAlphaColor );
           end;
      end;
+
+     D.DisposeOf;
 
      BMP_.Unmap( B );
 end;
