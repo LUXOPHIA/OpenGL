@@ -64,6 +64,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      protected
        _ItemsZ :Integer;
        ///// アクセス
+       function GetPoinsN :Integer; override;
+       function GetCellsN :Integer; override;
        function GetItemsZ :Integer;
        procedure SetItemsZ( const ItemsZ_:Integer );
        function GetPoinsZ :Integer; virtual; abstract;
@@ -217,6 +219,18 @@ end;
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
 /////////////////////////////////////////////////////////////////////// アクセス
+
+function TGLPixBuf3D<_TItem_,_TIter_>.GetPoinsN :Integer;
+begin
+     Result := PoinsZ * PoinsY * PoinsX;
+end;
+
+function TGLPixBuf3D<_TItem_,_TIter_>.GetCellsN :Integer;
+begin
+     Result := CellsZ * CellsY * CellsX;
+end;
+
+//------------------------------------------------------------------------------
 
 function TGLPixBuf3D<_TItem_,_TIter_>.GetItemsZ :Integer;
 begin
