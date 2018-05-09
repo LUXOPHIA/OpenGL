@@ -79,7 +79,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure Unuse( const BindI_:GLuint );
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLTextur<_TItem_,_TGrider_,_TIter_,_TPixBuf_,_TImager_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLTextur<_TItem_,_TIter_,_TGrid_,_TImager_>
 
      IGLTextur = interface
      ['{22F971D6-65FD-4F42-80ED-743253890A8C}']
@@ -95,10 +95,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      //-------------------------------------------------------------------------
 
      TGLTextur<_TItem_  :record;
-               _TGrider_:constructor,TCoreArray<_TItem_>;
                _TIter_  :TGLPixBufIter<_TItem_>,constructor;
-               _TPixBuf_:constructor,TGLPixBuf<_TItem_,_TIter_>;
-               _TImager_:constructor,TGLImager<_TItem_,_TGrider_,_TIter_,_TPixBuf_>> = class( TInterfacedBase, IGLTextur )
+               _TGrid_  :TGLPixBuf<_TItem_,_TIter_>,constructor;
+               _TImager_:TGLImager<_TItem_,_TIter_,_TGrid_>,constructor> = class( TInterfacedBase, IGLTextur )
      private
      protected
        _Samplr :TGLSamplr;
@@ -243,7 +242,7 @@ begin
      glBindSampler( BindI_, 0 );
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLTextur<_TItem_,_TGrider_,_TIter_,_TPixBuf_,_TImager_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLTextur<_TItem_,_TIter_,_TGrid_,_TImager_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -251,19 +250,19 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TGLTextur<_TItem_,_TGrider_,_TIter_,_TPixBuf_,_TImager_>.GetSamplr :TGLSamplr;
+function TGLTextur<_TItem_,_TIter_,_TGrid_,_TImager_>.GetSamplr :TGLSamplr;
 begin
      Result := _Samplr;
 end;
 
-function TGLTextur<_TItem_,_TGrider_,_TIter_,_TPixBuf_,_TImager_>.GetImager :_TImager_;
+function TGLTextur<_TItem_,_TIter_,_TGrid_,_TImager_>.GetImager :_TImager_;
 begin
      Result := _Imager;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLTextur<_TItem_,_TGrider_,_TIter_,_TPixBuf_,_TImager_>.Create;
+constructor TGLTextur<_TItem_,_TIter_,_TGrid_,_TImager_>.Create;
 begin
      inherited;
 
@@ -271,7 +270,7 @@ begin
      _Imager := _TImager_.Create;
 end;
 
-constructor TGLTextur<_TItem_,_TGrider_,_TIter_,_TPixBuf_,_TImager_>.Create( const Imager_:_TImager_ );
+constructor TGLTextur<_TItem_,_TIter_,_TGrid_,_TImager_>.Create( const Imager_:_TImager_ );
 begin
      inherited Create;
 
@@ -279,7 +278,7 @@ begin
      _Imager := Imager_;
 end;
 
-destructor TGLTextur<_TItem_,_TGrider_,_TIter_,_TPixBuf_,_TImager_>.Destroy;
+destructor TGLTextur<_TItem_,_TIter_,_TGrid_,_TImager_>.Destroy;
 begin
      _Samplr.DisposeOf;
      _Imager.DisposeOf;
@@ -289,7 +288,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLTextur<_TItem_,_TGrider_,_TIter_,_TPixBuf_,_TImager_>.Use( const BindI_:GLuint );
+procedure TGLTextur<_TItem_,_TIter_,_TGrid_,_TImager_>.Use( const BindI_:GLuint );
 begin
      inherited;
 
@@ -297,7 +296,7 @@ begin
      _Imager.Use( BindI_ );
 end;
 
-procedure TGLTextur<_TItem_,_TGrider_,_TIter_,_TPixBuf_,_TImager_>.Unuse( const BindI_:GLuint );
+procedure TGLTextur<_TItem_,_TIter_,_TGrid_,_TImager_>.Unuse( const BindI_:GLuint );
 begin
      _Samplr.Unuse( BindI_ );
      _Imager.Unuse( BindI_ );
