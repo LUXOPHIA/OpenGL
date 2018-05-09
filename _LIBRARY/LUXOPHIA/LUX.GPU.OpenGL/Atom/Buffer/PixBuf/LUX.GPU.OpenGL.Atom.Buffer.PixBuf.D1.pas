@@ -63,6 +63,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      protected
        _ItemsX :Integer;
        ///// アクセス
+       function GetPoinsN :Integer; override;
+       function GetCellsN :Integer; override;
        function GetItemsX :Integer;
        procedure SetItemsX( const ItemsX_:Integer );
        function GetPoinsX :Integer; virtual; abstract;
@@ -200,6 +202,18 @@ end;
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
 /////////////////////////////////////////////////////////////////////// アクセス
+
+function TGLPixBuf1D<_TItem_,_TIter_>.GetPoinsN :Integer;
+begin
+     Result := PoinsX;
+end;
+
+function TGLPixBuf1D<_TItem_,_TIter_>.GetCellsN :Integer;
+begin
+     Result := CellsX;
+end;
+
+//------------------------------------------------------------------------------
 
 function TGLPixBuf1D<_TItem_,_TIter_>.GetItemsX :Integer;
 begin
