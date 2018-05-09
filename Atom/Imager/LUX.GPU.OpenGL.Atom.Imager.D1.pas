@@ -14,7 +14,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager1D<_TItem_,_TGrider_,_TIter_,_TGrid_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager1D<_TItem_,_TIter_,_TGrid_>
 
      IGLImager1D = interface( IGLImager )
      ['{93701122-C0C0-4697-9E0E-C0D59EAB9706}']
@@ -25,16 +25,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      //-------------------------------------------------------------------------
 
      TGLImager1D<_TItem_:record;
-                 _TGrider_:TArray1D<_TItem_>,constructor;
                  _TIter_:TGLPixBufIter1D<_TItem_>,constructor;
-                 _TGrid_:TGLPixBuf1D<_TItem_,_TIter_>,constructor> = class( TGLImager<_TItem_,_TGrider_,_TIter_,_TGrid_>, IGLImager1D )
+                 _TGrid_:TGLPixBuf1D<_TItem_,_TIter_>,constructor> = class( TGLImager<_TItem_,_TIter_,_TGrid_>, IGLImager1D )
      private
      protected
      public
        constructor Create;
        destructor Destroy; override;
        ///// メソッド
-       procedure SendData; override;
        procedure SendPixBuf; override;
      end;
 
@@ -48,7 +46,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLPoiIma1D<_TItem_:record> = class( TGLImager1D<_TItem_,TPoinArray1D<_TItem_>,TGLPoiPixIter1D<_TItem_>,TGLPoiPix1D<_TItem_>>, IGLPoiIma1D )
+     TGLPoiIma1D<_TItem_:record> = class( TGLImager1D<_TItem_,TGLPoiPixIter1D<_TItem_>,TGLPoiPix1D<_TItem_>>, IGLPoiIma1D )
      private
      protected
      public
@@ -64,7 +62,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLCelIma1D<_TItem_:record> = class( TGLImager1D<_TItem_,TCellArray1D<_TItem_>,TGLCelPixIter1D<_TItem_>,TGLCelPix1D<_TItem_>>, IGLCelIma1D )
+     TGLCelIma1D<_TItem_:record> = class( TGLImager1D<_TItem_,TGLCelPixIter1D<_TItem_>,TGLCelPix1D<_TItem_>>, IGLCelIma1D )
      private
      protected
      public
@@ -84,7 +82,7 @@ uses System.Math;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager1D<_TItem_,_TGrider_,_TIter_,_TGrid_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager1D<_TItem_,_TIter_,_TGrid_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -92,13 +90,13 @@ uses System.Math;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLImager1D<_TItem_,_TGrider_,_TIter_,_TGrid_>.Create;
+constructor TGLImager1D<_TItem_,_TIter_,_TGrid_>.Create;
 begin
      inherited Create( GL_TEXTURE_1D );
 
 end;
 
-destructor TGLImager1D<_TItem_,_TGrider_,_TIter_,_TGrid_>.Destroy;
+destructor TGLImager1D<_TItem_,_TIter_,_TGrid_>.Destroy;
 begin
 
      inherited;
@@ -106,19 +104,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLImager1D<_TItem_,_TGrider_,_TIter_,_TGrid_>.SendData;
-begin
-     Bind;
-       glTexImage1D( _Kind, 0, _TexelF, _Grider.ElemsX, 0,
-                               _PixelF,
-                               _PixelT,
-                               _Grider.Elem0P );
-     Unbind;
-end;
-
-//------------------------------------------------------------------------------
-
-procedure TGLImager1D<_TItem_,_TGrider_,_TIter_,_TGrid_>.SendPixBuf;
+procedure TGLImager1D<_TItem_,_TIter_,_TGrid_>.SendPixBuf;
 begin
      Bind;
        glTexImage1D( _Kind, 0, _TexelF, _Grid.ItemsX, 0,

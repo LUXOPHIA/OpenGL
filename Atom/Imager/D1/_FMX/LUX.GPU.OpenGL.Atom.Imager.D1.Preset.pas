@@ -86,20 +86,23 @@ end;
 procedure TGLPoiIma1D_TAlphaColorF.CopyFrom( const BMP_:TBitmap );
 var
    B :TBitmapData;
+   D :TGLPoiPixIter1D<TAlphaColorF>;
    X :Integer;
 begin
-     _Grider.PoinsX := BMP_.Width;
+     _Grid.PoinsX := BMP_.Width;
 
      BMP_.Map( TMapAccess.Read, B );
 
-     for X := 0 to _Grider.PoinsX-1 do
+     D := _Grid.Map( GL_WRITE_ONLY );
+
+     for X := 0 to _Grid.PoinsX-1 do
      begin
-          _Grider[ X ] := TAlphaColorF.Create( B.GetPixel( X, 0 ) );
+          D[ X ] := TAlphaColorF.Create( B.GetPixel( X, 0 ) );
      end;
 
-     BMP_.Unmap( B );
+     D.DisposeOf;
 
-     SendData;
+     BMP_.Unmap( B );
 end;
 
 procedure TGLPoiIma1D_TAlphaColorF.CopyTo( const BMP_:TBitmap );
@@ -180,20 +183,23 @@ end;
 procedure TGLCelIma1D_TAlphaColorF.CopyFrom( const BMP_:TBitmap );
 var
    B :TBitmapData;
+   D :TGLCelPixIter1D<TAlphaColorF>;
    X :Integer;
 begin
-     _Grider.CellsX := BMP_.Width;
+     _Grid.CellsX := BMP_.Width;
 
      BMP_.Map( TMapAccess.Read, B );
 
-     for X := 0 to _Grider.CellsX-1 do
+     D := _Grid.Map( GL_WRITE_ONLY );
+
+     for X := 0 to _Grid.CellsX-1 do
      begin
-          _Grider[ X ] := TAlphaColorF.Create( B.GetPixel( X, 0 ) );
+          D[ X ] := TAlphaColorF.Create( B.GetPixel( X, 0 ) );
      end;
 
-     BMP_.Unmap( B );
+     D.DisposeOf;
 
-     SendData;
+     BMP_.Unmap( B );
 end;
 
 procedure TGLCelIma1D_TAlphaColorF.CopyTo( const BMP_:TBitmap );

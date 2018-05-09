@@ -14,7 +14,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager2D<_TItem_,_TGrider_,_TIter_,_TGrid_>
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager2D<_TItem_,_TIter_,_TGrid_>
 
      IGLImager2D = interface( IGLImager )
      ['{69B48023-273B-46B0-A8E4-AD79BABB51FD}']
@@ -25,16 +25,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      //-------------------------------------------------------------------------
 
      TGLImager2D<_TItem_:record;
-                 _TGrider_:TArray2D<_TItem_>,constructor;
                  _TIter_:TGLPixBufIter2D<_TItem_>,constructor;
-                 _TGrid_:TGLPixBuf2D<_TItem_,_TIter_>,constructor> = class( TGLImager<_TItem_,_TGrider_,_TIter_,_TGrid_>, IGLImager2D )
+                 _TGrid_:TGLPixBuf2D<_TItem_,_TIter_>,constructor> = class( TGLImager<_TItem_,_TIter_,_TGrid_>, IGLImager2D )
      private
      protected
      public
        constructor Create;
        destructor Destroy; override;
        ///// メソッド
-       procedure SendData; override;
        procedure SendPixBuf; override;
      end;
 
@@ -48,7 +46,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLPoiIma2D<_TItem_:record> = class( TGLImager2D<_TItem_,TPoinArray2D<_TItem_>,TGLPoiPixIter2D<_TItem_>,TGLPoiPix2D<_TItem_>>, IGLPoiIma2D )
+     TGLPoiIma2D<_TItem_:record> = class( TGLImager2D<_TItem_,TGLPoiPixIter2D<_TItem_>,TGLPoiPix2D<_TItem_>>, IGLPoiIma2D )
      private
      protected
      public
@@ -64,7 +62,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //-------------------------------------------------------------------------
 
-     TGLCelIma2D<_TItem_:record> = class( TGLImager2D<_TItem_,TCellArray2D<_TItem_>,TGLCelPixIter2D<_TItem_>,TGLCelPix2D<_TItem_>>, IGLCelIma2D )
+     TGLCelIma2D<_TItem_:record> = class( TGLImager2D<_TItem_,TGLCelPixIter2D<_TItem_>,TGLCelPix2D<_TItem_>>, IGLCelIma2D )
      private
      protected
      public
@@ -84,7 +82,7 @@ uses System.Math;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager2D<_TItem_,_TGrider_,_TIter_,_TGrid_>
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLImager2D<_TItem_,_TIter_,_TGrid_>
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -92,13 +90,13 @@ uses System.Math;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-constructor TGLImager2D<_TItem_,_TGrider_,_TIter_,_TGrid_>.Create;
+constructor TGLImager2D<_TItem_,_TIter_,_TGrid_>.Create;
 begin
      inherited Create( GL_TEXTURE_2D );
 
 end;
 
-destructor TGLImager2D<_TItem_,_TGrider_,_TIter_,_TGrid_>.Destroy;
+destructor TGLImager2D<_TItem_,_TIter_,_TGrid_>.Destroy;
 begin
 
      inherited;
@@ -106,20 +104,7 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLImager2D<_TItem_,_TGrider_,_TIter_,_TGrid_>.SendData;
-begin
-     Bind;
-       glTexImage2D( _Kind, 0, _TexelF, _Grider.ElemsX,
-                                        _Grider.ElemsY, 0,
-                               _PixelF,
-                               _PixelT,
-                               _Grider.Elem0P );
-     Unbind;
-end;
-
-//------------------------------------------------------------------------------
-
-procedure TGLImager2D<_TItem_,_TGrider_,_TIter_,_TGrid_>.SendPixBuf;
+procedure TGLImager2D<_TItem_,_TIter_,_TGrid_>.SendPixBuf;
 begin
      Bind;
        glTexImage2D( _Kind, 0, _TexelF, _Grid.ItemsX,
