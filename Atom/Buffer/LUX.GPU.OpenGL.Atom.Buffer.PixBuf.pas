@@ -46,6 +46,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      protected
        ///// アクセス
        function GetKind :GLenum; override;
+       function GetElemsN :Integer; virtual; abstract;
        function GetPoinsN :Integer; virtual; abstract;
        function GetCellsN :Integer; virtual; abstract;
        ///// メソッド
@@ -53,6 +54,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure MakeBuffer; override;
      public
        ///// プロパティ
+       property ElemsN :Integer read GetElemsN;
        property PoinsN :Integer read GetPoinsN;
        property CellsN :Integer read GetCellsN;
        ///// メソッド
@@ -106,6 +108,8 @@ end;
 
 procedure TGLPixBuf<_TItem_,_TIter_>.MakeBuffer;
 begin
+     _Count := ElemsN;
+
      BindRead;
 
        glBufferData( GL_PIXEL_UNPACK_BUFFER, SizeOf( _TItem_ ) * _Count, nil, _Usage );
