@@ -4,7 +4,9 @@ interface //####################################################################
 
 uses System.Types,
      FMX.Controls, FMX.Forms,
-     LUX, LUX.FMX.Forms;
+     LUX,
+     LUX.FMX,
+     LUX.FMX.Forms;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
