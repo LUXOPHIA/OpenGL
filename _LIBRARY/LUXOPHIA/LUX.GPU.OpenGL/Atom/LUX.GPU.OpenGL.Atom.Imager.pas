@@ -235,8 +235,6 @@ end;
 
 procedure TGLImager<_TItem_,_TIter_,_TGrid_>.RecePixBuf;
 begin
-     glMemoryBarrier( GL_TEXTURE_UPDATE_BARRIER_BIT );
-
      Bind;
 
        glGetTexImage( _Kind, 0, _PixelF, _PixelT, nil );
