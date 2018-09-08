@@ -207,7 +207,7 @@ begin
 
           with Textur do
           begin
-               Imager.LoadFromFile( '..\..\_DATA\Spherical_2048x1024.png' );
+               Imager.LoadFromFileHDR( '..\..\_DATA\Luxo-Jr_2000x1000.hdr' );
           end;
      end;
 end;
