@@ -1738,12 +1738,16 @@ end;
 
 function RealMod( const X_,Range_:Integer ) :Integer;
 begin
-     Result := X_ mod Range_;  if Result < 0 then Inc( Result, Range_ );
+     Result := X_ - ( X_ div Range_ ) * Range_;
+
+     if Result < 0 then Inc( Result, Range_ );
 end;
 
 function RealMod( const X_,Range_:Int64 ) :Int64;
 begin
-     Result := X_ mod Range_;  if Result < 0 then Inc( Result, Range_ );
+     Result := X_ - ( X_ div Range_ ) * Range_;
+
+     if Result < 0 then Inc( Result, Range_ );
 end;
 
 //------------------------------------------------------------------------------
