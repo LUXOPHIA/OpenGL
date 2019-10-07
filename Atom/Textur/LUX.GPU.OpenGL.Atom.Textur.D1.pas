@@ -85,7 +85,7 @@ begin
 
      with _Samplr do
      begin
-          WrapU := GL_MIRRORED_REPEAT;
+          WrapU := GL_CLAMP_TO_EDGE;
      end;
 end;
 
