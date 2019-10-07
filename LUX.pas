@@ -378,8 +378,8 @@ function MaxI( const Vs_:array of Integer ) :Integer; overload;
 function MaxI( const Vs_:array of Single ) :Integer; overload;
 function MaxI( const Vs_:array of Double ) :Integer; overload;
 
-function RealMod( const X_,Range_:Integer ) :Integer; overload;
-function RealMod( const X_,Range_:Int64 ) :Int64; overload;
+function PoMod( const X_,Range_:Integer ) :Integer; overload;
+function PoMod( const X_,Range_:Int64 ) :Int64; overload;
 
 {$IF Defined( MACOS ) or Defined( MSWINDOWS ) }
 function RevBytes( const Value_:Word ) :Word; overload;
@@ -1736,14 +1736,14 @@ end;
 
 //------------------------------------------------------------------------------
 
-function RealMod( const X_,Range_:Integer ) :Integer;
+function PoMod( const X_,Range_:Integer ) :Integer;
 begin
      Result := X_ - ( X_ div Range_ ) * Range_;
 
      if Result < 0 then Inc( Result, Range_ );
 end;
 
-function RealMod( const X_,Range_:Int64 ) :Int64;
+function PoMod( const X_,Range_:Int64 ) :Int64;
 begin
      Result := X_ - ( X_ div Range_ ) * Range_;
 
