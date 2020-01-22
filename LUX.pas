@@ -429,6 +429,18 @@ function FloatToStr( const Value_:Double; const N_:Integer ) :String; overload;
 function FloatToStrP( const Value_:Single; const N_:Integer ) :String; overload;
 function FloatToStrP( const Value_:Double; const N_:Integer ) :String; overload;
 
+function Floor( const X_,D_:UInt32 ) :UInt32; overload;
+function Floor( const X_,D_:UInt64 ) :UInt64; overload;
+
+function Ceil( const X_,D_:UInt32 ) :UInt32; overload;
+function Ceil( const X_,D_:UInt64 ) :UInt64; overload;
+
+function Floor2N( const X_,D_:UInt32 ) :UInt32; overload;
+function Floor2N( const X_,D_:UInt64 ) :UInt64; overload;
+
+function Ceil2N( const X_,D_:UInt32 ) :UInt32; overload;
+function Ceil2N( const X_,D_:UInt64 ) :UInt64; overload;
+
 implementation //############################################################### ■
 
 uses System.Math;
@@ -2116,6 +2128,54 @@ begin
      Result := FloatToStr( Value_, N_ );
 
      if Value_ > 0 then Result := '+' + Result;
+end;
+
+//------------------------------------------------------------------------------
+
+function Floor( const X_,D_:UInt32 ) :UInt32;
+begin
+     Result := X_ div D_ * D_;
+end;
+
+function Floor( const X_,D_:UInt64 ) :UInt64;
+begin
+     Result := X_ div D_ * D_;
+end;
+
+//------------------------------------------------------------------------------
+
+function Ceil( const X_,D_:UInt32 ) :UInt32;
+begin
+     Result := Floor( X_ + D_ - 1, D_ );
+end;
+
+function Ceil( const X_,D_:UInt64 ) :UInt64;
+begin
+     Result := Floor( X_ + D_ - 1, D_ );
+end;
+
+//------------------------------------------------------------------------------
+
+function Floor2N( const X_,D_:UInt32 ) :UInt32;
+begin
+     Result := X_ and not ( D_ - 1 );
+end;
+
+function Floor2N( const X_,D_:UInt64 ) :UInt64;
+begin
+     Result := X_ and not ( D_ - 1 );
+end;
+
+//------------------------------------------------------------------------------
+
+function Ceil2N( const X_,D_:UInt32 ) :UInt32;
+begin
+     Result := Floor( X_ + D_ - 1, D_ );
+end;
+
+function Ceil2N( const X_,D_:UInt64 ) :UInt64;
+begin
+     Result := Floor( X_ + D_ - 1, D_ );
 end;
 
 //############################################################################## □
