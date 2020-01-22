@@ -441,6 +441,9 @@ function Floor2N( const X_,D_:UInt64 ) :UInt64; overload;
 function Ceil2N( const X_,D_:UInt32 ) :UInt32; overload;
 function Ceil2N( const X_,D_:UInt64 ) :UInt64; overload;
 
+procedure GetMemAligned( out P_:Pointer; const Size_,Align2N_:UInt32 );
+procedure FreeMemAligned( const P_:Pointer );
+
 implementation //############################################################### ■
 
 uses System.Math;
@@ -2176,6 +2179,44 @@ end;
 function Ceil2N( const X_,D_:UInt64 ) :UInt64;
 begin
      Result := Floor( X_ + D_ - 1, D_ );
+end;
+
+//------------------------------------------------------------------------------
+
+procedure GetMemAligned( out P_:Pointer; const Size_,Align2N_:UInt32 );
+const
+     H :UInt32 = SizeOf( Pointer );
+var
+   P0 :Pointer;
+   PP :PPointer;
+   I0, I1 :NativeUInt;
+begin
+     //  ┠───Ａ───╂────────Ｓ────────┤
+     //  ┃              ┃                                  │
+     //  ┃  │I0        ┃              ┃              ┃  │      │  ┃
+     //  ╂─├─┬─┬─┣━┯━┯━┯━╋━┯━┯━┯━╋━┥─┬─┤─╂
+     //  ┃  │×│×│I0┃◯│◯│◯│◯┃◯│◯│◯│◯┃◯│×│×│  ┃
+     //  ╂─├─┴─┴─┣━┷━┷━┷━╋━┷━┷━┷━╋━┥─┴─┤─╂
+     //  ┃  │  │      ┃I1    │      ┃              ┃          │  ┃
+     //      │  │              │                                  │
+     //      ├Ｈ┼───Ａ───┼────────Ｓ────────┤
+
+     GetMem( P0, H + Align2N_ + Size_ );
+
+     I0 := NativeUInt( P0 );
+
+     I1 := Ceil2N( H + I0, Align2N_ );
+
+     P_ := Pointer( I1 );
+
+     PP := P_;  Dec( PP );  PP^ := P0;
+end;
+
+procedure FreeMemAligned( const P_:Pointer );
+var
+   PP :PPointer;
+begin
+     PP := P_;  Dec( PP );  FreeMem( PP^ );
 end;
 
 //############################################################################## □
