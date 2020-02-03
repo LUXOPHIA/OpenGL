@@ -629,8 +629,8 @@ end;
 constructor TMarginArray<_TValue_>.Create( const LowerN_,Count_,UpperN_:Integer );
 begin
      _LowerN := LowerN_;
-     _Count  :=Count_ ;
-     _UpperN :=UpperN_;
+     _Count  := Count_ ;
+     _UpperN := UpperN_;
 
      InitArray;
 end;
