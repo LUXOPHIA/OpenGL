@@ -2,7 +2,7 @@
 
 interface //#################################################################### ■
 
-type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ＴＹＰＥ】
+type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
      TTreeAtom   = class;
        TTreeItem = class;
@@ -11,23 +11,23 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      TNodeProc<_TNode_:class> = reference to procedure( const Node_:_TNode_ );
 
-     //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ＲＥＣＯＲＤ】
+     //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
-     //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ＣＬＡＳＳ】
+     //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TChildTable
 
      TChildTable = class
      private
        _Childs :TArray<TTreeItem>;
-       ///// ACCESS
+       ///// アクセス
        function GetChilds( I_:Integer ) :TTreeItem;
        procedure SetChilds( I_:Integer; const Value_:TTreeItem );
        function GetCount :Integer;
        procedure SetCount( const Count_:Integer );
      public
        constructor Create;
-       ///// PROPERTY
+       ///// プロパティ
        property Childs[ I_:Integer ] :TTreeItem read GetChilds write SetChilds; default;
        property Count                :Integer   read GetCount  write SetCount ;
      end;
@@ -37,7 +37,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TTreeAtom = class
      private
      protected
-       ///// ACCESS
+       ///// アクセス
        function Get_Parent :TTreeItem; virtual;
        procedure Set_Parent( const Parent_:TTreeItem ); virtual;
        function Get_Order :Integer; virtual;
@@ -52,7 +52,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure Set_ChildsN( const ChildsN_:Integer ); virtual;
        function Get_MaxOrder :Integer; virtual;
        procedure Set_MaxOrder( const MaxOrder_:Integer ); virtual;
-       ///// PROPERTY
+       ///// プロパティ
        property _Parent   :TTreeItem   read Get_Parent   write Set_Parent  ;
        property _Order    :Integer     read Get_Order    write Set_Order   ;
        property _Prev     :TTreeItem   read Get_Prev     write Set_Prev    ;
@@ -67,16 +67,16 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      TTreeItem = class( TTreeAtom )
      private
-       ///// ACCESS
+       ///// アクセス
        function Get_Zero :TTreeItem;
        procedure Set_Zero( const Zero_:TTreeItem );
        function GetIsOrdered :Boolean;
-       ///// METHOD
+       ///// メソッド
        class procedure Bind( const C0_,C1_:TTreeItem ); overload; inline;
        class procedure Bind( const C0_,C1_,C2_:TTreeItem ); overload; inline;
        class procedure Bind( const C0_,C1_,C2_,C3_:TTreeItem ); overload; inline;
      protected
-       ///// ACCESS
+       ///// アクセス
        function GetParent :TTreeItem;
        procedure SetParent( const Parent_:TTreeItem );
        function GetOrder :Integer;
@@ -87,10 +87,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure SetChilds( const I_:Integer; const Child_:TTreeItem );
        function GetChildsN :Integer;
        function GetRootNode :TTreeItem;
-       ///// PROPERTY
+       ///// プロパティ
        property _Zero     :TTreeItem read Get_Zero     write Set_Zero;
        property IsOrdered :Boolean   read GetIsOrdered               ;
-       ///// METHOD
+       ///// メソッド
        procedure FindTo( const Child_:TTreeItem ); overload;
        procedure FindTo( const Order_:Integer   ); overload;
        procedure _Insert( const C0_,C1_,C2_:TTreeItem );
@@ -98,7 +98,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure OnInsertChild( const Child_:TTreeItem ); virtual;
        procedure OnRemoveChild( const Child_:TTreeItem ); virtual;
      public
-       ///// PROPERTY
+       ///// プロパティ
        property Parent                     :TTreeItem read GetParent   write SetParent;
        property Order                      :Integer   read GetOrder    write SetOrder ;
        property Head                       :TTreeItem read GetHead                    ;
@@ -106,7 +106,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Childs[ const I_:Integer ] :TTreeItem read GetChilds   write SetChilds; default;
        property ChildsN                    :Integer   read GetChildsN                 ;
        property RootNode                   :TTreeItem read GetRootNode                ;
-       ///// METHOD
+       ///// メソッド
        procedure Remove;
        procedure RemoveChild( const Child_:TTreeItem );
        procedure DeleteChilds; virtual;
@@ -123,23 +123,23 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure RunFamily( const Proc_:TNodeProc<TTreeItem> );
      end;
 
-//const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ＣＯＮＳＴＡＮＴ】
+//const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
 
-//var //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ＶＡＲＩＡＢＬＥ】
+//var //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【変数】
 
-//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ＲＯＵＴＩＮＥ】
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
 
 implementation //############################################################### ■
 
-//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ＲＥＣＯＲＤ】
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
-//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ＣＬＡＳＳ】
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TChildTable
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
-///////////////////////////////////////////////////////////////////////// ACCESS
+/////////////////////////////////////////////////////////////////////// アクセス
 
 function TChildTable.GetChilds( I_:Integer ) :TTreeItem;
 begin
@@ -176,7 +176,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
-///////////////////////////////////////////////////////////////////////// ACCESS
+/////////////////////////////////////////////////////////////////////// アクセス
 
 function TTreeAtom.Get_Parent :TTreeItem;
 begin
@@ -254,7 +254,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
-///////////////////////////////////////////////////////////////////////// ACCESS
+/////////////////////////////////////////////////////////////////////// アクセス
 
 function TTreeItem.Get_Zero :TTreeItem;
 begin
@@ -274,7 +274,7 @@ begin
            and ( _Parent._Childs[ _Order ] = Self );
 end;
 
-///////////////////////////////////////////////////////////////////////// METHOD
+/////////////////////////////////////////////////////////////////////// メソッド
 
 class procedure TTreeItem.Bind( const C0_,C1_:TTreeItem );
 begin
@@ -297,7 +297,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
 
-///////////////////////////////////////////////////////////////////////// ACCESS
+/////////////////////////////////////////////////////////////////////// アクセス
 
 function TTreeItem.GetParent :TTreeItem;
 begin
@@ -372,7 +372,7 @@ begin
      while Assigned( Result.Parent ) do Result := Result.Parent;
 end;
 
-///////////////////////////////////////////////////////////////////////// METHOD
+/////////////////////////////////////////////////////////////////////// メソッド
 
 procedure TTreeItem.FindTo( const Child_:TTreeItem );
 var
@@ -456,7 +456,7 @@ end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-///////////////////////////////////////////////////////////////////////// METHOD
+/////////////////////////////////////////////////////////////////////// メソッド
 
 procedure TTreeItem.Remove;
 begin
@@ -598,6 +598,6 @@ begin
      for I := 0 to ChildsN-1 do Childs[ I ].RunFamily( Proc_ );
 end;
 
-//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ＲＯＵＴＩＮＥ】
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
 
 end. //######################################################################### ■
