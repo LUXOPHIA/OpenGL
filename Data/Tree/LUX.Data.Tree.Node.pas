@@ -19,13 +19,15 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      TTreeRoot = class( TTreeItem )
      private
-       FChilds   :TChildTable;
+       FLinks    :TArray<TTreeItem>;
        FChildsN  :Integer;
        FMaxOrder :Integer;
      protected
        ///// アクセス
-       function Get_Childs :TChildTable; override;
-       procedure Set_Childs( const Childs_:TChildTable ); override;
+       function Get_Links( const I_:Integer ) :TTreeItem; override;
+       procedure Set_Links( const I_:Integer; const Link_:TTreeItem ); override;
+       function Get_LinksN :Integer; override;
+       procedure Set_LinksN( const LinksN_:Integer ); override;
        function Get_ChildsN :Integer; override;
        procedure Set_ChildsN( const ChildsN_:Integer ); override;
        function Get_MaxOrder :Integer; override;
@@ -58,7 +60,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
        FParent   :TTreeItem;
        FOrder    :Integer;
-       FChilds   :TChildTable;
+       FLinks    :TArray<TTreeItem>;
        FChildsN  :Integer;
        FMaxOrder :Integer;
      protected
@@ -67,8 +69,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure Set_Parent( const Parent_:TTreeItem ); override;
        function Get_Order :Integer; override;
        procedure Set_Order( const Order_:Integer ); override;
-       function Get_Childs :TChildTable; override;
-       procedure Set_Childs( const Childs_:TChildTable ); override;
+       function Get_Links( const I_:Integer ) :TTreeItem; override;
+       procedure Set_Links( const I_:Integer; const Link_:TTreeItem ); override;
+       function Get_LinksN :Integer; override;
+       procedure Set_LinksN( const LinksN_:Integer ); override;
        function Get_ChildsN :Integer; override;
        procedure Set_ChildsN( const ChildsN_:Integer ); override;
        function Get_MaxOrder :Integer; override;
@@ -117,14 +121,24 @@ implementation //###############################################################
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TTreeRoot.Get_Childs :TChildTable;
+function TTreeRoot.Get_Links( const I_:Integer ) :TTreeItem;
 begin
-     Result := FChilds;
+     Result := FLinks[ 1 + I_ ];
 end;
 
-procedure TTreeRoot.Set_Childs( const Childs_:TChildTable );
+procedure TTreeRoot.Set_Links( const I_:Integer; const Link_:TTreeItem );
 begin
-     FChilds := Childs_;
+     FLinks[ 1 + I_ ] := Link_;
+end;
+
+function TTreeRoot.Get_LinksN :Integer;
+begin
+     Result := Length( FLinks ) - 1;
+end;
+
+procedure TTreeRoot.Set_LinksN( const LinksN_:Integer );
+begin
+     SetLength( FLinks, 1 + LinksN_ );
 end;
 
 function TTreeRoot.Get_ChildsN :Integer;
@@ -157,7 +171,7 @@ begin
 
      _ChildsN  := 0;
 
-     _Childs   := TChildTable.Create;
+     _LinksN   := 0;
 
      _Zero     := TTreeZero.Create;
 
@@ -173,9 +187,7 @@ end;
 
 destructor TTreeRoot.Destroy;
 begin
-     _Zero  .Free;
-
-     _Childs.Free;
+     _Zero.Free;
 
      inherited;
 end;
@@ -244,14 +256,24 @@ begin
      FOrder := Order_;
 end;
 
-function TTreeNode.Get_Childs :TChildTable;
+function TTreeNode.Get_Links( const I_:Integer ) :TTreeItem;
 begin
-     Result := FChilds;
+     Result := FLinks[ 1 + I_ ];
 end;
 
-procedure TTreeNode.Set_Childs( const Childs_:TChildTable );
+procedure TTreeNode.Set_Links( const I_:Integer; const Link_:TTreeItem );
 begin
-     FChilds := Childs_;
+     FLinks[ 1 + I_ ] := Link_;
+end;
+
+function TTreeNode.Get_LinksN :Integer;
+begin
+     Result := Length( FLinks ) - 1;
+end;
+
+procedure TTreeNode.Set_LinksN( const LinksN_:Integer );
+begin
+     SetLength( FLinks, 1 + LinksN_ );
 end;
 
 function TTreeNode.Get_ChildsN :Integer;
@@ -288,7 +310,7 @@ begin
 
      _ChildsN  := 0;
 
-     _Childs   := TChildTable.Create;
+     _LinksN   := 0;
 
      _Zero     := TTreeZero.Create;
 
@@ -313,9 +335,7 @@ end;
 
 destructor TTreeNode.Destroy;
 begin
-     _Zero  .Free;
-
-     _Childs.Free;
+     _Zero.Free;
 
      inherited;
 end;

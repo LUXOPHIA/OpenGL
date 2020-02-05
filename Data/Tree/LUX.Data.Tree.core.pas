@@ -15,23 +15,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TChildTable
-
-     TChildTable = class
-     private
-       _Childs :TArray<TTreeItem>;
-       ///// アクセス
-       function GetChilds( I_:Integer ) :TTreeItem;
-       procedure SetChilds( I_:Integer; const Value_:TTreeItem );
-       function GetCount :Integer;
-       procedure SetCount( const Count_:Integer );
-     public
-       constructor Create;
-       ///// プロパティ
-       property Childs[ I_:Integer ] :TTreeItem read GetChilds write SetChilds; default;
-       property Count                :Integer   read GetCount  write SetCount ;
-     end;
-
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TTreeAtom
 
      TTreeAtom = class
@@ -46,20 +29,23 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure Set_Prev( const Prev_:TTreeItem ); virtual;
        function Get_Next :TTreeItem; virtual;
        procedure Set_Next( const Next_:TTreeItem ); virtual;
-       function Get_Childs :TChildTable; virtual;
-       procedure Set_Childs( const Childs_:TChildTable ); virtual;
+       function Get_Links( const I_:Integer ) :TTreeItem; virtual;
+       procedure Set_Links( const I_:Integer; const Link_:TTreeItem ); virtual;
+       function Get_LinksN :Integer; virtual;
+       procedure Set_LinksN( const LinksN_:Integer ); virtual;
        function Get_ChildsN :Integer; virtual;
        procedure Set_ChildsN( const ChildsN_:Integer ); virtual;
        function Get_MaxOrder :Integer; virtual;
        procedure Set_MaxOrder( const MaxOrder_:Integer ); virtual;
        ///// プロパティ
-       property _Parent   :TTreeItem   read Get_Parent   write Set_Parent  ;
-       property _Order    :Integer     read Get_Order    write Set_Order   ;
-       property _Prev     :TTreeItem   read Get_Prev     write Set_Prev    ;
-       property _Next     :TTreeItem   read Get_Next     write Set_Next    ;
-       property _Childs   :TChildTable read Get_Childs   write Set_Childs  ;
-       property _ChildsN  :Integer     read Get_ChildsN  write Set_ChildsN ;
-       property _MaxOrder :Integer     read Get_MaxOrder write Set_MaxOrder;
+       property _Parent                    :TTreeItem read Get_Parent   write Set_Parent  ;
+       property _Order                     :Integer   read Get_Order    write Set_Order   ;
+       property _Prev                      :TTreeItem read Get_Prev     write Set_Prev    ;
+       property _Next                      :TTreeItem read Get_Next     write Set_Next    ;
+       property _Links[ const I_:Integer ] :TTreeItem read Get_Links    write Set_Links   ;
+       property _LinksN                    :Integer   read Get_LinksN   write Set_LinksN  ;
+       property _ChildsN                   :Integer   read Get_ChildsN  write Set_ChildsN ;
+       property _MaxOrder                  :Integer   read Get_MaxOrder write Set_MaxOrder;
      public
      end;
 
@@ -135,41 +121,6 @@ implementation //###############################################################
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TChildTable
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
-
-/////////////////////////////////////////////////////////////////////// アクセス
-
-function TChildTable.GetChilds( I_:Integer ) :TTreeItem;
-begin
-     Inc( I_ );  Result := _Childs[ I_ ];
-end;
-
-procedure TChildTable.SetChilds( I_:Integer; const Value_:TTreeItem );
-begin
-     Inc( I_ );  _Childs[ I_ ] := Value_;
-end;
-
-function TChildTable.GetCount :Integer;
-begin
-     Result := Length( _Childs ) - 1;
-end;
-
-procedure TChildTable.SetCount( const Count_:Integer );
-begin
-     SetLength( _Childs, 1 + Count_ );
-end;
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
-
-constructor TChildTable.Create;
-begin
-     inherited;
-
-     Count := 0;
-end;
-
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TTreeAtom
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
@@ -218,12 +169,22 @@ begin
 
 end;
 
-function TTreeAtom.Get_Childs :TChildTable;
+function TTreeAtom.Get_Links( const I_:Integer ) :TTreeItem;
 begin
      Result := nil;
 end;
 
-procedure TTreeAtom.Set_Childs( const Childs_:TChildTable );
+procedure TTreeAtom.Set_Links( const I_:Integer; const Link_:TTreeItem );
+begin
+
+end;
+
+function TTreeAtom.Get_LinksN :Integer;
+begin
+     Result := 0;
+end;
+
+procedure TTreeAtom.Set_LinksN( const LinksN_:Integer );
 begin
 
 end;
@@ -258,12 +219,12 @@ end;
 
 function TTreeItem.Get_Zero :TTreeItem;
 begin
-     Result := _Childs[ -1 ];
+     Result := _Links[ -1 ];
 end;
 
 procedure TTreeItem.Set_Zero( const Zero_:TTreeItem );
 begin
-     _Childs[ -1 ] := Zero_;
+     _Links[ -1 ] := Zero_;
 end;
 
 //------------------------------------------------------------------------------
@@ -271,7 +232,7 @@ end;
 function TTreeItem.GetIsOrdered :Boolean;
 begin
      Result := ( _Order <= _Parent._MaxOrder )
-           and ( _Parent._Childs[ _Order ] = Self );
+           and ( _Parent._Links[ _Order ] = Self );
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
@@ -343,7 +304,7 @@ function TTreeItem.GetChilds( const I_:Integer ) :TTreeItem;
 begin
      if I_ > _MaxOrder then FindTo( I_ );
 
-     Result := _Childs[ I_ ];
+     Result := _Links[ I_ ];
 end;
 
 procedure TTreeItem.SetChilds( const I_:Integer; const Child_:TTreeItem );
@@ -378,16 +339,16 @@ procedure TTreeItem.FindTo( const Child_:TTreeItem );
 var
    P :TTreeItem;
 begin
-     if _ChildsN > _Childs.Count then _Childs.Count := _ChildsN;
+     if _ChildsN > _LinksN then _LinksN := _ChildsN;
 
-     P := _Childs[ _MaxOrder ];
+     P := _Links[ _MaxOrder ];
 
      repeat
            P := P._Next;
 
            _MaxOrder := _MaxOrder + 1;
 
-           _Childs[ _MaxOrder ] := P;  P._Order := _MaxOrder;
+           _Links[ _MaxOrder ] := P;  P._Order := _MaxOrder;
 
      until P = Child_;
 end;
@@ -397,15 +358,15 @@ var
    P :TTreeItem;
    I :Integer;
 begin
-     if _ChildsN > _Childs.Count then _Childs.Count := _ChildsN;
+     if _ChildsN > _LinksN then _LinksN := _ChildsN;
 
-     P := _Childs[ _MaxOrder ];
+     P := _Links[ _MaxOrder ];
 
      for I := _MaxOrder + 1 to Order_ do
      begin
            P := P._Next;
 
-           _Childs[ I ] := P;  P._Order := I;
+           _Links[ I ] := P;  P._Order := I;
      end;
 
      _MaxOrder := Order_;
@@ -434,7 +395,7 @@ begin
      begin
           _ChildsN := _ChildsN - 1;
 
-          if _ChildsN * 2 < _Childs.Count then _Childs.Count := _ChildsN;
+          if _ChildsN * 2 < _LinksN then _LinksN := _ChildsN;
 
           OnRemoveChild( Self );
      end;
@@ -573,12 +534,12 @@ begin
 
      if B1 then
      begin
-          P1._Childs[ I1 ] := C2_;  C2_._Order := I1;
+          P1._Links[ I1 ] := C2_;  C2_._Order := I1;
      end;
 
      if B2 then
      begin
-          P2._Childs[ I2 ] := C1_;  C1_._Order := I2;
+          P2._Links[ I2 ] := C1_;  C1_._Order := I2;
      end;
 end;
 
