@@ -167,6 +167,8 @@ end;
 procedure TTreeRoot.BeforeDestruction;
 begin
      DeleteChilds;
+
+     inherited;
 end;
 
 destructor TTreeRoot.Destroy;
