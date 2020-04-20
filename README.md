@@ -31,6 +31,6 @@ OpenGL のバージョンを辿りながら実装していくことで、新し�
     * [GitHub](https://github.com/LUXOPHIA/LUX.GPU.OpenGL)
     * [Bitbucket](https://bitbucket.org/LUXOPHIA/lux.gpu.opengl)
 
-[![Delphi Starter](https://github.com/delphiusers/FreeDelphi/raw/master/Banner/FreeDelphi-Banner_350x126.png)](https://www.embarcadero.com/jp/products/delphi/starter)
+[![Delphi Starter](https://github.com/delphiusers/FreeDelphi/raw/master/FreeDelphi_350px.png)](https://www.embarcadero.com/jp/products/delphi/starter)
 
 ※ [VCL]((https://www.wikiwand.com/ja/Visual_Component_Library)) 版はこちら ⇒ [OpenGL_VCL](https://github.com/LUXOPHIA/OpenGL_VCL/)
