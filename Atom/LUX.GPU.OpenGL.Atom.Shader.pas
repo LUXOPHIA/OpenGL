@@ -32,7 +32,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        function GetStatus :Boolean;
        function GetErrors :TStringList;
        ///// メソッド
-       procedure Compile( const Source_:String );
+       procedure Compile( const Source_:AnsiString );
        function glGetStatus :Boolean;
        function glGetErrors :String;
      public
@@ -123,7 +123,7 @@ end;
 
 procedure TGLShader.SetSource( Sender_:TObject );
 begin
-     Compile( _Source.Text );
+     Compile( AnsiString( _Source.Text ) );
 
      _Status      := glGetStatus;
      _Errors.Text := glGetErrors;
@@ -147,12 +147,12 @@ end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
 
-procedure TGLShader.Compile( const Source_:String );
+procedure TGLShader.Compile( const Source_:AnsiString );
 var
    P :PGLchar;
    N :GLint;
 begin
-     P := PGLchar( AnsiString( Source_ ) );
+     P := PGLchar( Source_ );
      N := Length( Source_ );
 
      glShaderSource( _ID, 1, @P, @N );
