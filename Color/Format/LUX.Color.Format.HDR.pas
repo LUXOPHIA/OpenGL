@@ -257,8 +257,8 @@ end;
 
 destructor TFileHDR.Destroy;
 begin
-     _Options.DisposeOf;
-     _Grid   .DisposeOf;
+     _Options.Free;
+     _Grid   .Free;
 
      inherited;
 end;
@@ -414,7 +414,7 @@ begin
           end;
      end;
 
-     F.DisposeOf;
+     F.Free;
 end;
 
 end. //######################################################################### ■

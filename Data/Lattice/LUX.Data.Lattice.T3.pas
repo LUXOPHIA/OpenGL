@@ -779,7 +779,7 @@ begin
 
      B.ForCells( procedure begin Proc_( B ); end );
 
-     B.DisposeOf;
+     B.Free;
 end;
 
 procedure TPoinArray3D<_TItem_>.ForEdgesX( const Proc_:TConstProc<TCellIterPoinArray3D<_TItem_>> );
@@ -790,7 +790,7 @@ begin
 
      E.ForEdgesX( procedure begin Proc_( E ); end );
 
-     E.DisposeOf;
+     E.Free;
 end;
 
 procedure TPoinArray3D<_TItem_>.ForEdgesY( const Proc_:TConstProc<TCellIterPoinArray3D<_TItem_>> );
@@ -801,7 +801,7 @@ begin
 
      E.ForEdgesY( procedure begin Proc_( E ); end );
 
-     E.DisposeOf;
+     E.Free;
 end;
 
 procedure TPoinArray3D<_TItem_>.ForEdgesZ( const Proc_:TConstProc<TCellIterPoinArray3D<_TItem_>> );
@@ -812,7 +812,7 @@ begin
 
      E.ForEdgesZ( procedure begin Proc_( E ); end );
 
-     E.DisposeOf;
+     E.Free;
 end;
 
 //------------------------------------------------------------------------------

@@ -215,7 +215,7 @@ end;
 
 destructor TRandom.Destroy;
 begin
-     _SeedCS.DisposeOf;
+     _SeedCS.Free;
 
      inherited;
 end;
@@ -416,7 +416,7 @@ end;
 
 class destructor TRandomZero.Destroy;
 begin
-     _TimeCS.DisposeOf;
+     _TimeCS.Free;
 
      inherited;
 end;
