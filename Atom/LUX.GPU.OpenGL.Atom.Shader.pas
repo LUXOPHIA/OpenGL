@@ -204,8 +204,8 @@ destructor TGLShader.Destroy;
 begin
      glDeleteShader( _ID );
 
-     _Source.DisposeOf;
-     _Errors.DisposeOf;
+     _Source.Free;
+     _Errors.Free;
 
      inherited;
 end;
@@ -233,7 +233,7 @@ begin
         Source.LoadFromStream( RS );
 
      finally
-            RS.DisposeOf;
+            RS.Free;
      end;
 end;
 

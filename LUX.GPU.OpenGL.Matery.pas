@@ -254,9 +254,9 @@ end;
 
 destructor TGLMatery.Destroy;
 begin
-     _Engine .DisposeOf;
-     _ShaderV.DisposeOf;
-     _ShaderF.DisposeOf;
+     _Engine .Free;
+     _ShaderV.Free;
+     _ShaderF.Free;
 
      inherited;
 end;
@@ -611,7 +611,7 @@ end;
 
 destructor TGLMateryG.Destroy;
 begin
-     _ShaderG.DisposeOf;
+     _ShaderG.Free;
 
      inherited;
 end;
@@ -645,7 +645,7 @@ end;
 
 destructor TGLMateryNorTexG.Destroy;
 begin
-     _ShaderG.DisposeOf;
+     _ShaderG.Free;
 
      inherited;
 end;

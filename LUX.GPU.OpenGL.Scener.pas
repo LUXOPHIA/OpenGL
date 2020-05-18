@@ -246,9 +246,9 @@ end;
 
 destructor TGLObject.Destroy;
 begin
-     _AbsoPose.DisposeOf;
+     _AbsoPose.Free;
 
-     _Inform.DisposeOf;
+     _Inform.Free;
 
      inherited;
 end;

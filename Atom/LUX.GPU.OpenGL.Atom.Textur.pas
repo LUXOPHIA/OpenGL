@@ -280,8 +280,8 @@ end;
 
 destructor TGLTextur<_TItem_,_TIter_,_TGrid_,_TImager_>.Destroy;
 begin
-     _Samplr.DisposeOf;
-     _Imager.DisposeOf;
+     _Samplr.Free;
+     _Imager.Free;
 
      inherited;
 end;

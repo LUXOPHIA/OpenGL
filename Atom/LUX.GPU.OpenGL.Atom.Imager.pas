@@ -180,7 +180,7 @@ end;
 
 destructor TGLImager<_TItem_,_TIter_,_TGrid_>.Destroy;
 begin
-     _Grid.DisposeOf;
+     _Grid.Free;
 
      glDeleteTextures( 1, @_ID );
 

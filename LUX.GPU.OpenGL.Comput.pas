@@ -383,12 +383,12 @@ end;
 
 destructor TGLComput.Destroy;
 begin
-     _Buffers.DisposeOf;
-     _Imagers.DisposeOf;
-     _Texturs.DisposeOf;
+     _Buffers.Free;
+     _Imagers.Free;
+     _Texturs.Free;
 
-     _Engine .DisposeOf;
-     _ShaderC.DisposeOf;
+     _Engine .Free;
+     _ShaderC.Free;
 
      inherited;
 end;

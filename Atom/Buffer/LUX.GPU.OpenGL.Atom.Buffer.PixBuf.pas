@@ -158,7 +158,7 @@ begin
 
      Stream_.Read( D.Start^, SizeOf( _TItem_ ) * ElemsN );
 
-     D.DisposeOf;
+     D.Free;
 end;
 
 procedure TGLPixBuf<_TItem_,_TIter_>.Write( const Stream_:TStream );
@@ -169,7 +169,7 @@ begin
 
      Stream_.Write( D.Start^, SizeOf( _TItem_ ) * ElemsN );
 
-     D.DisposeOf;
+     D.Free;
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】

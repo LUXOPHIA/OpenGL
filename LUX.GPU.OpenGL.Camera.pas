@@ -136,7 +136,7 @@ end;
 
 destructor TGLCamera.Destroy;
 begin
-     _Proj.DisposeOf;
+     _Proj.Free;
 
      inherited;
 end;

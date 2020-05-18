@@ -139,10 +139,10 @@ end;
 
 destructor TGL_Render.Destroy;
 begin
-     _Viewer.DisposeOf;
+     _Viewer.Free;
 
-     _Frame1.DisposeOf;
-     _FrameN.DisposeOf;
+     _Frame1.Free;
+     _FrameN.Free;
 
      inherited;
 end;

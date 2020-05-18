@@ -304,7 +304,7 @@ end;
 
 destructor TGLMateryColor.Destroy;
 begin
-     _Color.DisposeOf;
+     _Color.Free;
 
      inherited;
 end;
@@ -397,7 +397,7 @@ destructor TGLMateryRGB.Destroy;
 begin
      inherited;
 
-     _Ambient.DisposeOf;
+     _Ambient.Free;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
@@ -504,8 +504,8 @@ destructor TGLMateryDiffuse.Destroy;
 begin
      inherited;
 
-     _Ambient.DisposeOf;
-     _Diffuse.DisposeOf;
+     _Ambient.Free;
+     _Diffuse.Free;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
@@ -677,9 +677,9 @@ destructor TGLMateryPlastic.Destroy;
 begin
      inherited;
 
-     _Ambient.DisposeOf;
-     _Diffuse.DisposeOf;
-     _RefI   .DisposeOf;
+     _Ambient.Free;
+     _Diffuse.Free;
+     _RefI   .Free;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
@@ -799,7 +799,7 @@ destructor TGLMateryMirror.Destroy;
 begin
      inherited;
 
-     _Color.DisposeOf;
+     _Color.Free;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
@@ -938,7 +938,7 @@ destructor TGLMateryGlass.Destroy;
 begin
      inherited;
 
-     _RefI.DisposeOf;
+     _RefI.Free;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
