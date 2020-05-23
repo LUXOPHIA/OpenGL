@@ -4,9 +4,9 @@ interface //####################################################################
 
 uses LUX,
      LUX.D1,
-     LUX.D2, LUX.M2,
-     LUX.D3, LUX.M3,
-     LUX.D4, LUX.M4,
+     LUX.D2, LUX.D2x2,
+     LUX.D3, LUX.D3x3,
+     LUX.D4, LUX.D4x4,
      LUX.D5,
      LUX.DN;
 
