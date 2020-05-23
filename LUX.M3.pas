@@ -27,11 +27,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                                  _21_,_22_,_23_,
                                  _31_,_32_,_33_:Single );
        ///// プロパティ
-       property M[ const Y_,X_:Integer ] :Single    read GetM     write SetM    ; default;
-       property AxisX                    :TSingle3D read GetAxisX write SetAxisX;
-       property AxisY                    :TSingle3D read GetAxisY write SetAxisY;
-       property AxisZ                    :TSingle3D read GetAxisZ write SetAxisZ;
-       property Sum                      :Single    read GetSum;
+       property _s[ const Y_,X_:Integer ] :Single    read GetM     write SetM    ; default;
+       property AxisX                     :TSingle3D read GetAxisX write SetAxisX;
+       property AxisY                     :TSingle3D read GetAxisY write SetAxisY;
+       property AxisZ                     :TSingle3D read GetAxisZ write SetAxisZ;
+       property Sum                       :Single    read GetSum;
        ///// 演算子
        class operator Negative( const V_:TSingleM3 ) :TSingleM3;
        class operator Positive( const V_:TSingleM3 ) :TSingleM3;
@@ -74,10 +74,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                                  _21_,_22_,_23_,
                                  _31_,_32_,_33_:Double );
        ///// プロパティ
-       property M[ const Y_,X_:Integer ] :Double    read GetM     write SetM    ; default;
-       property AxisX                    :TDouble3D read GetAxisX write SetAxisX;
-       property AxisY                    :TDouble3D read GetAxisY write SetAxisY;
-       property AxisZ                    :TDouble3D read GetAxisZ write SetAxisZ;
+       property _s[ const Y_,X_:Integer ] :Double    read GetM     write SetM    ; default;
+       property AxisX                     :TDouble3D read GetAxisX write SetAxisX;
+       property AxisY                     :TDouble3D read GetAxisY write SetAxisY;
+       property AxisZ                     :TDouble3D read GetAxisZ write SetAxisZ;
        ///// 演算子
        class operator Negative( const V_:TDoubleM3 ) :TDoubleM3;
        class operator Positive( const V_:TDoubleM3 ) :TDoubleM3;
@@ -121,10 +121,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                                  _21_,_22_,_23_,
                                  _31_,_32_,_33_:TdSingle );
        ///// プロパティ
-       property M[ const Y_,X_:Integer ] :TdSingle   read GetM     write SetM    ; default;
-       property AxisX                    :TdSingle3D read GetAxisX write SetAxisX;
-       property AxisY                    :TdSingle3D read GetAxisY write SetAxisY;
-       property AxisZ                    :TdSingle3D read GetAxisZ write SetAxisZ;
+       property _s[ const Y_,X_:Integer ] :TdSingle   read GetM     write SetM    ; default;
+       property AxisX                     :TdSingle3D read GetAxisX write SetAxisX;
+       property AxisY                     :TdSingle3D read GetAxisY write SetAxisY;
+       property AxisZ                     :TdSingle3D read GetAxisZ write SetAxisZ;
        property Sum   :TdSingle    read GetSum;
        ///// 演算子
        class operator Negative( const V_:TdSingleM3 ) :TdSingleM3;
@@ -168,10 +168,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                                  _21_,_22_,_23_,
                                  _31_,_32_,_33_:TdDouble );
        ///// プロパティ
-       property M[ const Y_,X_:Integer ] :TdDouble   read GetM     write SetM    ; default;
-       property AxisX                    :TdDouble3D read GetAxisX write SetAxisX;
-       property AxisY                    :TdDouble3D read GetAxisY write SetAxisY;
-       property AxisZ                    :TdDouble3D read GetAxisZ write SetAxisZ;
+       property _s[ const Y_,X_:Integer ] :TdDouble   read GetM     write SetM    ; default;
+       property AxisX                     :TdDouble3D read GetAxisX write SetAxisX;
+       property AxisY                     :TdDouble3D read GetAxisY write SetAxisY;
+       property AxisZ                     :TdDouble3D read GetAxisZ write SetAxisZ;
        ///// 演算子
        class operator Negative( const V_:TdDoubleM3 ) :TdDoubleM3;
        class operator Positive( const V_:TdDoubleM3 ) :TdDoubleM3;
