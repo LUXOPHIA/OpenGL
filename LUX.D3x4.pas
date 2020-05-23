@@ -1,4 +1,4 @@
-﻿unit LUX.D3.V4;
+﻿unit LUX.D3x4;
 
 interface //#################################################################### ■
 
@@ -8,64 +8,97 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSingle3DV4
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSingle4x3D
 
-     TSingle3DV4 = record
+     TSingle4x3D = record
      private
        ///// アクセス
-       function GetV( const I_:Integer ) :TSingle3D; inline;
-       procedure SetV( const I_:Integer; const V_:TSingle3D ); inline;
+       function Gets( const Y_:Integer ) :TSingle3D; inline;
+       procedure Sets( const Y_:Integer; const V_:TSingle3D ); inline;
      public
        ///// プロパティ
-       property V[ const I_:Integer ] :TSingle3D read GetV write SetV; default;
-     case Integer of
-      0:( _ :array [ 1..4 ] of TSingle3D; );
-      1:( _1, _2, _3, _4 :TSingle3D;      );
+       property _s[ const Y_:Integer ] :TSingle3D read Gets write Sets; default;
+     case Byte of
+      0:( _YXs :array [ 1..4, 1..3 ] of Single; );
+      1:( _11, _12, _13,
+          _21, _22, _23,
+          _31, _32, _33,
+          _41, _42, _43 :Single;                );
+      2:( _Ys :array [ 1..4 ] of TSingle3D;     );
+      3:( _1,
+          _2,
+          _3,
+          _4 :TSingle3D;                        );
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDouble3DV4
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDouble4x3D
 
-     TDouble3DV4 = record
+     TDouble4x3D = record
      private
        ///// アクセス
-       function GetV( const I_:Integer ) :TDouble3D; inline;
-       procedure SetV( const I_:Integer; const V_:TDouble3D ); inline;
+       function Gets( const Y_:Integer ) :TDouble3D; inline;
+       procedure Sets( const Y_:Integer; const V_:TDouble3D ); inline;
      public
        ///// プロパティ
-       property V[ const I_:Integer ] :TDouble3D read GetV write SetV; default;
-     case Integer of
-      0:( _ :array [ 1..4 ] of TDouble3D; );
-      1:( _1, _2, _3, _4 :TDouble3D;      );
+       property _s[ const Y_:Integer ] :TDouble3D read Gets write Sets; default;
+
+     case Byte of
+      0:( _YXs :array [ 1..4, 1..3 ] of Double; );
+      1:( _11, _12, _13,
+          _21, _22, _23,
+          _31, _32, _33,
+          _41, _42, _43 :Double;                );
+      2:( _Ys :array [ 1..4 ] of TDouble3D;     );
+      3:( _1,
+          _2,
+          _3,
+          _4 :TDouble3D;                        );
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdSingle3DV4
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdSingle4x3D
 
-     TdSingle3DV4 = record
+     TdSingle4x3D = record
      private
        ///// アクセス
-       function GetV( const I_:Integer ) :TdSingle3D; inline;
-       procedure SetV( const I_:Integer; const V_:TdSingle3D ); inline;
+       function Gets( const Y_:Integer ) :TdSingle3D; inline;
+       procedure Sets( const Y_:Integer; const V_:TdSingle3D ); inline;
      public
        ///// プロパティ
-       property V[ const I_:Integer ] :TdSingle3D read GetV write SetV; default;
-     case Integer of
-      0:( _ :array [ 1..4 ] of TdSingle3D; );
-      1:( _1, _2, _3, _4 :TdSingle3D;      );
+       property _s[ const Y_:Integer ] :TdSingle3D read Gets write Sets; default;
+     case Byte of
+      0:( _YXs :array [ 1..4, 1..3 ] of TdSingle; );
+      1:( _11, _12, _13,
+          _21, _22, _23,
+          _31, _32, _33,
+          _41, _42, _43 :TdSingle;                );
+      2:( _Ys :array [ 1..4 ] of TdSingle3D;      );
+      3:( _1,
+          _2,
+          _3,
+          _4 :TdSingle3D;                         );
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdDouble3DV4
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdDouble4x3D
 
-     TdDouble3DV4 = record
+     TdDouble4x3D = record
      private
        ///// アクセス
-       function GetV( const I_:Integer ) :TdDouble3D; inline;
-       procedure SetV( const I_:Integer; const V_:TdDouble3D ); inline;
+       function Gets( const Y_:Integer ) :TdDouble3D; inline;
+       procedure Sets( const Y_:Integer; const V_:TdDouble3D ); inline;
      public
        ///// プロパティ
-       property V[ const I_:Integer ] :TdDouble3D read GetV write SetV; default;
-     case Integer of
-      0:( _ :array [ 1..4 ] of TdDouble3D; );
-      1:( _1, _2, _3, _4 :TdDouble3D;      );
+       property _s[ const Y_:Integer ] :TdDouble3D read Gets write Sets; default;
+     case Byte of
+      0:( _YXs :array [ 1..4, 1..3 ] of TdDouble; );
+      1:( _11, _12, _13,
+          _21, _22, _23,
+          _31, _32, _33,
+          _41, _42, _43 :TdDouble;                );
+      2:( _Ys :array [ 1..4 ] of TdDouble3D;      );
+      3:( _1,
+          _2,
+          _3,
+          _4 :TdDouble3D;                         );
      end;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
@@ -80,72 +113,72 @@ implementation //###############################################################
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSingle3DV4
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSingle4x3D
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TSingle3DV4.GetV( const I_:Integer ) :TSingle3D;
+function TSingle4x3D.Gets( const Y_:Integer ) :TSingle3D;
 begin
-     Result := _[ I_ ];
+     Result := _Ys[ Y_ ];
 end;
 
-procedure TSingle3DV4.SetV( const I_:Integer; const V_:TSingle3D );
+procedure TSingle4x3D.Sets( const Y_:Integer; const V_:TSingle3D );
 begin
-     _[ I_ ] := V_;
+     _Ys[ Y_ ] := V_;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDouble3DV4
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDouble4x3D
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TDouble3DV4.GetV( const I_:Integer ) :TDouble3D;
+function TDouble4x3D.Gets( const Y_:Integer ) :TDouble3D;
 begin
-     Result := _[ I_ ];
+     Result := _Ys[ Y_ ];
 end;
 
-procedure TDouble3DV4.SetV( const I_:Integer; const V_:TDouble3D );
+procedure TDouble4x3D.Sets( const Y_:Integer; const V_:TDouble3D );
 begin
-     _[ I_ ] := V_;
+     _Ys[ Y_ ] := V_;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdSingle3DV4
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdSingle4x3D
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TdSingle3DV4.GetV( const I_:Integer ) :TdSingle3D;
+function TdSingle4x3D.Gets( const Y_:Integer ) :TdSingle3D;
 begin
-     Result := _[ I_ ];
+     Result := _Ys[ Y_ ];
 end;
 
-procedure TdSingle3DV4.SetV( const I_:Integer; const V_:TdSingle3D );
+procedure TdSingle4x3D.Sets( const Y_:Integer; const V_:TdSingle3D );
 begin
-     _[ I_ ] := V_;
+     _Ys[ Y_ ] := V_;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdDouble3DV4
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdDouble4x3D
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TdDouble3DV4.GetV( const I_:Integer ) :TdDouble3D;
+function TdDouble4x3D.Gets( const Y_:Integer ) :TdDouble3D;
 begin
-     Result := _[ I_ ];
+     Result := _Ys[ Y_ ];
 end;
 
-procedure TdDouble3DV4.SetV( const I_:Integer; const V_:TdDouble3D );
+procedure TdDouble4x3D.Sets( const Y_:Integer; const V_:TdDouble3D );
 begin
-     _[ I_ ] := V_;
+     _Ys[ Y_ ] := V_;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
