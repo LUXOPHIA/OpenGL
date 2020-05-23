@@ -26,7 +26,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const V_:Single ); overload;
        constructor Create( const V1_,V2_,V3_,V4_,V5_:Single ); overload;
        ///// プロパティ
-       property _s[ const I_:Integer ] :Single    read Gets      write Sets     ; default;
+       property _s[ const X_:Integer ] :Single    read Gets      write Sets     ; default;
        property Siz2                   :Single    read GetSiz2   write SetSiz2  ;
        property Size                   :Single    read GetSize   write SetSize  ;
        property Unitor                 :TSingle5D read GetUnitor write SetUnitor;
@@ -85,7 +85,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const V_:Double ); overload;
        constructor Create( const V1_,V2_,V3_,V4_,V5_:Double ); overload;
        ///// プロパティ
-       property _s[ const I_:Integer ] :Double    read Gets      write Sets     ; default;
+       property _s[ const X_:Integer ] :Double    read Gets      write Sets     ; default;
        property Siz2                   :Double    read GetSiz2   write SetSiz2  ;
        property Size                   :Double    read GetSize   write SetSize  ;
        property Unitor                 :TDouble5D read GetUnitor write SetUnitor;
@@ -147,7 +147,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
        constructor Create( const V1_,V2_,V3_,V4_,V5_:TdSingle );
        ///// プロパティ
-       property _s[ const I_:Integer ] :TdSingle   read Gets      write Sets     ; default;
+       property _s[ const X_:Integer ] :TdSingle   read Gets      write Sets     ; default;
        property o                      :TSingle5D  read Geto      write Seto     ;
        property d                      :TSingle5D  read Getd      write Setd     ;
        property Siz2                   :TdSingle   read GetSiz2   write SetSiz2  ;
@@ -196,7 +196,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
        constructor Create( const V1_,V2_,V3_,V4_,V5_:TdDouble );
        ///// プロパティ
-       property _s[ const I_:Integer ] :TdDouble   read Gets      write Sets     ; default;
+       property _s[ const X_:Integer ] :TdDouble   read Gets      write Sets     ; default;
        property o                      :TDouble5D  read Geto      write Seto     ;
        property d                      :TDouble5D  read Getd      write Setd     ;
        property Siz2                   :TdDouble   read GetSiz2   write SetSiz2  ;

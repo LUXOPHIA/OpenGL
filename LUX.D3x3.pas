@@ -16,8 +16,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TSingleM3 = record
      private
        ///// アクセス
-       function GetM( const Y_,X_:Integer ) :Single;
-       procedure SetM( const Y_,X_:Integer; const M_:Single );
+       function Gets( const Y_,X_:Integer ) :Single;
+       procedure Sets( const Y_,X_:Integer; const M_:Single );
        function GetAxisX :TSingle3D;
        procedure SetAxisX( const AxisX_:TSingle3D );
        function GetAxisY :TSingle3D;
@@ -30,7 +30,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                                  _21_,_22_,_23_,
                                  _31_,_32_,_33_:Single );
        ///// プロパティ
-       property _s[ const Y_,X_:Integer ] :Single    read GetM     write SetM    ; default;
+       property _s[ const Y_,X_:Integer ] :Single    read Gets     write Sets    ; default;
        property AxisX                     :TSingle3D read GetAxisX write SetAxisX;
        property AxisY                     :TSingle3D read GetAxisY write SetAxisY;
        property AxisZ                     :TSingle3D read GetAxisZ write SetAxisZ;
@@ -64,8 +64,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TDoubleM3 = record
      private
        ///// アクセス
-       function GetM( const Y_,X_:Integer ) :Double;
-       procedure SetM( const Y_,X_:Integer; const M_:Double );
+       function Gets( const Y_,X_:Integer ) :Double;
+       procedure Sets( const Y_,X_:Integer; const M_:Double );
        function GetAxisX :TDouble3D;
        procedure SetAxisX( const AxisX_:TDouble3D );
        function GetAxisY :TDouble3D;
@@ -77,7 +77,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                                  _21_,_22_,_23_,
                                  _31_,_32_,_33_:Double );
        ///// プロパティ
-       property _s[ const Y_,X_:Integer ] :Double    read GetM     write SetM    ; default;
+       property _s[ const Y_,X_:Integer ] :Double    read Gets     write Sets    ; default;
        property AxisX                     :TDouble3D read GetAxisX write SetAxisX;
        property AxisY                     :TDouble3D read GetAxisY write SetAxisY;
        property AxisZ                     :TDouble3D read GetAxisZ write SetAxisZ;
@@ -110,8 +110,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TdSingleM3 = record
      private
        ///// アクセス
-       function GetM( const Y_,X_:Integer ) :TdSingle;
-       procedure SetM( const Y_,X_:Integer; const M_:TdSingle );
+       function Gets( const Y_,X_:Integer ) :TdSingle;
+       procedure Sets( const Y_,X_:Integer; const M_:TdSingle );
        function GetAxisX :TdSingle3D;
        procedure SetAxisX( const AxisX_:TdSingle3D );
        function GetAxisY :TdSingle3D;
@@ -124,7 +124,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                                  _21_,_22_,_23_,
                                  _31_,_32_,_33_:TdSingle );
        ///// プロパティ
-       property _s[ const Y_,X_:Integer ] :TdSingle   read GetM     write SetM    ; default;
+       property _s[ const Y_,X_:Integer ] :TdSingle   read Gets     write Sets    ; default;
        property AxisX                     :TdSingle3D read GetAxisX write SetAxisX;
        property AxisY                     :TdSingle3D read GetAxisY write SetAxisY;
        property AxisZ                     :TdSingle3D read GetAxisZ write SetAxisZ;
@@ -158,8 +158,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TdDoubleM3 = record
      private
        ///// アクセス
-       function GetM( const Y_,X_:Integer ) :TdDouble;
-       procedure SetM( const Y_,X_:Integer; const M_:TdDouble );
+       function Gets( const Y_,X_:Integer ) :TdDouble;
+       procedure Sets( const Y_,X_:Integer; const M_:TdDouble );
        function GetAxisX :TdDouble3D;
        procedure SetAxisX( const AxisX_:TdDouble3D );
        function GetAxisY :TdDouble3D;
@@ -171,7 +171,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                                  _21_,_22_,_23_,
                                  _31_,_32_,_33_:TdDouble );
        ///// プロパティ
-       property _s[ const Y_,X_:Integer ] :TdDouble   read GetM     write SetM    ; default;
+       property _s[ const Y_,X_:Integer ] :TdDouble   read Gets     write Sets    ; default;
        property AxisX                     :TdDouble3D read GetAxisX write SetAxisX;
        property AxisY                     :TdDouble3D read GetAxisY write SetAxisY;
        property AxisZ                     :TdDouble3D read GetAxisZ write SetAxisZ;
@@ -220,12 +220,12 @@ implementation //###############################################################
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TSingleM3.GetM( const Y_,X_:Integer ) :Single;
+function TSingleM3.Gets( const Y_,X_:Integer ) :Single;
 begin
      Result := _[ Y_, X_ ];
 end;
 
-procedure TSingleM3.SetM( const Y_,X_:Integer; const M_:Single );
+procedure TSingleM3.Sets( const Y_,X_:Integer; const M_:Single );
 begin
      _[ Y_, X_ ] := M_;
 end;
@@ -510,12 +510,12 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TDoubleM3.GetM( const Y_,X_:Integer ) :Double;
+function TDoubleM3.Gets( const Y_,X_:Integer ) :Double;
 begin
      Result := _[ Y_, X_ ];
 end;
 
-procedure TDoubleM3.SetM( const Y_,X_:Integer; const M_:Double );
+procedure TDoubleM3.Sets( const Y_,X_:Integer; const M_:Double );
 begin
      _[ Y_, X_ ] := M_;
 end;
@@ -794,12 +794,12 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TdSingleM3.GetM( const Y_,X_:Integer ) :TdSingle;
+function TdSingleM3.Gets( const Y_,X_:Integer ) :TdSingle;
 begin
      Result := _[ Y_, X_ ];
 end;
 
-procedure TdSingleM3.SetM( const Y_,X_:Integer; const M_:TdSingle );
+procedure TdSingleM3.Sets( const Y_,X_:Integer; const M_:TdSingle );
 begin
      _[ Y_, X_ ] := M_;
 end;
@@ -1084,12 +1084,12 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TdDoubleM3.GetM( const Y_,X_:Integer ) :TdDouble;
+function TdDoubleM3.Gets( const Y_,X_:Integer ) :TdDouble;
 begin
      Result := _[ Y_, X_ ];
 end;
 
-procedure TdDoubleM3.SetM( const Y_,X_:Integer; const M_:TdDouble );
+procedure TdDoubleM3.Sets( const Y_,X_:Integer; const M_:TdDouble );
 begin
      _[ Y_, X_ ] := M_;
 end;

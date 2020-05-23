@@ -13,8 +13,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TSingleM2 = record
      private
        ///// アクセス
-       function GetM( const Y_,X_:Integer ) :Single;
-       procedure SetM( const Y_,X_:Integer; const M_:Single );
+       function Gets( const Y_,X_:Integer ) :Single;
+       procedure Sets( const Y_,X_:Integer; const M_:Single );
        function GetAxisX :TSingle2D;
        procedure SetAxisX( const AxisX_:TSingle2D );
        function GetAxisY :TSingle2D;
@@ -34,9 +34,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class operator Multiply( const A_:TSingleM2; const B_:TSingle2D ) :TSingle2D;
        class operator Divide( const A_:TSingleM2; const B_:Single ) :TSingleM2;
        ///// プロパティ
-       property M[ const Y_,X_:Integer ] :Single    read GetM     write SetM    ; default;
-       property AxisX                    :TSingle2D read GetAxisX write SetAxisX;
-       property AxisY                    :TSingle2D read GetAxisY write SetAxisY;
+       property _s[ const Y_,X_:Integer ] :Single    read Gets     write Sets    ; default;
+       property AxisX                     :TSingle2D read GetAxisX write SetAxisX;
+       property AxisY                     :TSingle2D read GetAxisY write SetAxisY;
        ///// メソッド
        function Det :Single;
        function Adjugate :TSingleM2;
@@ -54,8 +54,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TDoubleM2 = record
      private
        ///// アクセス
-       function GetM( const Y_,X_:Integer ) :Double;
-       procedure SetM( const Y_,X_:Integer; const M_:Double );
+       function Gets( const Y_,X_:Integer ) :Double;
+       procedure Sets( const Y_,X_:Integer; const M_:Double );
        function GetAxisX :TDouble2D;
        procedure SetAxisX( const AxisX_:TDouble2D );
        function GetAxisY :TDouble2D;
@@ -75,9 +75,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class operator Multiply( const A_:TDoubleM2; const B_:TDouble2D ) :TDouble2D;
        class operator Divide( const A_:TDoubleM2; const B_:Double ) :TDoubleM2;
        ///// プロパティ
-       property M[ const Y_,X_:Integer ] :Double    read GetM     write SetM    ; default;
-       property AxisX                    :TDouble2D read GetAxisX write SetAxisX;
-       property AxisY                    :TDouble2D read GetAxisY write SetAxisY;
+       property _s[ const Y_,X_:Integer ] :Double    read Gets     write Sets    ; default;
+       property AxisX                     :TDouble2D read GetAxisX write SetAxisX;
+       property AxisY                     :TDouble2D read GetAxisY write SetAxisY;
        ///// メソッド
        function Det :Double;
        function Adjugate :TDoubleM2;
@@ -95,8 +95,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TdSingleM2 = record
      private
        ///// アクセス
-       function GetM( const Y_,X_:Integer ) :TdSingle;
-       procedure SetM( const Y_,X_:Integer; const M_:TdSingle );
+       function Gets( const Y_,X_:Integer ) :TdSingle;
+       procedure Sets( const Y_,X_:Integer; const M_:TdSingle );
        function GetAxisX :TdSingle2D;
        procedure SetAxisX( const AxisX_:TdSingle2D );
        function GetAxisY :TdSingle2D;
@@ -116,9 +116,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class operator Multiply( const A_:TdSingleM2; const B_:TdSingle2D ) :TdSingle2D;
        class operator Divide( const A_:TdSingleM2; const B_:TdSingle ) :TdSingleM2;
        ///// プロパティ
-       property M[ const Y_,X_:Integer ] :TdSingle   read GetM     write SetM    ; default;
-       property AxisX                    :TdSingle2D read GetAxisX write SetAxisX;
-       property AxisY                    :TdSingle2D read GetAxisY write SetAxisY;
+       property _s[ const Y_,X_:Integer ] :TdSingle   read Gets     write Sets    ; default;
+       property AxisX                     :TdSingle2D read GetAxisX write SetAxisX;
+       property AxisY                     :TdSingle2D read GetAxisY write SetAxisY;
        ///// メソッド
        function Det :TdSingle;
        function Adjugate :TdSingleM2;
@@ -136,8 +136,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TdDoubleM2 = record
      private
        ///// アクセス
-       function GetM( const Y_,X_:Integer ) :TdDouble;
-       procedure SetM( const Y_,X_:Integer; const M_:TdDouble );
+       function Gets( const Y_,X_:Integer ) :TdDouble;
+       procedure Sets( const Y_,X_:Integer; const M_:TdDouble );
        function GetAxisX :TdDouble2D;
        procedure SetAxisX( const AxisX_:TdDouble2D );
        function GetAxisY :TdDouble2D;
@@ -157,9 +157,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class operator Multiply( const A_:TdDoubleM2; const B_:TdDouble2D ) :TdDouble2D;
        class operator Divide( const A_:TdDoubleM2; const B_:TdDouble ) :TdDoubleM2;
        ///// プロパティ
-       property M[ const Y_,X_:Integer ] :TdDouble   read GetM     write SetM    ; default;
-       property AxisX                    :TdDouble2D read GetAxisX write SetAxisX;
-       property AxisY                    :TdDouble2D read GetAxisY write SetAxisY;
+       property _s[ const Y_,X_:Integer ] :TdDouble   read Gets     write Sets    ; default;
+       property AxisX                     :TdDouble2D read GetAxisX write SetAxisX;
+       property AxisY                     :TdDouble2D read GetAxisY write SetAxisY;
        ///// メソッド
        function Det :TdDouble;
        function Adjugate :TdDoubleM2;
@@ -192,12 +192,12 @@ uses System.Math;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TSingleM2.GetM( const Y_,X_:Integer ) :Single;
+function TSingleM2.Gets( const Y_,X_:Integer ) :Single;
 begin
      Result := _[ Y_, X_ ];
 end;
 
-procedure TSingleM2.SetM( const Y_,X_:Integer; const M_:Single );
+procedure TSingleM2.Sets( const Y_,X_:Integer; const M_:Single );
 begin
      _[ Y_, X_ ] := M_;
 end;
@@ -395,12 +395,12 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TDoubleM2.GetM( const Y_,X_:Integer ) :Double;
+function TDoubleM2.Gets( const Y_,X_:Integer ) :Double;
 begin
      Result := _[ Y_, X_ ];
 end;
 
-procedure TDoubleM2.SetM( const Y_,X_:Integer; const M_:Double );
+procedure TDoubleM2.Sets( const Y_,X_:Integer; const M_:Double );
 begin
      _[ Y_, X_ ] := M_;
 end;
@@ -598,12 +598,12 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TdSingleM2.GetM( const Y_,X_:Integer ) :TdSingle;
+function TdSingleM2.Gets( const Y_,X_:Integer ) :TdSingle;
 begin
      Result := _[ Y_, X_ ];
 end;
 
-procedure TdSingleM2.SetM( const Y_,X_:Integer; const M_:TdSingle );
+procedure TdSingleM2.Sets( const Y_,X_:Integer; const M_:TdSingle );
 begin
      _[ Y_, X_ ] := M_;
 end;
@@ -801,12 +801,12 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TdDoubleM2.GetM( const Y_,X_:Integer ) :TdDouble;
+function TdDoubleM2.Gets( const Y_,X_:Integer ) :TdDouble;
 begin
      Result := _[ Y_, X_ ];
 end;
 
-procedure TdDoubleM2.SetM( const Y_,X_:Integer; const M_:TdDouble );
+procedure TdDoubleM2.Sets( const Y_,X_:Integer; const M_:TdDouble );
 begin
      _[ Y_, X_ ] := M_;
 end;

@@ -14,8 +14,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      T1Bit3D = record
      private
        ///// アクセス
-       function Gets( const I_:Byte ) :Byte;
-       procedure Sets( const I_:Byte; const o_:Byte );
+       function Gets( const X_:Byte ) :Byte;
+       procedure Sets( const X_:Byte; const o_:Byte );
        function GetX :Byte;
        procedure SetX( const X_:Byte );
        function GetY :Byte;
@@ -218,8 +218,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TSingle3D = record
      private
        ///// アクセス
-       function GetV( const I_:Integer ) :Single; inline;
-       procedure SetV( const I_:Integer; const V_:Single ); inline;
+       function Gets( const X_:Integer ) :Single; inline;
+       procedure Sets( const X_:Integer; const V_:Single ); inline;
        function GetSiz2 :Single; inline;
        procedure SetSiz2( const Siz2_:Single ); inline;
        function GetSize :Single; inline;
@@ -237,7 +237,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const V_:Single ); overload;
        constructor Create( const X_,Y_,Z_:Single ); overload;
        ///// プロパティ
-       property _s[ const I_:Integer ] :Single    read GetV       write SetV     ; default;
+       property _s[ const X_:Integer ] :Single    read Gets       write Sets     ; default;
        property Siz2                   :Single    read GetSiz2    write SetSiz2  ;
        property Size                   :Single    read GetSize    write SetSize  ;
        property Unitor                 :TSingle3D read GetUnitor  write SetUnitor;
@@ -293,8 +293,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TDouble3D = record
      private
        ///// アクセス
-       function GetV( const I_:Integer ) :Double; inline;
-       procedure SetV( const I_:Integer; const V_:Double ); inline;
+       function Gets( const X_:Integer ) :Double; inline;
+       procedure Sets( const X_:Integer; const V_:Double ); inline;
        function GetSiz2 :Double; inline;
        procedure SetSiz2( const Siz2_:Double ); inline;
        function GetSize :Double; inline;
@@ -312,7 +312,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const V_:Double ); overload;
        constructor Create( const X_,Y_,Z_:Double ); overload;
        ///// プロパティ
-       property _s[ const I_:Integer ] :Double    read GetV       write SetV     ; default;
+       property _s[ const X_:Integer ] :Double    read Gets       write Sets     ; default;
        property Siz2                   :Double    read GetSiz2    write SetSiz2  ;
        property Size                   :Double    read GetSize    write SetSize  ;
        property Unitor                 :TDouble3D read GetUnitor  write SetUnitor;
@@ -368,8 +368,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TdSingle3D = record
      private
        ///// アクセス
-       function GetV( const I_:Integer ) :TdSingle; inline;
-       procedure SetV( const I_:Integer; const V_:TdSingle ); inline;
+       function Gets( const X_:Integer ) :TdSingle; inline;
+       procedure Sets( const X_:Integer; const V_:TdSingle ); inline;
        function Geto :TSingle3D; inline;
        procedure Seto( const o_:TSingle3D ); inline;
        function Getd :TSingle3D; inline;
@@ -383,7 +383,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
        constructor Create( const X_,Y_,Z_:TdSingle );
        ///// プロパティ
-       property _s[ const I_:Integer ] :TdSingle   read GetV      write SetV     ; default;
+       property _s[ const X_:Integer ] :TdSingle   read Gets      write Sets     ; default;
        property o                      :TSingle3D  read Geto      write Seto     ;
        property d                      :TSingle3D  read Getd      write Setd     ;
        property Siz2                   :TdSingle   read GetSiz2   write SetSiz2  ;
@@ -420,8 +420,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TdDouble3D = record
      private
        ///// アクセス
-       function GetV( const I_:Integer ) :TdDouble; inline;
-       procedure SetV( const I_:Integer; const V_:TdDouble ); inline;
+       function Gets( const X_:Integer ) :TdDouble; inline;
+       procedure Sets( const X_:Integer; const V_:TdDouble ); inline;
        function Geto :TDouble3D; inline;
        procedure Seto( const o_:TDouble3D ); inline;
        function Getd :TDouble3D; inline;
@@ -435,7 +435,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
        constructor Create( const X_,Y_,Z_:TdDouble );
        ///// プロパティ
-       property _s[ const I_:Integer ] :TdDouble   read GetV      write SetV     ; default;
+       property _s[ const X_:Integer ] :TdDouble   read Gets      write Sets     ; default;
        property o                      :TDouble3D  read Geto      write Seto     ;
        property d                      :TDouble3D  read Getd      write Setd     ;
        property Siz2                   :TdDouble   read GetSiz2   write SetSiz2  ;
@@ -725,14 +725,14 @@ uses System.SysUtils;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function T1Bit3D.Gets( const I_:Byte ) :Byte;
+function T1Bit3D.Gets( const X_:Byte ) :Byte;
 begin
-     Result := ( o shr I_ ) and $01;
+     Result := ( o shr X_ ) and $01;
 end;
 
-procedure T1Bit3D.Sets( const I_:Byte; const o_:Byte );
+procedure T1Bit3D.Sets( const X_:Byte; const o_:Byte );
 begin
-     o := ( o and ( not ( $01 shl I_ ) ) ) or ( o_ shl I_ );
+     o := ( o and ( not ( $01 shl X_ ) ) ) or ( o_ shl X_ );
 end;
 
 function T1Bit3D.GetX :Byte;
@@ -1393,14 +1393,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TSingle3D.GetV( const I_:Integer ) :Single;
+function TSingle3D.Gets( const X_:Integer ) :Single;
 begin
-     Result := _Xs[ I_ ];
+     Result := _Xs[ X_ ];
 end;
 
-procedure TSingle3D.SetV( const I_:Integer; const V_:Single );
+procedure TSingle3D.Sets( const X_:Integer; const V_:Single );
 begin
-     _Xs[ I_ ] := V_;
+     _Xs[ X_ ] := V_;
 end;
 
 //------------------------------------------------------------------------------
@@ -1731,14 +1731,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TDouble3D.GetV( const I_:Integer ) :Double;
+function TDouble3D.Gets( const X_:Integer ) :Double;
 begin
-     Result := _Xs[ I_ ];
+     Result := _Xs[ X_ ];
 end;
 
-procedure TDouble3D.SetV( const I_:Integer; const V_:Double );
+procedure TDouble3D.Sets( const X_:Integer; const V_:Double );
 begin
-     _Xs[ I_ ] := V_;
+     _Xs[ X_ ] := V_;
 end;
 
 //------------------------------------------------------------------------------
@@ -2069,14 +2069,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TdSingle3D.GetV( const I_:Integer ) :TdSingle;
+function TdSingle3D.Gets( const X_:Integer ) :TdSingle;
 begin
-     Result := _Xs[ I_ ];
+     Result := _Xs[ X_ ];
 end;
 
-procedure TdSingle3D.SetV( const I_:Integer; const V_:TdSingle );
+procedure TdSingle3D.Sets( const X_:Integer; const V_:TdSingle );
 begin
-     _Xs[ I_ ] := V_;
+     _Xs[ X_ ] := V_;
 end;
 
 //------------------------------------------------------------------------------
@@ -2244,14 +2244,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TdDouble3D.GetV( const I_:Integer ) :TdDouble;
+function TdDouble3D.Gets( const X_:Integer ) :TdDouble;
 begin
-     Result := _Xs[ I_ ];
+     Result := _Xs[ X_ ];
 end;
 
-procedure TdDouble3D.SetV( const I_:Integer; const V_:TdDouble );
+procedure TdDouble3D.Sets( const X_:Integer; const V_:TdDouble );
 begin
-     _Xs[ I_ ] := V_;
+     _Xs[ X_ ] := V_;
 end;
 
 //------------------------------------------------------------------------------

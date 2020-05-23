@@ -18,11 +18,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TIntegerM4 = record
      private
        ///// アクセス
-       function GetM( const Y_,X_:Integer ) :Integer;
-       procedure SetM( const Y_,X_:Integer; const M_:Integer );
+       function Gets( const Y_,X_:Integer ) :Integer;
+       procedure Sets( const Y_,X_:Integer; const M_:Integer );
      public
        ///// プロパティ
-       property M[ const Y_,X_:Integer ] :Integer read GetM write SetM; default;
+       property _s[ const Y_,X_:Integer ] :Integer read Gets write Sets; default;
      case Integer of
       0:( _ :array [ 1..4, 1..4 ] of Integer; );
       1:( _11, _12, _13, _14,
@@ -36,8 +36,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TSingleM4 = record
      public
        ///// アクセス
-       function GetM( const Y_,X_:Integer ) :Single;
-       procedure SetM( const Y_,X_:Integer; const M_:Single );
+       function Gets( const Y_,X_:Integer ) :Single;
+       procedure Sets( const Y_,X_:Integer; const M_:Single );
        function GetAxisX :TSingle3D;
        procedure SetAxisX( const AxisX_:TSingle3D );
        function GetAxisY :TSingle3D;
@@ -53,11 +53,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                                  _41_,_42_,_43_,_44_ :Single ); overload;
        constructor Create( const X_,Y_,Z_,P_:TSingle3D ); overload;
        ///// プロパティ
-       property M[ const Y_,X_:Integer ] :Single    read GetM     write SetM    ; default;
-       property AxisX                    :TSingle3D read GetAxisX write SetAxisX;
-       property AxisY                    :TSingle3D read GetAxisY write SetAxisY;
-       property AxisZ                    :TSingle3D read GetAxisZ write SetAxisZ;
-       property AxisP                    :TSingle3D read GetAxisP write SetAxisP;
+       property _s[ const Y_,X_:Integer ] :Single    read Gets     write Sets    ; default;
+       property AxisX                     :TSingle3D read GetAxisX write SetAxisX;
+       property AxisY                     :TSingle3D read GetAxisY write SetAxisY;
+       property AxisZ                     :TSingle3D read GetAxisZ write SetAxisZ;
+       property AxisP                     :TSingle3D read GetAxisP write SetAxisP;
        ///// 演算子
        class operator Multiply( const A_,B_:TSingleM4 ) :TSingleM4;
        class operator Multiply( const A_:Single; const B_:TSingleM4 ) :TSingleM4;
@@ -103,8 +103,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TDoubleM4 = record
      public
        ///// アクセス
-       function GetM( const Y_,X_:Integer ) :Double;
-       procedure SetM( const Y_,X_:Integer; const M_:Double );
+       function Gets( const Y_,X_:Integer ) :Double;
+       procedure Sets( const Y_,X_:Integer; const M_:Double );
        function GetAxisX :TDouble3D;
        procedure SetAxisX( const AxisX_:TDouble3D );
        function GetAxisY :TDouble3D;
@@ -120,11 +120,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                                  _41_,_42_,_43_,_44_ :Double ); overload;
        constructor Create( const X_,Y_,Z_,P_:TDouble3D ); overload;
        ///// プロパティ
-       property M[ const Y_,X_:Integer ] :Double    read GetM     write SetM    ; default;
-       property AxisX                    :TDouble3D read GetAxisX write SetAxisX;
-       property AxisY                    :TDouble3D read GetAxisY write SetAxisY;
-       property AxisZ                    :TDouble3D read GetAxisZ write SetAxisZ;
-       property AxisP                    :TDouble3D read GetAxisP write SetAxisP;
+       property _s[ const Y_,X_:Integer ] :Double    read Gets     write Sets    ; default;
+       property AxisX                     :TDouble3D read GetAxisX write SetAxisX;
+       property AxisY                     :TDouble3D read GetAxisY write SetAxisY;
+       property AxisZ                     :TDouble3D read GetAxisZ write SetAxisZ;
+       property AxisP                     :TDouble3D read GetAxisP write SetAxisP;
        ///// 演算子
        class operator Multiply( const A_,B_:TDoubleM4 ) :TDoubleM4;
        class operator Multiply( const A_:Double; const B_:TDoubleM4 ) :TDoubleM4;
@@ -172,8 +172,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TdSingleM4 = record
      public
        ///// アクセス
-       function GetM( const Y_,X_:Integer ) :TdSingle;
-       procedure SetM( const Y_,X_:Integer; const M_:TdSingle );
+       function Gets( const Y_,X_:Integer ) :TdSingle;
+       procedure Sets( const Y_,X_:Integer; const M_:TdSingle );
        function GetAxisX :TdSingle3D;
        procedure SetAxisX( const AxisX_:TdSingle3D );
        function GetAxisY :TdSingle3D;
@@ -189,11 +189,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                                  _41_,_42_,_43_,_44_ :TdSingle ); overload;
        constructor Create( const X_,Y_,Z_,P_:TdSingle3D ); overload;
        ///// プロパティ
-       property M[ const Y_,X_:Integer ] :TdSingle   read GetM     write SetM    ; default;
-       property AxisX                    :TdSingle3D read GetAxisX write SetAxisX;
-       property AxisY                    :TdSingle3D read GetAxisY write SetAxisY;
-       property AxisZ                    :TdSingle3D read GetAxisZ write SetAxisZ;
-       property AxisP                    :TdSingle3D read GetAxisP write SetAxisP;
+       property _s[ const Y_,X_:Integer ] :TdSingle   read Gets     write Sets    ; default;
+       property AxisX                     :TdSingle3D read GetAxisX write SetAxisX;
+       property AxisY                     :TdSingle3D read GetAxisY write SetAxisY;
+       property AxisZ                     :TdSingle3D read GetAxisZ write SetAxisZ;
+       property AxisP                     :TdSingle3D read GetAxisP write SetAxisP;
        ///// 演算子
        class operator Multiply( const A_,B_:TdSingleM4 ) :TdSingleM4;
        class operator Multiply( const A_:TdSingle; const B_:TdSingleM4 ) :TdSingleM4;
@@ -236,8 +236,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TdDoubleM4 = record
      public
        ///// アクセス
-       function GetM( const Y_,X_:Integer ) :TdDouble;
-       procedure SetM( const Y_,X_:Integer; const M_:TdDouble );
+       function Gets( const Y_,X_:Integer ) :TdDouble;
+       procedure Sets( const Y_,X_:Integer; const M_:TdDouble );
        function GetAxisX :TdDouble3D;
        procedure SetAxisX( const AxisX_:TdDouble3D );
        function GetAxisY :TdDouble3D;
@@ -253,11 +253,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
                                  _41_,_42_,_43_,_44_ :TdDouble ); overload;
        constructor Create( const X_,Y_,Z_,P_:TdDouble3D ); overload;
        ///// プロパティ
-       property M[ const Y_,X_:Integer ] :TdDouble   read GetM     write SetM    ; default;
-       property AxisX                    :TdDouble3D read GetAxisX write SetAxisX;
-       property AxisY                    :TdDouble3D read GetAxisY write SetAxisY;
-       property AxisZ                    :TdDouble3D read GetAxisZ write SetAxisZ;
-       property AxisP                    :TdDouble3D read GetAxisP write SetAxisP;
+       property _s[ const Y_,X_:Integer ] :TdDouble   read Gets     write Sets    ; default;
+       property AxisX                     :TdDouble3D read GetAxisX write SetAxisX;
+       property AxisY                     :TdDouble3D read GetAxisY write SetAxisY;
+       property AxisZ                     :TdDouble3D read GetAxisZ write SetAxisZ;
+       property AxisP                     :TdDouble3D read GetAxisP write SetAxisP;
        ///// 演算子
        class operator Multiply( const A_,B_:TdDoubleM4 ) :TdDoubleM4;
        class operator Multiply( const A_:TdDouble; const B_:TdDoubleM4 ) :TdDoubleM4;
@@ -350,12 +350,12 @@ uses System.Math;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TIntegerM4.GetM( const Y_,X_:Integer ) :Integer;
+function TIntegerM4.Gets( const Y_,X_:Integer ) :Integer;
 begin
      Result := _[ Y_, X_ ];
 end;
 
-procedure TIntegerM4.SetM( const Y_,X_:Integer; const M_:Integer );
+procedure TIntegerM4.Sets( const Y_,X_:Integer; const M_:Integer );
 begin
      _[ Y_, X_ ] := M_;
 end;
@@ -368,12 +368,12 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TSingleM4.GetM( const Y_,X_:Integer ) :Single;
+function TSingleM4.Gets( const Y_,X_:Integer ) :Single;
 begin
      Result := _[ Y_, X_ ];
 end;
 
-procedure TSingleM4.SetM( const Y_,X_:Integer; const M_:Single );
+procedure TSingleM4.Sets( const Y_,X_:Integer; const M_:Single );
 begin
      _[ Y_, X_ ] := M_;
 end;
@@ -895,12 +895,12 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TDoubleM4.GetM( const Y_,X_:Integer ) :Double;
+function TDoubleM4.Gets( const Y_,X_:Integer ) :Double;
 begin
      Result := _[ Y_, X_ ];
 end;
 
-procedure TDoubleM4.SetM( const Y_,X_:Integer; const M_:Double );
+procedure TDoubleM4.Sets( const Y_,X_:Integer; const M_:Double );
 begin
      _[ Y_, X_ ] := M_;
 end;
@@ -1438,12 +1438,12 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TdSingleM4.GetM( const Y_,X_:Integer ) :TdSingle;
+function TdSingleM4.Gets( const Y_,X_:Integer ) :TdSingle;
 begin
      Result := _[ Y_, X_ ];
 end;
 
-procedure TdSingleM4.SetM( const Y_,X_:Integer; const M_:TdSingle );
+procedure TdSingleM4.Sets( const Y_,X_:Integer; const M_:TdSingle );
 begin
      _[ Y_, X_ ] := M_;
 end;
@@ -1914,12 +1914,12 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TdDoubleM4.GetM( const Y_,X_:Integer ) :TdDouble;
+function TdDoubleM4.Gets( const Y_,X_:Integer ) :TdDouble;
 begin
      Result := _[ Y_, X_ ];
 end;
 
-procedure TdDoubleM4.SetM( const Y_,X_:Integer; const M_:TdDouble );
+procedure TdDoubleM4.Sets( const Y_,X_:Integer; const M_:TdDouble );
 begin
      _[ Y_, X_ ] := M_;
 end;

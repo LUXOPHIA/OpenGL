@@ -14,13 +14,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TByte4D = record
      private
        ///// アクセス
-       function Gets( const I_:Integer ) :Byte; inline;
-       procedure Sets( const I_:Integer; const V_:Byte ); inline;
+       function Gets( const X_:Integer ) :Byte; inline;
+       procedure Sets( const X_:Integer; const V_:Byte ); inline;
      public
        constructor Create( const V_:Byte ); overload;
        constructor Create( const X_,Y_,Z_,W_:Byte ); overload;
        ///// プロパティ
-       property _s[ const I_:Integer ] :Byte read Gets write Sets; default;
+       property _s[ const X_:Integer ] :Byte read Gets write Sets; default;
      case Byte of
       0:( _ :array [ 1..4 ] of Byte; );
       1:(  X :Byte;
@@ -40,13 +40,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TWord4D = record
      private
        ///// アクセス
-       function Gets( const I_:Integer ) :Word; inline;
-       procedure Sets( const I_:Integer; const V_:Word ); inline;
+       function Gets( const X_:Integer ) :Word; inline;
+       procedure Sets( const X_:Integer; const V_:Word ); inline;
      public
        constructor Create( const V_:Word ); overload;
        constructor Create( const X_,Y_,Z_,W_:Word ); overload;
        ///// プロパティ
-       property _s[ const I_:Integer ] :Word read Gets write Sets; default;
+       property _s[ const X_:Integer ] :Word read Gets write Sets; default;
      case Word of
       0:( _ :array [ 1..4 ] of Word; );
       1:(  X :Word;
@@ -66,13 +66,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TInteger4D = record
      private
        ///// アクセス
-       function Gets( const I_:Integer ) :Integer; inline;
-       procedure Sets( const I_:Integer; const V_:Integer ); inline;
+       function Gets( const X_:Integer ) :Integer; inline;
+       procedure Sets( const X_:Integer; const V_:Integer ); inline;
      public
        constructor Create( const V_:Integer ); overload;
        constructor Create( const X_,Y_,Z_,W_:Integer ); overload;
        ///// プロパティ
-       property _s[ const I_:Integer ] :Integer read Gets write Sets; default;
+       property _s[ const X_:Integer ] :Integer read Gets write Sets; default;
      case Byte of
       0:( _ :array [ 1..4 ] of Integer; );
       1:(  X :Integer;
@@ -92,13 +92,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TCardinal4D = record
      private
        ///// アクセス
-       function Gets( const I_:Cardinal ) :Cardinal; inline;
-       procedure Sets( const I_:Cardinal; const V_:Cardinal ); inline;
+       function Gets( const X_:Integer ) :Cardinal; inline;
+       procedure Sets( const X_:Integer; const V_:Cardinal ); inline;
      public
        constructor Create( const V_:Cardinal ); overload;
        constructor Create( const X_,Y_,Z_,W_:Cardinal ); overload;
        ///// プロパティ
-       property _s[ const I_:Cardinal ] :Cardinal read Gets write Sets; default;
+       property _s[ const X_:Integer ] :Cardinal read Gets write Sets; default;
      case Byte of
       0:( _ :array [ 1..4 ] of Cardinal; );
       1:(  X :Cardinal;
@@ -118,13 +118,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TInt64u4D = record
      private
        ///// アクセス
-       function Gets( const I_:Byte ) :Int64u; inline;
-       procedure Sets( const I_:Byte; const V_:Int64u ); inline;
+       function Gets( const X_:Integer ) :Int64u; inline;
+       procedure Sets( const X_:Integer; const V_:Int64u ); inline;
      public
        constructor Create( const V_:Int64u ); overload;
        constructor Create( const X_,Y_,Z_,W_:Int64u ); overload;
        ///// プロパティ
-       property _s[ const I_:Byte ] :Int64u read Gets write Sets; default;
+       property _s[ const X_:Integer ] :Int64u read Gets write Sets; default;
      case Byte of
       0:( _  :array [ 1..4 ] of Int64u; );
       1:(  X :Int64u;
@@ -142,13 +142,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TInt64s4D = record
      private
        ///// アクセス
-       function Gets( const I_:Byte ) :Int64s; inline;
-       procedure Sets( const I_:Byte; const V_:Int64s ); inline;
+       function Gets( const X_:Integer ) :Int64s; inline;
+       procedure Sets( const X_:Integer; const V_:Int64s ); inline;
      public
        constructor Create( const V_:Int64s ); overload;
        constructor Create( const X_,Y_,Z_,W_:Int64s ); overload;
        ///// プロパティ
-       property _s[ const I_:Byte ] :Int64s read Gets write Sets; default;
+       property _s[ const X_:Integer ] :Int64s read Gets write Sets; default;
      case Byte of
       0:( _  :array [ 1..4 ] of Int64s; );
       1:(  X :Int64s;
@@ -166,8 +166,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TSingle4D = record
      private
        ///// アクセス
-       function Gets( const I_:Integer ) :Single; inline;
-       procedure Sets( const I_:Integer; const V_:Single ); inline;
+       function Gets( const X_:Integer ) :Single; inline;
+       procedure Sets( const X_:Integer; const V_:Single ); inline;
        function GetSiz2 :Single; inline;
        procedure SetSiz2( const Siz2_:Single ); inline;
        function GetSize :Single; inline;
@@ -179,7 +179,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const X_,Y_,Z_,W_:Single ); overload;
        constructor Create( const P_:TSingle3D; const W_:Single ); overload;
        ///// プロパティ
-       property _s[ const I_:Integer ] :Single    read Gets      write Sets     ; default;
+       property _s[ const X_:Integer ] :Single    read Gets      write Sets     ; default;
        property Siz2                   :Single    read GetSiz2   write SetSiz2  ;
        property Size                   :Single    read GetSize   write SetSize  ;
        property Unitor                 :TSingle4D read GetUnitor write SetUnitor;
@@ -234,8 +234,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TDouble4D = record
      private
        ///// アクセス
-       function Gets( const I_:Integer ) :Double; inline;
-       procedure Sets( const I_:Integer; const V_:Double ); inline;
+       function Gets( const X_:Integer ) :Double; inline;
+       procedure Sets( const X_:Integer; const V_:Double ); inline;
        function GetSiz2 :Double; inline;
        procedure SetSiz2( const Siz2_:Double ); inline;
        function GetSize :Double; inline;
@@ -247,7 +247,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const X_,Y_,Z_,W_:Double ); overload;
        constructor Create( const P_:TDouble3D; const W_:Double ); overload;
        ///// プロパティ
-       property _s[ const I_:Integer ] :Double    read Gets      write Sets     ; default;
+       property _s[ const X_:Integer ] :Double    read Gets      write Sets     ; default;
        property Siz2                   :Double    read GetSiz2   write SetSiz2  ;
        property Size                   :Double    read GetSize   write SetSize  ;
        property Unitor                 :TDouble4D read GetUnitor write SetUnitor;
@@ -302,8 +302,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TdSingle4D = record
      private
        ///// アクセス
-       function Gets( const I_:Integer ) :TdSingle; inline;
-       procedure Sets( const I_:Integer; const V_:TdSingle ); inline;
+       function Gets( const X_:Integer ) :TdSingle; inline;
+       procedure Sets( const X_:Integer; const V_:TdSingle ); inline;
        function Geto :TSingle4D; inline;
        procedure Seto( const o_:TSingle4D ); inline;
        function Getd :TSingle4D; inline;
@@ -317,7 +317,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
        constructor Create( const X_,Y_,Z_,W_:TdSingle );
        ///// プロパティ
-       property _s[ const I_:Integer ] :TdSingle   read Gets      write Sets     ; default;
+       property _s[ const X_:Integer ] :TdSingle   read Gets      write Sets     ; default;
        property o                      :TSingle4D  read Geto      write Seto     ;
        property d                      :TSingle4D  read Getd      write Setd     ;
        property Siz2                   :TdSingle   read GetSiz2   write SetSiz2  ;
@@ -356,8 +356,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TdDouble4D = record
      private
        ///// アクセス
-       function Gets( const I_:Integer ) :TdDouble; inline;
-       procedure Sets( const I_:Integer; const V_:TdDouble ); inline;
+       function Gets( const X_:Integer ) :TdDouble; inline;
+       procedure Sets( const X_:Integer; const V_:TdDouble ); inline;
        function Geto :TDouble4D; inline;
        procedure Seto( const o_:TDouble4D ); inline;
        function Getd :TDouble4D; inline;
@@ -371,7 +371,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
        constructor Create( const X_,Y_,Z_,W_:TdDouble );
        ///// プロパティ
-       property _s[ const I_:Integer ] :TdDouble   read Gets      write Sets     ; default;
+       property _s[ const X_:Integer ] :TdDouble   read Gets      write Sets     ; default;
        property o                      :TDouble4D  read Geto      write Seto     ;
        property d                      :TDouble4D  read Getd      write Setd     ;
        property Siz2                   :TdDouble   read GetSiz2   write SetSiz2  ;
@@ -463,14 +463,14 @@ uses System.SysUtils, System.Math;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TByte4D.Gets( const I_:Integer ) :Byte;
+function TByte4D.Gets( const X_:Integer ) :Byte;
 begin
-     Result := _[ I_ ];
+     Result := _[ X_ ];
 end;
 
-procedure TByte4D.Sets( const I_:Integer; const V_:Byte );
+procedure TByte4D.Sets( const X_:Integer; const V_:Byte );
 begin
-     _[ I_ ] := V_;
+     _[ X_ ] := V_;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -497,14 +497,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TWord4D.Gets( const I_:Integer ) :Word;
+function TWord4D.Gets( const X_:Integer ) :Word;
 begin
-     Result := _[ I_ ];
+     Result := _[ X_ ];
 end;
 
-procedure TWord4D.Sets( const I_:Integer; const V_:Word );
+procedure TWord4D.Sets( const X_:Integer; const V_:Word );
 begin
-     _[ I_ ] := V_;
+     _[ X_ ] := V_;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -531,14 +531,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TInteger4D.Gets( const I_:Integer ) :Integer;
+function TInteger4D.Gets( const X_:Integer ) :Integer;
 begin
-     Result := _[ I_ ];
+     Result := _[ X_ ];
 end;
 
-procedure TInteger4D.Sets( const I_:Integer; const V_:Integer );
+procedure TInteger4D.Sets( const X_:Integer; const V_:Integer );
 begin
-     _[ I_ ] := V_;
+     _[ X_ ] := V_;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -565,14 +565,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TCardinal4D.Gets( const I_:Cardinal ) :Cardinal;
+function TCardinal4D.Gets( const X_:Integer ) :Cardinal;
 begin
-     Result := _[ I_ ];
+     Result := _[ X_ ];
 end;
 
-procedure TCardinal4D.Sets( const I_:Cardinal; const V_:Cardinal );
+procedure TCardinal4D.Sets( const X_:Integer; const V_:Cardinal );
 begin
-     _[ I_ ] := V_;
+     _[ X_ ] := V_;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -599,14 +599,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TInt64u4D.Gets( const I_:Byte ) :Int64u;
+function TInt64u4D.Gets( const X_:Integer ) :Int64u;
 begin
-     Result := _[ I_ ];
+     Result := _[ X_ ];
 end;
 
-procedure TInt64u4D.Sets( const I_:Byte; const V_:Int64u );
+procedure TInt64u4D.Sets( const X_:Integer; const V_:Int64u );
 begin
-     _[ I_ ] := V_;
+     _[ X_ ] := V_;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -633,14 +633,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TInt64s4D.Gets( const I_:Byte ) :Int64s;
+function TInt64s4D.Gets( const X_:Integer ) :Int64s;
 begin
-     Result := _[ I_ ];
+     Result := _[ X_ ];
 end;
 
-procedure TInt64s4D.Sets( const I_:Byte; const V_:Int64s );
+procedure TInt64s4D.Sets( const X_:Integer; const V_:Int64s );
 begin
-     _[ I_ ] := V_;
+     _[ X_ ] := V_;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -667,14 +667,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TSingle4D.Gets( const I_:Integer ) :Single;
+function TSingle4D.Gets( const X_:Integer ) :Single;
 begin
-     Result := _[ I_ ];
+     Result := _[ X_ ];
 end;
 
-procedure TSingle4D.Sets( const I_:Integer; const V_:Single );
+procedure TSingle4D.Sets( const X_:Integer; const V_:Single );
 begin
-     _[ I_ ] := V_;
+     _[ X_ ] := V_;
 end;
 
 //------------------------------------------------------------------------------
@@ -1006,14 +1006,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TDouble4D.Gets( const I_:Integer ) :Double;
+function TDouble4D.Gets( const X_:Integer ) :Double;
 begin
-     Result := _[ I_ ];
+     Result := _[ X_ ];
 end;
 
-procedure TDouble4D.Sets( const I_:Integer; const V_:Double );
+procedure TDouble4D.Sets( const X_:Integer; const V_:Double );
 begin
-     _[ I_ ] := V_;
+     _[ X_ ] := V_;
 end;
 
 //------------------------------------------------------------------------------
@@ -1345,14 +1345,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TdSingle4D.Gets( const I_:Integer ) :TdSingle;
+function TdSingle4D.Gets( const X_:Integer ) :TdSingle;
 begin
-     Result := _[ I_ ];
+     Result := _[ X_ ];
 end;
 
-procedure TdSingle4D.Sets( const I_:Integer; const V_:TdSingle );
+procedure TdSingle4D.Sets( const X_:Integer; const V_:TdSingle );
 begin
-     _[ I_ ] := V_;
+     _[ X_ ] := V_;
 end;
 
 //------------------------------------------------------------------------------
@@ -1532,14 +1532,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TdDouble4D.Gets( const I_:Integer ) :TdDouble;
+function TdDouble4D.Gets( const X_:Integer ) :TdDouble;
 begin
-     Result := _[ I_ ];
+     Result := _[ X_ ];
 end;
 
-procedure TdDouble4D.Sets( const I_:Integer; const V_:TdDouble );
+procedure TdDouble4D.Sets( const X_:Integer; const V_:TdDouble );
 begin
-     _[ I_ ] := V_;
+     _[ X_ ] := V_;
 end;
 
 //------------------------------------------------------------------------------
