@@ -14,8 +14,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      T1Bit3D = record
      private
        ///// アクセス
-       function Get_( const I_:Byte ) :Byte;
-       procedure Set_( const I_:Byte; const o_:Byte );
+       function Gets( const I_:Byte ) :Byte;
+       procedure Sets( const I_:Byte; const o_:Byte );
        function GetX :Byte;
        procedure SetX( const X_:Byte );
        function GetY :Byte;
@@ -27,13 +27,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const V_:Byte ); overload;
        constructor Create( const X_,Y_,Z_:Byte ); overload;
        ///// プロパティ
-       property _[ const I_:Byte ] :Byte read Get_ write Set_;
-       property  X                 :Byte read GetX write SetX;
-       property  Y                 :Byte read GetY write SetY;
-       property  Z                 :Byte read GetZ write SetZ;
-       property _1                 :Byte read GetX write SetX;
-       property _2                 :Byte read GetY write SetY;
-       property _3                 :Byte read GetZ write SetZ;
+       property _s[ const I_:Byte ] :Byte read Gets write Sets;
+       property  X                  :Byte read GetX write SetX;
+       property  Y                  :Byte read GetY write SetY;
+       property  Z                  :Byte read GetZ write SetZ;
+       property _1                  :Byte read GetX write SetX;
+       property _2                  :Byte read GetY write SetY;
+       property _3                  :Byte read GetZ write SetZ;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TByte3D
@@ -44,13 +44,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const V_:Byte ); overload;
        constructor Create( const X_,Y_,Z_:Byte ); overload;
      case Byte of
-      0:( _ :array [ 1..3 ] of Byte; );
-      1:(  X :Byte;
-           Y :Byte;
-           Z :Byte;                  );
-      2:( _1 :Byte;
-          _2 :Byte;
-          _3 :Byte;                  );
+      0:( _Xs :array [ 1..3 ] of Byte; );
+      1:(  X  :Byte;
+           Y  :Byte;
+           Z  :Byte;                   );
+      2:( _1  :Byte;
+          _2  :Byte;
+          _3  :Byte;                   );
      end;
 
      TInt08u3D = TByte3D;  TInt8u3D = TInt08u3D;
@@ -63,13 +63,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const V_:Shortint ); overload;
        constructor Create( const X_,Y_,Z_:Shortint ); overload;
      case Byte of
-      0:( _ :array [ 1..3 ] of Shortint; );
-      1:(  X :Shortint;
-           Y :Shortint;
-           Z :Shortint;                  );
-      2:( _1 :Shortint;
-          _2 :Shortint;
-          _3 :Shortint;                  );
+      0:( _Xs :array [ 1..3 ] of Shortint; );
+      1:(  X  :Shortint;
+           Y  :Shortint;
+           Z  :Shortint;                   );
+      2:( _1  :Shortint;
+          _2  :Shortint;
+          _3  :Shortint;                   );
      end;
 
      TInt08s3D = TShortint3D;  TInt8s3D = TInt08s3D;
@@ -82,13 +82,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const V_:Word ); overload;
        constructor Create( const X_,Y_,Z_:Word ); overload;
      case Byte of
-      0:( _ :array [ 1..3 ] of Word; );
-      1:(  X :Word;
-           Y :Word;
-           Z :Word;                  );
-      2:( _1 :Word;
-          _2 :Word;
-          _3 :Word;                  );
+      0:( _Xs :array [ 1..3 ] of Word; );
+      1:(  X  :Word;
+           Y  :Word;
+           Z  :Word;                   );
+      2:( _1  :Word;
+          _2  :Word;
+          _3  :Word;                   );
      end;
 
      TInt16u3D = TWord3D;
@@ -101,13 +101,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const V_:Smallint ); overload;
        constructor Create( const X_,Y_,Z_:Smallint ); overload;
      case Byte of
-      0:( _ :array [ 1..3 ] of Smallint; );
-      1:(  X :Smallint;
-           Y :Smallint;
-           Z :Smallint;                  );
-      2:( _1 :Smallint;
-          _2 :Smallint;
-          _3 :Smallint;                  );
+      0:( _Xs :array [ 1..3 ] of Smallint; );
+      1:(  X  :Smallint;
+           Y  :Smallint;
+           Z  :Smallint;                   );
+      2:( _1  :Smallint;
+          _2  :Smallint;
+          _3  :Smallint;                   );
      end;
 
      TInt16s3D = TSmallint3D;
@@ -151,13 +151,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class operator Explicit( const V_:TCardinal3D ) :TSmallint3D; inline;
        class operator Explicit( const V_:TSmallint3D ) :TCardinal3D; inline;
      case Byte of
-      0:( _ :array [ 1..3 ] of Cardinal; );
-      1:(  X :Cardinal;
-           Y :Cardinal;
-           Z :Cardinal;                  );
-      2:( _1 :Cardinal;
-          _2 :Cardinal;
-          _3 :Cardinal;                  );
+      0:( _Xs :array [ 1..3 ] of Cardinal; );
+      1:(  X  :Cardinal;
+           Y  :Cardinal;
+           Z  :Cardinal;                   );
+      2:( _1  :Cardinal;
+          _2  :Cardinal;
+          _3  :Cardinal;                   );
      end;
 
      TInt32u3D = TCardinal3D;
@@ -202,13 +202,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class operator Explicit( const V_:TSmallint3D ) :TInteger3D; inline;
        class operator Implicit( const V_:TInteger3D ) :TPoint3D; inline;
      case Byte of
-      0:( _ :array [ 1..3 ] of Integer; );
-      1:(  X :Integer;
-           Y :Integer;
-           Z :Integer;                  );
-      2:( _1 :Integer;
-          _2 :Integer;
-          _3 :Integer;                  );
+      0:( _Xs :array [ 1..3 ] of Integer; );
+      1:(  X  :Integer;
+           Y  :Integer;
+           Z  :Integer;                   );
+      2:( _1  :Integer;
+          _2  :Integer;
+          _3  :Integer;                   );
      end;
 
      TInt32s3D = TInteger3D;
@@ -274,13 +274,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class function RandBS2 :TSingle3D; static;
        class function RandBS4 :TSingle3D; static;
      case Byte of
-      0:( _ :array [ 1..3 ] of Single; );
-      1:(  X :Single;
-           Y :Single;
-           Z :Single;                  );
-      2:( _1 :Single;
-          _2 :Single;
-          _3 :Single;                  );
+      0:( _Xs :array [ 1..3 ] of Single; );
+      1:(  X  :Single;
+           Y  :Single;
+           Z  :Single;                   );
+      2:( _1  :Single;
+          _2  :Single;
+          _3  :Single;                   );
      end;
 
      TFlo32s3D = TSingle3D;
@@ -349,13 +349,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class function RandBS2 :TDouble3D; static;
        class function RandBS4 :TDouble3D; static;
      case Byte of
-      0:( _ :array [ 1..3 ] of Double; );
-      1:(  X :Double;
-           Y :Double;
-           Z :Double;                  );
-      2:( _1 :Double;
-          _2 :Double;
-          _3 :Double;                  );
+      0:( _Xs :array [ 1..3 ] of Double; );
+      1:(  X  :Double;
+           Y  :Double;
+           Z  :Double;                   );
+      2:( _1  :Double;
+          _2  :Double;
+          _3  :Double;                   );
      end;
 
      TFlo64s3D = TDouble3D;
@@ -401,13 +401,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class operator Implicit( const V_:TSingle3D ) :TdSingle3D;
        class operator Implicit( const V_:TdSingle3D ) :TSingle3D; inline;
      case Byte of
-      0:( _ :array [ 1..3 ] of TdSingle; );
-      1:(  X :TdSingle;
-           Y :TdSingle;
-           Z :TdSingle;                  );
-      2:( _1 :TdSingle;
-          _2 :TdSingle;
-          _3 :TdSingle;                  );
+      0:( _Xs :array [ 1..3 ] of TdSingle; );
+      1:(  X  :TdSingle;
+           Y  :TdSingle;
+           Z  :TdSingle;                   );
+      2:( _1  :TdSingle;
+          _2  :TdSingle;
+          _3  :TdSingle;                   );
      end;
 
      TdFlo32s3D = TdSingle3D;
@@ -453,13 +453,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class operator Implicit( const V_:TDouble3D ) :TdDouble3D;
        class operator Implicit( const V_:TdDouble3D ) :TDouble3D; inline;
      case Byte of
-      0:( _ :array [ 1..3 ] of TdDouble; );
-      1:(  X :TdDouble;
-           Y :TdDouble;
-           Z :TdDouble;                  );
-      2:( _1 :TdDouble;
-          _2 :TdDouble;
-          _3 :TdDouble;                  );
+      0:( _Xs :array [ 1..3 ] of TdDouble; );
+      1:(  X  :TdDouble;
+           Y  :TdDouble;
+           Z  :TdDouble;                   );
+      2:( _1  :TdDouble;
+          _2  :TdDouble;
+          _3  :TdDouble;                   );
      end;
 
      TdFlo64s3D = TdDouble3D;
@@ -725,12 +725,12 @@ uses System.SysUtils;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function T1Bit3D.Get_( const I_:Byte ) :Byte;
+function T1Bit3D.Gets( const I_:Byte ) :Byte;
 begin
      Result := ( o shr I_ ) and $01;
 end;
 
-procedure T1Bit3D.Set_( const I_:Byte; const o_:Byte );
+procedure T1Bit3D.Sets( const I_:Byte; const o_:Byte );
 begin
      o := ( o and ( not ( $01 shl I_ ) ) ) or ( o_ shl I_ );
 end;
@@ -1395,12 +1395,12 @@ end;
 
 function TSingle3D.GetV( const I_:Integer ) :Single;
 begin
-     Result := _[ I_ ];
+     Result := _Xs[ I_ ];
 end;
 
 procedure TSingle3D.SetV( const I_:Integer; const V_:Single );
 begin
-     _[ I_ ] := V_;
+     _Xs[ I_ ] := V_;
 end;
 
 //------------------------------------------------------------------------------
@@ -1733,12 +1733,12 @@ end;
 
 function TDouble3D.GetV( const I_:Integer ) :Double;
 begin
-     Result := _[ I_ ];
+     Result := _Xs[ I_ ];
 end;
 
 procedure TDouble3D.SetV( const I_:Integer; const V_:Double );
 begin
-     _[ I_ ] := V_;
+     _Xs[ I_ ] := V_;
 end;
 
 //------------------------------------------------------------------------------
@@ -2071,12 +2071,12 @@ end;
 
 function TdSingle3D.GetV( const I_:Integer ) :TdSingle;
 begin
-     Result := _[ I_ ];
+     Result := _Xs[ I_ ];
 end;
 
 procedure TdSingle3D.SetV( const I_:Integer; const V_:TdSingle );
 begin
-     _[ I_ ] := V_;
+     _Xs[ I_ ] := V_;
 end;
 
 //------------------------------------------------------------------------------
@@ -2246,12 +2246,12 @@ end;
 
 function TdDouble3D.GetV( const I_:Integer ) :TdDouble;
 begin
-     Result := _[ I_ ];
+     Result := _Xs[ I_ ];
 end;
 
 procedure TdDouble3D.SetV( const I_:Integer; const V_:TdDouble );
 begin
-     _[ I_ ] := V_;
+     _Xs[ I_ ] := V_;
 end;
 
 //------------------------------------------------------------------------------
