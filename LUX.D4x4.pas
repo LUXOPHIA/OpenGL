@@ -1,9 +1,13 @@
-﻿unit LUX.M4;
+﻿unit LUX.D4x4;
 
 interface //#################################################################### ■
 
 uses System.SysUtils, System.Math.Vectors,
-     LUX, LUX.D1, LUX.D2, LUX.D3, LUX.D4, LUX.M2, LUX.M3;
+     LUX,
+     LUX.D1,
+     LUX.D2, LUX.D2x2,
+     LUX.D3, LUX.D3x3,
+     LUX.D4;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
