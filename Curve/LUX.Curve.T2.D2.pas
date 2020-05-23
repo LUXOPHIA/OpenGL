@@ -4,7 +4,7 @@ interface //####################################################################
 
 uses LUX,
      LUX.D1,
-     LUX.D2, LUX.D2.V4, LUX.D2.M4,
+     LUX.D2, LUX.D2x4, LUX.D2x4x4,
      LUX.D4,
      LUX.Curve.T1.D1, LUX.Curve.T1.D2,
      LUX.Curve.T2.D1;
@@ -21,10 +21,10 @@ uses LUX,
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
 
-function Bezier4( const Ps_:TSingle2DM4; const T_:TSingle2D ) :TSingle2D; overload;
-function Bezier4( const Ps_:TDouble2DM4; const T_:TDouble2D ) :TDouble2D; overload;
-function Bezier4( const Ps_:TdSingle2DM4; const T_:TdSingle2D ) :TdSingle2D; overload;
-function Bezier4( const Ps_:TdDouble2DM4; const T_:TdDouble2D ) :TdDouble2D; overload;
+function Bezier4( const Ps_:TSingle4x4x2D; const T_:TSingle2D ) :TSingle2D; overload;
+function Bezier4( const Ps_:TDouble4x4x2D; const T_:TDouble2D ) :TDouble2D; overload;
+function Bezier4( const Ps_:TdSingle4x4x2D; const T_:TdSingle2D ) :TdSingle2D; overload;
+function Bezier4( const Ps_:TdDouble4x4x2D; const T_:TdDouble2D ) :TdDouble2D; overload;
 
 implementation //############################################################### ■
 
@@ -34,7 +34,7 @@ implementation //###############################################################
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
 
-function Bezier4( const Ps_:TSingle2DM4; const T_:TSingle2D ) :TSingle2D;
+function Bezier4( const Ps_:TSingle4x4x2D; const T_:TSingle2D ) :TSingle2D;
 var
    WX, WY :TSingle4D;
    P1, P2, P3, P4 :TSingle2D;
@@ -56,7 +56,7 @@ begin
      end;
 end;
 
-function Bezier4( const Ps_:TDouble2DM4; const T_:TDouble2D ) :TDouble2D;
+function Bezier4( const Ps_:TDouble4x4x2D; const T_:TDouble2D ) :TDouble2D;
 var
    WX, WY :TDouble4D;
    P1, P2, P3, P4 :TDouble2D;
@@ -78,7 +78,7 @@ begin
      end;
 end;
 
-function Bezier4( const Ps_:TdSingle2DM4; const T_:TdSingle2D ) :TdSingle2D;
+function Bezier4( const Ps_:TdSingle4x4x2D; const T_:TdSingle2D ) :TdSingle2D;
 var
    WX, WY :TdSingle4D;
    P1, P2, P3, P4 :TdSingle2D;
@@ -100,7 +100,7 @@ begin
      end;
 end;
 
-function Bezier4( const Ps_:TdDouble2DM4; const T_:TdDouble2D ) :TdDouble2D;
+function Bezier4( const Ps_:TdDouble4x4x2D; const T_:TdDouble2D ) :TdDouble2D;
 var
    WX, WY :TdDouble4D;
    P1, P2, P3, P4 :TdDouble2D;

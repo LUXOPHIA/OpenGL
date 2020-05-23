@@ -4,7 +4,7 @@ interface //####################################################################
 
 uses LUX,
      LUX.D1,
-     LUX.D2, LUX.D2.V4, LUX.D2.M4,
+     LUX.D2, LUX.D2x4, LUX.D2x4x4,
      LUX.D4,
      LUX.M4,
      LUX.Curve.T1.D1;

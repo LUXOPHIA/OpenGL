@@ -4,8 +4,8 @@ interface //####################################################################
 
 uses LUX,
      LUX.D1,
-     LUX.D2, LUX.D2.V4, LUX.D2.M4,
-     LUX.D3, LUX.D3.V4, LUX.D3.M4,
+     LUX.D2, LUX.D2x4, LUX.D2x4x4,
+     LUX.D3, LUX.D3x4, LUX.D3x4x4,
      LUX.D4,
      LUX.M4,
      LUX.Curve.T1.D1, LUX.Curve.T1.D2, LUX.Curve.T1.D3,
@@ -23,13 +23,13 @@ uses LUX,
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
 
-function Bezier4( const Ps_:TSingle3DM4; const T_:TSingle2D ) :TSingle3D; overload;
-function Bezier4( const Ps_:TDouble3DM4; const T_:TDouble2D ) :TDouble3D; overload;
-function Bezier4( const Ps_:TdSingle3DM4; const T_:TdSingle2D ) :TdSingle3D; overload;
-function Bezier4( const Ps_:TdDouble3DM4; const T_:TdDouble2D ) :TdDouble3D; overload;
+function Bezier4( const Ps_:TSingle4x4x3D; const T_:TSingle2D ) :TSingle3D; overload;
+function Bezier4( const Ps_:TDouble4x4x3D; const T_:TDouble2D ) :TDouble3D; overload;
+function Bezier4( const Ps_:TdSingle4x4x3D; const T_:TdSingle2D ) :TdSingle3D; overload;
+function Bezier4( const Ps_:TdDouble4x4x3D; const T_:TdDouble2D ) :TdDouble3D; overload;
 
-function TensorBezier4( const Ps_:TSingle3DM4; const T_:TSingle2D ) :TSingleM4; overload;
-function TensorBezier4( const Ps_:TDouble3DM4; const T_:TDouble2D ) :TDoubleM4; overload;
+function TensorBezier4( const Ps_:TSingle4x4x3D; const T_:TSingle2D ) :TSingleM4; overload;
+function TensorBezier4( const Ps_:TDouble4x4x3D; const T_:TDouble2D ) :TDoubleM4; overload;
 
 implementation //############################################################### ■
 
@@ -39,7 +39,7 @@ implementation //###############################################################
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
 
-function Bezier4( const Ps_:TSingle3DM4; const T_:TSingle2D ) :TSingle3D;
+function Bezier4( const Ps_:TSingle4x4x3D; const T_:TSingle2D ) :TSingle3D;
 var
    WX, WY :TSingle4D;
    P1, P2, P3, P4 :TSingle3D;
@@ -61,7 +61,7 @@ begin
      end;
 end;
 
-function Bezier4( const Ps_:TDouble3DM4; const T_:TDouble2D ) :TDouble3D;
+function Bezier4( const Ps_:TDouble4x4x3D; const T_:TDouble2D ) :TDouble3D;
 var
    WX, WY :TDouble4D;
    P1, P2, P3, P4 :TDouble3D;
@@ -83,7 +83,7 @@ begin
      end;
 end;
 
-function Bezier4( const Ps_:TdSingle3DM4; const T_:TdSingle2D ) :TdSingle3D;
+function Bezier4( const Ps_:TdSingle4x4x3D; const T_:TdSingle2D ) :TdSingle3D;
 var
    WX, WY :TdSingle4D;
    P1, P2, P3, P4 :TdSingle3D;
@@ -105,7 +105,7 @@ begin
      end;
 end;
 
-function Bezier4( const Ps_:TdDouble3DM4; const T_:TdDouble2D ) :TdDouble3D;
+function Bezier4( const Ps_:TdDouble4x4x3D; const T_:TdDouble2D ) :TdDouble3D;
 var
    WX, WY :TdDouble4D;
    P1, P2, P3, P4 :TdDouble3D;
@@ -129,9 +129,9 @@ end;
 
 //------------------------------------------------------------------------------
 
-function TensorBezier4( const Ps_:TSingle3DM4; const T_:TSingle2D ) :TSingleM4;
+function TensorBezier4( const Ps_:TSingle4x4x3D; const T_:TSingle2D ) :TSingleM4;
 var
-   Ps :TdSingle3DM4;
+   Ps :TdSingle4x4x3D;
    T :TdSingle2D;
    AP, AX, AY, AZ :TSingle3D;
 begin
@@ -168,9 +168,9 @@ begin
      end;
 end;
 
-function TensorBezier4( const Ps_:TDouble3DM4; const T_:TDouble2D ) :TDoubleM4;
+function TensorBezier4( const Ps_:TDouble4x4x3D; const T_:TDouble2D ) :TDoubleM4;
 var
-   Ps :TdDouble3DM4;
+   Ps :TdDouble4x4x3D;
    T :TdDouble2D;
    AP, AX, AY, AZ :TDouble3D;
 begin

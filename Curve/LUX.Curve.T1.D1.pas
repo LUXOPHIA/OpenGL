@@ -806,7 +806,7 @@ var
    Cs :TArray<Single>;
    N, I :Integer;
 begin
-     Cs := Copy( Cs_._s );
+     Cs := Copy( Cs_._Xs );
 
      for N := High( Cs ) downto 1 do
      begin
@@ -821,7 +821,7 @@ var
    Cs :TArray<Double>;
    N, I :Integer;
 begin
-     Cs := Copy( Cs_._s );
+     Cs := Copy( Cs_._Xs );
 
      for N := High( Cs ) downto 1 do
      begin
@@ -1361,11 +1361,11 @@ begin
      begin
           DimN := P_.DimN;
 
-          for X := 0 to DimN-1 do _s[ X ] := P_[ X ] / Comb( DimN-1, X );
+          for X := 0 to DimN-1 do _Xs[ X ] := P_[ X ] / Comb( DimN-1, X );
 
           for Y := 1 to DimN-1 do
           begin
-               for X := DimN-1 downto Y do _s[ X ] := _s[ X ] + _s[ X-1 ];
+               for X := DimN-1 downto Y do _Xs[ X ] := _Xs[ X ] + _Xs[ X-1 ];
           end;
      end;
 end;
@@ -1378,11 +1378,11 @@ begin
      begin
           DimN := P_.DimN;
 
-          for X := 0 to DimN-1 do _s[ X ] := P_[ X ] / Comb( DimN-1, X );
+          for X := 0 to DimN-1 do _Xs[ X ] := P_[ X ] / Comb( DimN-1, X );
 
           for Y := 1 to DimN-1 do
           begin
-               for X := DimN-1 downto Y do _s[ X ] := _s[ X ] + _s[ X-1 ];
+               for X := DimN-1 downto Y do _Xs[ X ] := _Xs[ X ] + _Xs[ X-1 ];
           end;
      end;
 end;
@@ -1395,14 +1395,14 @@ var
 begin
      with Result do
      begin
-          _s := Copy( P_._s );
+          _Xs := Copy( P_._Xs );
 
           for Y := 1 to DimN-1 do
           begin
-               for X := DimN-1 downto Y do _s[ X ] := _s[ X ] - _s[ X-1 ];
+               for X := DimN-1 downto Y do _Xs[ X ] := _Xs[ X ] - _Xs[ X-1 ];
           end;
 
-          for X := 0 to DimN-1 do _s[ X ] := _s[ X ] * Comb( DimN-1, X );
+          for X := 0 to DimN-1 do _Xs[ X ] := _Xs[ X ] * Comb( DimN-1, X );
      end;
 end;
 
@@ -1412,14 +1412,14 @@ var
 begin
      with Result do
      begin
-          _s := Copy( P_._s );
+          _Xs := Copy( P_._Xs );
 
           for Y := 1 to DimN-1 do
           begin
-               for X := DimN-1 downto Y do _s[ X ] := _s[ X ] - _s[ X-1 ];
+               for X := DimN-1 downto Y do _Xs[ X ] := _Xs[ X ] - _Xs[ X-1 ];
           end;
 
-          for X := 0 to DimN-1 do _s[ X ] := _s[ X ] * Comb( DimN-1, X );
+          for X := 0 to DimN-1 do _Xs[ X ] := _Xs[ X ] * Comb( DimN-1, X );
      end;
 end;
 
