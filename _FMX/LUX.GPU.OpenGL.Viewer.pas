@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls,
   System.Messaging,
-  LUX, LUX.D3, LUX.D4, LUX.M4,
+  LUX, LUX.D3, LUX.D4, LUX.D4x4,
   LUX.GPU.OpenGL,
   LUX.GPU.OpenGL.Window,
   LUX.GPU.OpenGL.Atom.Buffer.UniBuf,
