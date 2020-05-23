@@ -1,83 +1,141 @@
-﻿unit LUX.D2.M4;
+﻿unit LUX.D2x4x4;
 
 interface //#################################################################### ■
 
-uses LUX, LUX.D1, LUX.D2;
+uses LUX,
+     LUX.D1,
+     LUX.D2, LUX.D2x4;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSingle2DM4
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSingle4x4x2D
 
-     TSingle2DM4 = record
+     TSingle4x4x2D = record
      private
        ///// アクセス
-       function GetM( const Y_,X_:Integer ) :TSingle2D; inline;
-       procedure SetM( const Y_,X_:Integer; const M_:TSingle2D ); inline;
+       function Gets( const Z_,Y_:Integer ) :TSingle2D; overload; inline;
+       procedure Sets( const Z_,Y_:Integer; const M_:TSingle2D ); overload; inline;
      public
        ///// プロパティ
-       property M[ const Y_,X_:Integer ] :TSingle2D read GetM write SetM; default;
-     case Integer of
-      0:( _ :array [ 1..4, 1..4 ] of TSingle2D; );
-      1:( _11, _12, _13, _14,
+       property _s[ const Z_,Y_:Integer ] :TSingle2D read Gets write Sets; default;
+     case Byte of
+      0:( _ZYX :array [ 1..4, 1..4, 1..2 ] of Single; );
+      1:( _111, _112, _121, _122,
+          _131, _132, _141, _142,
+          _211, _212, _221, _222,
+          _231, _232, _241, _242,
+          _311, _312, _321, _322,
+          _331, _332, _341, _342,
+          _411, _412, _421, _422,
+          _431, _432, _441, _442 :Single;             );
+      2:( _ZY :array [ 1..4, 1..4 ] of TSingle2D;     );
+      3:( _11, _12, _13, _14,
           _21, _22, _23, _24,
           _31, _32, _33, _34,
-          _41, _42, _43, _44 :TSingle2D; );
+          _41, _42, _43, _44 :TSingle2D;              );
+      4:( _Z :array [ 1..4 ] of TSingle4x2D;          );
+      5:( _1,
+          _2,
+          _3,
+          _4 :TSingle4x2D;                            );
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDouble2DM4
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDouble4x4x2D
 
-     TDouble2DM4 = record
+     TDouble4x4x2D = record
      private
        ///// アクセス
-       function GetM( const Y_,X_:Integer ) :TDouble2D; inline;
-       procedure SetM( const Y_,X_:Integer; const M_:TDouble2D ); inline;
+       function Gets( const Z_,Y_:Integer ) :TDouble2D; overload; inline;
+       procedure Sets( const Z_,Y_:Integer; const M_:TDouble2D ); overload; inline;
      public
        ///// プロパティ
-       property M[ const Y_,X_:Integer ] :TDouble2D read GetM write SetM; default;
-     case Integer of
-      0:( _ :array [ 1..4, 1..4 ] of TDouble2D; );
-      1:( _11, _12, _13, _14,
+       property _s[ const Z_,Y_:Integer ] :TDouble2D read Gets write Sets; default;
+     case Byte of
+      0:( _ZYX :array [ 1..4, 1..4, 1..2 ] of Double; );
+      1:( _111, _112, _121, _122,
+          _131, _132, _141, _142,
+          _211, _212, _221, _222,
+          _231, _232, _241, _242,
+          _311, _312, _321, _322,
+          _331, _332, _341, _342,
+          _411, _412, _421, _422,
+          _431, _432, _441, _442 :Double;             );
+      2:( _ZY :array [ 1..4, 1..4 ] of TDouble2D;     );
+      3:( _11, _12, _13, _14,
           _21, _22, _23, _24,
           _31, _32, _33, _34,
-          _41, _42, _43, _44 :TDouble2D; );
+          _41, _42, _43, _44 :TDouble2D;              );
+      4:( _Z :array [ 1..4 ] of TDouble4x2D;          );
+      5:( _1,
+          _2,
+          _3,
+          _4 :TDouble4x2D;                            );
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdSingle2DM4
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdSingle4x4x2D
 
-     TdSingle2DM4 = record
+     TdSingle4x4x2D = record
      private
        ///// アクセス
-       function GetM( const Y_,X_:Integer ) :TdSingle2D; inline;
-       procedure SetM( const Y_,X_:Integer; const M_:TdSingle2D ); inline;
+       function Gets( const Z_,Y_:Integer ) :TdSingle2D; overload; inline;
+       procedure Sets( const Z_,Y_:Integer; const M_:TdSingle2D ); overload; inline;
      public
        ///// プロパティ
-       property M[ const Y_,X_:Integer ] :TdSingle2D read GetM write SetM; default;
-     case Integer of
-      0:( _ :array [ 1..4, 1..4 ] of TdSingle2D; );
-      1:( _11, _12, _13, _14,
+       property _s[ const Z_,Y_:Integer ] :TdSingle2D read Gets write Sets; default;
+     case Byte of
+      0:( _ZYX :array [ 1..4, 1..4, 1..2 ] of TdSingle; );
+      1:( _111, _112, _121, _122,
+          _131, _132, _141, _142,
+          _211, _212, _221, _222,
+          _231, _232, _241, _242,
+          _311, _312, _321, _322,
+          _331, _332, _341, _342,
+          _411, _412, _421, _422,
+          _431, _432, _441, _442 :TdSingle;             );
+      2:( _ZY :array [ 1..4, 1..4 ] of TdSingle2D;      );
+      3:( _11, _12, _13, _14,
           _21, _22, _23, _24,
           _31, _32, _33, _34,
-          _41, _42, _43, _44 :TdSingle2D; );
+          _41, _42, _43, _44 :TdSingle2D;               );
+      4:( _Z :array [ 1..4 ] of TdSingle4x2D;           );
+      5:( _1,
+          _2,
+          _3,
+          _4 :TdSingle4x2D;                             );
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdDouble2DM4
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdDouble4x4x2D
 
-     TdDouble2DM4 = record
+     TdDouble4x4x2D = record
      private
        ///// アクセス
-       function GetM( const Y_,X_:Integer ) :TdDouble2D; inline;
-       procedure SetM( const Y_,X_:Integer; const M_:TdDouble2D ); inline;
+       function Gets( const Z_,Y_:Integer ) :TdDouble2D; overload; inline;
+       procedure Sets( const Z_,Y_:Integer; const M_:TdDouble2D ); overload; inline;
      public
        ///// プロパティ
-       property M[ const Y_,X_:Integer ] :TdDouble2D read GetM write SetM; default;
-     case Integer of
-      0:( _ :array [ 1..4, 1..4 ] of TdDouble2D; );
-      1:( _11, _12, _13, _14,
+       property _s[ const Z_,Y_:Integer ] :TdDouble2D read Gets write Sets; default;
+     case Byte of
+      0:( _ZYX :array [ 1..4, 1..4, 1..2 ] of TdDouble; );
+      1:( _111, _112, _121, _122,
+          _131, _132, _141, _142,
+          _211, _212, _221, _222,
+          _231, _232, _241, _242,
+          _311, _312, _321, _322,
+          _331, _332, _341, _342,
+          _411, _412, _421, _422,
+          _431, _432, _441, _442 :TdDouble;             );
+      2:( _ZY :array [ 1..4, 1..4 ] of TdDouble2D;      );
+      3:( _11, _12, _13, _14,
           _21, _22, _23, _24,
           _31, _32, _33, _34,
-          _41, _42, _43, _44 :TdDouble2D; );
+          _41, _42, _43, _44 :TdDouble2D;               );
+      4:( _Z :array [ 1..4 ] of TdDouble4x2D;           );
+      5:( _1,
+          _2,
+          _3,
+          _4 :TdDouble4x2D;                             );
      end;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
@@ -92,72 +150,72 @@ implementation //###############################################################
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSingle2DM4
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSingle4x4x2D
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TSingle2DM4.GetM( const Y_,X_:Integer ) :TSingle2D;
+function TSingle4x4x2D.Gets( const Z_,Y_:Integer ) :TSingle2D;
 begin
-     Result := _[ Y_, X_ ];
+     Result := _ZY[ Z_, Y_ ];
 end;
 
-procedure TSingle2DM4.SetM( const Y_,X_:Integer; const M_:TSingle2D );
+procedure TSingle4x4x2D.Sets( const Z_,Y_:Integer; const M_:TSingle2D );
 begin
-     _[ Y_, X_ ] := M_;
+     _ZY[ Z_, Y_ ] := M_;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDouble2DM4
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDouble4x4x2D
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TDouble2DM4.GetM( const Y_,X_:Integer ) :TDouble2D;
+function TDouble4x4x2D.Gets( const Z_,Y_:Integer ) :TDouble2D;
 begin
-     Result := _[ Y_, X_ ];
+     Result := _ZY[ Z_, Y_ ];
 end;
 
-procedure TDouble2DM4.SetM( const Y_,X_:Integer; const M_:TDouble2D );
+procedure TDouble4x4x2D.Sets( const Z_,Y_:Integer; const M_:TDouble2D );
 begin
-     _[ Y_, X_ ] := M_;
+     _ZY[ Z_, Y_ ] := M_;
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdSingle2DM4
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdSingle4x4x2D
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TdSingle2DM4.GetM( const Y_,X_:Integer ) :TdSingle2D;
+function TdSingle4x4x2D.Gets( const Z_,Y_:Integer ) :TdSingle2D;
 begin
-     Result := _[ Y_, X_ ];
+     Result := _ZY[ Z_, Y_ ];
 end;
 
-procedure TdSingle2DM4.SetM( const Y_,X_:Integer; const M_:TdSingle2D );
+procedure TdSingle4x4x2D.Sets( const Z_,Y_:Integer; const M_:TdSingle2D );
 begin
-     _[ Y_, X_ ] := M_;
+     _ZY[ Z_, Y_ ] := M_;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdDouble2DM4
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdDouble4x4x2D
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TdDouble2DM4.GetM( const Y_,X_:Integer ) :TdDouble2D;
+function TdDouble4x4x2D.Gets( const Z_,Y_:Integer ) :TdDouble2D;
 begin
-     Result := _[ Y_, X_ ];
+     Result := _ZY[ Z_, Y_ ];
 end;
 
-procedure TdDouble2DM4.SetM( const Y_,X_:Integer; const M_:TdDouble2D );
+procedure TdDouble4x4x2D.Sets( const Z_,Y_:Integer; const M_:TdDouble2D );
 begin
-     _[ Y_, X_ ] := M_;
+     _ZY[ Z_, Y_ ] := M_;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
