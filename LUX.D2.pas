@@ -14,19 +14,19 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TByte2D = record
      private
        ///// アクセス
-       function GetV( const I_:Integer ) :Byte; inline;
-       procedure SetV( const I_:Integer; const V_:Byte ); inline;
+       function Gets( const X_:Integer ) :Byte; overload; inline;
+       procedure Sets( const X_:Integer; const V_:Byte ); overload; inline;
      public
        constructor Create( const V_:Byte ); overload;
        constructor Create( const X_,Y_:Byte ); overload;
        ///// プロパティ
-       property _s[ const I_:Integer ] :Byte read GetV write SetV; default;
+       property _s[ const X_:Integer ] :Byte read Gets write Sets; default;
      case Byte of
-      0:( _ :array [ 1..2 ] of Byte; );
-      1:(  X :Byte;
-           Y :Byte;                  );
-      2:( _1 :Byte;
-          _2 :Byte;                  );
+      0:( _Xs :array [ 1..2 ] of Byte; );
+      1:(  X  :Byte;
+           Y  :Byte;                   );
+      2:( _1  :Byte;
+          _2  :Byte;                   );
      end;
 
      TInt08u2D = TByte2D;  TInt8u2D = TInt08u2D;
@@ -39,11 +39,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const V_:Shortint ); overload;
        constructor Create( const X_,Y_:Shortint ); overload;
      case Byte of
-      0:( _ :array [ 1..2 ] of Shortint; );
-      1:(  X :Shortint;
-           Y :Shortint;                  );
-      2:( _1 :Shortint;
-          _2 :Shortint;                  );
+      0:( _Xs :array [ 1..2 ] of Shortint; );
+      1:(  X  :Shortint;
+           Y  :Shortint;                   );
+      2:( _1  :Shortint;
+          _2  :Shortint;                   );
      end;
 
      TInt08s2D = TShortint2D;  TInt8s2D = TInt08s2D;
@@ -56,11 +56,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const V_:Word ); overload;
        constructor Create( const X_,Y_:Word ); overload;
      case Byte of
-      0:( _ :array [ 1..2 ] of Word; );
-      1:(  X :Word;
-           Y :Word;                  );
-      2:( _1 :Word;
-          _2 :Word;                  );
+      0:( _Xs :array [ 1..2 ] of Word; );
+      1:(  X  :Word;
+           Y  :Word;                   );
+      2:( _1  :Word;
+          _2  :Word;                   );
      end;
 
      TInt16u2D = TWord2D;
@@ -73,11 +73,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const V_:Smallint ); overload;
        constructor Create( const X_,Y_:Smallint ); overload;
      case Byte of
-      0:( _ :array [ 1..2 ] of Smallint; );
-      1:(  X :Smallint;
-           Y :Smallint;                  );
-      2:( _1 :Smallint;
-          _2 :Smallint;                  );
+      0:( _Xs :array [ 1..2 ] of Smallint; );
+      1:(  X  :Smallint;
+           Y  :Smallint;                   );
+      2:( _1  :Smallint;
+          _2  :Smallint;                   );
      end;
 
      TInt16s2D = TSmallint2D;
@@ -90,11 +90,11 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const V_:Cardinal ); overload;
        constructor Create( const X_,Y_:Cardinal ); overload;
      case Byte of
-      0:( _ :array [ 1..2 ] of Cardinal; );
-      1:(  X :Cardinal;
-           Y :Cardinal;                  );
-      2:( _1 :Cardinal;
-          _2 :Cardinal;                  );
+      0:( _Xs :array [ 1..2 ] of Cardinal; );
+      1:(  X  :Cardinal;
+           Y  :Cardinal;                   );
+      2:( _1  :Cardinal;
+          _2  :Cardinal;                   );
      end;
 
      TInt32u2D = TCardinal2D;
@@ -104,19 +104,19 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TInteger2D = record
      private
        ///// アクセス
-       function GetV( const I_:Integer ) :Integer; inline;
-       procedure SetV( const I_:Integer; const V_:Integer ); inline;
+       function Gets( const X_:Integer ) :Integer; overload; inline;
+       procedure Sets( const X_:Integer; const V_:Integer ); overload; inline;
      public
        ///// プロパティ
-       property _s[ const I_:Integer ] :Integer read GetV write SetV; default;
+       property _s[ const X_:Integer ] :Integer read Gets write Sets; default;
      case Byte of
-      0:( _  :array [ 1..2 ] of Integer; );
-      1:(  X :Integer;
-           Y :Integer;                   );
-      2:( _1 :Integer;
-          _2 :Integer;                   );
-      3:(  U :Integer;
-           V :Integer;                   );
+      0:( _Xs :array [ 1..2 ] of Integer; );
+      1:(  X  :Integer;
+           Y  :Integer;                   );
+      2:( _1  :Integer;
+          _2  :Integer;                   );
+      3:(  U  :Integer;
+           V  :Integer;                   );
      end;
 
      TInt32s2D = TInteger2D;
@@ -126,19 +126,19 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TInt64u2D = record
      private
        ///// アクセス
-       function GetV( const I_:Byte ) :Int64u; inline;
-       procedure SetV( const I_:Byte; const V_:Int64u ); inline;
+       function Gets( const X_:Integer ) :Int64u; overload; inline;
+       procedure Sets( const X_:Integer; const V_:Int64u ); overload; inline;
      public
        constructor Create( const V_:Int64u ); overload;
        constructor Create( const X_,Y_:Int64u ); overload;
        ///// プロパティ
-       property _s[ const I_:Byte ] :Int64u read GetV write SetV; default;
+       property _s[ const X_:Integer ] :Int64u read Gets write Sets; default;
      case Byte of
-      0:( _  :array [ 1..2 ] of Int64u; );
-      1:(  X :Int64u;
-           Y :Int64u;                   );
-      2:( _1 :Int64u;
-          _2 :Int64u;                   );
+      0:( _Xs :array [ 1..2 ] of Int64u; );
+      1:(  X  :Int64u;
+           Y  :Int64u;                   );
+      2:( _1  :Int64u;
+          _2  :Int64u;                   );
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TInt64s2D
@@ -146,19 +146,19 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TInt64s2D = record
      private
        ///// アクセス
-       function GetV( const I_:Byte ) :Int64s; inline;
-       procedure SetV( const I_:Byte; const V_:Int64s ); inline;
+       function Gets( const X_:Integer ) :Int64s; overload; inline;
+       procedure Sets( const X_:Integer; const V_:Int64s ); overload; inline;
      public
        constructor Create( const V_:Int64s ); overload;
        constructor Create( const X_,Y_:Int64s ); overload;
        ///// プロパティ
-       property _s[ const I_:Byte ] :Int64s read GetV write SetV; default;
+       property _s[ const X_:Integer ] :Int64s read Gets write Sets; default;
      case Byte of
-      0:( _  :array [ 1..2 ] of Int64s; );
-      1:(  X :Int64s;
-           Y :Int64s;                   );
-      2:( _1 :Int64s;
-          _2 :Int64s;                  );
+      0:( _Xs :array [ 1..2 ] of Int64s; );
+      1:(  X  :Int64s;
+           Y  :Int64s;                   );
+      2:( _1  :Int64s;
+          _2  :Int64s;                   );
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSingle2D
@@ -166,8 +166,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TSingle2D = record
      private
        ///// アクセス
-       function GetV( const I_:Integer ) :Single; inline;
-       procedure SetV( const I_:Integer; const V_:Single ); inline;
+       function Gets( const X_:Integer ) :Single; overload; inline;
+       procedure Sets( const X_:Integer; const V_:Single ); overload; inline;
        function GetSiz2 :Single; inline;
        procedure SetSiz2( const Siz2_:Single ); inline;
        function GetSize :Single; inline;
@@ -178,7 +178,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
        constructor Create( const X_,Y_:Single );
        ///// プロパティ
-       property _s[ const I_:Integer ] :Single    read GetV       write SetV     ; default;
+       property _s[ const X_:Integer ] :Single    read Gets       write Sets     ; default;
        property Siz2                   :Single    read GetSiz2    write SetSiz2  ;
        property Size                   :Single    read GetSize    write SetSize  ;
        property Unitor                 :TSingle2D read GetUnitor  write SetUnitor;
@@ -209,13 +209,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class function RandBS2 :TSingle2D; static;
        class function RandBS4 :TSingle2D; static;
      case Byte of
-      0:( _  :array [ 1..2 ] of Single; );
-      1:(  X :Single;
-           Y :Single;                   );
-      2:( _1 :Single;
-          _2 :Single;                   );
-      3:(  U :Single;
-           V :Single;                   );
+      0:( _Xs :array [ 1..2 ] of Single; );
+      1:(  X  :Single;
+           Y  :Single;                   );
+      2:( _1  :Single;
+          _2  :Single;                   );
+      3:(  U  :Single;
+           V  :Single;                   );
      end;
 
      TFlo32s2D = TSingle2D;
@@ -228,8 +228,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TDouble2D = record
      private
        ///// アクセス
-       function GetV( const I_:Integer ) :Double; inline;
-       procedure SetV( const I_:Integer; const V_:Double ); inline;
+       function Gets( const X_:Integer ) :Double; overload; inline;
+       procedure Sets( const X_:Integer; const V_:Double ); overload; inline;
        function GetSiz2 :Double; inline;
        procedure SetSiz2( const Siz2_:Double ); inline;
        function GetSize :Double; inline;
@@ -240,7 +240,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
        constructor Create( const X_,Y_:Double );
        ///// プロパティ
-       property _s[ const I_:Integer ] :Double    read GetV       write SetV     ; default;
+       property _s[ const X_:Integer ] :Double    read Gets       write Sets     ; default;
        property Siz2                   :Double    read GetSiz2    write SetSiz2  ;
        property Size                   :Double    read GetSize    write SetSize  ;
        property Unitor                 :TDouble2D read GetUnitor  write SetUnitor;
@@ -273,13 +273,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class function RandBS2 :TDouble2D; static;
        class function RandBS4 :TDouble2D; static;
      case Byte of
-      0:( _  :array [ 1..2 ] of Double; );
-      1:(  X :Double;
-           Y :Double;                   );
-      2:( _1 :Double;
-          _2 :Double;                   );
-      3:(  U :Double;
-           V :Double;                   );
+      0:( _Xs :array [ 1..2 ] of Double; );
+      1:(  X  :Double;
+           Y  :Double;                   );
+      2:( _1  :Double;
+          _2  :Double;                   );
+      3:(  U  :Double;
+           V  :Double;                   );
      end;
 
      TFlo64s2D = TDouble2D;
@@ -292,8 +292,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TdSingle2D = record
      private
        ///// アクセス
-       function GetV( const I_:Integer ) :TdSingle; inline;
-       procedure SetV( const I_:Integer; const V_:TdSingle ); inline;
+       function Gets( const X_:Integer ) :TdSingle; overload; inline;
+       procedure Sets( const X_:Integer; const V_:TdSingle ); overload; inline;
        function Geto :TSingle2D; inline;
        procedure Seto( const o_:TSingle2D ); inline;
        function Getd :TSingle2D; inline;
@@ -307,7 +307,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
        constructor Create( const X_,Y_:TdSingle );
        ///// プロパティ
-       property _s[ const I_:Integer ] :TdSingle   read GetV      write SetV     ; default;
+       property _s[ const X_:Integer ] :TdSingle   read Gets      write Sets     ; default;
        property o                      :TSingle2D  read Geto      write Seto     ;
        property d                      :TSingle2D  read Getd      write Setd     ;
        property Siz2                   :TdSingle   read GetSiz2   write SetSiz2  ;
@@ -327,13 +327,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class operator Implicit( const P_:TSingle2D ) :TdSingle2D; inline;
        class operator Explicit( const P_:TdSingle2D ) :TSingle2D; inline;
      case Byte of
-      0:( _  :array [ 1..2 ] of TdSingle; );
-      1:(  X :TdSingle;
-           Y :TdSingle;                   );
-      2:( _1 :TdSingle;
-          _2 :TdSingle;                   );
-      3:(  U :TdSingle;
-           V :TdSingle;                   );
+      0:( _Xs :array [ 1..2 ] of TdSingle; );
+      1:(  X  :TdSingle;
+           Y  :TdSingle;                   );
+      2:( _1  :TdSingle;
+          _2  :TdSingle;                   );
+      3:(  U  :TdSingle;
+           V  :TdSingle;                   );
      end;
 
      TdFlo32s2D = TdSingle2D;
@@ -346,8 +346,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TdDouble2D = record
      private
        ///// アクセス
-       function GetV( const I_:Integer ) :TdDouble; inline;
-       procedure SetV( const I_:Integer; const V_:TdDouble ); inline;
+       function Gets( const X_:Integer ) :TdDouble; overload; inline;
+       procedure Sets( const X_:Integer; const V_:TdDouble ); overload; inline;
        function Geto :TDouble2D; inline;
        procedure Seto( const o_:TDouble2D ); inline;
        function Getd :TDouble2D; inline;
@@ -361,7 +361,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
        constructor Create( const X_,Y_:TdDouble );
        ///// プロパティ
-       property _s[ const I_:Integer ] :TdDouble   read GetV      write SetV     ; default;
+       property _s[ const X_:Integer ] :TdDouble   read Gets      write Sets     ; default;
        property o                      :TDouble2D  read Geto      write Seto     ;
        property d                      :TDouble2D  read Getd      write Setd     ;
        property Siz2                   :TdDouble   read GetSiz2   write SetSiz2  ;
@@ -381,13 +381,13 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class operator Implicit( const P_:TDouble2D ) :TdDouble2D; inline;
        class operator Explicit( const P_:TdDouble2D ) :TDouble2D; inline;
      case Byte of
-      0:( _  :array [ 1..2 ] of TdDouble; );
-      1:(  X :TdDouble;
-           Y :TdDouble;                   );
-      2:( _1 :TdDouble;
-          _2 :TdDouble;                   );
-      3:(  U :TdDouble;
-           V :TdDouble;                   );
+      0:( _Xs :array [ 1..2 ] of TdDouble; );
+      1:(  X  :TdDouble;
+           Y  :TdDouble;                   );
+      2:( _1  :TdDouble;
+          _2  :TdDouble;                   );
+      3:(  U  :TdDouble;
+           V  :TdDouble;                   );
      end;
 
      TdFlo64s2D = TdDouble2D;
@@ -748,14 +748,14 @@ uses System.SysUtils, System.Math;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TByte2D.GetV( const I_:Integer ) :Byte;
+function TByte2D.Gets( const X_:Integer ) :Byte;
 begin
-     Result := _[ I_ ];
+     Result := _Xs[ X_ ];
 end;
 
-procedure TByte2D.SetV( const I_:Integer; const V_:Byte );
+procedure TByte2D.Sets( const X_:Integer; const V_:Byte );
 begin
-     _[ I_ ] := V_;
+     _Xs[ X_ ] := V_;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -850,14 +850,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TInteger2D.GetV( const I_:Integer ) :Integer;
+function TInteger2D.Gets( const X_:Integer ) :Integer;
 begin
-     Result := _[ I_ ];
+     Result := _Xs[ X_ ];
 end;
 
-procedure TInteger2D.SetV( const I_:Integer; const V_:Integer );
+procedure TInteger2D.Sets( const X_:Integer; const V_:Integer );
 begin
-     _[ I_ ] := V_;
+     _Xs[ X_ ] := V_;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -868,14 +868,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TInt64u2D.GetV( const I_:Byte ) :Int64u;
+function TInt64u2D.Gets( const X_:Integer ) :Int64u;
 begin
-     Result := _[ I_ ];
+     Result := _Xs[ X_ ];
 end;
 
-procedure TInt64u2D.SetV( const I_:Byte; const V_:Int64u );
+procedure TInt64u2D.Sets( const X_:Integer; const V_:Int64u );
 begin
-     _[ I_ ] := V_;
+     _Xs[ X_ ] := V_;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -898,14 +898,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TInt64s2D.GetV( const I_:Byte ) :Int64s;
+function TInt64s2D.Gets( const X_:Integer ) :Int64s;
 begin
-     Result := _[ I_ ];
+     Result := _Xs[ X_ ];
 end;
 
-procedure TInt64s2D.SetV( const I_:Byte; const V_:Int64s );
+procedure TInt64s2D.Sets( const X_:Integer; const V_:Int64s );
 begin
-     _[ I_ ] := V_;
+     _Xs[ X_ ] := V_;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -928,14 +928,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TSingle2D.GetV( const I_:Integer ) :Single;
+function TSingle2D.Gets( const X_:Integer ) :Single;
 begin
-     Result := _[ I_ ];
+     Result := _Xs[ X_ ];
 end;
 
-procedure TSingle2D.SetV( const I_:Integer; const V_:Single );
+procedure TSingle2D.Sets( const X_:Integer; const V_:Single );
 begin
-     _[ I_ ] := V_;
+     _Xs[ X_ ] := V_;
 end;
 
 //------------------------------------------------------------------------------
@@ -1177,14 +1177,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TDouble2D.GetV( const I_:Integer ) :Double;
+function TDouble2D.Gets( const X_:Integer ) :Double;
 begin
-     Result := _[ I_ ];
+     Result := _Xs[ X_ ];
 end;
 
-procedure TDouble2D.SetV( const I_:Integer; const V_:Double );
+procedure TDouble2D.Sets( const X_:Integer; const V_:Double );
 begin
-     _[ I_ ] := V_;
+     _Xs[ X_ ] := V_;
 end;
 
 //------------------------------------------------------------------------------
@@ -1446,14 +1446,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TdSingle2D.GetV( const I_:Integer ) :TdSingle;
+function TdSingle2D.Gets( const X_:Integer ) :TdSingle;
 begin
-     Result := _[ I_ ];
+     Result := _Xs[ X_ ];
 end;
 
-procedure TdSingle2D.SetV( const I_:Integer; const V_:TdSingle );
+procedure TdSingle2D.Sets( const X_:Integer; const V_:TdSingle );
 begin
-     _[ I_ ] := V_;
+     _Xs[ X_ ] := V_;
 end;
 
 //------------------------------------------------------------------------------
@@ -1629,14 +1629,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TdDouble2D.GetV( const I_:Integer ) :TdDouble;
+function TdDouble2D.Gets( const X_:Integer ) :TdDouble;
 begin
-     Result := _[ I_ ];
+     Result := _Xs[ X_ ];
 end;
 
-procedure TdDouble2D.SetV( const I_:Integer; const V_:TdDouble );
+procedure TdDouble2D.Sets( const X_:Integer; const V_:TdDouble );
 begin
-     _[ I_ ] := V_;
+     _Xs[ X_ ] := V_;
 end;
 
 //------------------------------------------------------------------------------
