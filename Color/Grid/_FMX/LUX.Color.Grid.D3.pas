@@ -4,7 +4,9 @@ interface //####################################################################
 
 uses System.UITypes,
      FMX.Graphics,
-     LUX, LUX.Data.Lattice.T3, LUX.Color;
+     LUX,
+     LUX.Data.Grid.T3,
+     LUX.Color;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
