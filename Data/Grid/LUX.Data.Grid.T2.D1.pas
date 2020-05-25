@@ -1,10 +1,10 @@
-﻿unit LUX.Data.Lattice.T2.D1;
+﻿unit LUX.Data.Grid.T2.D1;
 
 interface //#################################################################### ■
 
-uses LUX, LUX.D1, LUX.D2,
-     LUX.M4,
-     LUX.Data.Lattice.T2,
+uses LUX,
+     LUX.D1, LUX.D2, LUX.D4x4,
+     LUX.Data.Grid.T2,
      LUX.Curve.T2.D1;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】

@@ -1,9 +1,10 @@
-﻿unit LUX.Data.Lattice.T1;
+﻿unit LUX.Data.Grid.T1;
 
 interface //#################################################################### ■
 
 uses System.SysUtils,
-     LUX, LUX.Data.Lattice;
+     LUX,
+     LUX.Data.Grid;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 

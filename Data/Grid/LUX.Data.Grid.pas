@@ -1,4 +1,4 @@
-﻿unit LUX.Data.Lattice;
+﻿unit LUX.Data.Grid;
 
 interface //#################################################################### ■
 

@@ -1,9 +1,12 @@
-﻿unit LUX.Data.Lattice.T3;
+﻿unit LUX.Data.Grid.T3;
 
 interface //#################################################################### ■
 
 uses System.SysUtils, System.Classes,
-     LUX, LUX.D3, LUX.Data.Lattice, LUX.Data.Lattice.T2;
+     LUX,
+     LUX.D3,
+     LUX.Data.Grid,
+     LUX.Data.Grid.T2;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 

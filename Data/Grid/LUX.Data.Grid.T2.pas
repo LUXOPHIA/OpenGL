@@ -1,8 +1,10 @@
-﻿unit LUX.Data.Lattice.T2;
+﻿unit LUX.Data.Grid.T2;
 
 interface //#################################################################### ■
 
-uses LUX, LUX.Data.Lattice, LUX.Data.Lattice.T1;
+uses LUX,
+     LUX.Data.Grid,
+     LUX.Data.Grid.T1;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 

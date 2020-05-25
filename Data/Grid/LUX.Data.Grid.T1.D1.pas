@@ -1,8 +1,9 @@
-﻿unit LUX.Data.Lattice.T1.D1;
+﻿unit LUX.Data.Grid.T1.D1;
 
 interface //#################################################################### ■
 
-uses LUX.Data.Lattice.T1, LUX.Curve.T1.D1;
+uses LUX.Data.Grid.T1,
+     LUX.Curve.T1.D1;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
