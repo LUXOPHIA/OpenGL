@@ -4,7 +4,7 @@ interface //####################################################################
 
 uses Winapi.OpenGL, Winapi.OpenGLext,
      LUX,
-     LUX.Data.Lattice,
+     LUX.Data.Grid,
      LUX.GPU.OpenGL.Atom,
      LUX.GPU.OpenGL.Atom.Buffer,
      LUX.GPU.OpenGL.Atom.Buffer.PixBuf;
