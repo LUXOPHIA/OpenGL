@@ -131,7 +131,7 @@ end;
 
 destructor TColorMarcubesMateryFaces.Destroy;
 begin
-     _Textur.DisposeOf;
+     _Textur.Free;
 
      inherited;
 end;
@@ -232,9 +232,9 @@ end;
 
 destructor TColorMarcubes.Destroy;
 begin
-     _Textur   .DisposeOf;
-     _Size     .DisposeOf;
-     _Threshold.DisposeOf;
+     _Textur   .Free;
+     _Size     .Free;
+     _Threshold.Free;
 
      inherited;
 end;

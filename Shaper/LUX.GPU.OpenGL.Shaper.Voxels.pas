@@ -336,8 +336,8 @@ end;
 
 destructor TGLShaperVoxels.Destroy;
 begin
-     _Size .DisposeOf;
-     _Color.DisposeOf;
+     _Size .Free;
+     _Color.Free;
 
      inherited;
 end;

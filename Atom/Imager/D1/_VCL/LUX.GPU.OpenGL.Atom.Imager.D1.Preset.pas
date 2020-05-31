@@ -105,7 +105,7 @@ begin
           D[ X ] := C;
      end;
 
-     D.DisposeOf;
+     D.Free;
 end;
 
 procedure TGLPoiIma1D_TAlphaColorF.CopyTo( const BMP_:TBitmap );
@@ -122,7 +122,7 @@ begin
           BMP_.Canvas.Pixels[ X, 0 ] := D[ X ].ToAlphaColor;
      end;
 
-     D.DisposeOf;
+     D.Free;
 end;
 
 //------------------------------------------------------------------------------
@@ -137,7 +137,7 @@ begin
 
      CopyFrom( B );
 
-     B.DisposeOf;
+     B.Free;
 end;
 
 procedure TGLPoiIma1D_TAlphaColorF.SaveToFile( const FileName_:String );
@@ -150,7 +150,7 @@ begin
 
      B.SaveToFile( FileName_ );
 
-     B.DisposeOf;
+     B.Free;
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLCelIma1D_TAlphaColorF
@@ -201,7 +201,7 @@ begin
           D[ X ] := C;
      end;
 
-     D.DisposeOf;
+     D.Free;
 end;
 
 procedure TGLCelIma1D_TAlphaColorF.CopyTo( const BMP_:TBitmap );
@@ -218,7 +218,7 @@ begin
           BMP_.Canvas.Pixels[ X, 0 ] := D[ X ].ToAlphaColor;
      end;
 
-     D.DisposeOf;
+     D.Free;
 end;
 
 //------------------------------------------------------------------------------
@@ -233,7 +233,7 @@ begin
 
      CopyFrom( B );
 
-     B.DisposeOf;
+     B.Free;
 end;
 
 procedure TGLCelIma1D_TAlphaColorF.SaveToFile( const FileName_:String );
@@ -246,7 +246,7 @@ begin
 
      B.SaveToFile( FileName_ );
 
-     B.DisposeOf;
+     B.Free;
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】

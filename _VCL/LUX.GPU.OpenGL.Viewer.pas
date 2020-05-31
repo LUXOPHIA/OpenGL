@@ -146,7 +146,7 @@ end;
 
 destructor TGLViewer.Destroy;
 begin
-     _Viewer.DisposeOf;
+     _Viewer.Free;
 
      DestroyDC;
 

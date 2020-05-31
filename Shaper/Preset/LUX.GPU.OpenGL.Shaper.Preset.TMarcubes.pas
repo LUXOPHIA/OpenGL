@@ -223,7 +223,7 @@ end;
 
 destructor TMarcubesMateryFacesMIR.Destroy;
 begin
-     _Textur.DisposeOf;
+     _Textur.Free;
 
      inherited;
 end;
@@ -375,9 +375,9 @@ end;
 
 destructor TMarcubes.Destroy;
 begin
-     _Textur   .DisposeOf;
-     _Size     .DisposeOf;
-     _Threshold.DisposeOf;
+     _Textur   .Free;
+     _Size     .Free;
+     _Threshold.Free;
 
      inherited;
 end;
@@ -442,7 +442,7 @@ begin
         MakeModel;
 
      finally
-            F.DisposeOf;
+            F.Free;
      end;
 end;
 
