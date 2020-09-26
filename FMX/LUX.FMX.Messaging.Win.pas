@@ -12,8 +12,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      TMessageEvent = reference to procedure( const MSG_:TMSG );
 
-     TMessageItem = TPair<UINT,TMessageEvent>;
-
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
@@ -87,14 +85,16 @@ end;
 
 class procedure TMessageService.AddPlatformService;
 begin
-     if TPlatformServices.Current.SupportsPlatformService
-        ( IFMXApplicationService, IInterface( OldAppService ) ) then
+     with TPlatformServices.Current do
      begin
-          TPlatformServices.Current.RemovePlatformService( IFMXApplicationService );
+          if SupportsPlatformService( IFMXApplicationService, IInterface( OldAppService ) ) then
+          begin
+               RemovePlatformService( IFMXApplicationService );
 
-          NewAppService := TMessageService.Create;
+               NewAppService := TMessageService.Create;
 
-          TPlatformServices.Current.AddPlatformService( IFMXApplicationService, NewAppService );
+               AddPlatformService( IFMXApplicationService, NewAppService );
+          end;
      end;
 end;
 
@@ -121,7 +121,7 @@ begin
                OldAppService.HandleMessage;
 
                TranslateMessage( M );
-               DispatchMessage ( M );
+                DispatchMessage( M );
           end;
      end;
 end;
