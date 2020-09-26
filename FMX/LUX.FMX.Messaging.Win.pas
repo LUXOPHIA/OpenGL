@@ -111,10 +111,7 @@ begin
 
      if Result then
      begin
-          if _EventList.ContainsKey( M.Message ) then
-          begin
-               _EventList[ M.Message ]( M );
-          end
+          if _EventList.ContainsKey( M.Message ) then _EventList[ M.Message ]( M )
           else
           begin
                OldAppService.HandleMessage;
