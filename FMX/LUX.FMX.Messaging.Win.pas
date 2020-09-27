@@ -59,6 +59,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 implementation //############################################################### ■
 
+uses FMX.Forms,
+     Winapi.Messages;
+
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
@@ -111,14 +114,15 @@ begin
 
      if Result then
      begin
+          if M.Message = WM_QUIT then Application.Terminated := True
+          else
           if _EventList.ContainsKey( M.Message ) then _EventList[ M.Message ]( M )
           else
           begin
-               OldAppService.HandleMessage;
-               OldAppService.HandleMessage;
-
                TranslateMessage( M );
                 DispatchMessage( M );
+
+               if OldAppService.Terminating then PostQuitMessage( 0 );
           end;
      end;
 end;
