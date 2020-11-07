@@ -5,7 +5,7 @@ interface //####################################################################
 uses System.Types, System.UITypes, System.Classes,
      FMX.Types, FMX.Forms, FMX.Graphics,
      LUX,
-     LUX.FMX;
+     LUX.FMX.Pratform;
 
 type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
