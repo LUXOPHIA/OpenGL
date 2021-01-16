@@ -613,6 +613,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
        ///// アクセス
        function GetPoin( const I_:Integer ) :TSingle2D;
+       function GetCentX :Single;
+       procedure SetCentX( const CentX_:Single );
+       function GetCentY :Single;
+       procedure SetCentY( const CentY_:Single );
        function GetSizeX :Single;
        procedure SetSizeX( const SizeX_:Single );
        function GetSizeY :Single;
@@ -631,6 +635,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const Min_,Max_:TSingle2D ); overload;
        ///// プロパティ
        property Poin[ const I_:Integer ] :TSingle2D   read GetPoin                ;
+       property CentX                    :Single      read GetCentX write SetCentX;
+       property CentY                    :Single      read GetCentY write SetCentY;
        property SizeX                    :Single      read GetSizeX write SetSizeX;
        property SizeY                    :Single      read GetSizeY write SetSizeY;
        property ProjX                    :TSingleArea read GetProjX write SetProjX;
@@ -651,6 +657,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
        ///// アクセス
        function GetPoin( const I_:Integer ) :TDouble2D;
+       function GetCentX :Double;
+       procedure SetCentX( const CentX_:Double );
+       function GetCentY :Double;
+       procedure SetCentY( const CentY_:Double );
        function GetSizeX :Double;
        procedure SetSizeX( const SizeX_:Double );
        function GetSizeY :Double;
@@ -669,6 +679,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const Min_,Max_:TDouble2D ); overload;
        ///// プロパティ
        property Poin[ const I_:Integer ] :TDouble2D   read GetPoin                ;
+       property CentX                    :Double      read GetCentX write SetCentX;
+       property CentY                    :Double      read GetCentY write SetCentY;
        property SizeX                    :Double      read GetSizeX write SetSizeX;
        property SizeY                    :Double      read GetSizeY write SetSizeY;
        property ProjX                    :TDoubleArea read GetProjX write SetProjX;
@@ -2452,6 +2464,38 @@ end;
 
 //------------------------------------------------------------------------------
 
+function TSingleArea2D.GetCentX :Single;
+begin
+     Result := ( Max.X + Min.X ) / 2;
+end;
+
+procedure TSingleArea2D.SetCentX( const CentX_:Single );
+var
+   C, S :Single;
+begin
+     C := CentX_;  S := SizeX / 2;
+
+     Min.X := C - S;
+     Max.X := C + S;
+end;
+
+function TSingleArea2D.GetCentY :Single;
+begin
+     Result := ( Max.Y + Min.Y ) / 2;
+end;
+
+procedure TSingleArea2D.SetCentY( const CentY_:Single );
+var
+   C, S :Single;
+begin
+     C := CentY_;  S := SizeY / 2;
+
+     Min.Y := C - S;
+     Max.Y := C + S;
+end;
+
+//------------------------------------------------------------------------------
+
 function TSingleArea2D.GetSizeX :Single;
 begin
      Result := Max.X - Min.X;
@@ -2461,9 +2505,7 @@ procedure TSingleArea2D.SetSizeX( const SizeX_:Single );
 var
    C, S :Single;
 begin
-     C := ( Min.X + Max.X ) / 2;
-
-     S := SizeX_ / 2;
+     C := CentX;  S := SizeX_ / 2;
 
      Min.X := C - S;
      Max.X := C + S;
@@ -2478,9 +2520,7 @@ procedure TSingleArea2D.SetSizeY( const SizeY_:Single );
 var
    C, S :Single;
 begin
-     C := ( Min.Y + Max.Y ) / 2;
-
-     S := SizeY_ / 2;
+     C := CentY;  S := SizeY_ / 2;
 
      Min.Y := C - S;
      Max.Y := C + S;
@@ -2593,6 +2633,38 @@ begin
        2: Result := TDouble2D.Create( Min.X, Max.Y );
        3: Result := TDouble2D.Create( Max.X, Max.Y );
      end;
+end;
+
+//------------------------------------------------------------------------------
+
+function TDoubleArea2D.GetCentX :Double;
+begin
+     Result := ( Max.X + Min.X ) / 2;
+end;
+
+procedure TDoubleArea2D.SetCentX( const CentX_:Double );
+var
+   C, S :Double;
+begin
+     C := CentX_;  S := SizeX / 2;
+
+     Min.X := C - S;
+     Max.X := C + S;
+end;
+
+function TDoubleArea2D.GetCentY :Double;
+begin
+     Result := ( Max.Y + Min.Y ) / 2;
+end;
+
+procedure TDoubleArea2D.SetCentY( const CentY_:Double );
+var
+   C, S :Double;
+begin
+     C := CentY_;  S := SizeY / 2;
+
+     Min.Y := C - S;
+     Max.Y := C + S;
 end;
 
 //------------------------------------------------------------------------------
