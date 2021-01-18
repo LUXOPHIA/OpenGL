@@ -647,6 +647,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class function Zero  :TSingleArea2D; inline; static;
        class function PoMax :TSingleArea2D; inline; static;
        class function PoInf :TSingleArea2D; inline; static;
+       ///// 型変換
+       class operator Implicit( const V_:TSingleArea2D ) :TRectF; inline;
+       class operator Implicit( const V_:TRectF ) :TSingleArea2D; inline;
        ///// メソッド
        function Collision( const Area_:TSingleArea2D ) :Boolean;
        procedure Add( const Poin_:TSingle2D );
@@ -692,6 +695,9 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class function Zero  :TDoubleArea2D; inline; static;
        class function PoMax :TDoubleArea2D; inline; static;
        class function PoInf :TDoubleArea2D; inline; static;
+       ///// 型変換
+       class operator Implicit( const V_:TDoubleArea2D ) :TRectF; inline;
+       class operator Implicit( const V_:TRectF ) :TDoubleArea2D; inline;
        ///// メソッド
        function Collision( const Area_:TDoubleArea2D ) :Boolean;
        procedure Add( const Poin_:TDouble2D );
@@ -2613,6 +2619,24 @@ begin
                                      Single.PositiveInfinity );
 end;
 
+///////////////////////////////////////////////////////////////////////// 型変換
+
+class operator TSingleArea2D.Implicit( const V_:TSingleArea2D ) :TRectF;
+begin
+     Result.Left   := V_.Min.X;
+     Result.Right  := V_.Max.X;
+     Result.Bottom := V_.Min.Y;
+     Result.Top    := V_.Max.Y;
+end;
+
+class operator TSingleArea2D.Implicit( const V_:TRectF ) :TSingleArea2D;
+begin
+     Result.Min.X := V_.Left  ;
+     Result.Max.X := V_.Right ;
+     Result.Min.Y := V_.Bottom;
+     Result.Max.Y := V_.Top   ;
+end;
+
 /////////////////////////////////////////////////////////////////////// メソッド
 
 function TSingleArea2D.Collision( const Area_:TSingleArea2D ) :Boolean;
@@ -2801,6 +2825,24 @@ class function TDoubleArea2D.PoInf :TDoubleArea2D;
 begin
      Result := TDoubleArea2D.Create( Double.NegativeInfinity,
                                      Double.PositiveInfinity );
+end;
+
+///////////////////////////////////////////////////////////////////////// 型変換
+
+class operator TDoubleArea2D.Implicit( const V_:TDoubleArea2D ) :TRectF;
+begin
+     Result.Left   := V_.Min.X;
+     Result.Right  := V_.Max.X;
+     Result.Bottom := V_.Min.Y;
+     Result.Top    := V_.Max.Y;
+end;
+
+class operator TDoubleArea2D.Implicit( const V_:TRectF ) :TDoubleArea2D;
+begin
+     Result.Min.X := V_.Left  ;
+     Result.Max.X := V_.Right ;
+     Result.Min.Y := V_.Bottom;
+     Result.Max.Y := V_.Top   ;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド
