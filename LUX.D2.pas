@@ -192,8 +192,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class operator Multiply( const A_:Single; const B_:TSingle2D ) :TSingle2D; inline;
        class operator Divide( const A_:TSingle2D; const B_:Single ) :TSingle2D; inline;
        ///// 型変換
-       class operator Implicit( const V_:TPointF ) :TSingle2D; inline;
-       class operator Implicit( const V_:TSingle2D ) :TPointF; inline;
+       class operator Implicit( const V_:TPointF ) :TSingle2D;
+       class operator Implicit( const V_:TSingle2D ) :TPointF;
        ///// 定数
        class function IdentityX :TSingle2D; inline; static;
        class function IdentityY :TSingle2D; inline; static;
@@ -254,10 +254,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class operator Multiply( const A_:Double; const B_:TDouble2D ) :TDouble2D; inline;
        class operator Divide( const A_:TDouble2D; const B_:Double ) :TDouble2D; inline;
        ///// 型変換
-       class operator Implicit( const V_:TPointF ) :TDouble2D; inline;
-       class operator Explicit( const V_:TDouble2D ) :TPointF; inline;
-       class operator Implicit( const V_:TSingle2D ) :TDouble2D; inline;
-       class operator Explicit( const V_:TDouble2D ) :TSingle2D; inline;
+       class operator Implicit( const V_:TPointF ) :TDouble2D;
+       class operator Explicit( const V_:TDouble2D ) :TPointF;
+       class operator Implicit( const V_:TSingle2D ) :TDouble2D;
+       class operator Explicit( const V_:TDouble2D ) :TSingle2D;
        ///// 定数
        class function IdentityX :TDouble2D; inline; static;
        class function IdentityY :TDouble2D; inline; static;
@@ -322,10 +322,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class operator Multiply( const A_:TdSingle; const B_:TdSingle2D ) :TdSingle2D; inline;
        class operator Divide( const A_:TdSingle2D; const B_:TdSingle ) :TdSingle2D; inline;
        ///// 型変換
-       class operator Implicit( const P_:TPointF ) :TdSingle2D; inline;
-       class operator Explicit( const P_:TdSingle2D ) :TPointF; inline;
-       class operator Implicit( const P_:TSingle2D ) :TdSingle2D; inline;
-       class operator Explicit( const P_:TdSingle2D ) :TSingle2D; inline;
+       class operator Implicit( const P_:TPointF ) :TdSingle2D;
+       class operator Explicit( const P_:TdSingle2D ) :TPointF;
+       class operator Implicit( const P_:TSingle2D ) :TdSingle2D;
+       class operator Explicit( const P_:TdSingle2D ) :TSingle2D;
      case Byte of
       0:( _Xs :array [ 1..2 ] of TdSingle; );
       1:(  X  :TdSingle;
@@ -376,10 +376,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class operator Multiply( const A_:TdDouble; const B_:TdDouble2D ) :TdDouble2D; inline;
        class operator Divide( const A_:TdDouble2D; const B_:TdDouble ) :TdDouble2D; inline;
        ///// 型変換
-       class operator Implicit( const P_:TPointF ) :TdDouble2D; inline;
-       class operator Explicit( const P_:TdDouble2D ) :TPointF; inline;
-       class operator Implicit( const P_:TDouble2D ) :TdDouble2D; inline;
-       class operator Explicit( const P_:TdDouble2D ) :TDouble2D; inline;
+       class operator Implicit( const P_:TPointF ) :TdDouble2D;
+       class operator Explicit( const P_:TdDouble2D ) :TPointF;
+       class operator Implicit( const P_:TDouble2D ) :TdDouble2D;
+       class operator Explicit( const P_:TdDouble2D ) :TDouble2D;
      case Byte of
       0:( _Xs :array [ 1..2 ] of TdDouble; );
       1:(  X  :TdDouble;
@@ -413,10 +413,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class operator Multiply( const A_:Single; const B_:TSingleSiz2D ) :TSingleSiz2D; inline;
        class operator Divide( const A_:TSingleSiz2D; const B_:Single ) :TSingleSiz2D; inline;
        ///// 型変換
-       class operator Implicit( const V_:TPointF ) :TSingleSiz2D; inline;
-       class operator Implicit( const V_:TSingleSiz2D ) :TPointF; inline;
-       class operator Implicit( const V_:TSingle2D ) :TSingleSiz2D; inline;
-       class operator Implicit( const V_:TSingleSiz2D ) :TSingle2D; inline;
+       class operator Implicit( const V_:TPointF ) :TSingleSiz2D;
+       class operator Implicit( const V_:TSingleSiz2D ) :TPointF;
+       class operator Implicit( const V_:TSingle2D ) :TSingleSiz2D;
+       class operator Implicit( const V_:TSingleSiz2D ) :TSingle2D;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDoubleSiz2D
@@ -437,10 +437,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class operator Multiply( const A_:Double; const B_:TDoubleSiz2D ) :TDoubleSiz2D; inline;
        class operator Divide( const A_:TDoubleSiz2D; const B_:Double ) :TDoubleSiz2D; inline;
        ///// 型変換
-       class operator Implicit( const V_:TPointF ) :TDoubleSiz2D; inline;
-       class operator Implicit( const V_:TDoubleSiz2D ) :TPointF; inline;
-       class operator Implicit( const V_:TDouble2D ) :TDoubleSiz2D; inline;
-       class operator Implicit( const V_:TDoubleSiz2D ) :TDouble2D; inline;
+       class operator Implicit( const V_:TPointF ) :TDoubleSiz2D;
+       class operator Implicit( const V_:TDoubleSiz2D ) :TPointF;
+       class operator Implicit( const V_:TDouble2D ) :TDoubleSiz2D;
+       class operator Implicit( const V_:TDoubleSiz2D ) :TDouble2D;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdSingleSiz2D
@@ -469,8 +469,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class operator Multiply( const A_:TdSingle; const B_:TdSingleSiz2D ) :TdSingleSiz2D; inline;
        class operator Divide( const A_:TdSingleSiz2D; const B_:TdSingle ) :TdSingleSiz2D; inline;
        ///// 型変換
-       class operator Implicit( const V_:TdSingle2D ) :TdSingleSiz2D; inline;
-       class operator Implicit( const V_:TdSingleSiz2D ) :TdSingle2D; inline;
+       class operator Implicit( const V_:TdSingle2D ) :TdSingleSiz2D;
+       class operator Implicit( const V_:TdSingleSiz2D ) :TdSingle2D;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdDoubleSiz2D
@@ -499,8 +499,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class operator Multiply( const A_:TdDouble; const B_:TdDoubleSiz2D ) :TdDoubleSiz2D; inline;
        class operator Divide( const A_:TdDoubleSiz2D; const B_:TdDouble ) :TdDoubleSiz2D; inline;
        ///// 型変換
-       class operator Implicit( const V_:TdDouble2D ) :TdDoubleSiz2D; inline;
-       class operator Implicit( const V_:TdDoubleSiz2D ) :TdDouble2D; inline;
+       class operator Implicit( const V_:TdDouble2D ) :TdDoubleSiz2D;
+       class operator Implicit( const V_:TdDoubleSiz2D ) :TdDouble2D;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSingleCircle2D
@@ -642,14 +642,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property ProjX                    :TSingleArea read GetProjX write SetProjX;
        property ProjY                    :TSingleArea read GetProjY write SetProjY;
        ///// 定数
-       class function NeInf :TSingleArea2D; inline; static;
-       class function NeMax :TSingleArea2D; inline; static;
-       class function Zero  :TSingleArea2D; inline; static;
-       class function PoMax :TSingleArea2D; inline; static;
-       class function PoInf :TSingleArea2D; inline; static;
+       class function NeInf :TSingleArea2D; static;
+       class function NeMax :TSingleArea2D; static;
+       class function Zero  :TSingleArea2D; static;
+       class function PoMax :TSingleArea2D; static;
+       class function PoInf :TSingleArea2D; static;
        ///// 型変換
-       class operator Implicit( const V_:TSingleArea2D ) :TRectF; inline;
-       class operator Implicit( const V_:TRectF ) :TSingleArea2D; inline;
+       class operator Implicit( const V_:TSingleArea2D ) :TRectF;
+       class operator Implicit( const V_:TRectF ) :TSingleArea2D;
        ///// メソッド
        function Collision( const Area_:TSingleArea2D ) :Boolean;
        procedure Add( const Poin_:TSingle2D );
@@ -690,14 +690,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property ProjX                    :TDoubleArea read GetProjX write SetProjX;
        property ProjY                    :TDoubleArea read GetProjY write SetProjY;
        ///// 定数
-       class function NeInf :TDoubleArea2D; inline; static;
-       class function NeMax :TDoubleArea2D; inline; static;
-       class function Zero  :TDoubleArea2D; inline; static;
-       class function PoMax :TDoubleArea2D; inline; static;
-       class function PoInf :TDoubleArea2D; inline; static;
+       class function NeInf :TDoubleArea2D; static;
+       class function NeMax :TDoubleArea2D; static;
+       class function Zero  :TDoubleArea2D; static;
+       class function PoMax :TDoubleArea2D; static;
+       class function PoInf :TDoubleArea2D; static;
        ///// 型変換
-       class operator Implicit( const V_:TDoubleArea2D ) :TRectF; inline;
-       class operator Implicit( const V_:TRectF ) :TDoubleArea2D; inline;
+       class operator Implicit( const V_:TDoubleArea2D ) :TRectF;
+       class operator Implicit( const V_:TRectF ) :TDoubleArea2D;
        ///// メソッド
        function Collision( const Area_:TDoubleArea2D ) :Boolean;
        procedure Add( const Poin_:TDouble2D );
