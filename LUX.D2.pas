@@ -652,7 +652,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class operator Implicit( const V_:TRectF ) :TSingleArea2D;
        ///// メソッド
        function Collision( const Area_:TSingleArea2D ) :Boolean;
-       procedure Add( const Poin_:TSingle2D );
+       procedure Add( const Poin_:TSingle2D ); overload;
+       procedure Add( const Poins_:TArray<TSingle2D> ); overload;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDoubleArea2D
@@ -700,7 +701,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class operator Implicit( const V_:TRectF ) :TDoubleArea2D;
        ///// メソッド
        function Collision( const Area_:TDoubleArea2D ) :Boolean;
-       procedure Add( const Poin_:TDouble2D );
+       procedure Add( const Poin_:TDouble2D );overload;
+       procedure Add( const Poins_:TArray<TDouble2D> ); overload;
      end;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
@@ -2658,6 +2660,13 @@ begin
      end;
 end;
 
+procedure TSingleArea2D.Add( const Poins_:TArray<TSingle2D> );
+var
+   P :TSingle2D;
+begin
+     for P in Poins_ do Add( P );
+end;
+
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDoubleArea2D
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
@@ -2864,6 +2873,13 @@ begin
           if Max.X < X then Max.X := X;
           if Max.Y < Y then Max.Y := Y;
      end;
+end;
+
+procedure TDoubleArea2D.Add( const Poins_:TArray<TDouble2D> );
+var
+   P :TDouble2D;
+begin
+     for P in Poins_ do Add( P );
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
