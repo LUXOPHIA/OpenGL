@@ -649,6 +649,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class function PoInf :TSingleArea2D; inline; static;
        ///// メソッド
        function Collision( const Area_:TSingleArea2D ) :Boolean;
+       procedure Add( const Poin_:TSingle2D );
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDoubleArea2D
@@ -693,6 +694,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class function PoInf :TDoubleArea2D; inline; static;
        ///// メソッド
        function Collision( const Area_:TDoubleArea2D ) :Boolean;
+       procedure Add( const Poin_:TDouble2D );
      end;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
@@ -2619,6 +2621,19 @@ begin
            and ProjY.Collision( Area_.ProjY );
 end;
 
+//------------------------------------------------------------------------------
+
+procedure TSingleArea2D.Add( const Poin_:TSingle2D );
+begin
+     with Poin_ do
+     begin
+          if X < Min.X then Min.X := X;
+          if Y < Min.Y then Min.Y := Y;
+          if Max.X < X then Max.X := X;
+          if Max.Y < Y then Max.Y := Y;
+     end;
+end;
+
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDoubleArea2D
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
@@ -2794,6 +2809,19 @@ function TDoubleArea2D.Collision( const Area_:TDoubleArea2D ) :Boolean;
 begin
      Result := ProjX.Collision( Area_.ProjX )
            and ProjY.Collision( Area_.ProjY );
+end;
+
+//------------------------------------------------------------------------------
+
+procedure TDoubleArea2D.Add( const Poin_:TDouble2D );
+begin
+     with Poin_ do
+     begin
+          if X < Min.X then Min.X := X;
+          if Y < Min.Y then Min.Y := Y;
+          if Max.X < X then Max.X := X;
+          if Max.Y < Y then Max.Y := Y;
+     end;
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
