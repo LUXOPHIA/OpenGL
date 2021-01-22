@@ -65,6 +65,11 @@ procedure BSpline4( const T_:Double; out Ws_:TDouble4D ); overload;
 procedure BSpline4( const T_:TdSingle; out Ws_:TdSingle4D ); overload;
 procedure BSpline4( const T_:TdDouble; out Ws_:TdDouble4D ); overload;
 
+function BSpline4( const P0_,P1_,P2_,P3_:Single; const T_:Single ) :Single; overload;
+function BSpline4( const P0_,P1_,P2_,P3_:Double; const T_:Double ) :Double; overload;
+function BSpline4( const P0_,P1_,P2_,P3_:TdSingle; const T_:TdSingle ) :TdSingle; overload;
+function BSpline4( const P0_,P1_,P2_,P3_:TdDouble; const T_:TdDouble ) :TdDouble; overload;
+
 function BSpline4( const Ps_:TSingle4D; const T_:Single ) :Single; overload;
 function BSpline4( const Ps_:TDouble4D; const T_:Double ) :Double; overload;
 function BSpline4( const Ps_:TdSingle4D; const T_:TdSingle ) :TdSingle; overload;
@@ -623,6 +628,56 @@ begin
           _3 := BSpline4( T_ - 1 );
           _4 := BSpline4( T_ - 2 );
      end;
+end;
+
+//------------------------------------------------------------------------------
+
+function BSpline4( const P0_,P1_,P2_,P3_:Single; const T_:Single ) :Single;
+var
+   Ws :TSingle4D;
+begin
+     BSpline4( T_, Ws );
+
+     Result := Ws._1 * P0_
+             + Ws._2 * P1_
+             + Ws._3 * P2_
+             + Ws._4 * P3_;
+end;
+
+function BSpline4( const P0_,P1_,P2_,P3_:Double; const T_:Double ) :Double;
+var
+   Ws :TDouble4D;
+begin
+     BSpline4( T_, Ws );
+
+     Result := Ws._1 * P0_
+             + Ws._2 * P1_
+             + Ws._3 * P2_
+             + Ws._4 * P3_;
+end;
+
+function BSpline4( const P0_,P1_,P2_,P3_:TdSingle; const T_:TdSingle ) :TdSingle;
+var
+   Ws :TdSingle4D;
+begin
+     BSpline4( T_, Ws );
+
+     Result := Ws._1 * P0_
+             + Ws._2 * P1_
+             + Ws._3 * P2_
+             + Ws._4 * P3_;
+end;
+
+function BSpline4( const P0_,P1_,P2_,P3_:TdDouble; const T_:TdDouble ) :TdDouble;
+var
+   Ws :TdDouble4D;
+begin
+     BSpline4( T_, Ws );
+
+     Result := Ws._1 * P0_
+             + Ws._2 * P1_
+             + Ws._3 * P2_
+             + Ws._4 * P3_;
 end;
 
 //------------------------------------------------------------------------------
