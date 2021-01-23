@@ -1,4 +1,4 @@
-﻿unit LUX.Curve.BSpline.D1;
+﻿unit LUX.Curve.BSpline;
 
 interface //#################################################################### ■
 
