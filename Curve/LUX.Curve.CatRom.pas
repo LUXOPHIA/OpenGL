@@ -34,6 +34,16 @@ function CatmullRom( const P0_,P1_,P2_,P3_,T_:TdDouble ) :TdDouble; overload;
 function CatmullRom( const P0_,P1_,P2_,P3_:Single; const T_:TdSingle ) :TdSingle; overload;
 function CatmullRom( const P0_,P1_,P2_,P3_:Double; const T_:TdDouble ) :TdDouble; overload;
 
+function CatmullRom( const P0_,P1_,P2_,P3_:TSingle2D; const T_:Single ) :TSingle2D; overload;
+function CatmullRom( const P0_,P1_,P2_,P3_:TDouble2D; const T_:Double ) :TDouble2D; overload;
+function CatmullRom( const P0_,P1_,P2_,P3_:TdSingle2D; const T_:TdSingle ) :TdSingle2D; overload;
+function CatmullRom( const P0_,P1_,P2_,P3_:TdDouble2D; const T_:TdDouble ) :TdDouble2D; overload;
+
+function CatmullRom( const P0_,P1_,P2_,P3_:TSingle3D; const T_:Single ) :TSingle3D; overload;
+function CatmullRom( const P0_,P1_,P2_,P3_:TDouble3D; const T_:Double ) :TDouble3D; overload;
+function CatmullRom( const P0_,P1_,P2_,P3_:TdSingle3D; const T_:TdSingle ) :TdSingle3D; overload;
+function CatmullRom( const P0_,P1_,P2_,P3_:TdDouble3D; const T_:TdDouble ) :TdDouble3D; overload;
+
 implementation //############################################################### ■
 
 uses LUX.Curve;
@@ -150,6 +160,62 @@ begin
      Result.d := ( ( ( -1.5 * P0_ + 4.5 * P1_ - 4.5 * P2_ + 1.5 * P3_ ) * T_.o
                      +  2.0 * P0_ - 5.0 * P1_ + 4.0 * P2_ -       P3_ ) * T_.o
                      -  0.5 * P0_             + 0.5 * P2_             ) * T_.d;
+end;
+
+//------------------------------------------------------------------------------
+
+function CatmullRom( const P0_,P1_,P2_,P3_:TSingle2D; const T_:Single ) :TSingle2D;
+begin
+     Result.X := CatmullRom( P0_.X, P1_.X, P2_.X, P3_.X, T_ );
+     Result.Y := CatmullRom( P0_.Y, P1_.Y, P2_.Y, P3_.Y, T_ );
+end;
+
+function CatmullRom( const P0_,P1_,P2_,P3_:TDouble2D; const T_:Double ) :TDouble2D;
+begin
+     Result.X := CatmullRom( P0_.X, P1_.X, P2_.X, P3_.X, T_ );
+     Result.Y := CatmullRom( P0_.Y, P1_.Y, P2_.Y, P3_.Y, T_ );
+end;
+
+function CatmullRom( const P0_,P1_,P2_,P3_:TdSingle2D; const T_:TdSingle ) :TdSingle2D;
+begin
+     Result.X := CatmullRom( P0_.X, P1_.X, P2_.X, P3_.X, T_ );
+     Result.Y := CatmullRom( P0_.Y, P1_.Y, P2_.Y, P3_.Y, T_ );
+end;
+
+function CatmullRom( const P0_,P1_,P2_,P3_:TdDouble2D; const T_:TdDouble ) :TdDouble2D;
+begin
+     Result.X := CatmullRom( P0_.X, P1_.X, P2_.X, P3_.X, T_ );
+     Result.Y := CatmullRom( P0_.Y, P1_.Y, P2_.Y, P3_.Y, T_ );
+end;
+
+//------------------------------------------------------------------------------
+
+function CatmullRom( const P0_,P1_,P2_,P3_:TSingle3D; const T_:Single ) :TSingle3D;
+begin
+     Result.X := CatmullRom( P0_.X, P1_.X, P2_.X, P3_.X, T_ );
+     Result.Y := CatmullRom( P0_.Y, P1_.Y, P2_.Y, P3_.Y, T_ );
+     Result.Z := CatmullRom( P0_.Z, P1_.Z, P2_.Z, P3_.Z, T_ );
+end;
+
+function CatmullRom( const P0_,P1_,P2_,P3_:TDouble3D; const T_:Double ) :TDouble3D;
+begin
+     Result.X := CatmullRom( P0_.X, P1_.X, P2_.X, P3_.X, T_ );
+     Result.Y := CatmullRom( P0_.Y, P1_.Y, P2_.Y, P3_.Y, T_ );
+     Result.Z := CatmullRom( P0_.Z, P1_.Z, P2_.Z, P3_.Z, T_ );
+end;
+
+function CatmullRom( const P0_,P1_,P2_,P3_:TdSingle3D; const T_:TdSingle ) :TdSingle3D;
+begin
+     Result.X := CatmullRom( P0_.X, P1_.X, P2_.X, P3_.X, T_ );
+     Result.Y := CatmullRom( P0_.Y, P1_.Y, P2_.Y, P3_.Y, T_ );
+     Result.Z := CatmullRom( P0_.Z, P1_.Z, P2_.Z, P3_.Z, T_ );
+end;
+
+function CatmullRom( const P0_,P1_,P2_,P3_:TdDouble3D; const T_:TdDouble ) :TdDouble3D;
+begin
+     Result.X := CatmullRom( P0_.X, P1_.X, P2_.X, P3_.X, T_ );
+     Result.Y := CatmullRom( P0_.Y, P1_.Y, P2_.Y, P3_.Y, T_ );
+     Result.Z := CatmullRom( P0_.Z, P1_.Z, P2_.Z, P3_.Z, T_ );
 end;
 
 //############################################################################## □

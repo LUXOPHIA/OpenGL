@@ -4,8 +4,8 @@ interface //####################################################################
 
 uses LUX,
      LUX.D1,
-     LUX.D2, LUX.D2x2,
-     LUX.D3, LUX.D3x3,
+     LUX.D2, LUX.D2x2, LUX.D2x4,
+     LUX.D3, LUX.D3x3, LUX.D3x4,
      LUX.D4, LUX.D4x4,
      LUX.D5,
      LUX.DN;
@@ -31,6 +31,16 @@ function Bezier4( const Ps_:TSingle4D; const T_:Single ) :Single; overload;
 function Bezier4( const Ps_:TDouble4D; const T_:Double ) :Double; overload;
 function Bezier4( const Ps_:TdSingle4D; const T_:TdSingle ) :TdSingle; overload;
 function Bezier4( const Ps_:TdDouble4D; const T_:TdDouble ) :TdDouble; overload;
+
+function Bezier4( const Ps_:TSingle4x2D; const T_:Single ) :TSingle2D; overload;
+function Bezier4( const Ps_:TDouble4x2D; const T_:Double ) :TDouble2D; overload;
+function Bezier4( const Ps_:TdSingle4x2D; const T_:TdSingle ) :TdSingle2D; overload;
+function Bezier4( const Ps_:TdDouble4x2D; const T_:TdDouble ) :TdDouble2D; overload;
+
+function Bezier4( const Ps_:TSingle4x3D; const T_:Single ) :TSingle3D; overload;
+function Bezier4( const Ps_:TDouble4x3D; const T_:Double ) :TDouble3D; overload;
+function Bezier4( const Ps_:TdSingle4x3D; const T_:TdSingle ) :TdSingle3D; overload;
+function Bezier4( const Ps_:TdDouble4x3D; const T_:TdDouble ) :TdDouble3D; overload;
 
 function Bezier( const T_:Single; const Cs_:TSingleND ) :Single; overload;
 function Bezier( const T_:Double; const Cs_:TDoubleND ) :Double; overload;
@@ -165,6 +175,106 @@ begin
 end;
 
 function Bezier4( const Ps_:TdDouble4D; const T_:TdDouble ) :TdDouble;
+var
+   Ws :TdDouble4D;
+begin
+     Bezier4( T_, Ws );
+
+     with Ws do Result := _1 * Ps_._1
+                        + _2 * Ps_._2
+                        + _3 * Ps_._3
+                        + _4 * Ps_._4;
+end;
+
+//------------------------------------------------------------------------------
+
+function Bezier4( const Ps_:TSingle4x2D; const T_:Single ) :TSingle2D;
+var
+   Ws :TSingle4D;
+begin
+     Bezier4( T_, Ws );
+
+     with Ws do Result := _1 * Ps_._1
+                        + _2 * Ps_._2
+                        + _3 * Ps_._3
+                        + _4 * Ps_._4;
+end;
+
+function Bezier4( const Ps_:TDouble4x2D; const T_:Double ) :TDouble2D;
+var
+   Ws :TDouble4D;
+begin
+     Bezier4( T_, Ws );
+
+     with Ws do Result := _1 * Ps_._1
+                        + _2 * Ps_._2
+                        + _3 * Ps_._3
+                        + _4 * Ps_._4;
+end;
+
+function Bezier4( const Ps_:TdSingle4x2D; const T_:TdSingle ) :TdSingle2D;
+var
+   Ws :TdSingle4D;
+begin
+     Bezier4( T_, Ws );
+
+     with Ws do Result := _1 * Ps_._1
+                        + _2 * Ps_._2
+                        + _3 * Ps_._3
+                        + _4 * Ps_._4;
+end;
+
+function Bezier4( const Ps_:TdDouble4x2D; const T_:TdDouble ) :TdDouble2D;
+var
+   Ws :TdDouble4D;
+begin
+     Bezier4( T_, Ws );
+
+     with Ws do Result := _1 * Ps_._1
+                        + _2 * Ps_._2
+                        + _3 * Ps_._3
+                        + _4 * Ps_._4;
+end;
+
+//------------------------------------------------------------------------------
+
+function Bezier4( const Ps_:TSingle4x3D; const T_:Single ) :TSingle3D;
+var
+   Ws :TSingle4D;
+begin
+     Bezier4( T_, Ws );
+
+     with Ws do Result := _1 * Ps_._1
+                        + _2 * Ps_._2
+                        + _3 * Ps_._3
+                        + _4 * Ps_._4;
+end;
+
+function Bezier4( const Ps_:TDouble4x3D; const T_:Double ) :TDouble3D;
+var
+   Ws :TDouble4D;
+begin
+     Bezier4( T_, Ws );
+
+     with Ws do Result := _1 * Ps_._1
+                        + _2 * Ps_._2
+                        + _3 * Ps_._3
+                        + _4 * Ps_._4;
+end;
+
+function Bezier4( const Ps_:TdSingle4x3D; const T_:TdSingle ) :TdSingle3D;
+var
+   Ws :TdSingle4D;
+begin
+     Bezier4( T_, Ws );
+
+     with Ws do Result := _1 * Ps_._1
+                        + _2 * Ps_._2
+                        + _3 * Ps_._3
+                        + _4 * Ps_._4;
+end;
+
+function Bezier4( const Ps_:TdDouble4x3D; const T_:TdDouble ) :TdDouble3D;
 var
    Ws :TdDouble4D;
 begin
