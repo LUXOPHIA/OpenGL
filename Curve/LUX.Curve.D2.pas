@@ -1,4 +1,4 @@
-﻿unit LUX.Curve.T2.D1;
+﻿unit LUX.Curve.D2;
 
 interface //#################################################################### ■
 
@@ -6,7 +6,7 @@ uses LUX,
      LUX.D1,
      LUX.D2, LUX.D2x4, LUX.D2x4x4,
      LUX.D4, LUX.D4x4,
-     LUX.Curve.T1.D1;
+     LUX.Curve;
 
 //type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -19,6 +19,17 @@ uses LUX,
 //var //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【変数】
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
+
+function Delta( const X_,Y_:Single ) :Single; overload;
+function Delta( const X_,Y_:Double ) :Double; overload;
+
+function Sinc( const X_,Y_:Single ) :Single; overload;
+function Sinc( const X_,Y_:Double ) :Double; overload;
+
+function BSpline4( const X_,Y_:Single ) :Single; overload;
+function BSpline4( const X_,Y_:Double ) :Double; overload;
+function BSpline4( const X_,Y_:TdSingle ) :TdSingle; overload;
+function BSpline4( const X_,Y_:TdDouble ) :TdDouble; overload;
 
 procedure BSplin4( const T_:TSingle2D; out Ws_:TSingleM4 ); overload;
 procedure BSplin4( const T_:TDouble2D; out Ws_:TDoubleM4 ); overload;
@@ -42,11 +53,59 @@ function Bezier4( const Ps_:TdDoubleM4; const T_:TdDouble2D ) :TdDouble; overloa
 
 implementation //############################################################### ■
 
+uses LUX.Curve.BSpline, LUX.Curve.Bezier;
+
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
+
+function Delta( const X_,Y_:Single ) :Single;
+begin
+     Result := Delta( Y_ ) * Delta( X_ );
+end;
+
+function Delta( const X_,Y_:Double ) :Double;
+begin
+     Result := Delta( Y_ ) * Delta( X_ );
+end;
+
+//------------------------------------------------------------------------------
+
+function Sinc( const X_,Y_:Single ) :Single;
+begin
+     Result := Sinc( Y_ ) * Sinc( X_ );
+end;
+
+function Sinc( const X_,Y_:Double ) :Double;
+begin
+     Result := Sinc( Y_ ) * Sinc( X_ );
+end;
+
+//------------------------------------------------------------------------------
+
+function BSpline4( const X_,Y_:Single ) :Single;
+begin
+     Result := BSpline4( Y_ ) * BSpline4( X_ );
+end;
+
+function BSpline4( const X_,Y_:Double ) :Double;
+begin
+     Result := BSpline4( Y_ ) * BSpline4( X_ );
+end;
+
+function BSpline4( const X_,Y_:TdSingle ) :TdSingle;
+begin
+     Result := BSpline4( Y_ ) * BSpline4( X_ );
+end;
+
+function BSpline4( const X_,Y_:TdDouble ) :TdDouble;
+begin
+     Result := BSpline4( Y_ ) * BSpline4( X_ );
+end;
+
+//------------------------------------------------------------------------------
 
 procedure BSplin4( const T_:TSingle2D; out Ws_:TSingleM4 );
 var
