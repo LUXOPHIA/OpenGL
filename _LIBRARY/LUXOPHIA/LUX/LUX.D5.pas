@@ -14,8 +14,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TSingle5D = record
      private
        ///// アクセス
-       function GetV( const I_:Integer ) :Single; inline;
-       procedure SetV( const I_:Integer; const V_:Single ); inline;
+       function Gets( const X_:Integer ) :Single; inline;
+       procedure Sets( const X_:Integer; const V_:Single ); inline;
        function GetSiz2 :Single; inline;
        procedure SetSiz2( const Siz2_:Single ); inline;
        function GetSize :Single; inline;
@@ -26,10 +26,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const V_:Single ); overload;
        constructor Create( const V1_,V2_,V3_,V4_,V5_:Single ); overload;
        ///// プロパティ
-       property V[ const I_:Integer ] :Single    read GetV      write SetV     ; default;
-       property Siz2                  :Single    read GetSiz2   write SetSiz2  ;
-       property Size                  :Single    read GetSize   write SetSize  ;
-       property Unitor                :TSingle5D read GetUnitor write SetUnitor;
+       property _s[ const X_:Integer ] :Single    read Gets      write Sets     ; default;
+       property Siz2                   :Single    read GetSiz2   write SetSiz2  ;
+       property Size                   :Single    read GetSize   write SetSize  ;
+       property Unitor                 :TSingle5D read GetUnitor write SetUnitor;
        ///// 演算子
        class operator Negative( const V_:TSingle5D ) :TSingle5D;
        class operator Positive( const V_:TSingle5D ) :TSingle5D;
@@ -73,8 +73,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TDouble5D = record
      private
        ///// アクセス
-       function GetV( const I_:Integer ) :Double; inline;
-       procedure SetV( const I_:Integer; const V_:Double ); inline;
+       function Gets( const X_:Integer ) :Double; inline;
+       procedure Sets( const X_:Integer; const V_:Double ); inline;
        function GetSiz2 :Double; inline;
        procedure SetSiz2( const Siz2_:Double ); inline;
        function GetSize :Double; inline;
@@ -85,10 +85,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const V_:Double ); overload;
        constructor Create( const V1_,V2_,V3_,V4_,V5_:Double ); overload;
        ///// プロパティ
-       property V[ const I_:Integer ] :Double    read GetV      write SetV     ; default;
-       property Siz2                  :Double    read GetSiz2   write SetSiz2  ;
-       property Size                  :Double    read GetSize   write SetSize  ;
-       property Unitor                :TDouble5D read GetUnitor write SetUnitor;
+       property _s[ const X_:Integer ] :Double    read Gets      write Sets     ; default;
+       property Siz2                   :Double    read GetSiz2   write SetSiz2  ;
+       property Size                   :Double    read GetSize   write SetSize  ;
+       property Unitor                 :TDouble5D read GetUnitor write SetUnitor;
        ///// 演算子
        class operator Negative( const V_:TDouble5D ) :TDouble5D;
        class operator Positive( const V_:TDouble5D ) :TDouble5D;
@@ -132,8 +132,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TdSingle5D = record
      private
        ///// アクセス
-       function GetV( const I_:Integer ) :TdSingle; inline;
-       procedure SetV( const I_:Integer; const V_:TdSingle ); inline;
+       function Gets( const X_:Integer ) :TdSingle; inline;
+       procedure Sets( const X_:Integer; const V_:TdSingle ); inline;
        function Geto :TSingle5D; inline;
        procedure Seto( const o_:TSingle5D ); inline;
        function Getd :TSingle5D; inline;
@@ -147,12 +147,12 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
        constructor Create( const V1_,V2_,V3_,V4_,V5_:TdSingle );
        ///// プロパティ
-       property V[ const I_:Integer ] :TdSingle   read GetV      write SetV     ; default;
-       property o                     :TSingle5D  read Geto      write Seto     ;
-       property d                     :TSingle5D  read Getd      write Setd     ;
-       property Siz2                  :TdSingle   read GetSiz2   write SetSiz2  ;
-       property Size                  :TdSingle   read GetSize   write SetSize  ;
-       property Unitor                :TdSingle5D read GetUnitor write SetUnitor;
+       property _s[ const X_:Integer ] :TdSingle   read Gets      write Sets     ; default;
+       property o                      :TSingle5D  read Geto      write Seto     ;
+       property d                      :TSingle5D  read Getd      write Setd     ;
+       property Siz2                   :TdSingle   read GetSiz2   write SetSiz2  ;
+       property Size                   :TdSingle   read GetSize   write SetSize  ;
+       property Unitor                 :TdSingle5D read GetUnitor write SetUnitor;
        ///// 演算子
        class operator Negative( const V_:TdSingle5D ) :TdSingle5D; inline;
        class operator Positive( const V_:TdSingle5D ) :TdSingle5D; inline;
@@ -181,8 +181,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TdDouble5D = record
      private
        ///// アクセス
-       function GetV( const I_:Integer ) :TdDouble; inline;
-       procedure SetV( const I_:Integer; const V_:TdDouble ); inline;
+       function Gets( const X_:Integer ) :TdDouble; inline;
+       procedure Sets( const X_:Integer; const V_:TdDouble ); inline;
        function Geto :TDouble5D; inline;
        procedure Seto( const o_:TDouble5D ); inline;
        function Getd :TDouble5D; inline;
@@ -196,12 +196,12 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
        constructor Create( const V1_,V2_,V3_,V4_,V5_:TdDouble );
        ///// プロパティ
-       property V[ const I_:Integer ] :TdDouble   read GetV      write SetV     ; default;
-       property o                     :TDouble5D  read Geto      write Seto     ;
-       property d                     :TDouble5D  read Getd      write Setd     ;
-       property Siz2                  :TdDouble   read GetSiz2   write SetSiz2  ;
-       property Size                  :TdDouble   read GetSize   write SetSize  ;
-       property Unitor                :TdDouble5D read GetUnitor write SetUnitor;
+       property _s[ const X_:Integer ] :TdDouble   read Gets      write Sets     ; default;
+       property o                      :TDouble5D  read Geto      write Seto     ;
+       property d                      :TDouble5D  read Getd      write Setd     ;
+       property Siz2                   :TdDouble   read GetSiz2   write SetSiz2  ;
+       property Size                   :TdDouble   read GetSize   write SetSize  ;
+       property Unitor                 :TdDouble5D read GetUnitor write SetUnitor;
        ///// 演算子
        class operator Negative( const V_:TdDouble5D ) :TdDouble5D; inline;
        class operator Positive( const V_:TdDouble5D ) :TdDouble5D; inline;
@@ -278,14 +278,14 @@ uses System.SysUtils, System.Math;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TSingle5D.GetV( const I_:Integer ) :Single;
+function TSingle5D.Gets( const X_:Integer ) :Single;
 begin
-     Result := _[ I_ ];
+     Result := _[ X_ ];
 end;
 
-procedure TSingle5D.SetV( const I_:Integer; const V_:Single );
+procedure TSingle5D.Sets( const X_:Integer; const V_:Single );
 begin
-     _[ I_ ] := V_;
+     _[ X_ ] := V_;
 end;
 
 //------------------------------------------------------------------------------
@@ -595,14 +595,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TDouble5D.GetV( const I_:Integer ) :Double;
+function TDouble5D.Gets( const X_:Integer ) :Double;
 begin
-     Result := _[ I_ ];
+     Result := _[ X_ ];
 end;
 
-procedure TDouble5D.SetV( const I_:Integer; const V_:Double );
+procedure TDouble5D.Sets( const X_:Integer; const V_:Double );
 begin
-     _[ I_ ] := V_;
+     _[ X_ ] := V_;
 end;
 
 //------------------------------------------------------------------------------
@@ -912,14 +912,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TdSingle5D.GetV( const I_:Integer ) :TdSingle;
+function TdSingle5D.Gets( const X_:Integer ) :TdSingle;
 begin
-     Result := _[ I_ ];
+     Result := _[ X_ ];
 end;
 
-procedure TdSingle5D.SetV( const I_:Integer; const V_:TdSingle );
+procedure TdSingle5D.Sets( const X_:Integer; const V_:TdSingle );
 begin
-     _[ I_ ] := V_;
+     _[ X_ ] := V_;
 end;
 
 //------------------------------------------------------------------------------
@@ -1111,14 +1111,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TdDouble5D.GetV( const I_:Integer ) :TdDouble;
+function TdDouble5D.Gets( const X_:Integer ) :TdDouble;
 begin
-     Result := _[ I_ ];
+     Result := _[ X_ ];
 end;
 
-procedure TdDouble5D.SetV( const I_:Integer; const V_:TdDouble );
+procedure TdDouble5D.Sets( const X_:Integer; const V_:TdDouble );
 begin
-     _[ I_ ] := V_;
+     _[ X_ ] := V_;
 end;
 
 //------------------------------------------------------------------------------
