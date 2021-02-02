@@ -84,7 +84,7 @@ begin
                     Items[ 6 ] := TSingle3D.Create( Min.X, Max.Y, Max.Z );
                     Items[ 7 ] := TSingle3D.Create( Max.X, Max.Y, Max.Z );
 
-                    DisposeOf;
+                    Free;
                end;
           end;
      end;
@@ -159,7 +159,7 @@ begin
           Items[ 10 ] := TCardinal2D.Create( 5, 1 );
           Items[ 11 ] := TCardinal2D.Create( 3, 2 );
 
-          DisposeOf;
+          Free;
      end;
 
      _Visible := True;
