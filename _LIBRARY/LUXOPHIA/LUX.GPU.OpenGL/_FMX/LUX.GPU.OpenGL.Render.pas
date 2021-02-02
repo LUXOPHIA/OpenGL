@@ -99,7 +99,7 @@ begin
      begin
           SaveToFile( FileName_ );
 
-          DisposeOf;
+          Free;
      end;
 end;
 

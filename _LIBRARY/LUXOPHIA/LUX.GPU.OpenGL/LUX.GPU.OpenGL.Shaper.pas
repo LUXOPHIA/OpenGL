@@ -469,7 +469,7 @@ begin
                end;
           end;
 
-          DisposeOf;
+          Free;
      end;
 
      _Inform.BouBox := B;
@@ -707,7 +707,7 @@ begin
                begin
                     for V in Vs do Items[ V.Value ] := Ps[ V.Key.P ];
 
-                    DisposeOf;
+                    Free;
                end;
           end;
      end;
@@ -722,7 +722,7 @@ begin
                begin
                     for V in Vs do Items[ V.Value ] := Ns[ V.Key.N ];
 
-                    DisposeOf;
+                    Free;
                end;
           end;
      end;
@@ -737,7 +737,7 @@ begin
                begin
                     for V in Vs do Items[ V.Value ] := Ts[ V.Key.T ];
 
-                    DisposeOf;
+                    Free;
                end;
           end;
      end;
@@ -1039,7 +1039,7 @@ begin
                begin
                     for V in Vs do Items[ V.Value ] := Ps[ V.Key.P ];
 
-                    DisposeOf;
+                    Free;
                end;
           end;
      end;
@@ -1054,7 +1054,7 @@ begin
                begin
                     for V in Vs do Items[ V.Value ] := Ns[ V.Key.N ];
 
-                    DisposeOf;
+                    Free;
                end;
           end;
      end;
@@ -1069,7 +1069,7 @@ begin
                begin
                     for V in Vs do Items[ V.Value ] := Ts[ V.Key.T ];
 
-                    DisposeOf;
+                    Free;
                end;
           end;
      end;
@@ -1399,7 +1399,7 @@ begin
                begin
                     for V in Vs do Items[ V.Value ] := Ps[ V.Key.P ];
 
-                    DisposeOf;
+                    Free;
                end;
           end;
      end;
@@ -1414,7 +1414,7 @@ begin
                begin
                     for V in Vs do Items[ V.Value ] := Ns[ V.Key.N ];
 
-                    DisposeOf;
+                    Free;
                end;
           end;
      end;
@@ -1429,7 +1429,7 @@ begin
                begin
                     for V in Vs do Items[ V.Value ] := Ts[ V.Key.T ];
 
-                    DisposeOf;
+                    Free;
                end;
           end;
      end;
