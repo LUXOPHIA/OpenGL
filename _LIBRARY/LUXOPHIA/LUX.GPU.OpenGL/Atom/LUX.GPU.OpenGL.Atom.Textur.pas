@@ -4,7 +4,7 @@ interface //####################################################################
 
 uses Winapi.OpenGL, Winapi.OpenGLext,
      LUX,
-     LUX.Data.Lattice,
+     LUX.Data.Grid,
      LUX.GPU.OpenGL.Atom,
      LUX.GPU.OpenGL.Atom.Buffer.PixBuf,
      LUX.GPU.OpenGL.Atom.Imager;
@@ -280,8 +280,8 @@ end;
 
 destructor TGLTextur<_TItem_,_TIter_,_TGrid_,_TImager_>.Destroy;
 begin
-     _Samplr.DisposeOf;
-     _Imager.DisposeOf;
+     _Samplr.Free;
+     _Imager.Free;
 
      inherited;
 end;

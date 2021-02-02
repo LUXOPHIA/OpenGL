@@ -4,7 +4,7 @@ interface //####################################################################
 
 uses Winapi.OpenGL, Winapi.OpenGLext,
      LUX,
-     LUX.Data.Lattice.T2,
+     LUX.Data.Grid.T2,
      LUX.GPU.OpenGL.Atom.Buffer.PixBuf.D2,
      LUX.GPU.OpenGL.Atom.Imager.D2,
      LUX.GPU.OpenGL.Atom.Textur;
@@ -86,8 +86,8 @@ begin
 
      with _Samplr do
      begin
-          WrapU := GL_MIRRORED_REPEAT;
-          WrapV := GL_MIRRORED_REPEAT;
+          WrapU := GL_CLAMP_TO_EDGE;
+          WrapV := GL_CLAMP_TO_EDGE;
      end;
 end;
 

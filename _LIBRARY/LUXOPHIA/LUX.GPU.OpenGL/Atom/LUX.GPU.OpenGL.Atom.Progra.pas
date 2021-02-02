@@ -170,9 +170,9 @@ destructor TGLProgra.Destroy;
 begin
      glDeleteProgram( _ID );
 
-     _Framers.DisposeOf;
+     _Framers.Free;
 
-     _Errors.DisposeOf;
+     _Errors.Free;
 
      inherited;
 end;

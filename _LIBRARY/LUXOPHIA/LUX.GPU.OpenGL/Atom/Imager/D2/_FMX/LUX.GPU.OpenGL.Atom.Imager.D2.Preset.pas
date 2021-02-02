@@ -4,7 +4,7 @@ interface //####################################################################
 
 uses System.UITypes,
      FMX.Graphics,
-     LUX,
+     LUX, LUX.D4,
      LUX.GPU.OpenGL.Atom.Buffer.PixBuf.D2,
      LUX.GPU.OpenGL.Atom.Imager.D2;
 
@@ -13,6 +13,16 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLCelIma2D_TInt32u4D
+
+     TGLCelIma2D_TInt32u4D = class( TGLCelIma2D<TInt32u4D> )
+     private
+     protected
+     public
+       constructor Create;
+       destructor Destroy; override;
+     end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPoiIma2D_TAlphaColorF
 
@@ -62,6 +72,29 @@ uses System.Threading,
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLCelIma2D_TInt32u4D
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TGLCelIma2D_TInt32u4D.Create;
+begin
+     inherited;
+
+     _TexelF := GL_RGBA32UI;
+     _PixelF := GL_RGBA_INTEGER;
+     _PixelT := GL_UNSIGNED_INT;
+end;
+
+destructor TGLCelIma2D_TInt32u4D.Destroy;
+begin
+
+     inherited;
+end;
+
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLPoiIma2D_TAlphaColorF
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
@@ -108,7 +141,7 @@ begin
           end;
      end;
 
-     D.DisposeOf;
+     D.Free;
 
      BMP_.Unmap( B );
 end;
@@ -133,7 +166,7 @@ begin
           end;
      end;
 
-     D.DisposeOf;
+     D.Free;
 
      BMP_.Unmap( B );
 end;
@@ -150,7 +183,7 @@ begin
 
      CopyFrom( B );
 
-     B.DisposeOf;
+     B.Free;
 end;
 
 procedure TGLPoiIma2D_TAlphaColorF.SaveToFile( const FileName_:String );
@@ -163,7 +196,7 @@ begin
 
      B.SaveToFile( FileName_ );
 
-     B.DisposeOf;
+     B.Free;
 end;
 
 //------------------------------------------------------------------------------
@@ -191,9 +224,9 @@ begin
           end;
      end;
 
-     D.DisposeOf;
+     D.Free;
 
-     F.DisposeOf;
+     F.Free;
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLCelIma2D_TAlphaColorF
@@ -246,7 +279,7 @@ begin
 
      end );
 
-     D.DisposeOf;
+     D.Free;
 
      BMP_.Unmap( B );
 end;
@@ -275,7 +308,7 @@ begin
 
      end );
 
-     D.DisposeOf;
+     D.Free;
 
      BMP_.Unmap( B );
 end;
@@ -292,7 +325,7 @@ begin
 
      CopyFrom( B );
 
-     B.DisposeOf;
+     B.Free;
 end;
 
 procedure TGLCelIma2D_TAlphaColorF.SaveToFile( const FileName_:String );
@@ -305,7 +338,7 @@ begin
 
      B.SaveToFile( FileName_ );
 
-     B.DisposeOf;
+     B.Free;
 end;
 
 //------------------------------------------------------------------------------
@@ -333,9 +366,9 @@ begin
           end;
      end;
 
-     D.DisposeOf;
+     D.Free;
 
-     F.DisposeOf;
+     F.Free;
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】

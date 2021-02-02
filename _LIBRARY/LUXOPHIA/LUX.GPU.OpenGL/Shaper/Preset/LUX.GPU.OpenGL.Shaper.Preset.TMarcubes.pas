@@ -3,7 +3,7 @@
 interface //#################################################################### ■
 
 uses Winapi.OpenGL, Winapi.OpenGLext,
-     LUX, LUX.D2, LUX.D3, LUX.M4,
+     LUX, LUX.D2, LUX.D3, LUX.D4x4,
      LUX.GPU.OpenGL,
      LUX.GPU.OpenGL.Atom.Buffer.UniBuf,
      LUX.GPU.OpenGL.Atom.Textur.D2.Preset,
@@ -114,6 +114,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure BeginDraw; override;
        procedure EndDraw; override;
        procedure MakeModel;
+       procedure LoadFromFilePOX( const FileName_:String );
      end;
 
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
@@ -123,6 +124,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
 
 implementation //############################################################### ■
+
+uses System.Classes, System.SysUtils;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
@@ -220,7 +223,7 @@ end;
 
 destructor TMarcubesMateryFacesMIR.Destroy;
 begin
-     _Textur.DisposeOf;
+     _Textur.Free;
 
      inherited;
 end;
@@ -372,9 +375,9 @@ end;
 
 destructor TMarcubes.Destroy;
 begin
-     _Textur   .DisposeOf;
-     _Size     .DisposeOf;
-     _Threshold.DisposeOf;
+     _Textur   .Free;
+     _Size     .Free;
+     _Threshold.Free;
 
      inherited;
 end;
@@ -410,9 +413,37 @@ begin
      inherited;
 end;
 
+//------------------------------------------------------------------------------
+
 procedure TMarcubes.MakeModel;
 begin
      PoinsN := _Textur.Imager.Grid.CellsN;
+end;
+
+//------------------------------------------------------------------------------
+
+procedure TMarcubes.LoadFromFilePOX( const FileName_:String );
+var
+   F :TFileStream;
+   B :TSingleArea3D;
+begin
+     F := TFileStream.Create( FileName_, fmOpenRead );
+     try
+        F.Read( B, SizeOf( B ) );
+
+        SizeX := B.SizeX / 40;
+        SizeY := B.SizeY / 40;
+        SizeZ := B.SizeZ / 40;
+
+        Textur.Imager.Grid.Read( F );
+
+        Threshold := 0;
+
+        MakeModel;
+
+     finally
+            F.Free;
+     end;
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】

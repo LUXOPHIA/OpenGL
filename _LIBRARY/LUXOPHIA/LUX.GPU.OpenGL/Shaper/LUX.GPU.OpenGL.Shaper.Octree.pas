@@ -3,7 +3,7 @@
 interface //#################################################################### ■
 
 uses System.SysUtils, System.UITypes,
-     LUX, LUX.D1, LUX.D2, LUX.D3, LUX.M4,
+     LUX, LUX.D1, LUX.D2, LUX.D3, LUX.D4x4,
      LUX.Data.Octree.D3,
      LUX.Geometry.D3,
      LUX.GPU.OpenGL,
@@ -98,7 +98,7 @@ end;
 
 destructor TGLShaperOctree.Destroy;
 begin
-     _Tree.DisposeOf;
+     _Tree.Free;
 
      inherited;
 end;
@@ -181,8 +181,8 @@ begin
           end;
      end;
 
-     Ps.DisposeOf;
-     Es.DisposeOf;
+     Ps.Free;
+     Es.Free;
 
      with _Tree do
      begin
@@ -197,7 +197,7 @@ begin
           for V in Vs.Keys do Add( V );
      end;
 
-     Vs.DisposeOf;
+     Vs.Free;
 end;
 
 //------------------------------------------------------------------------------

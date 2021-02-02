@@ -3,7 +3,7 @@
 interface //#################################################################### ■
 
 uses Winapi.OpenGL, Winapi.OpenGLext,
-     LUX, LUX.D2, LUX.D3, LUX.M4,
+     LUX, LUX.D2, LUX.D3, LUX.D4x4,
      LUX.GPU.OpenGL,
      LUX.GPU.OpenGL.Atom.Buffer.UniBuf,
      LUX.GPU.OpenGL.Scener;
@@ -136,7 +136,7 @@ end;
 
 destructor TGLCamera.Destroy;
 begin
-     _Proj.DisposeOf;
+     _Proj.Free;
 
      inherited;
 end;
