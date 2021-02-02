@@ -4,7 +4,7 @@ interface //####################################################################
 
 uses System.UITypes,
      Winapi.Windows, Winapi.OpenGL, Winapi.OpenGLext,
-     LUX, LUX.M4,
+     LUX, LUX.D4x4,
      LUX.GPU.OpenGL.Atom.Buffer.UniBuf,
      LUX.GPU.OpenGL.Atom.Framer,
      LUX.GPU.OpenGL.Camera;
@@ -139,10 +139,10 @@ end;
 
 destructor TGL_Render.Destroy;
 begin
-     _Viewer.DisposeOf;
+     _Viewer.Free;
 
-     _Frame1.DisposeOf;
-     _FrameN.DisposeOf;
+     _Frame1.Free;
+     _FrameN.Free;
 
      inherited;
 end;

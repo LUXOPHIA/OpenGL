@@ -4,7 +4,7 @@ interface //####################################################################
 
 uses Winapi.OpenGL, Winapi.OpenGLext,
      LUX,
-     LUX.Data.Lattice,
+     LUX.Data.Grid,
      LUX.GPU.OpenGL.Atom,
      LUX.GPU.OpenGL.Atom.Buffer,
      LUX.GPU.OpenGL.Atom.Buffer.PixBuf;
@@ -180,7 +180,7 @@ end;
 
 destructor TGLImager<_TItem_,_TIter_,_TGrid_>.Destroy;
 begin
-     _Grid.DisposeOf;
+     _Grid.Free;
 
      glDeleteTextures( 1, @_ID );
 
@@ -236,7 +236,9 @@ end;
 procedure TGLImager<_TItem_,_TIter_,_TGrid_>.RecePixBuf;
 begin
      Bind;
+
        glGetTexImage( _Kind, 0, _PixelF, _PixelT, nil );
+
      Unbind;
 end;
 

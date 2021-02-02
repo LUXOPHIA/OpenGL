@@ -131,10 +131,10 @@ end;
 
 destructor TGLEngine.Destroy;
 begin
-     _VerBufs.DisposeOf;
-     _UniBufs.DisposeOf;
-     _Texturs.DisposeOf;
-     _StoBufs.DisposeOf;
+     _VerBufs.Free;
+     _UniBufs.Free;
+     _Texturs.Free;
+     _StoBufs.Free;
 
      inherited;
 end;

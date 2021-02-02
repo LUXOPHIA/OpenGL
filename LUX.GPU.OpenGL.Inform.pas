@@ -169,7 +169,7 @@ end;
 
 destructor TGLInform.Destroy;
 begin
-     _PosBuf.DisposeOf;
+     _PosBuf.Free;
 
      inherited;
 end;
