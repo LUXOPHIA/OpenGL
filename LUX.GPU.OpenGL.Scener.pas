@@ -4,7 +4,7 @@ interface //####################################################################
 
 uses System.Generics.Collections,
      Winapi.OpenGL, Winapi.OpenGLext,
-     LUX, LUX.D1, LUX.D2, LUX.D3, LUX.M4, LUX.Data.Tree,
+     LUX, LUX.D1, LUX.D2, LUX.D3, LUX.D4x4, LUX.Data.Tree,
      LUX.GPU.OpenGL,
      LUX.GPU.OpenGL.Atom.Buffer,
      LUX.GPU.OpenGL.Atom.Buffer.UniBuf,
@@ -246,9 +246,9 @@ end;
 
 destructor TGLObject.Destroy;
 begin
-     _AbsoPose.DisposeOf;
+     _AbsoPose.Free;
 
-     _Inform.DisposeOf;
+     _Inform.Free;
 
      inherited;
 end;

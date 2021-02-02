@@ -115,7 +115,7 @@ end;
 
 destructor TGLMateryImag.Destroy;
 begin
-     _Textur.DisposeOf;
+     _Textur.Free;
 
      inherited;
 end;
@@ -158,7 +158,7 @@ end;
 
 destructor TGLMateryImagG.Destroy;
 begin
-     _Textur.DisposeOf;
+     _Textur.Free;
 
      inherited;
 end;

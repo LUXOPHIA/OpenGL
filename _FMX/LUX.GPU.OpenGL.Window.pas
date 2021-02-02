@@ -182,7 +182,7 @@ end;
 
 procedure TOepnGL_FMX.DestroyWindow;
 begin
-     _Form.DisposeOf;
+     _Form.Free;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public

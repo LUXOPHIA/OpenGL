@@ -100,7 +100,7 @@ begin
           D[ X ] := TAlphaColorF.Create( B.GetPixel( X, 0 ) );
      end;
 
-     D.DisposeOf;
+     D.Free;
 
      BMP_.Unmap( B );
 end;
@@ -122,7 +122,7 @@ begin
           B.SetPixel( X, 0, D[ X ].ToAlphaColor );
      end;
 
-     D.DisposeOf;
+     D.Free;
 
      BMP_.Unmap( B );
 end;
@@ -139,7 +139,7 @@ begin
 
      CopyFrom( B );
 
-     B.DisposeOf;
+     B.Free;
 end;
 
 procedure TGLPoiIma1D_TAlphaColorF.SaveToFile( const FileName_:String );
@@ -152,7 +152,7 @@ begin
 
      B.SaveToFile( FileName_ );
 
-     B.DisposeOf;
+     B.Free;
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLCelIma1D_TAlphaColorF
@@ -197,7 +197,7 @@ begin
           D[ X ] := TAlphaColorF.Create( B.GetPixel( X, 0 ) );
      end;
 
-     D.DisposeOf;
+     D.Free;
 
      BMP_.Unmap( B );
 end;
@@ -219,7 +219,7 @@ begin
           B.SetPixel( X, 0, D[ X ].ToAlphaColor );
      end;
 
-     D.DisposeOf;
+     D.Free;
 
      BMP_.Unmap( B );
 end;
@@ -236,7 +236,7 @@ begin
 
      CopyFrom( B );
 
-     B.DisposeOf;
+     B.Free;
 end;
 
 procedure TGLCelIma1D_TAlphaColorF.SaveToFile( const FileName_:String );
@@ -249,7 +249,7 @@ begin
 
      B.SaveToFile( FileName_ );
 
-     B.DisposeOf;
+     B.Free;
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】

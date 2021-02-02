@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
-  LUX, LUX.D3, LUX.D4, LUX.M4,
+  LUX, LUX.D3, LUX.D4, LUX.D4x4,
   LUX.GPU.OpenGL,
   LUX.GPU.OpenGL.Window,
   LUX.GPU.OpenGL.Atom.Buffer.UniBuf,
@@ -146,7 +146,7 @@ end;
 
 destructor TGLViewer.Destroy;
 begin
-     _Viewer.DisposeOf;
+     _Viewer.Free;
 
      DestroyDC;
 

@@ -230,7 +230,7 @@ destructor TGLFramer.Destroy;
 begin
      glDeleteFramebuffers( 1, @_ID );
 
-     _Colors.DisposeOf;
+     _Colors.Free;
 
      inherited;
 end;

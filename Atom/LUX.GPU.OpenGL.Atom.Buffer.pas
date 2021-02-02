@@ -231,7 +231,7 @@ begin
 
      Result := D.Items[ I_ ];
 
-     D.DisposeOf;
+     D.Free;
 end;
 
 procedure TGLBuffer<_TItem_,_TIter_>.SetItems( const I_:Integer; const Item_:_TItem_ );
@@ -242,7 +242,7 @@ begin
 
      D.Items[ I_ ] := Item_;
 
-     D.DisposeOf;
+     D.Free;
 end;
 
 /////////////////////////////////////////////////////////////////////// メソッド

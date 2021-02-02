@@ -3,7 +3,7 @@
 interface //#################################################################### ■
 
 uses Winapi.OpenGL, Winapi.OpenGLext,
-     LUX, LUX.D2, LUX.D3, LUX.M4,
+     LUX, LUX.D2, LUX.D3, LUX.D4x4,
      LUX.GPU.OpenGL,
      LUX.GPU.OpenGL.Atom.Buffer.UniBuf,
      LUX.GPU.OpenGL.Atom.Textur.D2.Preset,
@@ -131,7 +131,7 @@ end;
 
 destructor TColorMarcubesMateryFaces.Destroy;
 begin
-     _Textur.DisposeOf;
+     _Textur.Free;
 
      inherited;
 end;
@@ -232,9 +232,9 @@ end;
 
 destructor TColorMarcubes.Destroy;
 begin
-     _Textur   .DisposeOf;
-     _Size     .DisposeOf;
-     _Threshold.DisposeOf;
+     _Textur   .Free;
+     _Size     .Free;
+     _Threshold.Free;
 
      inherited;
 end;
