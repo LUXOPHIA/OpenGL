@@ -3,7 +3,7 @@
 interface //#################################################################### ■
 
 uses System.SysUtils, System.UITypes,
-     LUX, LUX.D1, LUX.D2, LUX.D3, LUX.M4,
+     LUX, LUX.D1, LUX.D2, LUX.D3, LUX.D4x4,
      LUX.Geometry.D3,
      LUX.GPU.OpenGL,
      LUX.GPU.OpenGL.Atom.Buffer.UniBuf,
@@ -336,8 +336,8 @@ end;
 
 destructor TGLShaperVoxels.Destroy;
 begin
-     _Size .DisposeOf;
-     _Color.DisposeOf;
+     _Size .Free;
+     _Color.Free;
 
      inherited;
 end;

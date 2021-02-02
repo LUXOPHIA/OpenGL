@@ -396,7 +396,7 @@ end;
 
 destructor TGLPorterV.Destroy;
 begin
-     _Varray.DisposeOf;
+     _Varray.Free;
 
      inherited;
 end;

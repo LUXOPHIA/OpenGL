@@ -4,7 +4,7 @@ interface //####################################################################
 
 uses System.UITypes,
      Winapi.OpenGL, Winapi.OpenGLext,
-     LUX, LUX.D2, LUX.D3, LUX.M4,
+     LUX, LUX.D2, LUX.D3, LUX.D4x4,
      LUX.GPU.OpenGL,
      LUX.GPU.OpenGL.Atom.Buffer,
      LUX.GPU.OpenGL.Atom.Buffer.VerBuf,
@@ -144,6 +144,25 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure LoadFromFunc( const Func_:TConstFunc<TdSingle2D,TdSingle3D>; const DivU_,DivV_:Integer ); override;
        procedure LoadFromFileSTL( const FileName_:String );
        procedure LoadFromFileOBJ( const FileName_:String );
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLShaperQuadLine
+
+     TGLShaperQuadLine = class( TGLShaperPoin )
+     private
+     protected
+       _EleBuf :TGLEleBufQuadLines32;
+       _LineW  :Single;
+     public
+       constructor Create; override;
+       destructor Destroy; override;
+       ///// プロパティ
+       property EleBuf :TGLEleBufQuadLines32 read _EleBuf             ;
+       property LineW  :Single               read _LineW  write _LineW;
+       ///// メソッド
+       procedure BeginDraw; override;
+       procedure DrawMain; override;
+       procedure EndDraw; override;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLShaperFace
@@ -390,9 +409,9 @@ end;
 
 destructor TGLShaperPoin.Destroy;
 begin
-     _PosBuf.DisposeOf;
-     _NorBuf.DisposeOf;
-     _TexBuf.DisposeOf;
+     _PosBuf.Free;
+     _NorBuf.Free;
+     _TexBuf.Free;
 
      inherited;
 end;
@@ -500,9 +519,9 @@ begin
           end;
      end;
 
-     Ps.DisposeOf;
-     Ns.DisposeOf;
-     Ts.DisposeOf;
+     Ps.Free;
+     Ns.Free;
+     Ts.Free;
 
      CalcBouBox;
 end;
@@ -534,7 +553,7 @@ begin
 
         F.Read( Fs[0], 50 * FsN );
      finally
-            F.DisposeOf;
+            F.Free;
      end;
 
      _PosBuf.Count := 3 * FsN;
@@ -564,8 +583,8 @@ begin
           Inc( E.Z, 3 );
      end;
 
-     Ps.DisposeOf;
-     Ns.DisposeOf;
+     Ps.Free;
+     Ns.Free;
 
      CalcBouBox;
 end;
@@ -675,7 +694,7 @@ begin
                end;
           end;
      finally
-            F.DisposeOf;
+            F.Free;
      end;
 
      if Length( Ps ) > 0 then
@@ -723,7 +742,7 @@ begin
           end;
      end;
 
-     Vs.DisposeOf;
+     Vs.Free;
 
      CalcBouBox;
 end;
@@ -747,7 +766,7 @@ end;
 
 destructor TGLShaperLine.Destroy;
 begin
-     _EleBuf.DisposeOf;
+     _EleBuf.Free;
 
      inherited;
 end;
@@ -815,7 +834,7 @@ begin
           end;
      end;
 
-     Es.DisposeOf;
+     Es.Free;
 end;
 
 //------------------------------------------------------------------------------
@@ -846,7 +865,7 @@ begin
 
         F.Read( Fs[0], 50 * FsN );
      finally
-            F.DisposeOf;
+            F.Free;
      end;
 
      _PosBuf.Count := 3 * FsN;
@@ -882,9 +901,9 @@ begin
           Inc( E.Z, 3 );
      end;
 
-     Ps.DisposeOf;
-     Ns.DisposeOf;
-     Es.DisposeOf;
+     Ps.Free;
+     Ns.Free;
+     Es.Free;
 
      CalcBouBox;
 end;
@@ -1007,7 +1026,7 @@ begin
                end;
           end;
      finally
-            F.DisposeOf;
+            F.Free;
      end;
 
      if Length( Ps ) > 0 then
@@ -1055,11 +1074,55 @@ begin
           end;
      end;
 
-     Vs.DisposeOf;
+     Vs.Free;
 
      _EleBuf.CopyFrom( Es );
 
      CalcBouBox;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLShaperLine
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TGLShaperQuadLine.Create;
+begin
+     inherited;
+
+     _EleBuf := TGLEleBufQuadLines32.Create( GL_STATIC_DRAW );
+
+     _LineW := 1;
+end;
+
+destructor TGLShaperQuadLine.Destroy;
+begin
+     _EleBuf.Free;
+
+     inherited;
+end;
+
+/////////////////////////////////////////////////////////////////////// メソッド
+
+procedure TGLShaperQuadLine.BeginDraw;
+begin
+     inherited;
+
+     glLineWidth( _LineW );
+end;
+
+procedure TGLShaperQuadLine.DrawMain;
+begin
+     _EleBuf.Draw;
+end;
+
+procedure TGLShaperQuadLine.EndDraw;
+begin
+
+     inherited;
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLShaperFace
@@ -1079,7 +1142,7 @@ end;
 
 destructor TGLShaperFace.Destroy;
 begin
-     _EleBuf.DisposeOf;
+     _EleBuf.Free;
 
      inherited;
 end;
@@ -1132,7 +1195,7 @@ begin
           end;
      end;
 
-     Es.DisposeOf;
+     Es.Free;
 end;
 
 //------------------------------------------------------------------------------
@@ -1163,7 +1226,7 @@ begin
 
         F.Read( Fs[0], 50 * FsN );
      finally
-            F.DisposeOf;
+            F.Free;
      end;
 
      _PosBuf.Count := 3 * FsN;
@@ -1197,9 +1260,9 @@ begin
           Inc( E.Z, 3 );
      end;
 
-     Ps.DisposeOf;
-     Ns.DisposeOf;
-     Es.DisposeOf;
+     Ps.Free;
+     Ns.Free;
+     Es.Free;
 
      CalcBouBox;
 end;
@@ -1323,7 +1386,7 @@ begin
                end;
           end;
      finally
-            F.DisposeOf;
+            F.Free;
      end;
 
      if Length( Ps ) > 0 then
@@ -1371,7 +1434,7 @@ begin
           end;
      end;
 
-     Vs.DisposeOf;
+     Vs.Free;
 
      _EleBuf.CopyFrom( Es );
 

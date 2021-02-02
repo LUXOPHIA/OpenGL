@@ -254,9 +254,9 @@ end;
 
 destructor TGLMatery.Destroy;
 begin
-     _Engine .DisposeOf;
-     _ShaderV.DisposeOf;
-     _ShaderF.DisposeOf;
+     _Engine .Free;
+     _ShaderV.Free;
+     _ShaderF.Free;
 
      inherited;
 end;
@@ -314,6 +314,40 @@ begin
                  Add( '  _Result.Pos =                     _ShaperPose     * _SenderPos;' );
                  Add( '  _Result.Nor = transpose( inverse( _ShaperPose ) ) * _SenderNor;' );
                  Add( '  gl_Position = _ViewerScal * _CameraProj * inverse( _CameraPose ) * _Result.Pos;' );
+                 Add( '}' );
+
+               EndUpdate;
+          end;
+
+          Assert( Status, Errors.Text );
+     end;
+
+     with _ShaderF do
+     begin
+          with Source do
+          begin
+               BeginUpdate;
+                 Clear;
+
+                 Add( '#version 430' );
+
+                 Add( 'layout( std140 ) uniform TViewerScal{ layout( row_major ) mat4 _ViewerScal; };' );
+                 Add( 'layout( std140 ) uniform TCameraProj{ layout( row_major ) mat4 _CameraProj; };' );
+                 Add( 'layout( std140 ) uniform TCameraPose{ layout( row_major ) mat4 _CameraPose; };' );
+                 Add( 'layout( std140 ) uniform TShaperPose{ layout( row_major ) mat4 _ShaperPose; };' );
+
+                 Add( 'in TSenderVF' );
+                 Add( '{' );
+                 Add( '  vec4 Pos;' );
+                 Add( '  vec4 Nor;' );
+                 Add( '}' );
+                 Add( '_Sender;' );
+
+                 Add( 'out vec4 _ResultCol;' );
+
+                 Add( 'void main()' );
+                 Add( '{' );
+                 Add( '  _ResultCol = vec4( normalize( _Sender.Nor.xyz ) / 2 + 0.5, 1 );' );
                  Add( '}' );
 
                EndUpdate;
@@ -577,7 +611,7 @@ end;
 
 destructor TGLMateryG.Destroy;
 begin
-     _ShaderG.DisposeOf;
+     _ShaderG.Free;
 
      inherited;
 end;
@@ -611,7 +645,7 @@ end;
 
 destructor TGLMateryNorTexG.Destroy;
 begin
-     _ShaderG.DisposeOf;
+     _ShaderG.Free;
 
      inherited;
 end;
