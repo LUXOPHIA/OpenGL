@@ -6,7 +6,7 @@ uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.StdCtrls, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo, FMX.Objects, FMX.TabControl,
-  LUX, LUX.D1, LUX.D2, LUX.D3, LUX.M4,
+  LUX, LUX.D1, LUX.D2, LUX.D3, LUX.D4x4,
   LUX.GPU.OpenGL,
   LUX.GPU.OpenGL.Viewer,
   LUX.GPU.OpenGL.Atom.Shader,
@@ -15,7 +15,7 @@ uses
   LUX.GPU.OpenGL.Shaper,
   LUX.GPU.OpenGL.Matery,
   LUX.GPU.OpenGL.Matery.Textur.Preset,
-  LUX.GPU.OpenGL.Render;
+  LUX.GPU.OpenGL.Render, FMX.Memo.Types;
 
 type
   TForm1 = class(TForm)
@@ -269,7 +269,7 @@ end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
 begin
-     _Scener.DisposeOf;
+     _Scener.Free;
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -280,7 +280,7 @@ begin
      begin
           SaveToFile( 'Viewer1.png' );
 
-          DisposeOF;
+          Free;
      end;
 end;
 
@@ -290,7 +290,7 @@ begin
      begin
           SaveToFile( 'Viewer2.png' );
 
-          DisposeOF;
+          Free;
      end;
 end;
 
@@ -300,7 +300,7 @@ begin
      begin
           SaveToFile( 'Viewer3.png' );
 
-          DisposeOF;
+          Free;
      end;
 end;
 
@@ -317,7 +317,7 @@ begin
 
           SaveToFile( 'Viewer4.png' );
 
-          DisposeOf;
+          Free;
      end;
 end;
 
