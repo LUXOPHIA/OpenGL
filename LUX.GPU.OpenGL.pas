@@ -11,7 +11,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-     ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TOepnGL
+     ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TOpenGL
 
      IOpenGL = interface
      ['{836B9BB2-77E5-4553-B115-EF40C24D0251}']
@@ -75,27 +75,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        function glGetInteger( const Name_:GLenum ) :GLint;
      end;
 
-     ///%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLObject
-
-     IGLObject = interface
-     ['{7F595632-258C-41E9-B9FA-E71B18A2335A}']
-       ///// アクセス
-       function GetID :GLuint;
-       ///// プロパティ
-       property ID :GLuint read GetID;
-     end;
-
-     TGLObject = class( TInterfacedBase, IGLObject )
-     private
-     protected
-       _ID :GLuint;
-       ///// アクセス
-       function GetID :GLuint;
-     public
-       ///// プロパティ
-       property ID :GLuint read GetID;
-     end;
-
 //const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
 
 var //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【変数】
@@ -110,7 +89,7 @@ implementation //###############################################################
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TOepnGL
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TOpenGL
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
@@ -165,7 +144,7 @@ begin
 
      I := ChoosePixelFormat( _DC, @_PFD );
 
-     Assert( I > 0, 'Not found the PixelFormat with a close setting!' );
+     Assert( I > 0, 'Failed! TOpenGL.ValidatePFD' );
 
      ValidatePFI( I );
 end;
@@ -174,7 +153,7 @@ procedure TOpenGL.ValidatePFI( const PFI_:Integer );
 begin
      _PFI := PFI_;
 
-     Assert( DescribePixelFormat( _DC, _PFI, SizeOf( TPixelFormatDescriptor ), _PFD ), 'Not found the PixelFormat of the index!' );
+     Assert( DescribePixelFormat( _DC, _PFI, SizeOf( TPixelFormatDescriptor ), _PFD ), 'Failed! TOpenGL.ValidatePFI' );
 end;
 
 //------------------------------------------------------------------------------
@@ -182,6 +161,8 @@ end;
 procedure TOpenGL.CreateDC;
 begin
      _DC := GetDC( _WND );
+
+     Assert( _DC > 0, 'Failed! TOpenGL.CreateDC' );
 end;
 
 procedure TOpenGL.DestroyDC;
@@ -196,6 +177,8 @@ begin
      ApplyPixelFormat( _DC );
 
      _RC := wglCreateContext( _DC );
+
+     Assert( _RC > 0, 'Failed! TOpenGL.CreateRC' );
 end;
 
 procedure TOpenGL.DestroyRC;
@@ -278,27 +261,31 @@ end;
 
 procedure TOpenGL.BeginGL;
 begin
-     wglMakeCurrent( _DC, _RC );
+     Assert( wglMakeCurrent( _DC, _RC ), 'Failed! TOpenGL.BeginGL' );
 end;
 
 procedure TOpenGL.EndGL;
 begin
-     wglMakeCurrent( _DC, 0 );
+     Assert( wglMakeCurrent( _DC, 0 ), 'Failed! TOpenGL.EndGL' );
 end;
 
 //------------------------------------------------------------------------------
 
 procedure TOpenGL.InitOpenGL;
 begin
-     glEnable( GL_DEPTH_TEST );
-     glEnable( GL_CULL_FACE  );
+     glEnable( GL_DEPTH_TEST         );
+     glEnable( GL_CULL_FACE          );
+     glEnable( GL_BLEND              );
+     glEnable( GL_PROGRAM_POINT_SIZE );
+
+     glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 end;
 
 //------------------------------------------------------------------------------
 
 procedure TOpenGL.ApplyPixelFormat( const DC_:HDC );
 begin
-     Assert( SetPixelFormat( DC_, _PFI, @_PFD ), 'SetPixelFormat() is failed!' );
+     Assert( SetPixelFormat( DC_, _PFI, @_PFD ), 'Failed! TOpenGL.ApplyPixelFormat' );
 end;
 
 //------------------------------------------------------------------------------
@@ -316,21 +303,6 @@ function TOpenGL.glGetInteger( const Name_:GLenum ) :GLint;
 begin
      Winapi.OpenGL.glGetIntegerv( Name_, @Result );
 end;
-
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TGLObject
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& protected
-
-/////////////////////////////////////////////////////////////////////// アクセス
-
-function TGLObject.GetID :GLuint;
-begin
-     Result := _ID;
-end;
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
 
