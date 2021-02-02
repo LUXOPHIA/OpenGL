@@ -14,20 +14,22 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TByte2D = record
      private
        ///// アクセス
-       function GetV( const I_:Integer ) :Byte; inline;
-       procedure SetV( const I_:Integer; const V_:Byte ); inline;
+       function Gets( const X_:Integer ) :Byte; overload; inline;
+       procedure Sets( const X_:Integer; const V_:Byte ); overload; inline;
      public
        constructor Create( const V_:Byte ); overload;
        constructor Create( const X_,Y_:Byte ); overload;
        ///// プロパティ
-       property _s[ const I_:Integer ] :Byte read GetV write SetV; default;
+       property _s[ const X_:Integer ] :Byte read Gets write Sets; default;
      case Byte of
-      0:( _ :array [ 1..2 ] of Byte; );
-      1:(  X :Byte;
-           Y :Byte;                  );
-      2:( _1 :Byte;
-          _2 :Byte;                  );
+      0:( _Xs :array [ 1..2 ] of Byte; );
+      1:(  X  :Byte;
+           Y  :Byte;                   );
+      2:( _1  :Byte;
+          _2  :Byte;                   );
      end;
+
+     TInt08u2D = TByte2D;  TInt8u2D = TInt08u2D;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TShortint2D
 
@@ -37,12 +39,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const V_:Shortint ); overload;
        constructor Create( const X_,Y_:Shortint ); overload;
      case Byte of
-      0:( _ :array [ 1..2 ] of Shortint; );
-      1:(  X :Shortint;
-           Y :Shortint;                  );
-      2:( _1 :Shortint;
-          _2 :Shortint;                  );
+      0:( _Xs :array [ 1..2 ] of Shortint; );
+      1:(  X  :Shortint;
+           Y  :Shortint;                   );
+      2:( _1  :Shortint;
+          _2  :Shortint;                   );
      end;
+
+     TInt08s2D = TShortint2D;  TInt8s2D = TInt08s2D;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TWord2D
 
@@ -52,12 +56,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const V_:Word ); overload;
        constructor Create( const X_,Y_:Word ); overload;
      case Byte of
-      0:( _ :array [ 1..2 ] of Word; );
-      1:(  X :Word;
-           Y :Word;                  );
-      2:( _1 :Word;
-          _2 :Word;                  );
+      0:( _Xs :array [ 1..2 ] of Word; );
+      1:(  X  :Word;
+           Y  :Word;                   );
+      2:( _1  :Word;
+          _2  :Word;                   );
      end;
+
+     TInt16u2D = TWord2D;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSmallint2D
 
@@ -67,12 +73,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const V_:Smallint ); overload;
        constructor Create( const X_,Y_:Smallint ); overload;
      case Byte of
-      0:( _ :array [ 1..2 ] of Smallint; );
-      1:(  X :Smallint;
-           Y :Smallint;                  );
-      2:( _1 :Smallint;
-          _2 :Smallint;                  );
+      0:( _Xs :array [ 1..2 ] of Smallint; );
+      1:(  X  :Smallint;
+           Y  :Smallint;                   );
+      2:( _1  :Smallint;
+          _2  :Smallint;                   );
      end;
+
+     TInt16s2D = TSmallint2D;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TCardinal2D
 
@@ -82,31 +90,75 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const V_:Cardinal ); overload;
        constructor Create( const X_,Y_:Cardinal ); overload;
      case Byte of
-      0:( _ :array [ 1..2 ] of Cardinal; );
-      1:(  X :Cardinal;
-           Y :Cardinal;                  );
-      2:( _1 :Cardinal;
-          _2 :Cardinal;                  );
+      0:( _Xs :array [ 1..2 ] of Cardinal; );
+      1:(  X  :Cardinal;
+           Y  :Cardinal;                   );
+      2:( _1  :Cardinal;
+          _2  :Cardinal;                   );
      end;
+
+     TInt32u2D = TCardinal2D;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TInteger2D
 
      TInteger2D = record
      private
        ///// アクセス
-       function GetV( const I_:Integer ) :Integer; inline;
-       procedure SetV( const I_:Integer; const V_:Integer ); inline;
+       function Gets( const X_:Integer ) :Integer; overload; inline;
+       procedure Sets( const X_:Integer; const V_:Integer ); overload; inline;
      public
        ///// プロパティ
-       property _s[ const I_:Integer ] :Integer read GetV write SetV; default;
+       property _s[ const X_:Integer ] :Integer read Gets write Sets; default;
      case Byte of
-      0:( _  :array [ 1..2 ] of Integer; );
-      1:(  X :Integer;
-           Y :Integer;                   );
-      2:( _1 :Integer;
-          _2 :Integer;                   );
-      3:(  U :Integer;
-           V :Integer;                   );
+      0:( _Xs :array [ 1..2 ] of Integer; );
+      1:(  X  :Integer;
+           Y  :Integer;                   );
+      2:( _1  :Integer;
+          _2  :Integer;                   );
+      3:(  U  :Integer;
+           V  :Integer;                   );
+     end;
+
+     TInt32s2D = TInteger2D;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TInt64u2D
+
+     TInt64u2D = record
+     private
+       ///// アクセス
+       function Gets( const X_:Integer ) :Int64u; overload; inline;
+       procedure Sets( const X_:Integer; const V_:Int64u ); overload; inline;
+     public
+       constructor Create( const V_:Int64u ); overload;
+       constructor Create( const X_,Y_:Int64u ); overload;
+       ///// プロパティ
+       property _s[ const X_:Integer ] :Int64u read Gets write Sets; default;
+     case Byte of
+      0:( _Xs :array [ 1..2 ] of Int64u; );
+      1:(  X  :Int64u;
+           Y  :Int64u;                   );
+      2:( _1  :Int64u;
+          _2  :Int64u;                   );
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TInt64s2D
+
+     TInt64s2D = record
+     private
+       ///// アクセス
+       function Gets( const X_:Integer ) :Int64s; overload; inline;
+       procedure Sets( const X_:Integer; const V_:Int64s ); overload; inline;
+     public
+       constructor Create( const V_:Int64s ); overload;
+       constructor Create( const X_,Y_:Int64s ); overload;
+       ///// プロパティ
+       property _s[ const X_:Integer ] :Int64s read Gets write Sets; default;
+     case Byte of
+      0:( _Xs :array [ 1..2 ] of Int64s; );
+      1:(  X  :Int64s;
+           Y  :Int64s;                   );
+      2:( _1  :Int64s;
+          _2  :Int64s;                   );
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSingle2D
@@ -114,8 +166,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TSingle2D = record
      private
        ///// アクセス
-       function GetV( const I_:Integer ) :Single; inline;
-       procedure SetV( const I_:Integer; const V_:Single ); inline;
+       function Gets( const X_:Integer ) :Single; overload; inline;
+       procedure Sets( const X_:Integer; const V_:Single ); overload; inline;
        function GetSiz2 :Single; inline;
        procedure SetSiz2( const Siz2_:Single ); inline;
        function GetSize :Single; inline;
@@ -126,7 +178,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
        constructor Create( const X_,Y_:Single );
        ///// プロパティ
-       property _s[ const I_:Integer ] :Single    read GetV       write SetV     ; default;
+       property _s[ const X_:Integer ] :Single    read Gets       write Sets     ; default;
        property Siz2                   :Single    read GetSiz2    write SetSiz2  ;
        property Size                   :Single    read GetSize    write SetSize  ;
        property Unitor                 :TSingle2D read GetUnitor  write SetUnitor;
@@ -140,8 +192,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class operator Multiply( const A_:Single; const B_:TSingle2D ) :TSingle2D; inline;
        class operator Divide( const A_:TSingle2D; const B_:Single ) :TSingle2D; inline;
        ///// 型変換
-       class operator Implicit( const V_:TPointF ) :TSingle2D; inline;
-       class operator Implicit( const V_:TSingle2D ) :TPointF; inline;
+       class operator Implicit( const V_:TPointF ) :TSingle2D;
+       class operator Implicit( const V_:TSingle2D ) :TPointF;
        ///// 定数
        class function IdentityX :TSingle2D; inline; static;
        class function IdentityY :TSingle2D; inline; static;
@@ -157,14 +209,16 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class function RandBS2 :TSingle2D; static;
        class function RandBS4 :TSingle2D; static;
      case Byte of
-      0:( _  :array [ 1..2 ] of Single; );
-      1:(  X :Single;
-           Y :Single;                   );
-      2:( _1 :Single;
-          _2 :Single;                   );
-      3:(  U :Single;
-           V :Single;                   );
+      0:( _Xs :array [ 1..2 ] of Single; );
+      1:(  X  :Single;
+           Y  :Single;                   );
+      2:( _1  :Single;
+          _2  :Single;                   );
+      3:(  U  :Single;
+           V  :Single;                   );
      end;
+
+     TFlo32s2D = TSingle2D;
 
      TSinglePos2D = TSingle2D;
      TSingleVec2D = TSingle2D;
@@ -174,8 +228,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TDouble2D = record
      private
        ///// アクセス
-       function GetV( const I_:Integer ) :Double; inline;
-       procedure SetV( const I_:Integer; const V_:Double ); inline;
+       function Gets( const X_:Integer ) :Double; overload; inline;
+       procedure Sets( const X_:Integer; const V_:Double ); overload; inline;
        function GetSiz2 :Double; inline;
        procedure SetSiz2( const Siz2_:Double ); inline;
        function GetSize :Double; inline;
@@ -186,7 +240,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
        constructor Create( const X_,Y_:Double );
        ///// プロパティ
-       property _s[ const I_:Integer ] :Double    read GetV       write SetV     ; default;
+       property _s[ const X_:Integer ] :Double    read Gets       write Sets     ; default;
        property Siz2                   :Double    read GetSiz2    write SetSiz2  ;
        property Size                   :Double    read GetSize    write SetSize  ;
        property Unitor                 :TDouble2D read GetUnitor  write SetUnitor;
@@ -200,10 +254,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class operator Multiply( const A_:Double; const B_:TDouble2D ) :TDouble2D; inline;
        class operator Divide( const A_:TDouble2D; const B_:Double ) :TDouble2D; inline;
        ///// 型変換
-       class operator Implicit( const V_:TPointF ) :TDouble2D; inline;
-       class operator Explicit( const V_:TDouble2D ) :TPointF; inline;
-       class operator Implicit( const V_:TSingle2D ) :TDouble2D; inline;
-       class operator Explicit( const V_:TDouble2D ) :TSingle2D; inline;
+       class operator Implicit( const V_:TPointF ) :TDouble2D;
+       class operator Explicit( const V_:TDouble2D ) :TPointF;
+       class operator Implicit( const V_:TSingle2D ) :TDouble2D;
+       class operator Explicit( const V_:TDouble2D ) :TSingle2D;
        ///// 定数
        class function IdentityX :TDouble2D; inline; static;
        class function IdentityY :TDouble2D; inline; static;
@@ -219,14 +273,16 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class function RandBS2 :TDouble2D; static;
        class function RandBS4 :TDouble2D; static;
      case Byte of
-      0:( _  :array [ 1..2 ] of Double; );
-      1:(  X :Double;
-           Y :Double;                   );
-      2:( _1 :Double;
-          _2 :Double;                   );
-      3:(  U :Double;
-           V :Double;                   );
+      0:( _Xs :array [ 1..2 ] of Double; );
+      1:(  X  :Double;
+           Y  :Double;                   );
+      2:( _1  :Double;
+          _2  :Double;                   );
+      3:(  U  :Double;
+           V  :Double;                   );
      end;
+
+     TFlo64s2D = TDouble2D;
 
      TDoublePos2D = TDouble2D;
      TDoubleVec2D = TDouble2D;
@@ -236,8 +292,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TdSingle2D = record
      private
        ///// アクセス
-       function GetV( const I_:Integer ) :TdSingle; inline;
-       procedure SetV( const I_:Integer; const V_:TdSingle ); inline;
+       function Gets( const X_:Integer ) :TdSingle; overload; inline;
+       procedure Sets( const X_:Integer; const V_:TdSingle ); overload; inline;
        function Geto :TSingle2D; inline;
        procedure Seto( const o_:TSingle2D ); inline;
        function Getd :TSingle2D; inline;
@@ -251,7 +307,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
        constructor Create( const X_,Y_:TdSingle );
        ///// プロパティ
-       property _s[ const I_:Integer ] :TdSingle   read GetV      write SetV     ; default;
+       property _s[ const X_:Integer ] :TdSingle   read Gets      write Sets     ; default;
        property o                      :TSingle2D  read Geto      write Seto     ;
        property d                      :TSingle2D  read Getd      write Setd     ;
        property Siz2                   :TdSingle   read GetSiz2   write SetSiz2  ;
@@ -266,19 +322,21 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class operator Multiply( const A_:TdSingle; const B_:TdSingle2D ) :TdSingle2D; inline;
        class operator Divide( const A_:TdSingle2D; const B_:TdSingle ) :TdSingle2D; inline;
        ///// 型変換
-       class operator Implicit( const P_:TPointF ) :TdSingle2D; inline;
-       class operator Explicit( const P_:TdSingle2D ) :TPointF; inline;
-       class operator Implicit( const P_:TSingle2D ) :TdSingle2D; inline;
-       class operator Explicit( const P_:TdSingle2D ) :TSingle2D; inline;
+       class operator Implicit( const P_:TPointF ) :TdSingle2D;
+       class operator Explicit( const P_:TdSingle2D ) :TPointF;
+       class operator Implicit( const P_:TSingle2D ) :TdSingle2D;
+       class operator Explicit( const P_:TdSingle2D ) :TSingle2D;
      case Byte of
-      0:( _  :array [ 1..2 ] of TdSingle; );
-      1:(  X :TdSingle;
-           Y :TdSingle;                   );
-      2:( _1 :TdSingle;
-          _2 :TdSingle;                   );
-      3:(  U :TdSingle;
-           V :TdSingle;                   );
+      0:( _Xs :array [ 1..2 ] of TdSingle; );
+      1:(  X  :TdSingle;
+           Y  :TdSingle;                   );
+      2:( _1  :TdSingle;
+          _2  :TdSingle;                   );
+      3:(  U  :TdSingle;
+           V  :TdSingle;                   );
      end;
+
+     TdFlo32s2D = TdSingle2D;
 
      TdSinglePos2D = TdSingle2D;
      TdSingleVec2D = TdSingle2D;
@@ -288,8 +346,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TdDouble2D = record
      private
        ///// アクセス
-       function GetV( const I_:Integer ) :TdDouble; inline;
-       procedure SetV( const I_:Integer; const V_:TdDouble ); inline;
+       function Gets( const X_:Integer ) :TdDouble; overload; inline;
+       procedure Sets( const X_:Integer; const V_:TdDouble ); overload; inline;
        function Geto :TDouble2D; inline;
        procedure Seto( const o_:TDouble2D ); inline;
        function Getd :TDouble2D; inline;
@@ -303,7 +361,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      public
        constructor Create( const X_,Y_:TdDouble );
        ///// プロパティ
-       property _s[ const I_:Integer ] :TdDouble   read GetV      write SetV     ; default;
+       property _s[ const X_:Integer ] :TdDouble   read Gets      write Sets     ; default;
        property o                      :TDouble2D  read Geto      write Seto     ;
        property d                      :TDouble2D  read Getd      write Setd     ;
        property Siz2                   :TdDouble   read GetSiz2   write SetSiz2  ;
@@ -318,19 +376,21 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class operator Multiply( const A_:TdDouble; const B_:TdDouble2D ) :TdDouble2D; inline;
        class operator Divide( const A_:TdDouble2D; const B_:TdDouble ) :TdDouble2D; inline;
        ///// 型変換
-       class operator Implicit( const P_:TPointF ) :TdDouble2D; inline;
-       class operator Explicit( const P_:TdDouble2D ) :TPointF; inline;
-       class operator Implicit( const P_:TDouble2D ) :TdDouble2D; inline;
-       class operator Explicit( const P_:TdDouble2D ) :TDouble2D; inline;
+       class operator Implicit( const P_:TPointF ) :TdDouble2D;
+       class operator Explicit( const P_:TdDouble2D ) :TPointF;
+       class operator Implicit( const P_:TDouble2D ) :TdDouble2D;
+       class operator Explicit( const P_:TdDouble2D ) :TDouble2D;
      case Byte of
-      0:( _  :array [ 1..2 ] of TdDouble; );
-      1:(  X :TdDouble;
-           Y :TdDouble;                   );
-      2:( _1 :TdDouble;
-          _2 :TdDouble;                   );
-      3:(  U :TdDouble;
-           V :TdDouble;                   );
+      0:( _Xs :array [ 1..2 ] of TdDouble; );
+      1:(  X  :TdDouble;
+           Y  :TdDouble;                   );
+      2:( _1  :TdDouble;
+          _2  :TdDouble;                   );
+      3:(  U  :TdDouble;
+           V  :TdDouble;                   );
      end;
+
+     TdFlo64s2D = TdDouble2D;
 
      TdDoublePos2D = TdDouble2D;
      TdDoubleVec2D = TdDouble2D;
@@ -353,10 +413,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class operator Multiply( const A_:Single; const B_:TSingleSiz2D ) :TSingleSiz2D; inline;
        class operator Divide( const A_:TSingleSiz2D; const B_:Single ) :TSingleSiz2D; inline;
        ///// 型変換
-       class operator Implicit( const V_:TPointF ) :TSingleSiz2D; inline;
-       class operator Implicit( const V_:TSingleSiz2D ) :TPointF; inline;
-       class operator Implicit( const V_:TSingle2D ) :TSingleSiz2D; inline;
-       class operator Implicit( const V_:TSingleSiz2D ) :TSingle2D; inline;
+       class operator Implicit( const V_:TPointF ) :TSingleSiz2D;
+       class operator Implicit( const V_:TSingleSiz2D ) :TPointF;
+       class operator Implicit( const V_:TSingle2D ) :TSingleSiz2D;
+       class operator Implicit( const V_:TSingleSiz2D ) :TSingle2D;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDoubleSiz2D
@@ -377,10 +437,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class operator Multiply( const A_:Double; const B_:TDoubleSiz2D ) :TDoubleSiz2D; inline;
        class operator Divide( const A_:TDoubleSiz2D; const B_:Double ) :TDoubleSiz2D; inline;
        ///// 型変換
-       class operator Implicit( const V_:TPointF ) :TDoubleSiz2D; inline;
-       class operator Implicit( const V_:TDoubleSiz2D ) :TPointF; inline;
-       class operator Implicit( const V_:TDouble2D ) :TDoubleSiz2D; inline;
-       class operator Implicit( const V_:TDoubleSiz2D ) :TDouble2D; inline;
+       class operator Implicit( const V_:TPointF ) :TDoubleSiz2D;
+       class operator Implicit( const V_:TDoubleSiz2D ) :TPointF;
+       class operator Implicit( const V_:TDouble2D ) :TDoubleSiz2D;
+       class operator Implicit( const V_:TDoubleSiz2D ) :TDouble2D;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdSingleSiz2D
@@ -409,8 +469,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class operator Multiply( const A_:TdSingle; const B_:TdSingleSiz2D ) :TdSingleSiz2D; inline;
        class operator Divide( const A_:TdSingleSiz2D; const B_:TdSingle ) :TdSingleSiz2D; inline;
        ///// 型変換
-       class operator Implicit( const V_:TdSingle2D ) :TdSingleSiz2D; inline;
-       class operator Implicit( const V_:TdSingleSiz2D ) :TdSingle2D; inline;
+       class operator Implicit( const V_:TdSingle2D ) :TdSingleSiz2D;
+       class operator Implicit( const V_:TdSingleSiz2D ) :TdSingle2D;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdDoubleSiz2D
@@ -439,8 +499,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class operator Multiply( const A_:TdDouble; const B_:TdDoubleSiz2D ) :TdDoubleSiz2D; inline;
        class operator Divide( const A_:TdDoubleSiz2D; const B_:TdDouble ) :TdDoubleSiz2D; inline;
        ///// 型変換
-       class operator Implicit( const V_:TdDouble2D ) :TdDoubleSiz2D; inline;
-       class operator Implicit( const V_:TdDoubleSiz2D ) :TdDouble2D; inline;
+       class operator Implicit( const V_:TdDouble2D ) :TdDoubleSiz2D;
+       class operator Implicit( const V_:TdDoubleSiz2D ) :TdDouble2D;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSingleCircle2D
@@ -553,6 +613,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
        ///// アクセス
        function GetPoin( const I_:Integer ) :TSingle2D;
+       function GetCentX :Single;
+       procedure SetCentX( const CentX_:Single );
+       function GetCentY :Single;
+       procedure SetCentY( const CentY_:Single );
        function GetSizeX :Single;
        procedure SetSizeX( const SizeX_:Single );
        function GetSizeY :Single;
@@ -571,18 +635,25 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const Min_,Max_:TSingle2D ); overload;
        ///// プロパティ
        property Poin[ const I_:Integer ] :TSingle2D   read GetPoin                ;
+       property CentX                    :Single      read GetCentX write SetCentX;
+       property CentY                    :Single      read GetCentY write SetCentY;
        property SizeX                    :Single      read GetSizeX write SetSizeX;
        property SizeY                    :Single      read GetSizeY write SetSizeY;
        property ProjX                    :TSingleArea read GetProjX write SetProjX;
        property ProjY                    :TSingleArea read GetProjY write SetProjY;
        ///// 定数
-       class function NeInf :TSingleArea2D; inline; static;
-       class function NeMax :TSingleArea2D; inline; static;
-       class function Zero  :TSingleArea2D; inline; static;
-       class function PoMax :TSingleArea2D; inline; static;
-       class function PoInf :TSingleArea2D; inline; static;
+       class function NeInf :TSingleArea2D; static;
+       class function NeMax :TSingleArea2D; static;
+       class function Zero  :TSingleArea2D; static;
+       class function PoMax :TSingleArea2D; static;
+       class function PoInf :TSingleArea2D; static;
+       ///// 型変換
+       class operator Implicit( const V_:TSingleArea2D ) :TRectF;
+       class operator Implicit( const V_:TRectF ) :TSingleArea2D;
        ///// メソッド
        function Collision( const Area_:TSingleArea2D ) :Boolean;
+       procedure Add( const Poin_:TSingle2D ); overload;
+       procedure Add( const Poins_:TArray<TSingle2D> ); overload;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDoubleArea2D
@@ -591,6 +662,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
        ///// アクセス
        function GetPoin( const I_:Integer ) :TDouble2D;
+       function GetCentX :Double;
+       procedure SetCentX( const CentX_:Double );
+       function GetCentY :Double;
+       procedure SetCentY( const CentY_:Double );
        function GetSizeX :Double;
        procedure SetSizeX( const SizeX_:Double );
        function GetSizeY :Double;
@@ -609,18 +684,25 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        constructor Create( const Min_,Max_:TDouble2D ); overload;
        ///// プロパティ
        property Poin[ const I_:Integer ] :TDouble2D   read GetPoin                ;
+       property CentX                    :Double      read GetCentX write SetCentX;
+       property CentY                    :Double      read GetCentY write SetCentY;
        property SizeX                    :Double      read GetSizeX write SetSizeX;
        property SizeY                    :Double      read GetSizeY write SetSizeY;
        property ProjX                    :TDoubleArea read GetProjX write SetProjX;
        property ProjY                    :TDoubleArea read GetProjY write SetProjY;
        ///// 定数
-       class function NeInf :TDoubleArea2D; inline; static;
-       class function NeMax :TDoubleArea2D; inline; static;
-       class function Zero  :TDoubleArea2D; inline; static;
-       class function PoMax :TDoubleArea2D; inline; static;
-       class function PoInf :TDoubleArea2D; inline; static;
+       class function NeInf :TDoubleArea2D; static;
+       class function NeMax :TDoubleArea2D; static;
+       class function Zero  :TDoubleArea2D; static;
+       class function PoMax :TDoubleArea2D; static;
+       class function PoInf :TDoubleArea2D; static;
+       ///// 型変換
+       class operator Implicit( const V_:TDoubleArea2D ) :TRectF;
+       class operator Implicit( const V_:TRectF ) :TDoubleArea2D;
        ///// メソッド
        function Collision( const Area_:TDoubleArea2D ) :Boolean;
+       procedure Add( const Poin_:TDouble2D );overload;
+       procedure Add( const Poins_:TArray<TDouble2D> ); overload;
      end;
 
      //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
@@ -688,14 +770,14 @@ uses System.SysUtils, System.Math;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TByte2D.GetV( const I_:Integer ) :Byte;
+function TByte2D.Gets( const X_:Integer ) :Byte;
 begin
-     Result := _[ I_ ];
+     Result := _Xs[ X_ ];
 end;
 
-procedure TByte2D.SetV( const I_:Integer; const V_:Byte );
+procedure TByte2D.Sets( const X_:Integer; const V_:Byte );
 begin
-     _[ I_ ] := V_;
+     _Xs[ X_ ] := V_;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -790,17 +872,77 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TInteger2D.GetV( const I_:Integer ) :Integer;
+function TInteger2D.Gets( const X_:Integer ) :Integer;
 begin
-     Result := _[ I_ ];
+     Result := _Xs[ X_ ];
 end;
 
-procedure TInteger2D.SetV( const I_:Integer; const V_:Integer );
+procedure TInteger2D.Sets( const X_:Integer; const V_:Integer );
 begin
-     _[ I_ ] := V_;
+     _Xs[ X_ ] := V_;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TInt64u2D
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+function TInt64u2D.Gets( const X_:Integer ) :Int64u;
+begin
+     Result := _Xs[ X_ ];
+end;
+
+procedure TInt64u2D.Sets( const X_:Integer; const V_:Int64u );
+begin
+     _Xs[ X_ ] := V_;
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TInt64u2D.Create( const V_:Int64u );
+begin
+     X := V_;
+     Y := V_;
+end;
+
+constructor TInt64u2D.Create( const X_,Y_:Int64u );
+begin
+     X := X_;
+     Y := Y_;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TInt64s2D
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+/////////////////////////////////////////////////////////////////////// アクセス
+
+function TInt64s2D.Gets( const X_:Integer ) :Int64s;
+begin
+     Result := _Xs[ X_ ];
+end;
+
+procedure TInt64s2D.Sets( const X_:Integer; const V_:Int64s );
+begin
+     _Xs[ X_ ] := V_;
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TInt64s2D.Create( const V_:Int64s );
+begin
+     X := V_;
+     Y := V_;
+end;
+
+constructor TInt64s2D.Create( const X_,Y_:Int64s );
+begin
+     X := X_;
+     Y := Y_;
+end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSingle2D
 
@@ -808,14 +950,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TSingle2D.GetV( const I_:Integer ) :Single;
+function TSingle2D.Gets( const X_:Integer ) :Single;
 begin
-     Result := _[ I_ ];
+     Result := _Xs[ X_ ];
 end;
 
-procedure TSingle2D.SetV( const I_:Integer; const V_:Single );
+procedure TSingle2D.Sets( const X_:Integer; const V_:Single );
 begin
-     _[ I_ ] := V_;
+     _Xs[ X_ ] := V_;
 end;
 
 //------------------------------------------------------------------------------
@@ -1057,14 +1199,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TDouble2D.GetV( const I_:Integer ) :Double;
+function TDouble2D.Gets( const X_:Integer ) :Double;
 begin
-     Result := _[ I_ ];
+     Result := _Xs[ X_ ];
 end;
 
-procedure TDouble2D.SetV( const I_:Integer; const V_:Double );
+procedure TDouble2D.Sets( const X_:Integer; const V_:Double );
 begin
-     _[ I_ ] := V_;
+     _Xs[ X_ ] := V_;
 end;
 
 //------------------------------------------------------------------------------
@@ -1326,14 +1468,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TdSingle2D.GetV( const I_:Integer ) :TdSingle;
+function TdSingle2D.Gets( const X_:Integer ) :TdSingle;
 begin
-     Result := _[ I_ ];
+     Result := _Xs[ X_ ];
 end;
 
-procedure TdSingle2D.SetV( const I_:Integer; const V_:TdSingle );
+procedure TdSingle2D.Sets( const X_:Integer; const V_:TdSingle );
 begin
-     _[ I_ ] := V_;
+     _Xs[ X_ ] := V_;
 end;
 
 //------------------------------------------------------------------------------
@@ -1509,14 +1651,14 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TdDouble2D.GetV( const I_:Integer ) :TdDouble;
+function TdDouble2D.Gets( const X_:Integer ) :TdDouble;
 begin
-     Result := _[ I_ ];
+     Result := _Xs[ X_ ];
 end;
 
-procedure TdDouble2D.SetV( const I_:Integer; const V_:TdDouble );
+procedure TdDouble2D.Sets( const X_:Integer; const V_:TdDouble );
 begin
-     _[ I_ ] := V_;
+     _Xs[ X_ ] := V_;
 end;
 
 //------------------------------------------------------------------------------
@@ -2332,6 +2474,38 @@ end;
 
 //------------------------------------------------------------------------------
 
+function TSingleArea2D.GetCentX :Single;
+begin
+     Result := ( Max.X + Min.X ) / 2;
+end;
+
+procedure TSingleArea2D.SetCentX( const CentX_:Single );
+var
+   C, S :Single;
+begin
+     C := CentX_;  S := SizeX / 2;
+
+     Min.X := C - S;
+     Max.X := C + S;
+end;
+
+function TSingleArea2D.GetCentY :Single;
+begin
+     Result := ( Max.Y + Min.Y ) / 2;
+end;
+
+procedure TSingleArea2D.SetCentY( const CentY_:Single );
+var
+   C, S :Single;
+begin
+     C := CentY_;  S := SizeY / 2;
+
+     Min.Y := C - S;
+     Max.Y := C + S;
+end;
+
+//------------------------------------------------------------------------------
+
 function TSingleArea2D.GetSizeX :Single;
 begin
      Result := Max.X - Min.X;
@@ -2341,9 +2515,7 @@ procedure TSingleArea2D.SetSizeX( const SizeX_:Single );
 var
    C, S :Single;
 begin
-     C := ( Min.X + Max.X ) / 2;
-
-     S := SizeX_ / 2;
+     C := CentX;  S := SizeX_ / 2;
 
      Min.X := C - S;
      Max.X := C + S;
@@ -2358,9 +2530,7 @@ procedure TSingleArea2D.SetSizeY( const SizeY_:Single );
 var
    C, S :Single;
 begin
-     C := ( Min.Y + Max.Y ) / 2;
-
-     S := SizeY_ / 2;
+     C := CentY;  S := SizeY_ / 2;
 
      Min.Y := C - S;
      Max.Y := C + S;
@@ -2451,12 +2621,50 @@ begin
                                      Single.PositiveInfinity );
 end;
 
+///////////////////////////////////////////////////////////////////////// 型変換
+
+class operator TSingleArea2D.Implicit( const V_:TSingleArea2D ) :TRectF;
+begin
+     Result.Left   := V_.Min.X;
+     Result.Right  := V_.Max.X;
+     Result.Bottom := V_.Min.Y;
+     Result.Top    := V_.Max.Y;
+end;
+
+class operator TSingleArea2D.Implicit( const V_:TRectF ) :TSingleArea2D;
+begin
+     Result.Min.X := V_.Left  ;
+     Result.Max.X := V_.Right ;
+     Result.Min.Y := V_.Bottom;
+     Result.Max.Y := V_.Top   ;
+end;
+
 /////////////////////////////////////////////////////////////////////// メソッド
 
 function TSingleArea2D.Collision( const Area_:TSingleArea2D ) :Boolean;
 begin
      Result := ProjX.Collision( Area_.ProjX )
            and ProjY.Collision( Area_.ProjY );
+end;
+
+//------------------------------------------------------------------------------
+
+procedure TSingleArea2D.Add( const Poin_:TSingle2D );
+begin
+     with Poin_ do
+     begin
+          if X < Min.X then Min.X := X;
+          if Y < Min.Y then Min.Y := Y;
+          if Max.X < X then Max.X := X;
+          if Max.Y < Y then Max.Y := Y;
+     end;
+end;
+
+procedure TSingleArea2D.Add( const Poins_:TArray<TSingle2D> );
+var
+   P :TSingle2D;
+begin
+     for P in Poins_ do Add( P );
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDoubleArea2D
@@ -2473,6 +2681,38 @@ begin
        2: Result := TDouble2D.Create( Min.X, Max.Y );
        3: Result := TDouble2D.Create( Max.X, Max.Y );
      end;
+end;
+
+//------------------------------------------------------------------------------
+
+function TDoubleArea2D.GetCentX :Double;
+begin
+     Result := ( Max.X + Min.X ) / 2;
+end;
+
+procedure TDoubleArea2D.SetCentX( const CentX_:Double );
+var
+   C, S :Double;
+begin
+     C := CentX_;  S := SizeX / 2;
+
+     Min.X := C - S;
+     Max.X := C + S;
+end;
+
+function TDoubleArea2D.GetCentY :Double;
+begin
+     Result := ( Max.Y + Min.Y ) / 2;
+end;
+
+procedure TDoubleArea2D.SetCentY( const CentY_:Double );
+var
+   C, S :Double;
+begin
+     C := CentY_;  S := SizeY / 2;
+
+     Min.Y := C - S;
+     Max.Y := C + S;
 end;
 
 //------------------------------------------------------------------------------
@@ -2596,12 +2836,50 @@ begin
                                      Double.PositiveInfinity );
 end;
 
+///////////////////////////////////////////////////////////////////////// 型変換
+
+class operator TDoubleArea2D.Implicit( const V_:TDoubleArea2D ) :TRectF;
+begin
+     Result.Left   := V_.Min.X;
+     Result.Right  := V_.Max.X;
+     Result.Bottom := V_.Min.Y;
+     Result.Top    := V_.Max.Y;
+end;
+
+class operator TDoubleArea2D.Implicit( const V_:TRectF ) :TDoubleArea2D;
+begin
+     Result.Min.X := V_.Left  ;
+     Result.Max.X := V_.Right ;
+     Result.Min.Y := V_.Bottom;
+     Result.Max.Y := V_.Top   ;
+end;
+
 /////////////////////////////////////////////////////////////////////// メソッド
 
 function TDoubleArea2D.Collision( const Area_:TDoubleArea2D ) :Boolean;
 begin
      Result := ProjX.Collision( Area_.ProjX )
            and ProjY.Collision( Area_.ProjY );
+end;
+
+//------------------------------------------------------------------------------
+
+procedure TDoubleArea2D.Add( const Poin_:TDouble2D );
+begin
+     with Poin_ do
+     begin
+          if X < Min.X then Min.X := X;
+          if Y < Min.Y then Min.Y := Y;
+          if Max.X < X then Max.X := X;
+          if Max.Y < Y then Max.Y := Y;
+     end;
+end;
+
+procedure TDoubleArea2D.Add( const Poins_:TArray<TDouble2D> );
+var
+   P :TDouble2D;
+begin
+     for P in Poins_ do Add( P );
 end;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】

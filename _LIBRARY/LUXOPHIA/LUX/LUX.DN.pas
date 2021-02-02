@@ -14,8 +14,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TSingleND = record
      private
        ///// アクセス
-       function Getos( const I_:Integer ) :Single; inline;
-       procedure Setos( const I_:Integer; const o_:Single ); inline;
+       function Gets( const X_:Integer ) :Single; inline;
+       procedure Sets( const X_:Integer; const o_:Single ); inline;
        function GetDimN :Integer; inline;
        procedure SetDimN( const DimN_:Integer ); inline;
        function GetSiz2 :Single; inline;
@@ -25,14 +25,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        function GetUnitor :TSingleND; inline;
        procedure SetUnitor( const Unitor_:TSingleND ); inline;
      public
-       _s :TArray<Single>;
+       _Xs :TArray<Single>;
        /////
        constructor Create( const N_:Integer ); overload;
        constructor Create( const V_:Single; const N_:Integer ); overload;
        constructor Create( const Vs_:array of Single ); overload;
        constructor Create( const D_:TSingleND ); overload;
        ///// プロパティ
-       property os[ const I_:Integer ] :Single    read Getos     write Setos    ; default;
+       property _s[ const I_:Integer ] :Single    read Gets     write Sets    ; default;
        property DimN                   :Integer   read GetDimN   write SetDimN  ;
        property Siz2                   :Single    read GetSiz2   write SetSiz2  ;
        property Size                   :Single    read GetSize   write SetSize  ;
@@ -70,8 +70,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TDoubleND = record
      private
        ///// アクセス
-       function Getos( const I_:Integer ) :Double; inline;
-       procedure Setos( const I_:Integer; const o_:Double ); inline;
+       function Gets( const X_:Integer ) :Double; inline;
+       procedure Sets( const X_:Integer; const o_:Double ); inline;
        function GetDimN :Integer; inline;
        procedure SetDimN( const DimN_:Integer ); inline;
        function GetSiz2 :Double; inline;
@@ -81,14 +81,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        function GetUnitor :TDoubleND; inline;
        procedure SetUnitor( const Unitor_:TDoubleND ); inline;
      public
-       _s :TArray<Double>;
+       _Xs :TArray<Double>;
        /////
        constructor Create( const N_:Integer ); overload;
        constructor Create( const V_:Double; const N_:Integer ); overload;
        constructor Create( const Vs_:array of Double ); overload;
        constructor Create( const D_:TDoubleND ); overload;
        ///// プロパティ
-       property os[ const I_:Integer ] :Double    read Getos     write Setos    ; default;
+       property _s[ const I_:Integer ] :Double    read Gets     write Sets    ; default;
        property DimN                   :Integer   read GetDimN   write SetDimN  ;
        property Siz2                   :Double    read GetSiz2   write SetSiz2  ;
        property Size                   :Double    read GetSize   write SetSize  ;
@@ -126,8 +126,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TdSingleND = record
      private
        ///// アクセス
-       function Getos( const I_:Integer ) :TdSingle; inline;
-       procedure Setos( const I_:Integer; const o_:TdSingle ); inline;
+       function Gets( const X_:Integer ) :TdSingle; inline;
+       procedure Sets( const X_:Integer; const o_:TdSingle ); inline;
        function GetDimN :Integer; inline;
        procedure SetDimN( const DimN_:Integer ); inline;
        function Geto :TSingleND; inline;
@@ -141,14 +141,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        function GetUnitor :TdSingleND; inline;
        procedure SetUnitor( const Unitor_:TdSingleND ); inline;
      public
-       _s :TArray<TdSingle>;
+       _Xs :TArray<TdSingle>;
        /////
        constructor Create( const N_:Integer ); overload;
        constructor Create( const V_:TdSingle; const N_:Integer ); overload;
        constructor Create( const Vs_:array of TdSingle ); overload;
        constructor Create( const D_:TdSingleND ); overload;
        ///// プロパティ
-       property os[ const I_:Integer ] :TdSingle   read Getos     write Setos    ; default;
+       property _s[ const I_:Integer ] :TdSingle   read Gets     write Sets    ; default;
        property DimN                   :Integer    read GetDimN   write SetDimN  ;
        property o                      :TSingleND  read Geto      write Seto     ;
        property d                      :TSingleND  read Getd      write Setd     ;
@@ -178,8 +178,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      TdDoubleND = record
      private
        ///// アクセス
-       function Getos( const I_:Integer ) :TdDouble; inline;
-       procedure Setos( const I_:Integer; const o_:TdDouble ); inline;
+       function Gets( const X_:Integer ) :TdDouble; inline;
+       procedure Sets( const X_:Integer; const o_:TdDouble ); inline;
        function GetDimN :Integer; inline;
        procedure SetDimN( const DimN_:Integer ); inline;
        function Geto :TDoubleND; inline;
@@ -193,14 +193,14 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        function GetUnitor :TdDoubleND; inline;
        procedure SetUnitor( const Unitor_:TdDoubleND ); inline;
      public
-       _s :TArray<TdDouble>;
+       _Xs :TArray<TdDouble>;
        /////
        constructor Create( const N_:Integer ); overload;
        constructor Create( const V_:TdDouble; const N_:Integer ); overload;
        constructor Create( const Vs_:array of TdDouble ); overload;
        constructor Create( const D_:TdDoubleND ); overload;
        ///// プロパティ
-       property os[ const I_:Integer ] :TdDouble   read Getos     write Setos    ; default;
+       property _s[ const I_:Integer ] :TdDouble   read Gets     write Sets    ; default;
        property DimN                   :Integer    read GetDimN   write SetDimN  ;
        property o                      :TDoubleND  read Geto      write Seto     ;
        property d                      :TDoubleND  read Getd      write Setd     ;
@@ -275,26 +275,26 @@ uses System.SysUtils, System.Math;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TSingleND.Getos( const I_:Integer ) :Single;
+function TSingleND.Gets( const X_:Integer ) :Single;
 begin
-     Result := _s[ I_ ];
+     Result := _Xs[ X_ ];
 end;
 
-procedure TSingleND.Setos( const I_:Integer; const o_:Single );
+procedure TSingleND.Sets( const X_:Integer; const o_:Single );
 begin
-     _s[ I_ ] := o_;
+     _Xs[ X_ ] := o_;
 end;
 
 //------------------------------------------------------------------------------
 
 function TSingleND.GetDimN :Integer;
 begin
-     Result := Length( _s );
+     Result := Length( _Xs );
 end;
 
 procedure TSingleND.SetDimN( const DimN_:Integer );
 begin
-     SetLength( _s, DimN_ );
+     SetLength( _Xs, DimN_ );
 end;
 
 //------------------------------------------------------------------------------
@@ -305,7 +305,7 @@ var
 begin
      Result := 0;
 
-     for I := 0 to DimN-1 do Result := Result + Pow2( _s[ I ] );
+     for I := 0 to DimN-1 do Result := Result + Pow2( _Xs[ I ] );
 end;
 
 procedure TSingleND.SetSiz2( const Siz2_:Single );
@@ -346,7 +346,7 @@ var
 begin
      DimN := N_;
 
-     for I := 0 to DimN-1 do _s[ I ] := V_;
+     for I := 0 to DimN-1 do _Xs[ I ] := V_;
 end;
 
 constructor TSingleND.Create( const Vs_:array of Single );
@@ -355,12 +355,12 @@ var
 begin
      DimN := Length( Vs_ );
 
-     for I := 0 to DimN-1 do _s[ I ] := Vs_[ I ];
+     for I := 0 to DimN-1 do _Xs[ I ] := Vs_[ I ];
 end;
 
 constructor TSingleND.Create( const D_:TSingleND );
 begin
-     _s := Copy( D_._s );
+     _Xs := Copy( D_._Xs );
 end;
 
 ///////////////////////////////////////////////////////////////////////// 演算子
@@ -614,26 +614,26 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TDoubleND.Getos( const I_:Integer ) :Double;
+function TDoubleND.Gets( const X_:Integer ) :Double;
 begin
-     Result := _s[ I_ ];
+     Result := _Xs[ X_ ];
 end;
 
-procedure TDoubleND.Setos( const I_:Integer; const o_:Double );
+procedure TDoubleND.Sets( const X_:Integer; const o_:Double );
 begin
-     _s[ I_ ] := o_;
+     _Xs[ X_ ] := o_;
 end;
 
 //------------------------------------------------------------------------------
 
 function TDoubleND.GetDimN :Integer;
 begin
-     Result := Length( _s );
+     Result := Length( _Xs );
 end;
 
 procedure TDoubleND.SetDimN( const DimN_:Integer );
 begin
-     SetLength( _s, DimN_ );
+     SetLength( _Xs, DimN_ );
 end;
 
 //------------------------------------------------------------------------------
@@ -644,7 +644,7 @@ var
 begin
      Result := 0;
 
-     for I := 0 to DimN-1 do Result := Result + Pow2( _s[ I ] );
+     for I := 0 to DimN-1 do Result := Result + Pow2( _Xs[ I ] );
 end;
 
 procedure TDoubleND.SetSiz2( const Siz2_:Double );
@@ -685,7 +685,7 @@ var
 begin
      DimN := N_;
 
-     for I := 0 to DimN-1 do _s[ I ] := V_;
+     for I := 0 to DimN-1 do _Xs[ I ] := V_;
 end;
 
 constructor TDoubleND.Create( const Vs_:array of Double );
@@ -694,12 +694,12 @@ var
 begin
      DimN := Length( Vs_ );
 
-     for I := 0 to DimN-1 do _s[ I ] := Vs_[ I ];
+     for I := 0 to DimN-1 do _Xs[ I ] := Vs_[ I ];
 end;
 
 constructor TDoubleND.Create( const D_:TDoubleND );
 begin
-     _s := Copy( D_._s );
+     _Xs := Copy( D_._Xs );
 end;
 
 ///////////////////////////////////////////////////////////////////////// 演算子
@@ -952,26 +952,26 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TdSingleND.Getos( const I_:Integer ) :TdSingle;
+function TdSingleND.Gets( const X_:Integer ) :TdSingle;
 begin
-     Result := _s[ I_ ];
+     Result := _Xs[ X_ ];
 end;
 
-procedure TdSingleND.Setos( const I_:Integer; const o_:TdSingle );
+procedure TdSingleND.Sets( const X_:Integer; const o_:TdSingle );
 begin
-     _s[ I_ ] := o_;
+     _Xs[ X_ ] := o_;
 end;
 
 //------------------------------------------------------------------------------
 
 function TdSingleND.GetDimN :Integer;
 begin
-     Result := Length( _s );
+     Result := Length( _Xs );
 end;
 
 procedure TdSingleND.SetDimN( const DimN_:Integer );
 begin
-     SetLength( _s, DimN_ );
+     SetLength( _Xs, DimN_ );
 end;
 
 //------------------------------------------------------------------------------
@@ -982,7 +982,7 @@ var
 begin
      Result.DimN := DimN;
 
-     for I := 0 to Result.DimN-1 do Result[ I ] := _s[ I ].o;
+     for I := 0 to Result.DimN-1 do Result[ I ] := _Xs[ I ].o;
 end;
 
 procedure TdSingleND.Seto( const o_:TSingleND );
@@ -991,7 +991,7 @@ var
 begin
      DimN := o_.DimN;
 
-     for I := 0 to DimN-1 do _s[ I ].o := o_[ I ];
+     for I := 0 to DimN-1 do _Xs[ I ].o := o_[ I ];
 end;
 
 function TdSingleND.Getd :TSingleND;
@@ -1000,7 +1000,7 @@ var
 begin
      Result.DimN := DimN;
 
-     for I := 0 to Result.DimN-1 do Result[ I ] := _s[ I ].d;
+     for I := 0 to Result.DimN-1 do Result[ I ] := _Xs[ I ].d;
 end;
 
 procedure TdSingleND.Setd( const d_:TSingleND );
@@ -1009,7 +1009,7 @@ var
 begin
      DimN := d_.DimN;
 
-     for I := 0 to DimN-1 do _s[ I ].d := d_[ I ];
+     for I := 0 to DimN-1 do _Xs[ I ].d := d_[ I ];
 end;
 
 function TdSingleND.GetSiz2 :TdSingle;
@@ -1018,7 +1018,7 @@ var
 begin
      Result := 0;
 
-     for I := 0 to DimN-1 do Result := Result + Pow2( _s[ I ] );
+     for I := 0 to DimN-1 do Result := Result + Pow2( _Xs[ I ] );
 end;
 
 procedure TdSingleND.SetSiz2( const Siz2_:TdSingle );
@@ -1059,7 +1059,7 @@ var
 begin
      DimN := N_;
 
-     for I := 0 to DimN-1 do _s[ I ] := V_;
+     for I := 0 to DimN-1 do _Xs[ I ] := V_;
 end;
 
 constructor TdSingleND.Create( const Vs_:array of TdSingle );
@@ -1068,12 +1068,12 @@ var
 begin
      DimN := Length( Vs_ );
 
-     for I := 0 to DimN-1 do _s[ I ] := Vs_[ I ];
+     for I := 0 to DimN-1 do _Xs[ I ] := Vs_[ I ];
 end;
 
 constructor TdSingleND.Create( const D_:TdSingleND );
 begin
-     _s := Copy( D_._s );
+     _Xs := Copy( D_._Xs );
 end;
 
 ///////////////////////////////////////////////////////////////////////// 演算子
@@ -1229,7 +1229,7 @@ begin
 
      for I := 0 to Result.DimN-1 do
      begin
-          with Result._s[ I ] do
+          with Result._Xs[ I ] do
           begin
                o := V_[ I ];
                d := 0;
@@ -1252,26 +1252,26 @@ end;
 
 /////////////////////////////////////////////////////////////////////// アクセス
 
-function TdDoubleND.Getos( const I_:Integer ) :TdDouble;
+function TdDoubleND.Gets( const X_:Integer ) :TdDouble;
 begin
-     Result := _s[ I_ ];
+     Result := _Xs[ X_ ];
 end;
 
-procedure TdDoubleND.Setos( const I_:Integer; const o_:TdDouble );
+procedure TdDoubleND.Sets( const X_:Integer; const o_:TdDouble );
 begin
-     _s[ I_ ] := o_;
+     _Xs[ X_ ] := o_;
 end;
 
 //------------------------------------------------------------------------------
 
 function TdDoubleND.GetDimN :Integer;
 begin
-     Result := Length( _s );
+     Result := Length( _Xs );
 end;
 
 procedure TdDoubleND.SetDimN( const DimN_:Integer );
 begin
-     SetLength( _s, DimN_ );
+     SetLength( _Xs, DimN_ );
 end;
 
 //------------------------------------------------------------------------------
@@ -1282,7 +1282,7 @@ var
 begin
      Result.DimN := DimN;
 
-     for I := 0 to Result.DimN-1 do Result[ I ] := _s[ I ].o;
+     for I := 0 to Result.DimN-1 do Result[ I ] := _Xs[ I ].o;
 end;
 
 procedure TdDoubleND.Seto( const o_:TDoubleND );
@@ -1291,7 +1291,7 @@ var
 begin
      DimN := o_.DimN;
 
-     for I := 0 to DimN-1 do _s[ I ].o := o_[ I ];
+     for I := 0 to DimN-1 do _Xs[ I ].o := o_[ I ];
 end;
 
 function TdDoubleND.Getd :TDoubleND;
@@ -1300,7 +1300,7 @@ var
 begin
      Result.DimN := DimN;
 
-     for I := 0 to Result.DimN-1 do Result[ I ] := _s[ I ].d;
+     for I := 0 to Result.DimN-1 do Result[ I ] := _Xs[ I ].d;
 end;
 
 procedure TdDoubleND.Setd( const d_:TDoubleND );
@@ -1309,7 +1309,7 @@ var
 begin
      DimN := d_.DimN;
 
-     for I := 0 to DimN-1 do _s[ I ].d := d_[ I ];
+     for I := 0 to DimN-1 do _Xs[ I ].d := d_[ I ];
 end;
 
 function TdDoubleND.GetSiz2 :TdDouble;
@@ -1318,7 +1318,7 @@ var
 begin
      Result := 0;
 
-     for I := 0 to DimN-1 do Result := Result + Pow2( _s[ I ] );
+     for I := 0 to DimN-1 do Result := Result + Pow2( _Xs[ I ] );
 end;
 
 procedure TdDoubleND.SetSiz2( const Siz2_:TdDouble );
@@ -1359,7 +1359,7 @@ var
 begin
      DimN := N_;
 
-     for I := 0 to DimN-1 do _s[ I ] := V_;
+     for I := 0 to DimN-1 do _Xs[ I ] := V_;
 end;
 
 constructor TdDoubleND.Create( const Vs_:array of TdDouble );
@@ -1368,12 +1368,12 @@ var
 begin
      DimN := Length( Vs_ );
 
-     for I := 0 to DimN-1 do _s[ I ] := Vs_[ I ];
+     for I := 0 to DimN-1 do _Xs[ I ] := Vs_[ I ];
 end;
 
 constructor TdDoubleND.Create( const D_:TdDoubleND );
 begin
-     _s := Copy( D_._s );
+     _Xs := Copy( D_._Xs );
 end;
 
 ///////////////////////////////////////////////////////////////////////// 演算子
@@ -1529,7 +1529,7 @@ begin
 
      for I := 0 to Result.DimN-1 do
      begin
-          with Result._s[ I ] do
+          with Result._Xs[ I ] do
           begin
                o := V_[ I ];
                d := 0;
