@@ -2,119 +2,64 @@
 
 interface //#################################################################### ■
 
-uses LUX,
-     LUX.D1;
+uses LUX;
 
-//type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
+type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 T Y P E 】
 
-     //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
+     //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 R E C O R D 】
 
-     //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSingleWector<_TVector_>
 
-//const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
+     TSingleWector<_TVector_> = record
+     private
+     public
+       v :_TVector_;
+       w :Single;
+       /////
+       constructor Create( const V_:_TVector_; const W_:Single );
+     end;
 
-//var //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【変数】
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDoubleWector<_TVector_>
 
-//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
+     TDoubleWector<_TVector_> = record
+     private
+     public
+       v :_TVector_;
+       w :Double;
+       /////
+       constructor Create( const V_:_TVector_; const W_:Double );
+     end;
 
-function Delta( const X_:Single ) :Single; overload;
-function Delta( const X_:Double ) :Double; overload;
+     //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 C L A S S 】
 
-function Sinc( const X_:Single ) :Single; overload;
-function Sinc( const X_:Double ) :Double; overload;
-
-function Lerp( const P0_,P1_,T0_,T1_,T_:Single ) :Single; overload;
-function Lerp( const P0_,P1_,T0_,T1_,T_:Double ) :Double; overload;
-function Lerp( const P0_,P1_,T0_,T1_,T_:TdSingle ) :TdSingle; overload;
-function Lerp( const P0_,P1_,T0_,T1_,T_:TdDouble ) :TdDouble; overload;
-
-function Lerp( const P0_,P1_,T_:Single ) :Single; overload;
-function Lerp( const P0_,P1_,T_:Double ) :Double; overload;
-function Lerp( const P0_,P1_,T_:TdSingle ) :TdSingle; overload;
-function Lerp( const P0_,P1_,T_:TdDouble ) :TdDouble; overload;
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 R O U T I N E 】
 
 implementation //############################################################### ■
 
-//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 R E C O R D 】
 
-//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSingleWector<_TVector_>
 
-//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
 
-function Delta( const X_:Single ) :Single;
+constructor TSingleWector<_TVector_>.Create( const V_:_TVector_; const W_:Single );
 begin
-     if Abs( X_ ) < SINGLE_EPS1 then Result := 1
-                                else Result := 0;
+     v := V_;
+     w := W_;
 end;
 
-function Delta( const X_:Double ) :Double;
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDoubleWector<_TVector_>
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TDoubleWector<_TVector_>.Create( const V_:_TVector_; const W_:Double );
 begin
-     if Abs( X_ ) < DOUBLE_EPS1 then Result := 1
-                                else Result := 0;
+     v := V_;
+     w := W_;
 end;
 
-//------------------------------------------------------------------------------
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 C L A S S 】
 
-function Sinc( const X_:Single ) :Single;
-begin
-     if Abs( X_ ) < SINGLE_EPS1 then Result := 1
-                                else Result := Sin( Pi * X_ ) / ( Pi * X_ );
-end;
-
-function Sinc( const X_:Double ) :Double;
-begin
-     if Abs( X_ ) < DOUBLE_EPS1 then Result := 1
-                                else Result := Sin( Pi * X_ ) / ( Pi * X_ );
-end;
-
-//------------------------------------------------------------------------------
-
-function Lerp( const P0_,P1_,T0_,T1_,T_:Single ) :Single;
-begin
-     Result := ( ( T1_ - T_ ) * P0_ + ( T_ - T0_ ) * P1_ ) / ( T1_ - T0_ );
-end;
-
-function Lerp( const P0_,P1_,T0_,T1_,T_:Double ) :Double;
-begin
-     Result := ( ( T1_ - T_ ) * P0_ + ( T_ - T0_ ) * P1_ ) / ( T1_ - T0_ );
-end;
-
-function Lerp( const P0_,P1_,T0_,T1_,T_:TdSingle ) :TdSingle;
-begin
-     Result := ( ( T1_ - T_ ) * P0_ + ( T_ - T0_ ) * P1_ ) / ( T1_ - T0_ );
-end;
-
-function Lerp( const P0_,P1_,T0_,T1_,T_:TdDouble ) :TdDouble;
-begin
-     Result := ( ( T1_ - T_ ) * P0_ + ( T_ - T0_ ) * P1_ ) / ( T1_ - T0_ );
-end;
-
-//------------------------------------------------------------------------------
-
-function Lerp( const P0_,P1_,T_:Single ) :Single;
-begin
-     Result := ( P1_ - P0_ ) * T_ + P0_;
-end;
-
-function Lerp( const P0_,P1_,T_:Double ) :Double;
-begin
-     Result := ( P1_ - P0_ ) * T_ + P0_;
-end;
-
-function Lerp( const P0_,P1_,T_:TdSingle ) :TdSingle;
-begin
-     Result := ( P1_ - P0_ ) * T_ + P0_;
-end;
-
-function Lerp( const P0_,P1_,T_:TdDouble ) :TdDouble;
-begin
-     Result := ( P1_ - P0_ ) * T_ + P0_;
-end;
-
-//############################################################################## □
-
-initialization //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 初期化
-
-finalization //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 最終化
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 R O U T I N E 】
 
 end. //######################################################################### ■
