@@ -2,40 +2,40 @@
 
 interface //#################################################################### ■
 
-uses LUX,
+uses System.Math.Vectors,
+     LUX,
      LUX.D1,
      LUX.D2, LUX.D2x2,
      LUX.D3;
 
-type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
+type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 T Y P E 】
 
-     //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
+     //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 R E C O R D 】
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSingleM3
 
      TSingleM3 = record
      private
-       ///// アクセス
-       function Gets( const Y_,X_:Integer ) :Single;
-       procedure Sets( const Y_,X_:Integer; const M_:Single );
-       function GetAxisX :TSingle3D;
-       procedure SetAxisX( const AxisX_:TSingle3D );
-       function GetAxisY :TSingle3D;
-       procedure SetAxisY( const AxisY_:TSingle3D );
-       function GetAxisZ :TSingle3D;
-       procedure SetAxisZ( const AxisZ_:TSingle3D );
-       function GetSum :Single;
+       ///// A C C E S S O R
+       function GetD2( const Y_,X_:Integer ) :Single;
+       procedure SetD2( const Y_,X_:Integer; const D2_:Single );
+       function GetAxisX :TSingle2D;
+       procedure SetAxisX( const AxisX_:TSingle2D );
+       function GetAxisY :TSingle2D;
+       procedure SetAxisY( const AxisY_:TSingle2D );
+       function GetAxisP :TSingle2D;
+       procedure SetAxisP( const AxisP_:TSingle2D );
      public
        constructor Create( const _11_,_12_,_13_,
                                  _21_,_22_,_23_,
-                                 _31_,_32_,_33_:Single );
-       ///// プロパティ
-       property _s[ const Y_,X_:Integer ] :Single    read Gets     write Sets    ; default;
-       property AxisX                     :TSingle3D read GetAxisX write SetAxisX;
-       property AxisY                     :TSingle3D read GetAxisY write SetAxisY;
-       property AxisZ                     :TSingle3D read GetAxisZ write SetAxisZ;
-       property Sum                       :Single    read GetSum;
-       ///// 演算子
+                                 _31_,_32_,_33_:Single ); overload;
+       constructor Create( const X_,Y_,P_:TSingle2D ); overload;
+       ///// P R O P E R T Y
+       property D2[ const Y_,X_:Integer ] :Single    read GetD2    write SetD2   ; default;
+       property AxisX                     :TSingle2D read GetAxisX write SetAxisX;  // ２Ｄ同次系の座標軸
+       property AxisY                     :TSingle2D read GetAxisY write SetAxisY;
+       property AxisP                     :TSingle2D read GetAxisP write SetAxisP;
+       ///// O P E R A T O R
        class operator Negative( const V_:TSingleM3 ) :TSingleM3;
        class operator Positive( const V_:TSingleM3 ) :TSingleM3;
        class operator Add( const A_,B_:TSingleM3 ) :TSingleM3;
@@ -46,42 +46,59 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class operator Multiply( const A_:TSingle3D; const B_:TSingleM3 ) :TSingle3D;
        class operator Multiply( const A_:TSingleM3; const B_:TSingle3D ) :TSingle3D;
        class operator Divide( const A_:TSingleM3; const B_:Single ) :TSingleM3;
-       ///// メソッド
+       ///// C A S T
+       class operator Implicit( const V_:Single ) :TSingleM3;
+       class operator Implicit( const V_:TMatrix ) :TSingleM3;
+       class operator Explicit( const V_:TSingleM3 ) :TMatrix;
+       class operator Implicit( const V_:TSingleM2 ) :TSingleM3;
+       class operator Explicit( const V_:TSingleM3 ) :TSingleM2;
+       ///// M E T H O D
+       function MultPos( const B_:TSingle2D ) :TSingle2D;
+       function MultVec( const B_:TSingle2D ) :TSingle2D;
        function Transpose :TSingleM3;
        function Det :Single;
        function Adjugate :TSingleM3;
        function Inverse :TSingleM3;
-
-     case Integer of
-      0:( _ :array [ 1..3, 1..3 ] of Single; );
-      1:( _11, _12, _13,
-          _21, _22, _23,
-          _31, _32, _33 :Single;             );
+       ///// C O N S T A N T
+       class function Translate( const X_,Y_:Single ) :TSingleM3; overload; static;
+       class function Translate( const T_:TSingle2D ) :TSingleM3; overload; static;
+       class function Scale( const X_,Y_:Single ) :TSingleM3; overload; static;
+       class function Scale( const S_:TSingle2D ) :TSingleM3; overload; static;
+       class function Rotate( const Angle_:Single ) :TSingleM3; static;
+       class function Identity :TSingleM3; static;
+       ///// F I E L D
+     case Byte of
+      0:( _1D :array [ 0..3*3-1       ] of Single; );
+      1:( _2D :array [ 0..3-1, 0..3-1 ] of Single; );
+      2:( _11, _21, _31,
+          _12, _22, _32,
+          _13, _23, _33 :Single;                   );
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDoubleM3
 
      TDoubleM3 = record
      private
-       ///// アクセス
-       function Gets( const Y_,X_:Integer ) :Double;
-       procedure Sets( const Y_,X_:Integer; const M_:Double );
-       function GetAxisX :TDouble3D;
-       procedure SetAxisX( const AxisX_:TDouble3D );
-       function GetAxisY :TDouble3D;
-       procedure SetAxisY( const AxisY_:TDouble3D );
-       function GetAxisZ :TDouble3D;
-       procedure SetAxisZ( const AxisZ_:TDouble3D );
+       ///// A C C E S S O R
+       function GetD2( const Y_,X_:Integer ) :Double;
+       procedure SetD2( const Y_,X_:Integer; const D2_:Double );
+       function GetAxisX :TDouble2D;
+       procedure SetAxisX( const AxisX_:TDouble2D );
+       function GetAxisY :TDouble2D;
+       procedure SetAxisY( const AxisY_:TDouble2D );
+       function GetAxisP :TDouble2D;
+       procedure SetAxisP( const AxisP_:TDouble2D );
      public
        constructor Create( const _11_,_12_,_13_,
                                  _21_,_22_,_23_,
-                                 _31_,_32_,_33_:Double );
-       ///// プロパティ
-       property _s[ const Y_,X_:Integer ] :Double    read Gets     write Sets    ; default;
-       property AxisX                     :TDouble3D read GetAxisX write SetAxisX;
-       property AxisY                     :TDouble3D read GetAxisY write SetAxisY;
-       property AxisZ                     :TDouble3D read GetAxisZ write SetAxisZ;
-       ///// 演算子
+                                 _31_,_32_,_33_:Double ); overload;
+       constructor Create( const X_,Y_,P_:TDouble2D ); overload;
+       ///// P R O P E R T Y
+       property D2[ const Y_,X_:Integer ] :Double    read GetD2    write SetD2   ; default;
+       property AxisX                     :TDouble2D read GetAxisX write SetAxisX;  // ２Ｄ同次系の座標軸
+       property AxisY                     :TDouble2D read GetAxisY write SetAxisY;
+       property AxisP                     :TDouble2D read GetAxisP write SetAxisP;
+       ///// O P E R A T O R
        class operator Negative( const V_:TDoubleM3 ) :TDoubleM3;
        class operator Positive( const V_:TDoubleM3 ) :TDoubleM3;
        class operator Add( const A_,B_:TDoubleM3 ) :TDoubleM3;
@@ -92,211 +109,120 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class operator Multiply( const A_:TDouble3D; const B_:TDoubleM3 ) :TDouble3D;
        class operator Multiply( const A_:TDoubleM3; const B_:TDouble3D ) :TDouble3D;
        class operator Divide( const A_:TDoubleM3; const B_:Double ) :TDoubleM3;
-       ///// メソッド
+       ///// C A S T
+       class operator Implicit( const V_:Double ) :TDoubleM3;
+       class operator Implicit( const V_:TMatrix ) :TDoubleM3;
+       class operator Explicit( const V_:TDoubleM3 ) :TMatrix;
+       class operator Implicit( const V_:TSingleM3 ) :TDoubleM3;
+       class operator Explicit( const V_:TDoubleM3 ) :TSingleM3;
+       class operator Implicit( const V_:TDoubleM2 ) :TDoubleM3;
+       class operator Explicit( const V_:TDoubleM3 ) :TDoubleM2;
+       ///// M E T H O D
+       function MultPos( const B_:TDouble2D ) :TDouble2D;
+       function MultVec( const B_:TDouble2D ) :TDouble2D;
        function Transpose :TDoubleM3;
        function Det :Double;
        function Adjugate :TDoubleM3;
        function Inverse :TDoubleM3;
-
-     case Integer of
-      0:( _ :array [ 1..3, 1..3 ] of Double; );
-      1:( _11, _12, _13,
-          _21, _22, _23,
-          _31, _32, _33 :Double;             );
+       ///// C O N S T A N T
+       class function Translate( const X_,Y_:Double ) :TDoubleM3; overload; static;
+       class function Translate( const T_:TDouble2D ) :TDoubleM3; overload; static;
+       class function Scale( const X_,Y_:Double ) :TDoubleM3; overload; static;
+       class function Scale( const S_:TDouble2D ) :TDoubleM3; overload; static;
+       class function Rotate( const Angle_:Double ) :TDoubleM3; static;
+       class function Identity :TDoubleM3; static;
+       ///// F I E L D
+     case Byte of
+      0:( _1D :array [ 0..3*3-1       ] of Double; );
+      1:( _2D :array [ 0..3-1, 0..3-1 ] of Double; );
+      2:( _11, _21, _31,
+          _12, _22, _32,
+          _13, _23, _33 :Double;                   );
      end;
 
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdSingleM3
+     //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 C L A S S 】
 
-     TdSingleM3 = record
-     private
-       ///// アクセス
-       function Gets( const Y_,X_:Integer ) :TdSingle;
-       procedure Sets( const Y_,X_:Integer; const M_:TdSingle );
-       function GetAxisX :TdSingle3D;
-       procedure SetAxisX( const AxisX_:TdSingle3D );
-       function GetAxisY :TdSingle3D;
-       procedure SetAxisY( const AxisY_:TdSingle3D );
-       function GetAxisZ :TdSingle3D;
-       procedure SetAxisZ( const AxisZ_:TdSingle3D );
-       function GetSum :TdSingle;
-     public
-       constructor Create( const _11_,_12_,_13_,
-                                 _21_,_22_,_23_,
-                                 _31_,_32_,_33_:TdSingle );
-       ///// プロパティ
-       property _s[ const Y_,X_:Integer ] :TdSingle   read Gets     write Sets    ; default;
-       property AxisX                     :TdSingle3D read GetAxisX write SetAxisX;
-       property AxisY                     :TdSingle3D read GetAxisY write SetAxisY;
-       property AxisZ                     :TdSingle3D read GetAxisZ write SetAxisZ;
-       property Sum   :TdSingle    read GetSum;
-       ///// 演算子
-       class operator Negative( const V_:TdSingleM3 ) :TdSingleM3;
-       class operator Positive( const V_:TdSingleM3 ) :TdSingleM3;
-       class operator Add( const A_,B_:TdSingleM3 ) :TdSingleM3;
-       class operator Subtract( const A_,B_:TdSingleM3 ) :TdSingleM3;
-       class operator Multiply( const A_,B_:TdSingleM3 ) :TdSingleM3;
-       class operator Multiply( const A_:TdSingleM3; const B_:TdSingle ) :TdSingleM3;
-       class operator Multiply( const A_:TdSingle; const B_:TdSingleM3 ) :TdSingleM3;
-       class operator Multiply( const A_:TdSingle3D; const B_:TdSingleM3 ) :TdSingle3D;
-       class operator Multiply( const A_:TdSingleM3; const B_:TdSingle3D ) :TdSingle3D;
-       class operator Divide( const A_:TdSingleM3; const B_:TdSingle ) :TdSingleM3;
-       ///// メソッド
-       function Transpose :TdSingleM3;
-       function Det :TdSingle;
-       function Adjugate :TdSingleM3;
-       function Inverse :TdSingleM3;
-
-     case Integer of
-      0:( _ :array [ 1..3, 1..3 ] of TdSingle; );
-      1:( _11, _12, _13,
-          _21, _22, _23,
-          _31, _32, _33 :TdSingle;             );
-     end;
-
-     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdDoubleM3
-
-     TdDoubleM3 = record
-     private
-       ///// アクセス
-       function Gets( const Y_,X_:Integer ) :TdDouble;
-       procedure Sets( const Y_,X_:Integer; const M_:TdDouble );
-       function GetAxisX :TdDouble3D;
-       procedure SetAxisX( const AxisX_:TdDouble3D );
-       function GetAxisY :TdDouble3D;
-       procedure SetAxisY( const AxisY_:TdDouble3D );
-       function GetAxisZ :TdDouble3D;
-       procedure SetAxisZ( const AxisZ_:TdDouble3D );
-     public
-       constructor Create( const _11_,_12_,_13_,
-                                 _21_,_22_,_23_,
-                                 _31_,_32_,_33_:TdDouble );
-       ///// プロパティ
-       property _s[ const Y_,X_:Integer ] :TdDouble   read Gets     write Sets    ; default;
-       property AxisX                     :TdDouble3D read GetAxisX write SetAxisX;
-       property AxisY                     :TdDouble3D read GetAxisY write SetAxisY;
-       property AxisZ                     :TdDouble3D read GetAxisZ write SetAxisZ;
-       ///// 演算子
-       class operator Negative( const V_:TdDoubleM3 ) :TdDoubleM3;
-       class operator Positive( const V_:TdDoubleM3 ) :TdDoubleM3;
-       class operator Add( const A_,B_:TdDoubleM3 ) :TdDoubleM3;
-       class operator Subtract( const A_,B_:TdDoubleM3 ) :TdDoubleM3;
-       class operator Multiply( const A_,B_:TdDoubleM3 ) :TdDoubleM3;
-       class operator Multiply( const A_:TdDoubleM3; const B_:TdDouble ) :TdDoubleM3;
-       class operator Multiply( const A_:TdDouble; const B_:TdDoubleM3 ) :TdDoubleM3;
-       class operator Multiply( const A_:TdDouble3D; const B_:TdDoubleM3 ) :TdDouble3D;
-       class operator Multiply( const A_:TdDoubleM3; const B_:TdDouble3D ) :TdDouble3D;
-       class operator Divide( const A_:TdDoubleM3; const B_:TdDouble ) :TdDoubleM3;
-       ///// メソッド
-       function Transpose :TdDoubleM3;
-       function Det :TdDouble;
-       function Adjugate :TdDoubleM3;
-       function Inverse :TdDoubleM3;
-
-     case Integer of
-      0:( _ :array [ 1..3, 1..3 ] of TdDouble; );
-      1:( _11, _12, _13,
-          _21, _22, _23,
-          _31, _32, _33 :TdDouble;             );
-     end;
-
-     //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
-
-//const //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【定数】
-
-//var //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【変数】
-
-//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
-
-function ArrowRot( const P0_,P1_:TSingle3D ) :TSingleM3; overload;
-function ArrowRot( const P0_,P1_:TDouble3D ) :TDoubleM3; overload;
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 R O U T I N E 】
 
 implementation //############################################################### ■
 
-//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
+uses System.Math;
+
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 R E C O R D 】
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSingleM3
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
 
-/////////////////////////////////////////////////////////////////////// アクセス
+//////////////////////////////////////////////////////////////// A C C E S S O R
 
-function TSingleM3.Gets( const Y_,X_:Integer ) :Single;
+function TSingleM3.GetD2( const Y_,X_:Integer ) :Single;
 begin
-     Result := _[ Y_, X_ ];
+     Result := _2D[ X_-1, Y_-1 ];
 end;
 
-procedure TSingleM3.Sets( const Y_,X_:Integer; const M_:Single );
+procedure TSingleM3.SetD2( const Y_,X_:Integer; const D2_:Single );
 begin
-     _[ Y_, X_ ] := M_;
+     _2D[ X_-1, Y_-1 ] := D2_;
 end;
 
 //------------------------------------------------------------------------------
 
-function TSingleM3.GetAxisX :TSingle3D;
+function TSingleM3.GetAxisX :TSingle2D;
 begin
      with Result do
      begin
           X := _11;
           Y := _21;
-          Z := _31;
      end;
 end;
 
-procedure TSingleM3.SetAxisX( const AxisX_:TSingle3D );
+procedure TSingleM3.SetAxisX( const AxisX_:TSingle2D );
 begin
      with AxisX_ do
      begin
           _11 := X;
           _21 := Y;
-          _31 := Z;
+          _31 := 0;
      end;
 end;
 
-function TSingleM3.GetAxisY :TSingle3D;
+function TSingleM3.GetAxisY :TSingle2D;
 begin
      with Result do
      begin
           X := _12;
           Y := _22;
-          Z := _32;
      end;
 end;
 
-procedure TSingleM3.SetAxisY( const AxisY_:TSingle3D );
+procedure TSingleM3.SetAxisY( const AxisY_:TSingle2D );
 begin
      with AxisY_ do
      begin
           _12 := X;
           _22 := Y;
-          _32 := Z;
+          _32 := 0;
      end;
 end;
 
-function TSingleM3.GetAxisZ :TSingle3D;
+function TSingleM3.GetAxisP :TSingle2D;
 begin
      with Result do
      begin
           X := _13;
           Y := _23;
-          Z := _33;
      end;
 end;
 
-procedure TSingleM3.SetAxisZ( const AxisZ_:TSingle3D );
+procedure TSingleM3.SetAxisP( const AxisP_:TSingle2D );
 begin
-     with AxisZ_ do
+     with AxisP_ do
      begin
           _13 := X;
           _23 := Y;
-          _33 := Z;
+          _33 := 1;
      end;
-end;
-
-function TSingleM3.GetSum :Single;
-begin
-     Result := _11 + _12 + _13
-             + _21 + _22 + _23
-             + _31 + _32 + _33;
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -310,7 +236,14 @@ begin
      _31 := _31_;  _32 := _32_;  _33 := _33_;
 end;
 
-///////////////////////////////////////////////////////////////////////// 演算子
+constructor TSingleM3.Create( const X_,Y_,P_:TSingle2D );
+begin
+     _11 := X_.X;  _12 := Y_.X;  _13 := P_.X;
+     _21 := X_.Y;  _22 := Y_.Y;  _23 := P_.Y;
+     _31 :=    0;  _32 :=    0;  _33 :=    1;
+end;
+
+//////////////////////////////////////////////////////////////// O P E R A T O R
 
 class operator TSingleM3.Positive( const V_:TSingleM3 ) :TSingleM3;
 begin
@@ -438,7 +371,72 @@ begin
      end;
 end;
 
-/////////////////////////////////////////////////////////////////////// メソッド
+//////////////////////////////////////////////////////////////////////// C A S T
+
+class operator TSingleM3.Implicit( const V_:Single ) :TSingleM3;
+begin
+     with Result do
+     begin
+          _11 := V_;  _12 := 0 ;  _13 := 0 ;
+          _21 := 0 ;  _22 := V_;  _23 := 0 ;
+          _31 := 0 ;  _32 := 0 ;  _33 := V_;
+     end;
+end;
+
+class operator TSingleM3.Implicit( const V_:TMatrix ) :TSingleM3;
+begin
+     with Result do
+     begin
+          _11 := V_.m11;  _12 := V_.m21;  _13 := V_.m31;
+          _21 := V_.m12;  _22 := V_.m22;  _23 := V_.m32;
+          _31 := V_.m13;  _32 := V_.m23;  _33 := V_.m33;
+     end;
+end;
+
+class operator TSingleM3.Explicit( const V_:TSingleM3 ) :TMatrix;
+begin
+     with Result do
+     begin
+          m11 := V_._11;  m12 := V_._21;  m13 := V_._31;
+          m21 := V_._12;  m22 := V_._22;  m23 := V_._32;
+          m31 := V_._13;  m32 := V_._23;  m33 := V_._33;
+     end;
+end;
+
+class operator TSingleM3.Implicit( const V_:TSingleM2 ) :TSingleM3;
+begin
+     with Result do
+     begin
+          _11 := V_._11;  _12 := V_._12;  _13 := 0;
+          _21 := V_._21;  _22 := V_._22;  _23 := 0;
+          _31 :=      0;  _32 :=      0;  _33 := 1;
+     end;
+end;
+
+class operator TSingleM3.Explicit( const V_:TSingleM3 ) :TSingleM2;
+begin
+     with Result do
+     begin
+          _11 := V_._11;  _12 := V_._12;
+          _21 := V_._21;  _22 := V_._22;
+     end;
+end;
+
+//////////////////////////////////////////////////////////////////// M E T H O D
+
+function TSingleM3.MultPos( const B_:TSingle2D ) :TSingle2D;
+begin
+     Result.X := _11 * B_.X + _12 * B_.Y + _13;
+     Result.Y := _21 * B_.X + _22 * B_.Y + _23;
+end;
+
+function TSingleM3.MultVec( const B_:TSingle2D ) :TSingle2D;
+begin
+     Result.X := _11 * B_.X + _12 * B_.Y;
+     Result.Y := _21 * B_.X + _22 * B_.Y;
+end;
+
+//------------------------------------------------------------------------------
 
 function TSingleM3.Transpose :TSingleM3;
 begin
@@ -504,81 +502,140 @@ begin
                    + _13 * A._31 );
 end;
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDoubleM3
+//////////////////////////////////////////////////////////////// C O N S T A N T
 
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
-
-/////////////////////////////////////////////////////////////////////// アクセス
-
-function TDoubleM3.Gets( const Y_,X_:Integer ) :Double;
+class function TSingleM3.Translate( const X_,Y_:Single ) :TSingleM3;
 begin
-     Result := _[ Y_, X_ ];
+     with Result do
+     begin
+          _11 := 1;  _12 := 0;  _13 := X_;
+          _21 := 0;  _22 := 1;  _23 := Y_;
+          _31 := 0;  _32 := 0;  _33 := 1;
+     end;
 end;
 
-procedure TDoubleM3.Sets( const Y_,X_:Integer; const M_:Double );
+class function TSingleM3.Translate( const T_:TSingle2D ) :TSingleM3;
 begin
-     _[ Y_, X_ ] := M_;
+     with T_ do Result := Translate( X, Y );
 end;
 
 //------------------------------------------------------------------------------
 
-function TDoubleM3.GetAxisX :TDouble3D;
+class function TSingleM3.Scale( const X_,Y_:Single ) :TSingleM3;
+begin
+     with Result do
+     begin
+          _11 := X_;  _12 := 0 ;  _13 := 0;
+          _21 := 0 ;  _22 := Y_;  _23 := 0;
+          _31 := 0 ;  _32 := 0 ;  _33 := 1;
+     end;
+end;
+
+class function TSingleM3.Scale( const S_:TSingle2D ) :TSingleM3;
+begin
+     with S_ do Result := Scale( X, Y );
+end;
+
+//------------------------------------------------------------------------------
+
+class function TSingleM3.Rotate( const Angle_:Single ) :TSingleM3;
+var
+   S, C :Single;
+begin
+     SinCos( Angle_, S, C );
+
+     with Result do
+     begin
+          _11 :=  C;  _12 := -S;  _13 := 0;
+          _21 := +S;  _22 :=  C;  _23 := 0;
+          _31 :=  0;  _32 :=  0;  _33 := 1;
+     end;
+end;
+
+//------------------------------------------------------------------------------
+
+class function TSingleM3.Identity :TSingleM3;
+begin
+     with Result do
+     begin
+          _11 := 1;  _12 := 0;  _13 := 0;
+          _21 := 0;  _22 := 1;  _23 := 0;
+          _31 := 0;  _32 := 0;  _33 := 1;
+     end;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TDoubleM3
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//////////////////////////////////////////////////////////////// A C C E S S O R
+
+function TDoubleM3.GetD2( const Y_,X_:Integer ) :Double;
+begin
+     Result := _2D[ X_-1, Y_-1 ];
+end;
+
+procedure TDoubleM3.SetD2( const Y_,X_:Integer; const D2_:Double );
+begin
+     _2D[ X_-1, Y_-1 ] := D2_;
+end;
+
+//------------------------------------------------------------------------------
+
+function TDoubleM3.GetAxisX :TDouble2D;
 begin
      with Result do
      begin
           X := _11;
           Y := _21;
-          Z := _31;
      end;
 end;
 
-procedure TDoubleM3.SetAxisX( const AxisX_:TDouble3D );
+procedure TDoubleM3.SetAxisX( const AxisX_:TDouble2D );
 begin
      with AxisX_ do
      begin
           _11 := X;
           _21 := Y;
-          _31 := Z;
+          _31 := 0;
      end;
 end;
 
-function TDoubleM3.GetAxisY :TDouble3D;
+function TDoubleM3.GetAxisY :TDouble2D;
 begin
      with Result do
      begin
           X := _12;
           Y := _22;
-          Z := _32;
      end;
 end;
 
-procedure TDoubleM3.SetAxisY( const AxisY_:TDouble3D );
+procedure TDoubleM3.SetAxisY( const AxisY_:TDouble2D );
 begin
      with AxisY_ do
      begin
           _12 := X;
           _22 := Y;
-          _32 := Z;
+          _32 := 0;
      end;
 end;
 
-function TDoubleM3.GetAxisZ :TDouble3D;
+function TDoubleM3.GetAxisP :TDouble2D;
 begin
      with Result do
      begin
           X := _13;
           Y := _23;
-          Z := _33;
      end;
 end;
 
-procedure TDoubleM3.SetAxisZ( const AxisZ_:TDouble3D );
+procedure TDoubleM3.SetAxisP( const AxisP_:TDouble2D );
 begin
-     with AxisZ_ do
+     with AxisP_ do
      begin
           _13 := X;
           _23 := Y;
-          _33 := Z;
+          _33 := 1;
      end;
 end;
 
@@ -593,7 +650,14 @@ begin
      _31 := _31_;  _32 := _32_;  _33 := _33_;
 end;
 
-///////////////////////////////////////////////////////////////////////// 演算子
+constructor TDoubleM3.Create( const X_,Y_,P_:TDouble2D );
+begin
+     _11 := X_.X;  _12 := Y_.X;  _13 := P_.X;
+     _21 := X_.Y;  _22 := Y_.Y;  _23 := P_.Y;
+     _31 :=    0;  _32 :=    0;  _33 :=    1;
+end;
+
+//////////////////////////////////////////////////////////////// O P E R A T O R
 
 class operator TDoubleM3.Positive( const V_:TDoubleM3 ) :TDoubleM3;
 begin
@@ -721,7 +785,92 @@ begin
      end;
 end;
 
-/////////////////////////////////////////////////////////////////////// メソッド
+//////////////////////////////////////////////////////////////////////// C A S T
+
+class operator TDoubleM3.Implicit( const V_:Double ) :TDoubleM3;
+begin
+     with Result do
+     begin
+          _11 := V_;  _12 := 0 ;  _13 := 0 ;
+          _21 := 0 ;  _22 := V_;  _23 := 0 ;
+          _31 := 0 ;  _32 := 0 ;  _33 := V_;
+     end;
+end;
+
+class operator TDoubleM3.Implicit( const V_:TMatrix ) :TDoubleM3;
+begin
+     with Result do
+     begin
+          _11 := V_.m11;  _12 := V_.m21;  _13 := V_.m31;
+          _21 := V_.m12;  _22 := V_.m22;  _23 := V_.m32;
+          _31 := V_.m13;  _32 := V_.m23;  _33 := V_.m33;
+     end;
+end;
+
+class operator TDoubleM3.Explicit( const V_:TDoubleM3 ) :TMatrix;
+begin
+     with Result do
+     begin
+          m11 := V_._11;  m12 := V_._21;  m13 := V_._31;
+          m21 := V_._12;  m22 := V_._22;  m23 := V_._32;
+          m31 := V_._13;  m32 := V_._23;  m33 := V_._33;
+     end;
+end;
+
+class operator TDoubleM3.Implicit( const V_:TSingleM3 ) :TDoubleM3;
+begin
+     with Result do
+     begin
+          _11 := V_._11;  _12 := V_._12;  _13 := V_._13;
+          _21 := V_._21;  _22 := V_._22;  _23 := V_._23;
+          _31 := V_._31;  _32 := V_._32;  _33 := V_._33;
+     end;
+end;
+
+class operator TDoubleM3.Explicit( const V_:TDoubleM3 ) :TSingleM3;
+begin
+     with Result do
+     begin
+          _11 := V_._11;  _12 := V_._12;  _13 := V_._13;
+          _21 := V_._21;  _22 := V_._22;  _23 := V_._23;
+          _31 := V_._31;  _32 := V_._32;  _33 := V_._33;
+     end;
+end;
+
+class operator TDoubleM3.Implicit( const V_:TDoubleM2 ) :TDoubleM3;
+begin
+     with Result do
+     begin
+          _11 := V_._11;  _12 := V_._12;  _13 := 0;
+          _21 := V_._21;  _22 := V_._22;  _23 := 0;
+          _31 :=      0;  _32 :=      0;  _33 := 1;
+     end;
+end;
+
+class operator TDoubleM3.Explicit( const V_:TDoubleM3 ) :TDoubleM2;
+begin
+     with Result do
+     begin
+          _11 := V_._11;  _12 := V_._12;
+          _21 := V_._21;  _22 := V_._22;
+     end;
+end;
+
+//////////////////////////////////////////////////////////////////// M E T H O D
+
+function TDoubleM3.MultPos( const B_:TDouble2D ) :TDouble2D;
+begin
+     Result.X := _11 * B_.X + _12 * B_.Y + _13;
+     Result.Y := _21 * B_.X + _22 * B_.Y + _23;
+end;
+
+function TDoubleM3.MultVec( const B_:TDouble2D ) :TDouble2D;
+begin
+     Result.X := _11 * B_.X + _12 * B_.Y;
+     Result.Y := _21 * B_.X + _22 * B_.Y;
+end;
+
+//------------------------------------------------------------------------------
 
 function TDoubleM3.Transpose :TDoubleM3;
 begin
@@ -787,642 +936,70 @@ begin
                    + _13 * A._31 );
 end;
 
+//////////////////////////////////////////////////////////////// C O N S T A N T
 
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdSingleM3
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
-
-/////////////////////////////////////////////////////////////////////// アクセス
-
-function TdSingleM3.Gets( const Y_,X_:Integer ) :TdSingle;
+class function TDoubleM3.Translate( const X_,Y_:Double ) :TDoubleM3;
 begin
-     Result := _[ Y_, X_ ];
+     with Result do
+     begin
+          _11 := 1;  _12 := 0;  _13 := X_;
+          _21 := 0;  _22 := 1;  _23 := Y_;
+          _31 := 0;  _32 := 0;  _33 := 1;
+     end;
 end;
 
-procedure TdSingleM3.Sets( const Y_,X_:Integer; const M_:TdSingle );
+class function TDoubleM3.Translate( const T_:TDouble2D ) :TDoubleM3;
 begin
-     _[ Y_, X_ ] := M_;
+     with T_ do Result := Translate( X, Y );
 end;
 
 //------------------------------------------------------------------------------
 
-function TdSingleM3.GetAxisX :TdSingle3D;
+class function TDoubleM3.Scale( const X_,Y_:Double ) :TDoubleM3;
 begin
      with Result do
      begin
-          X := _11;
-          Y := _21;
-          Z := _31;
+          _11 := X_;  _12 := 0 ;  _13 := 0;
+          _21 := 0 ;  _22 := Y_;  _23 := 0;
+          _31 := 0 ;  _32 := 0 ;  _33 := 1;
      end;
 end;
 
-procedure TdSingleM3.SetAxisX( const AxisX_:TdSingle3D );
+class function TDoubleM3.Scale( const S_:TDouble2D ) :TDoubleM3;
 begin
-     with AxisX_ do
-     begin
-          _11 := X;
-          _21 := Y;
-          _31 := Z;
-     end;
-end;
-
-function TdSingleM3.GetAxisY :TdSingle3D;
-begin
-     with Result do
-     begin
-          X := _12;
-          Y := _22;
-          Z := _32;
-     end;
-end;
-
-procedure TdSingleM3.SetAxisY( const AxisY_:TdSingle3D );
-begin
-     with AxisY_ do
-     begin
-          _12 := X;
-          _22 := Y;
-          _32 := Z;
-     end;
-end;
-
-function TdSingleM3.GetAxisZ :TdSingle3D;
-begin
-     with Result do
-     begin
-          X := _13;
-          Y := _23;
-          Z := _33;
-     end;
-end;
-
-procedure TdSingleM3.SetAxisZ( const AxisZ_:TdSingle3D );
-begin
-     with AxisZ_ do
-     begin
-          _13 := X;
-          _23 := Y;
-          _33 := Z;
-     end;
-end;
-
-function TdSingleM3.GetSum :TdSingle;
-begin
-     Result := _11 + _12 + _13
-             + _21 + _22 + _23
-             + _31 + _32 + _33;
-end;
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
-
-constructor TdSingleM3.Create( const _11_,_12_,_13_,
-                                     _21_,_22_,_23_,
-                                     _31_,_32_,_33_:TdSingle );
-begin
-     _11 := _11_;  _12 := _12_;  _13 := _13_;
-     _21 := _21_;  _22 := _22_;  _23 := _23_;
-     _31 := _31_;  _32 := _32_;  _33 := _33_;
-end;
-
-///////////////////////////////////////////////////////////////////////// 演算子
-
-class operator TdSingleM3.Positive( const V_:TdSingleM3 ) :TdSingleM3;
-begin
-     with Result do
-     begin
-          _11 := +V_._11;  _12 := +V_._12;  _13 := +V_._13;
-          _21 := +V_._21;  _22 := +V_._22;  _23 := +V_._23;
-          _31 := +V_._31;  _32 := +V_._32;  _33 := +V_._33;
-     end;
-end;
-
-class operator TdSingleM3.Negative( const V_:TdSingleM3 ) :TdSingleM3;
-begin
-     with Result do
-     begin
-          _11 := -V_._11;  _12 := -V_._12;  _13 := -V_._13;
-          _21 := -V_._21;  _22 := -V_._22;  _23 := -V_._23;
-          _31 := -V_._31;  _32 := -V_._32;  _33 := -V_._33;
-     end;
-end;
-
-class operator TdSingleM3.Add( const A_,B_:TdSingleM3 ) :TdSingleM3;
-begin
-     with Result do
-     begin
-          _11 := A_._11 + B_._11;  _12 := A_._12 + B_._12;  _13 := A_._13 + B_._13;
-          _21 := A_._21 + B_._21;  _22 := A_._22 + B_._22;  _23 := A_._23 + B_._23;
-          _31 := A_._31 + B_._31;  _32 := A_._32 + B_._32;  _33 := A_._33 + B_._33;
-     end;
-end;
-
-class operator TdSingleM3.Subtract( const A_,B_:TdSingleM3 ) :TdSingleM3;
-begin
-     with Result do
-     begin
-          _11 := A_._11 - B_._11;  _12 := A_._12 - B_._12;  _13 := A_._13 - B_._13;
-          _21 := A_._21 - B_._21;  _22 := A_._22 - B_._22;  _23 := A_._23 - B_._23;
-          _31 := A_._31 - B_._31;  _32 := A_._32 - B_._32;  _33 := A_._33 - B_._33;
-     end;
-end;
-
-class operator TdSingleM3.Multiply( const A_,B_:TdSingleM3 ) :TdSingleM3;
-begin
-     {
-       11 12 13    11 12 13
-       21 22 23 × 21 22 23
-       31 32 33    31 32 33
-     }
-
-     with Result do
-     begin
-          _11 := A_._11 * B_._11 + A_._12 * B_._21 + A_._13 * B_._31;
-          _12 := A_._11 * B_._12 + A_._12 * B_._22 + A_._13 * B_._32;
-          _13 := A_._11 * B_._13 + A_._12 * B_._23 + A_._13 * B_._33;
-
-          _21 := A_._21 * B_._11 + A_._22 * B_._21 + A_._23 * B_._31;
-          _22 := A_._21 * B_._12 + A_._22 * B_._22 + A_._23 * B_._32;
-          _23 := A_._21 * B_._13 + A_._22 * B_._23 + A_._23 * B_._33;
-
-          _31 := A_._31 * B_._11 + A_._32 * B_._21 + A_._33 * B_._31;
-          _32 := A_._31 * B_._12 + A_._32 * B_._22 + A_._33 * B_._32;
-          _33 := A_._31 * B_._13 + A_._32 * B_._23 + A_._33 * B_._33;
-     end;
-end;
-
-class operator TdSingleM3.Multiply( const A_:TdSingleM3; const B_:TdSingle ) :TdSingleM3;
-begin
-     with Result do
-     begin
-          _11 := A_._11 * B_;  _12 := A_._12 * B_;  _13 := A_._13 * B_;
-          _21 := A_._21 * B_;  _22 := A_._22 * B_;  _23 := A_._23 * B_;
-          _31 := A_._31 * B_;  _32 := A_._32 * B_;  _33 := A_._33 * B_;
-     end;
-end;
-
-class operator TdSingleM3.Multiply( const A_:TdSingle; const B_:TdSingleM3 ) :TdSingleM3;
-begin
-     with Result do
-     begin
-          _11 := A_ * B_._11;  _12 := A_ * B_._12;  _13 := A_ * B_._13;
-          _21 := A_ * B_._21;  _22 := A_ * B_._22;  _23 := A_ * B_._23;
-          _31 := A_ * B_._31;  _32 := A_ * B_._32;  _33 := A_ * B_._33;
-     end;
-end;
-
-class operator TdSingleM3.Multiply( const A_:TdSingle3D; const B_:TdSingleM3 ) :TdSingle3D;
-begin
-     {
-                11 12 13
-       X Y Z × 21 22 23
-                31 32 33
-     }
-
-     with Result do
-     begin
-          X := A_.X * B_._11 + A_.Y * B_._21 + A_.Z * B_._31;
-          Y := A_.X * B_._12 + A_.Y * B_._22 + A_.Z * B_._32;
-          Z := A_.X * B_._13 + A_.Y * B_._23 + A_.Z * B_._33;
-     end;
-end;
-
-class operator TdSingleM3.Multiply( const A_:TdSingleM3; const B_:TdSingle3D ) :TdSingle3D;
-begin
-     {
-       11 12 13    X
-       21 22 23 × Y
-       31 32 33    Z
-     }
-
-     with Result do
-     begin
-          X := A_._11 * B_.X + A_._12 * B_.Y + A_._13 * B_.Z;
-          Y := A_._21 * B_.X + A_._22 * B_.Y + A_._23 * B_.Z;
-          Z := A_._31 * B_.X + A_._32 * B_.Y + A_._33 * B_.Z;
-     end;
-end;
-
-class operator TdSingleM3.Divide( const A_:TdSingleM3; const B_:TdSingle ) :TdSingleM3;
-begin
-     with Result do
-     begin
-          _11 := A_._11 / B_;  _12 := A_._12 / B_;  _13 := A_._13 / B_;
-          _21 := A_._21 / B_;  _22 := A_._22 / B_;  _23 := A_._23 / B_;
-          _31 := A_._31 / B_;  _32 := A_._32 / B_;  _33 := A_._33 / B_;
-     end;
-end;
-
-/////////////////////////////////////////////////////////////////////// メソッド
-
-function TdSingleM3.Transpose :TdSingleM3;
-begin
-     Result._11 := _11;  Result._12 := _21;  Result._13 := _31;
-     Result._21 := _12;  Result._22 := _22;  Result._23 := _32;
-     Result._31 := _13;  Result._32 := _23;  Result._33 := _33;
-end;
-
-function TdSingleM3.Det :TdSingle;
-begin
-     Result:= _11 * ( _22 * _33 - _23 * _32 )
-            + _12 * ( _23 * _31 - _21 * _33 )
-            + _13 * ( _21 * _32 - _22 * _31 );
-end;
-
-function TdSingleM3.Adjugate :TdSingleM3;
-begin
-     Result._11 := +TdSingleM2.Create( {11} {12} {13}
-                                       {21} _22, _23,
-                                       {31} _32, _33  ).Det;
-
-     Result._21 := -TdSingleM2.Create( {11} {12} {13}
-                                       _21, {22} _23,
-                                       _31, {32} _33  ).Det;
-
-     Result._31 := +TdSingleM2.Create( {11} {12} {13}
-                                       _21, _22, {23}
-                                       _31, _32  {33} ).Det;
-
-     Result._12 := -TdSingleM2.Create( {11} _12, _13,
-                                       {21} {22} {23}
-                                       {31} _32, _33  ).Det;
-
-     Result._22 := +TdSingleM2.Create( _11, {12} _13,
-                                       {21} {22} {23}
-                                       _31, {32} _33  ).Det;
-
-     Result._32 := -TdSingleM2.Create( _11, _12, {13}
-                                       {21} {22} {23}
-                                       _31, _32  {33} ).Det;
-
-     Result._13 := +TdSingleM2.Create( {11} _12, _13,
-                                       {21} _22, _23
-                                       {31} {32} {33} ).Det;
-
-     Result._23 := -TdSingleM2.Create( _11, {12} _13,
-                                       _21, {22} _23
-                                       {31} {32} {33} ).Det;
-
-     Result._33 := +TdSingleM2.Create( _11, _12, {13}
-                                       _21, _22  {23}
-                                       {31} {32} {33} ).Det;
-end;
-
-function TdSingleM3.Inverse :TdSingleM3;
-var
-   A :TdSingleM3;
-begin
-     A := Adjugate;
-
-     Result := A / ( _11 * A._11
-                   + _12 * A._21
-                   + _13 * A._31 );
-end;
-
-//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TdDoubleM3
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
-
-/////////////////////////////////////////////////////////////////////// アクセス
-
-function TdDoubleM3.Gets( const Y_,X_:Integer ) :TdDouble;
-begin
-     Result := _[ Y_, X_ ];
-end;
-
-procedure TdDoubleM3.Sets( const Y_,X_:Integer; const M_:TdDouble );
-begin
-     _[ Y_, X_ ] := M_;
+     with S_ do Result := Scale( X, Y );
 end;
 
 //------------------------------------------------------------------------------
 
-function TdDoubleM3.GetAxisX :TdDouble3D;
-begin
-     with Result do
-     begin
-          X := _11;
-          Y := _21;
-          Z := _31;
-     end;
-end;
-
-procedure TdDoubleM3.SetAxisX( const AxisX_:TdDouble3D );
-begin
-     with AxisX_ do
-     begin
-          _11 := X;
-          _21 := Y;
-          _31 := Z;
-     end;
-end;
-
-function TdDoubleM3.GetAxisY :TdDouble3D;
-begin
-     with Result do
-     begin
-          X := _12;
-          Y := _22;
-          Z := _32;
-     end;
-end;
-
-procedure TdDoubleM3.SetAxisY( const AxisY_:TdDouble3D );
-begin
-     with AxisY_ do
-     begin
-          _12 := X;
-          _22 := Y;
-          _32 := Z;
-     end;
-end;
-
-function TdDoubleM3.GetAxisZ :TdDouble3D;
-begin
-     with Result do
-     begin
-          X := _13;
-          Y := _23;
-          Z := _33;
-     end;
-end;
-
-procedure TdDoubleM3.SetAxisZ( const AxisZ_:TdDouble3D );
-begin
-     with AxisZ_ do
-     begin
-          _13 := X;
-          _23 := Y;
-          _33 := Z;
-     end;
-end;
-
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
-
-constructor TdDoubleM3.Create( const _11_,_12_,_13_,
-                                     _21_,_22_,_23_,
-                                     _31_,_32_,_33_:TdDouble );
-begin
-     _11 := _11_;  _12 := _12_;  _13 := _13_;
-     _21 := _21_;  _22 := _22_;  _23 := _23_;
-     _31 := _31_;  _32 := _32_;  _33 := _33_;
-end;
-
-///////////////////////////////////////////////////////////////////////// 演算子
-
-class operator TdDoubleM3.Positive( const V_:TdDoubleM3 ) :TdDoubleM3;
-begin
-     with Result do
-     begin
-          _11 := +V_._11;  _12 := +V_._12;  _13 := +V_._13;
-          _21 := +V_._21;  _22 := +V_._22;  _23 := +V_._23;
-          _31 := +V_._31;  _32 := +V_._32;  _33 := +V_._33;
-     end;
-end;
-
-class operator TdDoubleM3.Negative( const V_:TdDoubleM3 ) :TdDoubleM3;
-begin
-     with Result do
-     begin
-          _11 := -V_._11;  _12 := -V_._12;  _13 := -V_._13;
-          _21 := -V_._21;  _22 := -V_._22;  _23 := -V_._23;
-          _31 := -V_._31;  _32 := -V_._32;  _33 := -V_._33;
-     end;
-end;
-
-class operator TdDoubleM3.Add( const A_,B_:TdDoubleM3 ) :TdDoubleM3;
-begin
-     with Result do
-     begin
-          _11 := A_._11 + B_._11;  _12 := A_._12 + B_._12;  _13 := A_._13 + B_._13;
-          _21 := A_._21 + B_._21;  _22 := A_._22 + B_._22;  _23 := A_._23 + B_._23;
-          _31 := A_._31 + B_._31;  _32 := A_._32 + B_._32;  _33 := A_._33 + B_._33;
-     end;
-end;
-
-class operator TdDoubleM3.Subtract( const A_,B_:TdDoubleM3 ) :TdDoubleM3;
-begin
-     with Result do
-     begin
-          _11 := A_._11 - B_._11;  _12 := A_._12 - B_._12;  _13 := A_._13 - B_._13;
-          _21 := A_._21 - B_._21;  _22 := A_._22 - B_._22;  _23 := A_._23 - B_._23;
-          _31 := A_._31 - B_._31;  _32 := A_._32 - B_._32;  _33 := A_._33 - B_._33;
-     end;
-end;
-
-class operator TdDoubleM3.Multiply( const A_,B_:TdDoubleM3 ) :TdDoubleM3;
-begin
-     {
-       11 12 13    11 12 13
-       21 22 23 × 21 22 23
-       31 32 33    31 32 33
-     }
-
-     with Result do
-     begin
-          _11 := A_._11 * B_._11 + A_._12 * B_._21 + A_._13 * B_._31;
-          _12 := A_._11 * B_._12 + A_._12 * B_._22 + A_._13 * B_._32;
-          _13 := A_._11 * B_._13 + A_._12 * B_._23 + A_._13 * B_._33;
-
-          _21 := A_._21 * B_._11 + A_._22 * B_._21 + A_._23 * B_._31;
-          _22 := A_._21 * B_._12 + A_._22 * B_._22 + A_._23 * B_._32;
-          _23 := A_._21 * B_._13 + A_._22 * B_._23 + A_._23 * B_._33;
-
-          _31 := A_._31 * B_._11 + A_._32 * B_._21 + A_._33 * B_._31;
-          _32 := A_._31 * B_._12 + A_._32 * B_._22 + A_._33 * B_._32;
-          _33 := A_._31 * B_._13 + A_._32 * B_._23 + A_._33 * B_._33;
-     end;
-end;
-
-class operator TdDoubleM3.Multiply( const A_:TdDoubleM3; const B_:TdDouble ) :TdDoubleM3;
-begin
-     with Result do
-     begin
-          _11 := A_._11 * B_;  _12 := A_._12 * B_;  _13 := A_._13 * B_;
-          _21 := A_._21 * B_;  _22 := A_._22 * B_;  _23 := A_._23 * B_;
-          _31 := A_._31 * B_;  _32 := A_._32 * B_;  _33 := A_._33 * B_;
-     end;
-end;
-
-class operator TdDoubleM3.Multiply( const A_:TdDouble; const B_:TdDoubleM3 ) :TdDoubleM3;
-begin
-     with Result do
-     begin
-          _11 := A_ * B_._11;  _12 := A_ * B_._12;  _13 := A_ * B_._13;
-          _21 := A_ * B_._21;  _22 := A_ * B_._22;  _23 := A_ * B_._23;
-          _31 := A_ * B_._31;  _32 := A_ * B_._32;  _33 := A_ * B_._33;
-     end;
-end;
-
-class operator TdDoubleM3.Multiply( const A_:TdDouble3D; const B_:TdDoubleM3 ) :TdDouble3D;
-begin
-     {
-                11 12 13
-       X Y Z × 21 22 23
-                31 32 33
-     }
-
-     with Result do
-     begin
-          X := A_.X * B_._11 + A_.Y * B_._21 + A_.Z * B_._31;
-          Y := A_.X * B_._12 + A_.Y * B_._22 + A_.Z * B_._32;
-          Z := A_.X * B_._13 + A_.Y * B_._23 + A_.Z * B_._33;
-     end;
-end;
-
-class operator TdDoubleM3.Multiply( const A_:TdDoubleM3; const B_:TdDouble3D ) :TdDouble3D;
-begin
-     {
-       11 12 13    X
-       21 22 23 × Y
-       31 32 33    Z
-     }
-
-     with Result do
-     begin
-          X := A_._11 * B_.X + A_._12 * B_.Y + A_._13 * B_.Z;
-          Y := A_._21 * B_.X + A_._22 * B_.Y + A_._23 * B_.Z;
-          Z := A_._31 * B_.X + A_._32 * B_.Y + A_._33 * B_.Z;
-     end;
-end;
-
-class operator TdDoubleM3.Divide( const A_:TdDoubleM3; const B_:TdDouble ) :TdDoubleM3;
-begin
-     with Result do
-     begin
-          _11 := A_._11 / B_;  _12 := A_._12 / B_;  _13 := A_._13 / B_;
-          _21 := A_._21 / B_;  _22 := A_._22 / B_;  _23 := A_._23 / B_;
-          _31 := A_._31 / B_;  _32 := A_._32 / B_;  _33 := A_._33 / B_;
-     end;
-end;
-
-/////////////////////////////////////////////////////////////////////// メソッド
-
-function TdDoubleM3.Transpose :TdDoubleM3;
-begin
-     Result._11 := _11;  Result._12 := _21;  Result._13 := _31;
-     Result._21 := _12;  Result._22 := _22;  Result._23 := _32;
-     Result._31 := _13;  Result._32 := _23;  Result._33 := _33;
-end;
-
-function TdDoubleM3.Det :TdDouble;
-begin
-     Result:= _11 * ( _22 * _33 - _23 * _32 )
-            + _12 * ( _23 * _31 - _21 * _33 )
-            + _13 * ( _21 * _32 - _22 * _31 );
-end;
-
-function TdDoubleM3.Adjugate :TdDoubleM3;
-begin
-     Result._11 := +TdDoubleM2.Create( {11} {12} {13}
-                                       {21} _22, _23,
-                                       {31} _32, _33  ).Det;
-
-     Result._21 := -TdDoubleM2.Create( {11} {12} {13}
-                                       _21, {22} _23,
-                                       _31, {32} _33  ).Det;
-
-     Result._31 := +TdDoubleM2.Create( {11} {12} {13}
-                                       _21, _22, {23}
-                                       _31, _32  {33} ).Det;
-
-     Result._12 := -TdDoubleM2.Create( {11} _12, _13,
-                                       {21} {22} {23}
-                                       {31} _32, _33  ).Det;
-
-     Result._22 := +TdDoubleM2.Create( _11, {12} _13,
-                                       {21} {22} {23}
-                                       _31, {32} _33  ).Det;
-
-     Result._32 := -TdDoubleM2.Create( _11, _12, {13}
-                                       {21} {22} {23}
-                                       _31, _32  {33} ).Det;
-
-     Result._13 := +TdDoubleM2.Create( {11} _12, _13,
-                                       {21} _22, _23
-                                       {31} {32} {33} ).Det;
-
-     Result._23 := -TdDoubleM2.Create( _11, {12} _13,
-                                       _21, {22} _23
-                                       {31} {32} {33} ).Det;
-
-     Result._33 := +TdDoubleM2.Create( _11, _12, {13}
-                                       _21, _22  {23}
-                                       {31} {32} {33} ).Det;
-end;
-
-function TdDoubleM3.Inverse :TdDoubleM3;
+class function TDoubleM3.Rotate( const Angle_:Double ) :TDoubleM3;
 var
-   A :TdDoubleM3;
+   S, C :Double;
 begin
-     A := Adjugate;
-
-     Result := A / ( _11 * A._11
-                   + _12 * A._21
-                   + _13 * A._31 );
-end;
-
-//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【クラス】
-
-//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【ルーチン】
-
-function ArrowRot( const P0_,P1_:TSingle3D ) :TSingleM3;
-var
-   AX, AY ,AZ, E :TSingle3D;
-begin
-     AZ := P0_.UnitorTo( P1_ );
-
-     with AZ do
-     begin
-          case MinI( Abs( X ), Abs( Y ) ,Abs( Z ) ) of
-            1: E := TSingle3D.Create( 1, 0, 0 );
-            2: E := TSingle3D.Create( 0, 1, 0 );
-            3: E := TSingle3D.Create( 0, 0, 1 );
-          end;
-     end;
-
-     AY := CrossProduct( AZ, E ).Unitor;
-
-     AX := CrossProduct( AY, AZ );
+     SinCos( Angle_, S, C );
 
      with Result do
      begin
-          _11 := AX.X;  _12 := AY.X;  _13 := AZ.X;
-          _21 := AX.Y;  _22 := AY.Y;  _23 := AZ.Y;
-          _31 := AX.Z;  _32 := AY.Z;  _33 := AZ.Z;
+          _11 :=  C;  _12 := -S;  _13 := 0;
+          _21 := +S;  _22 :=  C;  _23 := 0;
+          _31 :=  0;  _32 :=  0;  _33 := 1;
      end;
 end;
 
-function ArrowRot( const P0_,P1_:TDouble3D ) :TDoubleM3;
-var
-   AX, AY ,AZ, E :TDouble3D;
+//------------------------------------------------------------------------------
+
+class function TDoubleM3.Identity :TDoubleM3;
 begin
-     AZ := P0_.UnitorTo( P1_ );
-
-     with AZ do
-     begin
-          case MinI( Abs( X ), Abs( Y ) ,Abs( Z ) ) of
-            1: E := TDouble3D.Create( 1, 0, 0 );
-            2: E := TDouble3D.Create( 0, 1, 0 );
-            3: E := TDouble3D.Create( 0, 0, 1 );
-          end;
-     end;
-
-     AY := CrossProduct( AZ, E ).Unitor;
-
-     AX := CrossProduct( AY, AZ );
-
      with Result do
      begin
-          _11 := AX.X;  _12 := AY.X;  _13 := AZ.X;
-          _21 := AX.Y;  _22 := AY.Y;  _23 := AZ.Y;
-          _31 := AX.Z;  _32 := AY.Z;  _33 := AZ.Z;
+          _11 := 1;  _12 := 0;  _13 := 0;
+          _21 := 0;  _22 := 1;  _23 := 0;
+          _31 := 0;  _32 := 0;  _33 := 1;
      end;
 end;
 
-//############################################################################## □
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 C L A S S 】
 
-initialization //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 初期化
-
-finalization //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ 最終化
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【 R O U T I N E 】
 
 end. //######################################################################### ■
