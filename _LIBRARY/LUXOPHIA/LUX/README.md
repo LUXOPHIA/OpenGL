@@ -1,2 +1,2 @@
-﻿# LUX.idea
-luxidea 製の汎用ライブラリ。
+﻿# LUX
+Standard library in LUXOPHIA.

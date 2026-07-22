@@ -5,7 +5,8 @@ interface //####################################################################
 uses LUX,
      LUX.D1,
      LUX.D2,
-     LUX.D3;
+     LUX.D3,
+     LUX.Curve;
 
 //type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【型】
 
@@ -42,8 +43,6 @@ function CatmullRom( const P0_,P1_,P2_,P3_:TdSingle3D; const T_:TdSingle ) :TdSi
 function CatmullRom( const P0_,P1_,P2_,P3_:TdDouble3D; const T_:TdDouble ) :TdDouble3D; overload;
 
 implementation //############################################################### ■
-
-uses LUX.Curve;
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$【レコード】
 
