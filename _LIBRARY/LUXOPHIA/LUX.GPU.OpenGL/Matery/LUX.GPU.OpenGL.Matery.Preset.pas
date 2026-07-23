@@ -615,10 +615,10 @@ begin
                  Add( '           + Pow2( ( NC - G ) / ( NC + G ) ) ) / 2;' );
                  Add( '}' );
 
-                 Add( 'layout( std140 ) uniform TViewerScal{ layout( row_major ) mat4 _ViewerScal; };' );
-                 Add( 'layout( std140 ) uniform TCameraProj{ layout( row_major ) mat4 _CameraProj; };' );
-                 Add( 'layout( std140 ) uniform TCameraPose{ layout( row_major ) mat4 _CameraPose; };' );
-                 Add( 'layout( std140 ) uniform TShaperPose{ layout( row_major ) mat4 _ShaperPose; };' );
+                 Add( 'layout( std140 ) uniform TViewerScal{ mat4 _ViewerScal; };' );
+                 Add( 'layout( std140 ) uniform TCameraProj{ mat4 _CameraProj; };' );
+                 Add( 'layout( std140 ) uniform TCameraPose{ mat4 _CameraPose; };' );
+                 Add( 'layout( std140 ) uniform TShaperPose{ mat4 _ShaperPose; };' );
 
                  Add( 'uniform sampler2D _Textur;' );
 
@@ -750,10 +750,10 @@ begin
                  Add( '    return Result;' );
                  Add( '}' );
 
-                 Add( 'layout( std140 ) uniform TViewerScal{ layout( row_major ) mat4 _ViewerScal; };' );
-                 Add( 'layout( std140 ) uniform TCameraProj{ layout( row_major ) mat4 _CameraProj; };' );
-                 Add( 'layout( std140 ) uniform TCameraPose{ layout( row_major ) mat4 _CameraPose; };' );
-                 Add( 'layout( std140 ) uniform TShaperPose{ layout( row_major ) mat4 _ShaperPose; };' );
+                 Add( 'layout( std140 ) uniform TViewerScal{ mat4 _ViewerScal; };' );
+                 Add( 'layout( std140 ) uniform TCameraProj{ mat4 _CameraProj; };' );
+                 Add( 'layout( std140 ) uniform TCameraPose{ mat4 _CameraPose; };' );
+                 Add( 'layout( std140 ) uniform TShaperPose{ mat4 _ShaperPose; };' );
 
                  Add( 'uniform sampler2D _Textur;' );
 
@@ -881,10 +881,10 @@ begin
                  Add( '           + Pow2( ( NC - G ) / ( NC + G ) ) ) / 2;' );
                  Add( '}' );
 
-                 Add( 'layout( std140 ) uniform TViewerScal{ layout( row_major ) mat4 _ViewerScal; };' );
-                 Add( 'layout( std140 ) uniform TCameraProj{ layout( row_major ) mat4 _CameraProj; };' );
-                 Add( 'layout( std140 ) uniform TCameraPose{ layout( row_major ) mat4 _CameraPose; };' );
-                 Add( 'layout( std140 ) uniform TShaperPose{ layout( row_major ) mat4 _ShaperPose; };' );
+                 Add( 'layout( std140 ) uniform TViewerScal{ mat4 _ViewerScal; };' );
+                 Add( 'layout( std140 ) uniform TCameraProj{ mat4 _CameraProj; };' );
+                 Add( 'layout( std140 ) uniform TCameraPose{ mat4 _CameraPose; };' );
+                 Add( 'layout( std140 ) uniform TShaperPose{ mat4 _ShaperPose; };' );
 
                  Add( 'uniform sampler2D _Textur;' );
 
