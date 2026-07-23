@@ -25,7 +25,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      TGLPixBufIter3D<_TItem_:record> = class( TGLPixBufIter2D<_TItem_> )
      public type
-       _PItem_ = TGLPixBufIter2D<_TItem_>._PItem_;
+       _PItem_ = TGLBufferData<_TItem_>._PItem_;
      protected
        ///// アクセス
        function GetParen :IGLPixBuf3D;
@@ -108,7 +108,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      TGLPoiPixIter3D<_TItem_:record> = class( TGLPixBufIter3D<_TItem_> )
      public type
-       _PItem_ = TGLPixBufIter3D<_TItem_>._PItem_;
+       _PItem_ = TGLBufferData<_TItem_>._PItem_;
      protected
        ///// アクセス
        function GetPoins( const X_,Y_,Z_:Integer ) :_TItem_;
@@ -153,7 +153,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      TGLCelPixIter3D<_TItem_:record> = class( TGLPixBufIter3D<_TItem_> )
      public type
-       _PItem_ = TGLPixBufIter3D<_TItem_>._PItem_;
+       _PItem_ = TGLBufferData<_TItem_>._PItem_;
      protected
        ///// アクセス
        function GetCells( const X_,Y_,Z_:Integer ) :_TItem_;
