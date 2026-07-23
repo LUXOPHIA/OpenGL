@@ -4,22 +4,22 @@
 
 layout( std140 ) uniform TViewerScal
 {
-  layout( row_major ) mat4 _ViewerScal;
+  mat4 _ViewerScal;
 };
 
 layout( std140 ) uniform TCameraProj
 {
-  layout( row_major ) mat4 _CameraProj;
+  mat4 _CameraProj;
 };
 
 layout( std140 ) uniform TCameraPose
 {
-  layout( row_major ) mat4 _CameraPose;
+  mat4 _CameraPose;
 };
 
 layout( std140 ) uniform TShaperPose
 {
-  layout( row_major ) mat4 _ShaperPose;
+  mat4 _ShaperPose;
 };
 
 //############################################################################## ■
