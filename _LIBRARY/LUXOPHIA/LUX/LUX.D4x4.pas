@@ -75,7 +75,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class function Identity :TSingleM4; static;
        class function ProjOrth( const MinX_,MaxX_,MinY_,MaxY_,NeaZ_,FarZ_:Single ) :TSingleM4; static;
        class function ProjPers( const MinX_,MaxX_,MinY_,MaxY_,NeaZ_,FarZ_:Single ) :TSingleM4; static;
-       class function ProjPersH( const AngH_,AspW_,NeaZ_,FarZ_:Single ) :TSingleM4; static;
        class function LookAt( const EyeP_,TarP_,UppV_:TSingle3D ) :TSingleM4; static;
        ///// F I E L D
      case Byte of
@@ -151,7 +150,6 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        class function Identity :TDoubleM4; static;
        class function ProjOrth( const MinX_,MaxX_,MinY_,MaxY_,NeaZ_,FarZ_:Double ) :TDoubleM4; static;
        class function ProjPers( const MinX_,MaxX_,MinY_,MaxY_,NeaZ_,FarZ_:Double ) :TDoubleM4; static;
-       class function ProjPersH( const AngH_,AspW_,NeaZ_,FarZ_:Double ) :TDoubleM4; static;
        class function LookAt( const EyeP_,TarP_,UppV_:TDouble3D ) :TDoubleM4; static;
        ///// F I E L D
      case Byte of
@@ -759,17 +757,6 @@ end;
 
 //------------------------------------------------------------------------------
 
-class function TSingleM4.ProjPersH( const AngH_,AspW_,NeaZ_,FarZ_:Single ) :TSingleM4;
-var
-   SX, SY :Single;
-begin
-     SX := NeaZ_ * Tan( AngH_ / 2 );
-     SY := SX * AspW_;
-
-     Result := TSingleM4.ProjPers( -SX, +SY, -SY, +SY, NeaZ_, FarZ_ );
-end;
-
-//------------------------------------------------------------------------------
 
 class function TSingleM4.LookAt( const EyeP_,TarP_,UppV_:TSingle3D ) :TSingleM4;
 var
@@ -1396,17 +1383,6 @@ end;
 
 //------------------------------------------------------------------------------
 
-class function TDoubleM4.ProjPersH( const AngH_,AspW_,NeaZ_,FarZ_:Double ) :TDoubleM4;
-var
-   SX, SY :Double;
-begin
-     SX := NeaZ_ * Tan( AngH_ / 2 );
-     SY := SX * AspW_;
-
-     Result := TDoubleM4.ProjPers( -SX, +SY, -SY, +SY, NeaZ_, FarZ_ );
-end;
-
-//------------------------------------------------------------------------------
 
 class function TDoubleM4.LookAt( const EyeP_,TarP_,UppV_:TDouble3D ) :TDoubleM4;
 var
