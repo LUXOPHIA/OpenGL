@@ -105,7 +105,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      protected
        ///// A C C E S S O R
        function Get_Childrs :TTreeChildrs; virtual;  // 子リスト参照。子を持てるのは TTreeStem 系だけ（既定は nil）
-       function GetParent :TTreeNode; reintroduce; virtual;
+       function GetParent :TTreeNode; virtual;  // 核のアクセサは GetParent0 なので隠さない
        function GetRoot :TTreeNode; virtual;
        function GetLevel :Integer; virtual;
        function GetPrev :TTreeNode; reintroduce; virtual;
@@ -221,7 +221,7 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
      private
      protected
        ///// A C C E S S O R
-       procedure SetParent( const Parent_:TListParent ); override;  // 所属を禁止する
+       procedure SetParent0( const Parent_:TListParent ); override;  // 所属を禁止する
      public
      end;
 
@@ -666,7 +666,7 @@ end;
 
 //////////////////////////////////////////////////////////////// A C C E S S O R
 
-procedure TTreeRoot<TChildr_>.SetParent( const Parent_:TListParent );
+procedure TTreeRoot<TChildr_>.SetParent0( const Parent_:TListParent );
 begin
      if Parent_ <> nil then raise ETreeError.Create( 'TTreeRoot: 親には所属できません' );
 
@@ -697,9 +697,9 @@ begin
           if S.IsUnder( Self ) then raise ETreeError.Create( 'TTreeKnot.SetParent: 自分の子孫（または自分自身）には所属できません' );
           if not S.AcceptChildr( Self ) then raise ETreeError.Create( 'TTreeKnot.SetParent: この親には所属できない型のノードです' );
 
-          inherited SetParent( S.ForceChildrs );  // 旧親から自動で移籍
+          inherited SetParent0( S.ForceChildrs );  // 旧親から自動で移籍
      end
-     else inherited SetParent( nil );
+     else inherited SetParent0( nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
@@ -738,9 +738,9 @@ begin
 
           if not S.AcceptChildr( Self ) then raise ETreeError.Create( 'TTreeLeaf.SetParent: この親には所属できない型のノードです' );
 
-          inherited SetParent( S.ForceChildrs );  // 旧親から自動で移籍
+          inherited SetParent0( S.ForceChildrs );  // 旧親から自動で移籍
      end
-     else inherited SetParent( nil );
+     else inherited SetParent0( nil );
 end;
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
