@@ -139,7 +139,10 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        property Flag                  :Boolean read GetFlag write SetFlag;
        ///// M E T H O D
        procedure BasteCorn( const Corn_:Byte );
+       function CornOf( const Poin_:TPoin_ ) :Byte;  // 頂点 → 角番号（0 = 含まない）
        procedure BindPoins;  // 3頂点のアンカー（Poin.Face / Poin.Corn）を自分に向ける
+       function CanWeld( const K_:Byte; const Face_:TFace_; const CornK_:Byte ) :Boolean;  // 貼り合わせられるか（頂点が鏡像で対応するか）
+       procedure Weld( const K_:Byte; const Face_:TFace_; const CornK_:Byte );  // 辺 K_ を相手の辺 CornK_ と貼り合わせる
        procedure FlipEdge( const Corn_:Byte );  // 角 Corn_ の対辺を隣の面と張り替える（対角線の交換）。両面が縫合済みであること
      end;
 
@@ -613,6 +616,16 @@ begin
      V._Corn := Corn_;
 end;
 
+function TTriFace<TPos_>.CornOf( const Poin_:TPoin_ ) :Byte;
+begin
+     for Result := 1 to 3 do
+     begin
+          if _Poin[ Result ] = Poin_ then Exit;
+     end;
+
+     Result := 0;
+end;
+
 procedure TTriFace<TPos_>.BindPoins;
 var
    I :Byte;
@@ -627,6 +640,18 @@ begin
                V._Face := Self;  V._Corn := I;
           end;
      end;
+end;
+
+function TTriFace<TPos_>.CanWeld( const K_:Byte; const Face_:TFace_; const CornK_:Byte ) :Boolean;
+begin
+     Result := ( _Poin[ VertTableInc[ K_ ].L ] = Face_._Poin[ VertTableInc[ CornK_ ].R ] )   // 辺は両側の面から
+           and ( _Poin[ VertTableInc[ K_ ].R ] = Face_._Poin[ VertTableInc[ CornK_ ].L ] );  // 逆向きに見える
+end;
+
+procedure TTriFace<TPos_>.Weld( const K_:Byte; const Face_:TFace_; const CornK_:Byte );
+begin
+           Face[ K_     ] := Face_;        Corn[ K_     ] := CornK_;
+     Face_.Face[ CornK_ ] := Self ;  Face_.Corn[ CornK_ ] := K_    ;
 end;
 
 procedure TTriFace<TPos_>.FlipEdge( const Corn_:Byte );
