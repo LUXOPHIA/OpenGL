@@ -82,6 +82,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSingleRGB
 
+     PSingleRGB = ^TSingleRGB;
+
      TSingleRGB = record
      private
      public
@@ -142,6 +144,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TSingleRGBA
 
+     PSingleRGBA = ^TSingleRGBA;
+
      TSingleRGBA = record
      private
        ///// A C C E S S O R
@@ -180,6 +184,58 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// M E T H O D
        function Gamma( const C_:Single = 2.2 ) :TSingleRGBA;
        function ToneMap( const W_:Single = 1 ) :TSingleRGBA;
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TWordRGB
+
+     PWordRGB = ^TWordRGB;
+
+     TWordRGB = packed record  // 記憶順は R,G,B（Skia の RGBA16161616 に一致）
+     private
+     public
+       R :Word;
+       G :Word;
+       B :Word;
+       constructor Create( const L_:Word ); overload;
+       constructor Create( const R_,G_,B_:Word ); overload;
+       ///// C A S T
+       class operator Implicit( const L_:Word ) :TWordRGB;
+       class operator Implicit( const C_:TByteRGB ) :TWordRGB;
+       class operator Explicit( const C_:TWordRGB ) :TByteRGB;
+       class operator Implicit( const C_:TWordRGB ) :TSingleRGB;
+       class operator Implicit( const C_:TSingleRGB ) :TWordRGB;
+     end;
+
+     //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TWordRGBA
+
+     PWordRGBA = ^TWordRGBA;
+
+     TWordRGBA = packed record  // 記憶順は R,G,B,A（Skia の RGBA16161616 に一致）
+     private
+       ///// A C C E S S O R
+       function GetR :Word;
+       procedure SetR( const R_:Word );
+       function GetG :Word;
+       procedure SetG( const G_:Word );
+       function GetB :Word;
+       procedure SetB( const B_:Word );
+     public
+       C :TWordRGB;
+       A :Word;
+       constructor Create( const L_:Word; const A_:Word = $FFFF ); overload;
+       constructor Create( const R_,G_,B_:Word; const A_:Word = $FFFF ); overload;
+       ///// P R O P E R T Y
+       property R :Word read GetR write SetR;
+       property G :Word read GetG write SetG;
+       property B :Word read GetB write SetB;
+       ///// C A S T
+       class operator Implicit( const L_:Word ) :TWordRGBA;
+       class operator Implicit( const C_:TWordRGB ) :TWordRGBA;
+       class operator Explicit( const C_:TWordRGBA ) :TWordRGB;
+       class operator Implicit( const C_:TByteRGBA ) :TWordRGBA;
+       class operator Explicit( const C_:TWordRGBA ) :TByteRGBA;
+       class operator Implicit( const C_:TWordRGBA ) :TSingleRGBA;
+       class operator Implicit( const C_:TSingleRGBA ) :TWordRGBA;
      end;
 
      //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TByteRGBE
@@ -897,6 +953,178 @@ function TSingleRGBA.ToneMap( const W_:Single = 1 ) :TSingleRGBA;
 begin
      Result.C := C.ToneMap( W_ );
      Result.A := A;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TWordRGB
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TWordRGB.Create( const L_:Word );
+begin
+     R := L_;
+     G := L_;
+     B := L_;
+end;
+
+constructor TWordRGB.Create( const R_,G_,B_:Word );
+begin
+     R := R_;
+     G := G_;
+     B := B_;
+end;
+
+//////////////////////////////////////////////////////////////////////// C A S T
+
+class operator TWordRGB.Implicit( const L_:Word ) :TWordRGB;
+begin
+     Result := TWordRGB.Create( L_ );
+end;
+
+class operator TWordRGB.Implicit( const C_:TByteRGB ) :TWordRGB;
+begin
+     with Result do
+     begin
+          R := C_.R * 257;  // $FF → $FFFF
+          G := C_.G * 257;
+          B := C_.B * 257;
+     end;
+end;
+
+class operator TWordRGB.Explicit( const C_:TWordRGB ) :TByteRGB;
+begin
+     with Result do
+     begin
+          R := C_.R shr 8;
+          G := C_.G shr 8;
+          B := C_.B shr 8;
+     end;
+end;
+
+class operator TWordRGB.Implicit( const C_:TWordRGB ) :TSingleRGB;
+begin
+     with Result do
+     begin
+          R := C_.R / $FFFF;
+          G := C_.G / $FFFF;
+          B := C_.B / $FFFF;
+     end;
+end;
+
+class operator TWordRGB.Implicit( const C_:TSingleRGB ) :TWordRGB;
+begin
+     with Result do
+     begin
+          R := Round( Clamp( C_.R, 0, 1 ) * $FFFF );
+          G := Round( Clamp( C_.G, 0, 1 ) * $FFFF );
+          B := Round( Clamp( C_.B, 0, 1 ) * $FFFF );
+     end;
+end;
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TWordRGBA
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& private
+
+//////////////////////////////////////////////////////////////// A C C E S S O R
+
+function TWordRGBA.GetR :Word;
+begin
+     Result := C.R;
+end;
+
+procedure TWordRGBA.SetR( const R_:Word );
+begin
+     C.R := R_;
+end;
+
+function TWordRGBA.GetG :Word;
+begin
+     Result := C.G;
+end;
+
+procedure TWordRGBA.SetG( const G_:Word );
+begin
+     C.G := G_;
+end;
+
+function TWordRGBA.GetB :Word;
+begin
+     Result := C.B;
+end;
+
+procedure TWordRGBA.SetB( const B_:Word );
+begin
+     C.B := B_;
+end;
+
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& public
+
+constructor TWordRGBA.Create( const L_:Word; const A_:Word );
+begin
+     C := L_;
+     A := A_;
+end;
+
+constructor TWordRGBA.Create( const R_,G_,B_:Word; const A_:Word );
+begin
+     C := TWordRGB.Create( R_, G_, B_ );
+     A := A_;
+end;
+
+//////////////////////////////////////////////////////////////////////// C A S T
+
+class operator TWordRGBA.Implicit( const L_:Word ) :TWordRGBA;
+begin
+     Result := TWordRGBA.Create( L_ );
+end;
+
+class operator TWordRGBA.Implicit( const C_:TWordRGB ) :TWordRGBA;
+begin
+     with Result do
+     begin
+          C := C_;
+          A := $FFFF;
+     end;
+end;
+
+class operator TWordRGBA.Explicit( const C_:TWordRGBA ) :TWordRGB;
+begin
+     Result := C_.C;
+end;
+
+class operator TWordRGBA.Implicit( const C_:TByteRGBA ) :TWordRGBA;
+begin
+     with Result do
+     begin
+          C := C_.C;
+          A := C_.A * 257;
+     end;
+end;
+
+class operator TWordRGBA.Explicit( const C_:TWordRGBA ) :TByteRGBA;
+begin
+     with Result do
+     begin
+          C := TByteRGB( C_.C );
+          A := C_.A shr 8;
+     end;
+end;
+
+class operator TWordRGBA.Implicit( const C_:TWordRGBA ) :TSingleRGBA;
+begin
+     with Result do
+     begin
+          C := C_.C;
+          A := C_.A / $FFFF;
+     end;
+end;
+
+class operator TWordRGBA.Implicit( const C_:TSingleRGBA ) :TWordRGBA;
+begin
+     with Result do
+     begin
+          C := C_.C;
+          A := Round( Clamp( C_.A, 0, 1 ) * $FFFF );
+     end;
 end;
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TByteRGBE

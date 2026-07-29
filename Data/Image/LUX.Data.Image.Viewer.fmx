@@ -1,0 +1,5 @@
+﻿object LuxImageViewer: TLuxImageViewer
+  Size.Width = 640.000000000000000000
+  Size.Height = 640.000000000000000000
+  Size.PlatformDefault = False
+end

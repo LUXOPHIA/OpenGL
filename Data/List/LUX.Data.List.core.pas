@@ -60,8 +60,12 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        ///// P R O P E R T Y
        property IsOrdered :Boolean read GetIsOrdered;
        ///// A C C E S S O R
-       function GetParent :TListParent; virtual;
-       procedure SetParent( const Parent_:TListParent ); virtual;
+       // 型付け層（LUX.Data.List）が同名の型付きアクセサを素直に宣言できるよう、
+       // 核のアクセサには 0 を付ける。プロパティ名（Parent）は変えない。
+       // ※ 同名のまま型付け層で reintroduce すると、相互再帰するジェネリックの
+       //    実体化で dcc64 がプロパティの読み取りを見失う（E2130）。
+       function GetParent0 :TListParent; virtual;
+       procedure SetParent0( const Parent_:TListParent ); virtual;
        function GetOrder :Integer; virtual;
        procedure SetOrder( const Order_:Integer ); virtual;
        ///// M E T H O D
@@ -72,8 +76,8 @@ type //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
        procedure AfterConstruction; override;
        destructor Destroy; override;
        ///// P R O P E R T Y
-       property Parent :TListParent read GetParent write SetParent;
-       property Order  :Integer     read GetOrder  write SetOrder ;  // 代入は指定順位のノードとの「交換」であり、間のノードはシフトしない
+       property Parent :TListParent read GetParent0 write SetParent0;
+       property Order  :Integer     read GetOrder   write SetOrder  ;  // 代入は指定順位のノードとの「交換」であり、間のノードはシフトしない
        ///// M E T H O D
        procedure Remove; virtual;
        procedure InsertPrev( const Siblin_:TListChildr ); virtual;
@@ -226,12 +230,12 @@ end;
 
 //////////////////////////////////////////////////////////////// A C C E S S O R
 
-function TListChildr.GetParent :TListParent;
+function TListChildr.GetParent0 :TListParent;
 begin
      Result := _Parent;
 end;
 
-procedure TListChildr.SetParent( const Parent_:TListParent );
+procedure TListChildr.SetParent0( const Parent_:TListParent );
 begin
      Remove;
 
