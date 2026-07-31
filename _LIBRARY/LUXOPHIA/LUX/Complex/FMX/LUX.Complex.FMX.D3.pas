@@ -225,8 +225,8 @@ begin
 
                I := XYtoI( X, Y_ );
 
-               VB.Vertices [ I ] := M.AxisP;
-               VB.Normals  [ I ] := M.AxisZ;
+               VB.Vertices [ I ] := TPoint3D( M.AxisP );
+               VB.Normals  [ I ] := TPoint3D( M.AxisZ );
                VB.TexCoord0[ I ] := T2;
           end;
      end );
