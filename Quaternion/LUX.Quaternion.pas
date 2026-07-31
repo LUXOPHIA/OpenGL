@@ -717,8 +717,8 @@ end;
 
 class operator TDoubleQ.Explicit( const Q_:TDoubleQ ) :TSingleQ;
 begin
-     Result.R := Q_.R;
-     Result.I := Q_.I;
+     Result.R :=            Q_.R  ;
+     Result.I := TSingle3D( Q_.I );
 end;
 
 //////////////////////////////////////////////////////////////////// M E T H O D
