@@ -247,7 +247,9 @@ procedure TGLViewer.FitWindow;
 var
    R :TRectF;
 begin
-     R := TRectF.Create( LocalToAbsolute( TPointF.Zero ) * GetScreenScale, Width, Height );
+     // _Form.Bounds は論理単位(dp)。物理pxへの変換はプラットフォーム側が行うため、
+     // 原点にスクリーンスケールを掛けてはならない( DPI>100% で配置がずれる )。
+     R := TRectF.Create( LocalToAbsolute( TPointF.Zero ), Width, Height );
 
      _Form.Bounds := R.Round;
 
