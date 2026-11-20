@@ -9,7 +9,7 @@ A live-coding OpenGL playground for Delphi / FireMonkey: it embeds native OpenGL
 ## 利用ライブラリ
 
 * [**LUX**](https://github.com/LUXOPHIA/LUX) ：Base mathematical utility library for Delphi.
-* [**LUX.GPU.OpenGL**](https://github.com/LUXOPHIA/LUX.GPU.OpenGL) ：OpenGL wrapper library for Delphi.
+* [**LUX.OpenGL**](https://github.com/LUXOPHIA/LUX.OpenGL) ：OpenGL wrapper library for Delphi.
 
 ## 1. Overview
 
@@ -78,13 +78,13 @@ and finally gamma-corrected with $C'' = C'^{\,1/\gamma}$, $\gamma = 2.2$.
 
 ### 3.1 Class diagram
 
-The application composes wrapper classes from the [LUX.GPU.OpenGL](https://github.com/LUXOPHIA/LUX.GPU.OpenGL) library (vendored under `_LIBRARY/`):
+The application composes wrapper classes from the [LUX.OpenGL](https://github.com/LUXOPHIA/LUX.OpenGL) library (vendored under `_LIBRARY/`):
 
 ```
 Ownership — what TForm1 (Main.pas) creates and owns
 
 ・TForm1 (Main.pas)
-  ┣・GLViewer1..4 :TGLViewer             ･･･ FMX frame + native GL child window
+  ┣・GLViewer1..4 :TGLViewer                             ･･･ FMX frame + native GL child window
   ┃  ┣・Camera                          ･･･ one of the TGLCamera objects below
   ┃  ┗・_Viewer :TGLUniBuf<TSingleM4>   ･･･ "TViewerScal" UBO
   ┣・_Scener :TGLScener                  ･･･ scene root (TTreeNode<TGLObject>)
@@ -140,7 +140,7 @@ Data flows from the scene graph into uniform buffers: each `TGLViewer.Paint` mak
   ┃  ┗・Luxo-Jr_2000x1000.hdr ･･･ equirectangular HDR environment map
   ┣・_LIBRARY/LUXOPHIA/
   ┃  ┣・LUX/                  ･･･ vectors/matrices, scene tree, color, curves
-  ┃  ┗・LUX.GPU.OpenGL/       ･･･ OpenGL wrapper library (see § 3.1)
+  ┃  ┗・LUX.OpenGL/       ･･･ OpenGL wrapper library (see § 3.1)
   ┗・--------/_SCREENSHOT/     ･･･ screenshots used in this README
 ```
 

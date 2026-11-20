@@ -9,7 +9,7 @@ Delphi / FireMonkey のためのライブコーディング OpenGL プレイグ�
 ## 利用ライブラリ
 
 * [**LUX**](https://github.com/LUXOPHIA/LUX) ：Delphi のための基盤数学ライブラリ。
-* [**LUX.GPU.OpenGL**](https://github.com/LUXOPHIA/LUX.GPU.OpenGL) ：Delphi のための OpenGL ラッパーライブラリ。
+* [**LUX.OpenGL**](https://github.com/LUXOPHIA/LUX.OpenGL) ：Delphi のための OpenGL ラッパーライブラリ。
 
 ## 1. 概要
 
@@ -78,13 +78,13 @@ C' = \operatorname{clamp}\!\left( \frac{C \left( 1 + C / W \right)}{1 + C},\ 0,\
 
 ### 3.1 クラス図
 
-本アプリケーションは、[LUX.GPU.OpenGL](https://github.com/LUXOPHIA/LUX.GPU.OpenGL) ライブラリ（`_LIBRARY/` に同梱）のラッパークラス群を組み合わせて構成されています。
+本アプリケーションは、[LUX.OpenGL](https://github.com/LUXOPHIA/LUX.OpenGL) ライブラリ（`_LIBRARY/` に同梱）のラッパークラス群を組み合わせて構成されています。
 
 ```
 Ownership — what TForm1 (Main.pas) creates and owns
 
 ・TForm1 (Main.pas)
-  ┣・GLViewer1..4 :TGLViewer             ･･･ FMX frame + native GL child window
+  ┣・GLViewer1..4 :TGLViewer                             ･･･ FMX frame + native GL child window
   ┃  ┣・Camera                          ･･･ one of the TGLCamera objects below
   ┃  ┗・_Viewer :TGLUniBuf<TSingleM4>   ･･･ "TViewerScal" UBO
   ┣・_Scener :TGLScener                  ･･･ scene root (TTreeNode<TGLObject>)
@@ -140,7 +140,7 @@ Global singleton
   ┃  ┗・Luxo-Jr_2000x1000.hdr ･･･ equirectangular HDR environment map
   ┣・_LIBRARY/LUXOPHIA/
   ┃  ┣・LUX/                  ･･･ vectors/matrices, scene tree, color, curves
-  ┃  ┗・LUX.GPU.OpenGL/       ･･･ OpenGL wrapper library (see § 3.1)
+  ┃  ┗・LUX.OpenGL/       ･･･ OpenGL wrapper library (see § 3.1)
   ┗・--------/_SCREENSHOT/     ･･･ screenshots used in this README
 ```
 
