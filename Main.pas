@@ -7,15 +7,15 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.StdCtrls, FMX.Controls.Presentation, FMX.ScrollBox, FMX.Memo, FMX.Objects, FMX.TabControl,
   LUX, LUX.D1, LUX.D2, LUX.D3, LUX.D4x4,
-  LUX.GPU.OpenGL,
-  LUX.GPU.OpenGL.Viewer,
-  LUX.GPU.OpenGL.Atom.Shader,
-  LUX.GPU.OpenGL.Scener,
-  LUX.GPU.OpenGL.Camera,
-  LUX.GPU.OpenGL.Shaper,
-  LUX.GPU.OpenGL.Matery,
-  LUX.GPU.OpenGL.Matery.Textur.Preset,
-  LUX.GPU.OpenGL.Render, FMX.Memo.Types;
+  LUX.OpenGL,
+  LUX.OpenGL.Viewer,
+  LUX.OpenGL.Atom.Shader,
+  LUX.OpenGL.Scener,
+  LUX.OpenGL.Camera,
+  LUX.OpenGL.Shaper,
+  LUX.OpenGL.Matery,
+  LUX.OpenGL.Matery.Textur.Preset,
+  LUX.OpenGL.Render, FMX.Memo.Types;
 
 type
   TForm1 = class(TForm)

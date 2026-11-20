@@ -1,4 +1,4 @@
-# LUX.GPU.OpenGL
+# LUX.OpenGL
 [English](README.md) | [日本語](ja/README.md)
 
 A **Delphi** library for [OpenGL](https://registry.khronos.org/OpenGL/index_gl.php) 4.3 core-profile rendering and GPU computation on Windows. It wraps the WGL context, GLSL programs, buffers, textures and framebuffers as objects, adds a scene graph of cameras, shapes and materials, and provides a `TGLViewer` frame so that an OpenGL viewport can be placed on an FMX or VCL form like any other GUI control.
@@ -15,17 +15,17 @@ The library is built in four layers:
 
 | Layer | Folder / unit | Contents |
 |:--|:--|:--|
-| Context | `LUX.GPU.OpenGL.pas` | `IOpenGL` / `TOpenGL` — pixel format, device and rendering context (WGL) |
+| Context | `LUX.OpenGL.pas` | `IOpenGL` / `TOpenGL` — pixel format, device and rendering context (WGL) |
 | Atom | `Atom/` | thin object wrappers over single GL objects: shaders, programs, buffers, textures, images, framebuffers |
-| Scene | `LUX.GPU.OpenGL.{Scener,Camera,Shaper,Matery,Inform}.pas` | scene tree, cameras, geometry, materials, bounding-box overlay |
+| Scene | `LUX.OpenGL.{Scener,Camera,Shaper,Matery,Inform}.pas` | scene tree, cameras, geometry, materials, bounding-box overlay |
 | Framework | `_FMX/`, `_VCL/` | `TGLViewer` frame, host window, offscreen renderer |
 
-Only the framework layer is platform/framework specific; everything else is shared between FMX and VCL. Compute shaders are available through `LUX.GPU.OpenGL.Comput.pas` (`TGLComput`), independent of the scene graph.
+Only the framework layer is platform/framework specific; everything else is shared between FMX and VCL. Compute shaders are available through `LUX.OpenGL.Comput.pas` (`TGLComput`), independent of the scene graph.
 
 | Framework | Units | Demo |
 |:--|:--|:--|
-| [FMX](https://www.wikiwand.com/en/FireMonkey) | `_FMX/LUX.GPU.OpenGL.{Window,Viewer,Render}.pas` | [LUXOPHIA/OpenGL](https://github.com/LUXOPHIA/OpenGL) [6] |
-| VCL | `_VCL/LUX.GPU.OpenGL.{Window,Viewer,Render}.pas` | [LUXOPHIA/OpenGL_VCL](https://github.com/LUXOPHIA/OpenGL_VCL) [7] |
+| [FMX](https://www.wikiwand.com/en/FireMonkey) | `_FMX/LUX.OpenGL.{Window,Viewer,Render}.pas` | [LUXOPHIA/OpenGL](https://github.com/LUXOPHIA/OpenGL) [6] |
+| VCL | `_VCL/LUX.OpenGL.{Window,Viewer,Render}.pas` | [LUXOPHIA/OpenGL_VCL](https://github.com/LUXOPHIA/OpenGL_VCL) [7] |
 
 ## 2. Technical Background
 
@@ -33,7 +33,7 @@ Only the framework layer is platform/framework specific; everything else is shar
 
 On Windows an OpenGL rendering context (`HGLRC`) is bound to a device context (`HDC`) whose pixel format has been chosen in advance [3]. `TOpenGL` performs that sequence in its constructor: it creates a hidden window, obtains its `HDC`, validates a `TPixelFormatDescriptor` with `ChoosePixelFormat` / `DescribePixelFormat`, applies it with `SetPixelFormat` and creates the context with `wglCreateContext`. `TOpenGL.DefaultPFD` requests `PFD_DRAW_TO_WINDOW or PFD_SUPPORT_OPENGL or PFD_DOUBLEBUFFER`, `PFD_TYPE_RGBA`, 24 colour bits and 32 depth bits.
 
-Exactly one context exists per process. The framework-specific descendants — `TOepnGL_FMX` (spelling as in the source) and `TOpenGL_VCL` — are instantiated in the `initialization` section of `_FMX/`/`_VCL/LUX.GPU.OpenGL.Window.pas`, stored in the global `_OpenGL_ :IOpenGL`, and followed by `InitOpenGLext` so that the post-1.1 entry points become available. Every viewport then calls `wglMakeCurrent( its own DC, _OpenGL_.RC )`, so all viewports share one context and therefore one set of GL objects. `InitOpenGL` sets the initial state: `GL_DEPTH_TEST`, `GL_CULL_FACE`, `GL_BLEND` with `glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA )`, and `GL_PROGRAM_POINT_SIZE`.
+Exactly one context exists per process. The framework-specific descendants — `TOepnGL_FMX` (spelling as in the source) and `TOpenGL_VCL` — are instantiated in the `initialization` section of `_FMX/`/`_VCL/LUX.OpenGL.Window.pas`, stored in the global `_OpenGL_ :IOpenGL`, and followed by `InitOpenGLext` so that the post-1.1 entry points become available. Every viewport then calls `wglMakeCurrent( its own DC, _OpenGL_.RC )`, so all viewports share one context and therefore one set of GL objects. `InitOpenGL` sets the initial state: `GL_DEPTH_TEST`, `GL_CULL_FACE`, `GL_BLEND` with `glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA )`, and `GL_PROGRAM_POINT_SIZE`.
 
 ### 2.2 The Transform Chain
 
@@ -219,48 +219,48 @@ Call tree of one frame  ( execution order, top to bottom )
 ### 3.2 File Layout
 
 ```
-・LUX.GPU.OpenGL/
-  ┣・LUX.GPU.OpenGL.pas                   ･･･ IOpenGL / TOpenGL, _OpenGL_
-  ┣・LUX.GPU.OpenGL.Scener.pas            ･･･ TGLObject / TGLScener
-  ┣・LUX.GPU.OpenGL.Camera.pas            ･･･ TGLCamera{,Orth,Pers}
-  ┣・LUX.GPU.OpenGL.Shaper.pas            ･･･ TGLShaper family, STL/OBJ loaders
-  ┣・LUX.GPU.OpenGL.Matery.pas            ･･･ TGLMatery family, GLSL sources
-  ┣・LUX.GPU.OpenGL.Inform.pas            ･･･ TGLInform — bounding-box overlay
-  ┣・LUX.GPU.OpenGL.Comput.pas            ･･･ TGLComput — compute shaders
-  ┣・LUX.GPU.OpenGL.Render_.pas           ･･･ TGL_Render — framework-neutral
+・LUX.OpenGL/
+  ┣・LUX.OpenGL.pas                       ･･･ IOpenGL / TOpenGL, _OpenGL_
+  ┣・LUX.OpenGL.Scener.pas                ･･･ TGLObject / TGLScener
+  ┣・LUX.OpenGL.Camera.pas                ･･･ TGLCamera{,Orth,Pers}
+  ┣・LUX.OpenGL.Shaper.pas                ･･･ TGLShaper family, STL/OBJ loaders
+  ┣・LUX.OpenGL.Matery.pas                ･･･ TGLMatery family, GLSL sources
+  ┣・LUX.OpenGL.Inform.pas                ･･･ TGLInform — bounding-box overlay
+  ┣・LUX.OpenGL.Comput.pas                ･･･ TGLComput — compute shaders
+  ┣・LUX.OpenGL.Render_.pas               ･･･ TGL_Render — framework-neutral
   ┣・Atom/                                ･･･ one class per GL object
-  ┃  ┣・LUX.GPU.OpenGL.Atom.pas          ･･･ TGLAtomer / TGLVarray
-  ┃  ┣・LUX.GPU.OpenGL.Atom.Shader.pas   ･･･ TGLShader{,C,V,G,F}
-  ┃  ┣・LUX.GPU.OpenGL.Atom.Progra.pas   ･･･ TGLProgra
-  ┃  ┣・LUX.GPU.OpenGL.Atom.Engine.pas   ･･･ TGLEngine
-  ┃  ┣・LUX.GPU.OpenGL.Atom.Porter.pas   ･･･ TGLPorter{F,V,U,T,S}
-  ┃  ┣・LUX.GPU.OpenGL.Atom.Buffer.pas   ･･･ TGLBuffer / TGLBufferData
+  ┃  ┣・LUX.OpenGL.Atom.pas              ･･･ TGLAtomer / TGLVarray
+  ┃  ┣・LUX.OpenGL.Atom.Shader.pas       ･･･ TGLShader{,C,V,G,F}
+  ┃  ┣・LUX.OpenGL.Atom.Progra.pas       ･･･ TGLProgra
+  ┃  ┣・LUX.OpenGL.Atom.Engine.pas       ･･･ TGLEngine
+  ┃  ┣・LUX.OpenGL.Atom.Porter.pas       ･･･ TGLPorter{F,V,U,T,S}
+  ┃  ┣・LUX.OpenGL.Atom.Buffer.pas       ･･･ TGLBuffer / TGLBufferData
   ┃  ┣・Buffer/                          ･･･ one unit per buffer type
-  ┃  ┣・LUX.GPU.OpenGL.Atom.Imager.pas   ･･･ TGLImager (+ Imager/ 1D/2D/3D)
-  ┃  ┣・LUX.GPU.OpenGL.Atom.Textur.pas   ･･･ TGLSamplr / TGLTextur (+ Textur/)
-  ┃  ┣・LUX.GPU.OpenGL.Atom.Chaner.pas   ･･･ TGLChaner{,1,N} — attachments
-  ┃  ┗・LUX.GPU.OpenGL.Atom.Framer.pas   ･･･ TGLFramer{,1,N} — FBO
+  ┃  ┣・LUX.OpenGL.Atom.Imager.pas       ･･･ TGLImager (+ Imager/ 1D/2D/3D)
+  ┃  ┣・LUX.OpenGL.Atom.Textur.pas       ･･･ TGLSamplr / TGLTextur (+ Textur/)
+  ┃  ┣・LUX.OpenGL.Atom.Chaner.pas       ･･･ TGLChaner{,1,N} — attachments
+  ┃  ┗・LUX.OpenGL.Atom.Framer.pas       ･･･ TGLFramer{,1,N} — FBO
   ┣・Matery/                              ･･･ material presets
-  ┃  ┣・LUX.GPU.OpenGL.Matery.Preset.pas ･･･ Color / RGB / Diffuse / …
+  ┃  ┣・LUX.OpenGL.Matery.Preset.pas     ･･･ Color / RGB / Diffuse / …
   ┃  ┗・Textur/_FMX|_VCL/                ･･･ TGLMatery{Imag,ImagG,BB}
   ┣・Shaper/                              ･･･ geometry presets
-  ┃  ┣・LUX.GPU.OpenGL.Shaper.Preset.pas ･･･ TGLShaperLineCube / TGLDotCube
-  ┃  ┣・LUX.GPU.OpenGL.Shaper.Octree.pas ･･･ TGLShaperOctree — collision
-  ┃  ┣・LUX.GPU.OpenGL.Shaper.Voxels.pas ･･･ TGLShaperVoxels/TGLMateryVoxels
+  ┃  ┣・LUX.OpenGL.Shaper.Preset.pas     ･･･ TGLShaperLineCube / TGLDotCube
+  ┃  ┣・LUX.OpenGL.Shaper.Octree.pas     ･･･ TGLShaperOctree — collision
+  ┃  ┣・LUX.OpenGL.Shaper.Voxels.pas     ･･･ TGLShaperVoxels/TGLMateryVoxels
   ┃  ┗・Preset/                          ･･･ TMarcubes etc. + *.glsl
   ┣・_FMX/                                ･･･ FMX binding
-  ┃  ┣・LUX.GPU.OpenGL.Window.pas        ･･･ TGLViewerForm / TOepnGL_FMX
-  ┃  ┣・LUX.GPU.OpenGL.Viewer.pas|fmx    ･･･ TGLViewer frame
-  ┃  ┗・LUX.GPU.OpenGL.Render.pas        ･･･ TGLRender
+  ┃  ┣・LUX.OpenGL.Window.pas            ･･･ TGLViewerForm / TOepnGL_FMX
+  ┃  ┣・LUX.OpenGL.Viewer.pas|fmx        ･･･ TGLViewer frame
+  ┃  ┗・LUX.OpenGL.Render.pas            ･･･ TGLRender
   ┗・_VCL/                                ･･･ VCL binding
-     ┣・LUX.GPU.OpenGL.Window.pas         ･･･ TOpenGL_VCL
-     ┣・LUX.GPU.OpenGL.Viewer.pas|dfm     ･･･ TGLViewer frame
-     ┗・LUX.GPU.OpenGL.Render.pas         ･･･ TGLRender
+     ┣・LUX.OpenGL.Window.pas             ･･･ TOpenGL_VCL
+     ┣・LUX.OpenGL.Viewer.pas|dfm         ･･･ TGLViewer frame
+     ┗・LUX.OpenGL.Render.pas             ･･･ TGLRender
 ```
 
 ## 4. Usage
 
-Add the folders of this library — the root, `Atom/` and its subfolders, `Matery/`, `Shaper/`, and exactly one of `_FMX/` or `_VCL/` — together with those of `LUX` to the project search path. Framework-specific folders must never both be on the path, since the two `LUX.GPU.OpenGL.Window.pas` / `.Viewer.pas` / `.Render.pas` pairs share unit names.
+Add the folders of this library — the root, `Atom/` and its subfolders, `Matery/`, `Shaper/`, and exactly one of `_FMX/` or `_VCL/` — together with those of `LUX` to the project search path. Framework-specific folders must never both be on the path, since the two `LUX.OpenGL.Window.pas` / `.Viewer.pas` / `.Render.pas` pairs share unit names.
 
 ### 4.1 A Viewport on a Form
 
@@ -269,12 +269,12 @@ Add the folders of this library — the root, `Atom/` and its subfolders, `Mater
 ```pascal
 uses System.Math,
      LUX, LUX.D3, LUX.D4x4,
-     LUX.GPU.OpenGL.Scener,
-     LUX.GPU.OpenGL.Camera,
-     LUX.GPU.OpenGL.Shaper,
-     LUX.GPU.OpenGL.Viewer,
-     LUX.GPU.OpenGL.Shaper.Preset,
-     LUX.GPU.OpenGL.Matery.Preset;
+     LUX.OpenGL.Scener,
+     LUX.OpenGL.Camera,
+     LUX.OpenGL.Shaper,
+     LUX.OpenGL.Viewer,
+     LUX.OpenGL.Shaper.Preset,
+     LUX.OpenGL.Matery.Preset;
 
 procedure TForm1.FormCreate( Sender:TObject );
 begin
@@ -368,19 +368,19 @@ end;
 
 Per-unit class and member listings:
 
-* [**LUX.GPU.OpenGL**.pas](LUX.GPU.OpenGL.pas.md)
-* [**LUX.GPU.OpenGL.Scener**.pas](LUX.GPU.OpenGL.Scener.pas.md)
-* [**LUX.GPU.OpenGL.Camera**.pas](LUX.GPU.OpenGL.Camera.pas.md)
-* [**LUX.GPU.OpenGL.Shaper**.pas](LUX.GPU.OpenGL.Shaper.pas.md)
-* [**LUX.GPU.OpenGL.Matery**.pas](LUX.GPU.OpenGL.Matery.pas.md)
-* [**LUX.GPU.OpenGL.Inform**.pas](LUX.GPU.OpenGL.Inform.pas.md)
-* [**LUX.GPU.OpenGL.Matery.Preset**.pas](Matery/LUX.GPU.OpenGL.Matery.Preset.pas.md)
-* [**LUX.GPU.OpenGL.Matery.Textur.Preset**.pas](Matery/Textur/_VCL/LUX.GPU.OpenGL.Matery.Textur.Preset.pas.md)
-* [**LUX.GPU.OpenGL.Shaper.Preset**.pas](Shaper/LUX.GPU.OpenGL.Shaper.Preset.pas.md)
-* [**LUX.GPU.OpenGL.Shaper.Octree**.pas](Shaper/LUX.GPU.OpenGL.Shaper.Octree.pas.md)
-* [**LUX.GPU.OpenGL.Shaper.Voxels**.pas](Shaper/LUX.GPU.OpenGL.Shaper.Voxels.pas.md)
-* [**LUX.GPU.OpenGL.Viewer**.pas](_VCL/LUX.GPU.OpenGL.Viewer.pas.md)
-* [**LUX.GPU.OpenGL.Window**.pas](_VCL/LUX.GPU.OpenGL.Window.pas.md)
+* [**LUX.OpenGL**.pas](LUX.OpenGL.pas.md)
+* [**LUX.OpenGL.Scener**.pas](LUX.OpenGL.Scener.pas.md)
+* [**LUX.OpenGL.Camera**.pas](LUX.OpenGL.Camera.pas.md)
+* [**LUX.OpenGL.Shaper**.pas](LUX.OpenGL.Shaper.pas.md)
+* [**LUX.OpenGL.Matery**.pas](LUX.OpenGL.Matery.pas.md)
+* [**LUX.OpenGL.Inform**.pas](LUX.OpenGL.Inform.pas.md)
+* [**LUX.OpenGL.Matery.Preset**.pas](Matery/LUX.OpenGL.Matery.Preset.pas.md)
+* [**LUX.OpenGL.Matery.Textur.Preset**.pas](Matery/Textur/_VCL/LUX.OpenGL.Matery.Textur.Preset.pas.md)
+* [**LUX.OpenGL.Shaper.Preset**.pas](Shaper/LUX.OpenGL.Shaper.Preset.pas.md)
+* [**LUX.OpenGL.Shaper.Octree**.pas](Shaper/LUX.OpenGL.Shaper.Octree.pas.md)
+* [**LUX.OpenGL.Shaper.Voxels**.pas](Shaper/LUX.OpenGL.Shaper.Voxels.pas.md)
+* [**LUX.OpenGL.Viewer**.pas](_VCL/LUX.OpenGL.Viewer.pas.md)
+* [**LUX.OpenGL.Window**.pas](_VCL/LUX.OpenGL.Window.pas.md)
 
 ## 5. Requirements
 

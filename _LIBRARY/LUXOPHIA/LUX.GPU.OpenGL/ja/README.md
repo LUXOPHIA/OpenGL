@@ -1,4 +1,4 @@
-# LUX.GPU.OpenGL
+# LUX.OpenGL
 [English](../README.md) | [日本語](README.md)
 
 Windows 上での [OpenGL](https://registry.khronos.org/OpenGL/index_gl.php) 4.3 コアプロファイルによる描画と GPU 計算のための **Delphi** ライブラリ。WGL コンテキスト・GLSL プログラム・バッファ・テクスチャ・フレームバッファをオブジェクトとして包み、カメラ・形状・マテリアルのシーングラフを載せ、さらに `TGLViewer` フレームによって OpenGL の描画領域を FMX / VCL のフォーム上に他の GUI パーツと同様に配置できます。
@@ -15,17 +15,17 @@ Windows 上での [OpenGL](https://registry.khronos.org/OpenGL/index_gl.php) 4.3
 
 | 層 | フォルダ / ユニット | 内容 |
 |:--|:--|:--|
-| コンテキスト | `LUX.GPU.OpenGL.pas` | `IOpenGL` / `TOpenGL` — ピクセル形式・デバイスコンテキスト・レンダリングコンテキスト（WGL） |
+| コンテキスト | `LUX.OpenGL.pas` | `IOpenGL` / `TOpenGL` — ピクセル形式・デバイスコンテキスト・レンダリングコンテキスト（WGL） |
 | Atom | `Atom/` | 個々の GL オブジェクトの薄いラッパー：シェーダー・プログラム・バッファ・テクスチャ・イメージ・フレームバッファ |
-| シーン | `LUX.GPU.OpenGL.{Scener,Camera,Shaper,Matery,Inform}.pas` | シーンツリー・カメラ・形状・マテリアル・境界ボックス表示 |
+| シーン | `LUX.OpenGL.{Scener,Camera,Shaper,Matery,Inform}.pas` | シーンツリー・カメラ・形状・マテリアル・境界ボックス表示 |
 | フレームワーク | `_FMX/`, `_VCL/` | `TGLViewer` フレーム・ホストウィンドウ・オフスクリーンレンダラー |
 
-プラットフォーム/フレームワークに依存するのはフレームワーク層のみで、他は FMX と VCL で共通です。コンピュートシェーダーは `LUX.GPU.OpenGL.Comput.pas`（`TGLComput`）としてシーングラフとは独立に利用できます。
+プラットフォーム/フレームワークに依存するのはフレームワーク層のみで、他は FMX と VCL で共通です。コンピュートシェーダーは `LUX.OpenGL.Comput.pas`（`TGLComput`）としてシーングラフとは独立に利用できます。
 
 | フレームワーク | ユニット | デモ |
 |:--|:--|:--|
-| [FMX](https://www.wikiwand.com/en/FireMonkey) | `_FMX/LUX.GPU.OpenGL.{Window,Viewer,Render}.pas` | [LUXOPHIA/OpenGL](https://github.com/LUXOPHIA/OpenGL) [6] |
-| VCL | `_VCL/LUX.GPU.OpenGL.{Window,Viewer,Render}.pas` | [LUXOPHIA/OpenGL_VCL](https://github.com/LUXOPHIA/OpenGL_VCL) [7] |
+| [FMX](https://www.wikiwand.com/en/FireMonkey) | `_FMX/LUX.OpenGL.{Window,Viewer,Render}.pas` | [LUXOPHIA/OpenGL](https://github.com/LUXOPHIA/OpenGL) [6] |
+| VCL | `_VCL/LUX.OpenGL.{Window,Viewer,Render}.pas` | [LUXOPHIA/OpenGL_VCL](https://github.com/LUXOPHIA/OpenGL_VCL) [7] |
 
 ## 2. 技術的背景
 
@@ -33,7 +33,7 @@ Windows 上での [OpenGL](https://registry.khronos.org/OpenGL/index_gl.php) 4.3
 
 Windows では OpenGL のレンダリングコンテキスト（`HGLRC`）は、あらかじめピクセル形式を決めたデバイスコンテキスト（`HDC`）に結び付けられます [3]。`TOpenGL` はコンストラクタでその手順を実行します。すなわち、隠しウィンドウを作り、その `HDC` を取得し、`ChoosePixelFormat` / `DescribePixelFormat` で `TPixelFormatDescriptor` を確定し、`SetPixelFormat` で適用し、`wglCreateContext` でコンテキストを生成します。`TOpenGL.DefaultPFD` は `PFD_DRAW_TO_WINDOW or PFD_SUPPORT_OPENGL or PFD_DOUBLEBUFFER`・`PFD_TYPE_RGBA`・カラー 24 ビット・デプス 32 ビットを要求します。
 
-コンテキストはプロセスにちょうど 1 つです。フレームワーク別の派生クラス `TOepnGL_FMX`（綴りはソースのまま）と `TOpenGL_VCL` は `_FMX/`・`_VCL/LUX.GPU.OpenGL.Window.pas` の `initialization` 節で生成され、グローバル変数 `_OpenGL_ :IOpenGL` に格納され、続いて `InitOpenGLext` により OpenGL 1.1 以降のエントリポイントが利用可能になります。各描画領域は `wglMakeCurrent( 自身の DC, _OpenGL_.RC )` を呼ぶため、すべての描画領域が 1 つのコンテキスト、したがって 1 組の GL オブジェクトを共有します。`InitOpenGL` が初期状態を設定します：`GL_DEPTH_TEST`・`GL_CULL_FACE`・`glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA )` を伴う `GL_BLEND`・`GL_PROGRAM_POINT_SIZE`。
+コンテキストはプロセスにちょうど 1 つです。フレームワーク別の派生クラス `TOepnGL_FMX`（綴りはソースのまま）と `TOpenGL_VCL` は `_FMX/`・`_VCL/LUX.OpenGL.Window.pas` の `initialization` 節で生成され、グローバル変数 `_OpenGL_ :IOpenGL` に格納され、続いて `InitOpenGLext` により OpenGL 1.1 以降のエントリポイントが利用可能になります。各描画領域は `wglMakeCurrent( 自身の DC, _OpenGL_.RC )` を呼ぶため、すべての描画領域が 1 つのコンテキスト、したがって 1 組の GL オブジェクトを共有します。`InitOpenGL` が初期状態を設定します：`GL_DEPTH_TEST`・`GL_CULL_FACE`・`glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA )` を伴う `GL_BLEND`・`GL_PROGRAM_POINT_SIZE`。
 
 ### 2.2 座標変換の連鎖
 
@@ -219,48 +219,48 @@ N = \prod_{d} \texttt{Grups}_d \cdot \texttt{Items}_d . \tag{7}
 ### 3.2 ファイル構成
 
 ```
-・LUX.GPU.OpenGL/
-  ┣・LUX.GPU.OpenGL.pas                   ･･･ IOpenGL / TOpenGL、_OpenGL_
-  ┣・LUX.GPU.OpenGL.Scener.pas            ･･･ TGLObject / TGLScener
-  ┣・LUX.GPU.OpenGL.Camera.pas            ･･･ TGLCamera{,Orth,Pers}
-  ┣・LUX.GPU.OpenGL.Shaper.pas            ･･･ TGLShaper 系、STL / OBJ ローダー
-  ┣・LUX.GPU.OpenGL.Matery.pas            ･･･ TGLMatery 系、基底の GLSL ソース
-  ┣・LUX.GPU.OpenGL.Inform.pas            ･･･ TGLInform — 境界ボックス表示
-  ┣・LUX.GPU.OpenGL.Comput.pas            ･･･ TGLComput・コンピュートシェーダー
-  ┣・LUX.GPU.OpenGL.Render_.pas           ･･･ TGL_Render・フレームワーク非依存
+・LUX.OpenGL/
+  ┣・LUX.OpenGL.pas                       ･･･ IOpenGL / TOpenGL、_OpenGL_
+  ┣・LUX.OpenGL.Scener.pas                ･･･ TGLObject / TGLScener
+  ┣・LUX.OpenGL.Camera.pas                ･･･ TGLCamera{,Orth,Pers}
+  ┣・LUX.OpenGL.Shaper.pas                ･･･ TGLShaper 系、STL / OBJ ローダー
+  ┣・LUX.OpenGL.Matery.pas                ･･･ TGLMatery 系、基底の GLSL ソース
+  ┣・LUX.OpenGL.Inform.pas                ･･･ TGLInform — 境界ボックス表示
+  ┣・LUX.OpenGL.Comput.pas                ･･･ TGLComput・コンピュートシェーダー
+  ┣・LUX.OpenGL.Render_.pas               ･･･ TGL_Render・フレームワーク非依存
   ┣・Atom/                                ･･･ GL オブジェクト 1 つにクラス 1 つ
-  ┃  ┣・LUX.GPU.OpenGL.Atom.pas          ･･･ TGLAtomer / TGLVarray
-  ┃  ┣・LUX.GPU.OpenGL.Atom.Shader.pas   ･･･ TGLShader{,C,V,G,F}
-  ┃  ┣・LUX.GPU.OpenGL.Atom.Progra.pas   ･･･ TGLProgra
-  ┃  ┣・LUX.GPU.OpenGL.Atom.Engine.pas   ･･･ TGLEngine
-  ┃  ┣・LUX.GPU.OpenGL.Atom.Porter.pas   ･･･ TGLPorter{F,V,U,T,S}
-  ┃  ┣・LUX.GPU.OpenGL.Atom.Buffer.pas   ･･･ TGLBuffer / TGLBufferData
+  ┃  ┣・LUX.OpenGL.Atom.pas              ･･･ TGLAtomer / TGLVarray
+  ┃  ┣・LUX.OpenGL.Atom.Shader.pas       ･･･ TGLShader{,C,V,G,F}
+  ┃  ┣・LUX.OpenGL.Atom.Progra.pas       ･･･ TGLProgra
+  ┃  ┣・LUX.OpenGL.Atom.Engine.pas       ･･･ TGLEngine
+  ┃  ┣・LUX.OpenGL.Atom.Porter.pas       ･･･ TGLPorter{F,V,U,T,S}
+  ┃  ┣・LUX.OpenGL.Atom.Buffer.pas       ･･･ TGLBuffer / TGLBufferData
   ┃  ┣・Buffer/                          ･･･ バッファ型ごとに 1 ユニット
-  ┃  ┣・LUX.GPU.OpenGL.Atom.Imager.pas   ･･･ TGLImager（Imager/ に 1D/2D/3D）
-  ┃  ┣・LUX.GPU.OpenGL.Atom.Textur.pas   ･･･ TGLSamplr / TGLTextur（Textur/）
-  ┃  ┣・LUX.GPU.OpenGL.Atom.Chaner.pas   ･･･ TGLChaner{,1,N} — アタッチメント
-  ┃  ┗・LUX.GPU.OpenGL.Atom.Framer.pas   ･･･ TGLFramer{,1,N} — FBO
+  ┃  ┣・LUX.OpenGL.Atom.Imager.pas       ･･･ TGLImager（Imager/ に 1D/2D/3D）
+  ┃  ┣・LUX.OpenGL.Atom.Textur.pas       ･･･ TGLSamplr / TGLTextur（Textur/）
+  ┃  ┣・LUX.OpenGL.Atom.Chaner.pas       ･･･ TGLChaner{,1,N} — アタッチメント
+  ┃  ┗・LUX.OpenGL.Atom.Framer.pas       ･･･ TGLFramer{,1,N} — FBO
   ┣・Matery/                              ･･･ マテリアルのプリセット
-  ┃  ┣・LUX.GPU.OpenGL.Matery.Preset.pas ･･･ Color / RGB / Diffuse / …
+  ┃  ┣・LUX.OpenGL.Matery.Preset.pas     ･･･ Color / RGB / Diffuse / …
   ┃  ┗・Textur/_FMX|_VCL/                ･･･ TGLMatery{Imag,ImagG,BB}
   ┣・Shaper/                              ･･･ 形状のプリセット
-  ┃  ┣・LUX.GPU.OpenGL.Shaper.Preset.pas ･･･ TGLShaperLineCube / TGLDotCube
-  ┃  ┣・LUX.GPU.OpenGL.Shaper.Octree.pas ･･･ TGLShaperOctree — 衝突判定
-  ┃  ┣・LUX.GPU.OpenGL.Shaper.Voxels.pas ･･･ TGLShaperVoxels/TGLMateryVoxels
+  ┃  ┣・LUX.OpenGL.Shaper.Preset.pas     ･･･ TGLShaperLineCube / TGLDotCube
+  ┃  ┣・LUX.OpenGL.Shaper.Octree.pas     ･･･ TGLShaperOctree — 衝突判定
+  ┃  ┣・LUX.OpenGL.Shaper.Voxels.pas     ･･･ TGLShaperVoxels/TGLMateryVoxels
   ┃  ┗・Preset/                          ･･･ TMarcubes ほか ＋ *.glsl
   ┣・_FMX/                                ･･･ FMX 用
-  ┃  ┣・LUX.GPU.OpenGL.Window.pas        ･･･ TGLViewerForm / TOepnGL_FMX
-  ┃  ┣・LUX.GPU.OpenGL.Viewer.pas|fmx    ･･･ TGLViewer フレーム
-  ┃  ┗・LUX.GPU.OpenGL.Render.pas        ･･･ TGLRender
+  ┃  ┣・LUX.OpenGL.Window.pas            ･･･ TGLViewerForm / TOepnGL_FMX
+  ┃  ┣・LUX.OpenGL.Viewer.pas|fmx        ･･･ TGLViewer フレーム
+  ┃  ┗・LUX.OpenGL.Render.pas            ･･･ TGLRender
   ┗・_VCL/                                ･･･ VCL 用
-     ┣・LUX.GPU.OpenGL.Window.pas         ･･･ TOpenGL_VCL
-     ┣・LUX.GPU.OpenGL.Viewer.pas|dfm     ･･･ TGLViewer フレーム
-     ┗・LUX.GPU.OpenGL.Render.pas         ･･･ TGLRender
+     ┣・LUX.OpenGL.Window.pas             ･･･ TOpenGL_VCL
+     ┣・LUX.OpenGL.Viewer.pas|dfm         ･･･ TGLViewer フレーム
+     ┗・LUX.OpenGL.Render.pas             ･･･ TGLRender
 ```
 
 ## 4. 使い方
 
-本ライブラリのフォルダ — ルート・`Atom/` とその下位フォルダ・`Matery/`・`Shaper/`、および `_FMX/` か `_VCL/` のいずれか一方 — を `LUX` のフォルダとともにプロジェクトの検索パスへ追加します。フレームワーク別のフォルダを両方同時にパスへ入れてはいけません。2 組の `LUX.GPU.OpenGL.Window.pas` / `.Viewer.pas` / `.Render.pas` はユニット名が同一だからです。
+本ライブラリのフォルダ — ルート・`Atom/` とその下位フォルダ・`Matery/`・`Shaper/`、および `_FMX/` か `_VCL/` のいずれか一方 — を `LUX` のフォルダとともにプロジェクトの検索パスへ追加します。フレームワーク別のフォルダを両方同時にパスへ入れてはいけません。2 組の `LUX.OpenGL.Window.pas` / `.Viewer.pas` / `.Render.pas` はユニット名が同一だからです。
 
 ### 4.1 フォーム上の描画領域
 
@@ -269,12 +269,12 @@ N = \prod_{d} \texttt{Grups}_d \cdot \texttt{Items}_d . \tag{7}
 ```pascal
 uses System.Math,
      LUX, LUX.D3, LUX.D4x4,
-     LUX.GPU.OpenGL.Scener,
-     LUX.GPU.OpenGL.Camera,
-     LUX.GPU.OpenGL.Shaper,
-     LUX.GPU.OpenGL.Viewer,
-     LUX.GPU.OpenGL.Shaper.Preset,
-     LUX.GPU.OpenGL.Matery.Preset;
+     LUX.OpenGL.Scener,
+     LUX.OpenGL.Camera,
+     LUX.OpenGL.Shaper,
+     LUX.OpenGL.Viewer,
+     LUX.OpenGL.Shaper.Preset,
+     LUX.OpenGL.Matery.Preset;
 
 procedure TForm1.FormCreate( Sender:TObject );
 begin
@@ -368,19 +368,19 @@ end;
 
 ユニットごとのクラスとメンバの一覧:
 
-* [**LUX.GPU.OpenGL**.pas](../LUX.GPU.OpenGL.pas.md)
-* [**LUX.GPU.OpenGL.Scener**.pas](../LUX.GPU.OpenGL.Scener.pas.md)
-* [**LUX.GPU.OpenGL.Camera**.pas](../LUX.GPU.OpenGL.Camera.pas.md)
-* [**LUX.GPU.OpenGL.Shaper**.pas](../LUX.GPU.OpenGL.Shaper.pas.md)
-* [**LUX.GPU.OpenGL.Matery**.pas](../LUX.GPU.OpenGL.Matery.pas.md)
-* [**LUX.GPU.OpenGL.Inform**.pas](../LUX.GPU.OpenGL.Inform.pas.md)
-* [**LUX.GPU.OpenGL.Matery.Preset**.pas](../Matery/LUX.GPU.OpenGL.Matery.Preset.pas.md)
-* [**LUX.GPU.OpenGL.Matery.Textur.Preset**.pas](../Matery/Textur/_VCL/LUX.GPU.OpenGL.Matery.Textur.Preset.pas.md)
-* [**LUX.GPU.OpenGL.Shaper.Preset**.pas](../Shaper/LUX.GPU.OpenGL.Shaper.Preset.pas.md)
-* [**LUX.GPU.OpenGL.Shaper.Octree**.pas](../Shaper/LUX.GPU.OpenGL.Shaper.Octree.pas.md)
-* [**LUX.GPU.OpenGL.Shaper.Voxels**.pas](../Shaper/LUX.GPU.OpenGL.Shaper.Voxels.pas.md)
-* [**LUX.GPU.OpenGL.Viewer**.pas](../_VCL/LUX.GPU.OpenGL.Viewer.pas.md)
-* [**LUX.GPU.OpenGL.Window**.pas](../_VCL/LUX.GPU.OpenGL.Window.pas.md)
+* [**LUX.OpenGL**.pas](../LUX.OpenGL.pas.md)
+* [**LUX.OpenGL.Scener**.pas](../LUX.OpenGL.Scener.pas.md)
+* [**LUX.OpenGL.Camera**.pas](../LUX.OpenGL.Camera.pas.md)
+* [**LUX.OpenGL.Shaper**.pas](../LUX.OpenGL.Shaper.pas.md)
+* [**LUX.OpenGL.Matery**.pas](../LUX.OpenGL.Matery.pas.md)
+* [**LUX.OpenGL.Inform**.pas](../LUX.OpenGL.Inform.pas.md)
+* [**LUX.OpenGL.Matery.Preset**.pas](../Matery/LUX.OpenGL.Matery.Preset.pas.md)
+* [**LUX.OpenGL.Matery.Textur.Preset**.pas](../Matery/Textur/_VCL/LUX.OpenGL.Matery.Textur.Preset.pas.md)
+* [**LUX.OpenGL.Shaper.Preset**.pas](../Shaper/LUX.OpenGL.Shaper.Preset.pas.md)
+* [**LUX.OpenGL.Shaper.Octree**.pas](../Shaper/LUX.OpenGL.Shaper.Octree.pas.md)
+* [**LUX.OpenGL.Shaper.Voxels**.pas](../Shaper/LUX.OpenGL.Shaper.Voxels.pas.md)
+* [**LUX.OpenGL.Viewer**.pas](../_VCL/LUX.OpenGL.Viewer.pas.md)
+* [**LUX.OpenGL.Window**.pas](../_VCL/LUX.OpenGL.Window.pas.md)
 
 ## 5. 動作環境
 
